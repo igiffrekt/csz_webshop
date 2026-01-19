@@ -10,6 +10,10 @@
     "build:cms": "pnpm --filter @csz/cms build",
     "build:api": "pnpm --filter @csz/api build",
     "build:web": "pnpm --filter @csz/web build",
-    "build": "pnpm run --parallel build:cms build:api build:web"
+    "build": "pnpm run --parallel build:cms build:api build:web",
+    "db:start": "docker compose -f docker/docker-compose.yml up -d",
+    "db:stop": "docker compose -f docker/docker-compose.yml down",
+    "db:logs": "docker compose -f docker/docker-compose.yml logs -f postgres",
+    "db:reset": "docker compose -f docker/docker-compose.yml down -v && docker compose -f docker/docker-compose.yml up -d"
   }
 }
