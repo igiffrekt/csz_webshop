@@ -218,13 +218,119 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| (To be filled by roadmapper) | | |
+| PROD-01 | Phase 3 | Pending |
+| PROD-02 | Phase 3 | Pending |
+| PROD-03 | Phase 3 | Pending |
+| PROD-04 | Phase 3 | Pending |
+| PROD-05 | Phase 3 | Pending |
+| PROD-06 | Phase 3 | Pending |
+| PROD-07 | Phase 3 | Pending |
+| PROD-08 | Phase 3 | Pending |
+| CART-01 | Phase 4 | Pending |
+| CART-02 | Phase 4 | Pending |
+| CART-03 | Phase 4 | Pending |
+| CART-04 | Phase 4 | Pending |
+| CART-05 | Phase 4 | Pending |
+| CART-06 | Phase 4 | Pending |
+| CART-07 | Phase 4 | Pending |
+| AUTH-01 | Phase 5 | Pending |
+| AUTH-02 | Phase 5 | Pending |
+| AUTH-03 | Phase 5 | Pending |
+| AUTH-04 | Phase 5 | Pending |
+| AUTH-05 | Phase 5 | Pending |
+| ACCT-01 | Phase 5 | Pending |
+| ACCT-02 | Phase 5 | Pending |
+| ACCT-03 | Phase 5 | Pending |
+| ACCT-04 | Phase 5 | Pending |
+| ACCT-05 | Phase 5 | Pending |
+| CHKT-01 | Phase 6 | Pending |
+| CHKT-02 | Phase 6 | Pending |
+| CHKT-03 | Phase 6 | Pending |
+| CHKT-04 | Phase 6 | Pending |
+| CHKT-05 | Phase 6 | Pending |
+| CHKT-06 | Phase 6 | Pending |
+| CHKT-07 | Phase 6 | Pending |
+| CHKT-08 | Phase 6 | Pending |
+| PAY-01 | Phase 6 | Pending |
+| PAY-02 | Phase 6 | Pending |
+| PAY-03 | Phase 6 | Pending |
+| PAY-04 | Phase 6 | Pending |
+| PAY-05 | Phase 6 | Pending |
+| PAY-06 | Phase 6 | Pending |
+| SHIP-01 | Phase 6 | Pending |
+| SHIP-02 | Phase 6 | Pending |
+| SHIP-03 | Phase 6 | Pending |
+| SHIP-04 | Phase 6 | Pending |
+| QUOT-01 | Phase 8 | Pending |
+| QUOT-02 | Phase 8 | Pending |
+| QUOT-03 | Phase 8 | Pending |
+| QUOT-04 | Phase 8 | Pending |
+| CONT-01 | Phase 3 | Pending |
+| CONT-02 | Phase 3 | Pending |
+| CONT-03 | Phase 3 | Pending |
+| CONT-04 | Phase 9 | Pending |
+| CONT-05 | Phase 9 | Pending |
+| CONT-06 | Phase 9 | Pending |
+| CONT-07 | Phase 9 | Pending |
+| CONT-08 | Phase 9 | Pending |
+| CONT-09 | Phase 9 | Pending |
+| CONT-10 | Phase 9 | Pending |
+| ADMN-01 | Phase 2 | Pending |
+| ADMN-02 | Phase 2 | Pending |
+| ADMN-03 | Phase 2 | Pending |
+| ADMN-04 | Phase 2 | Pending |
+| ADMN-05 | Phase 2 | Pending |
+| ADMN-06 | Phase 2 | Pending |
+| ADMN-07 | Phase 2 | Pending |
+| ADMN-08 | Phase 2 | Pending |
+| ADMN-09 | Phase 2 | Pending |
+| ADMN-10 | Phase 7 | Pending |
+| ADMN-11 | Phase 7 | Pending |
+| ADMN-12 | Phase 7 | Pending |
+| ADMN-13 | Phase 7 | Pending |
+| ADMN-14 | Phase 7 | Pending |
+| ADMN-15 | Phase 4 | Pending |
+| ADMN-16 | Phase 4 | Pending |
+| ADMN-17 | Phase 4 | Pending |
+| ADMN-18 | Phase 4 | Pending |
+| ADMN-19 | Phase 4 | Pending |
+| ADMN-20 | Phase 8 | Pending |
+| ADMN-21 | Phase 8 | Pending |
+| ADMN-22 | Phase 8 | Pending |
+| ADMN-23 | Phase 9 | Pending |
+| ADMN-24 | Phase 9 | Pending |
+| ADMN-25 | Phase 9 | Pending |
+| ADMN-26 | Phase 1 | Pending |
+| ADMN-27 | Phase 1 | Pending |
+| ADMN-28 | Phase 1 | Pending |
+| ANIM-01 | Phase 9 | Pending |
+| ANIM-02 | Phase 9 | Pending |
+| ANIM-03 | Phase 9 | Pending |
+| ANIM-04 | Phase 9 | Pending |
+| ANIM-05 | Phase 4 | Pending |
+| ANIM-06 | Phase 9 | Pending |
+| ANIM-07 | Phase 9 | Pending |
+| ANIM-08 | Phase 9 | Pending |
+| ANIM-09 | Phase 9 | Pending |
+| MIGR-01 | Phase 10 | Pending |
+| MIGR-02 | Phase 10 | Pending |
+| MIGR-03 | Phase 10 | Pending |
+| MIGR-04 | Phase 10 | Pending |
+| MIGR-05 | Phase 10 | Pending |
+| PERF-01 | Phase 9 | Pending |
+| PERF-02 | Phase 9 | Pending |
+| PERF-03 | Phase 3 | Pending |
+| PERF-04 | Phase 3 | Pending |
+| LANG-01 | Phase 3 | Pending |
+| LANG-02 | Phase 9 | Pending |
+| LANG-03 | Phase 6 | Pending |
+| LANG-04 | Phase 3 | Pending |
 
 **Coverage:**
 - v1 requirements: 78 total
-- Mapped to phases: 0 (pending roadmap)
-- Unmapped: 78
+- Mapped to phases: 78
+- Unmapped: 0
 
 ---
 *Requirements defined: 2025-01-19*
-*Last updated: 2025-01-19 after initial definition*
+*Last updated: 2026-01-19 after roadmap creation*
