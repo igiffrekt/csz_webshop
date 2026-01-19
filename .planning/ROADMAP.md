@@ -29,6 +29,15 @@ This roadmap transforms the existing WooCommerce fire safety equipment store int
 4. Store Manager can log in and access products/orders/coupons (not roles)
 5. Content Manager can log in and access pages/media/SEO (not products/orders)
 
+**Plans:** 5 plans in 3 waves
+
+Plans:
+- [ ] 01-01-PLAN.md — Initialize pnpm monorepo structure (Wave 1)
+- [ ] 01-02-PLAN.md — Set up PostgreSQL via Docker Compose (Wave 1)
+- [ ] 01-03-PLAN.md — Install and configure Strapi 5 CMS (Wave 2)
+- [ ] 01-04-PLAN.md — Scaffold Fastify 5 API backend (Wave 2)
+- [ ] 01-05-PLAN.md — Configure admin roles in Strapi (Wave 3)
+
 ---
 
 ## Phase 2: Product Catalog Backend
@@ -288,7 +297,7 @@ This roadmap transforms the existing WooCommerce fire safety equipment store int
 
 | Phase | Name | Status | Progress |
 |-------|------|--------|----------|
-| 1 | Infrastructure Foundation | Pending | [ ] |
+| 1 | Infrastructure Foundation | Planned | 5 plans |
 | 2 | Product Catalog Backend | Pending | [ ] |
 | 3 | Frontend Shell & Product Display | Pending | [ ] |
 | 4 | Shopping Cart | Pending | [ ] |
