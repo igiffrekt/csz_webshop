@@ -12,9 +12,9 @@
 ## Current Position
 
 **Phase:** 1 of 10 (Infrastructure Foundation)
-**Plan:** 2 of 5 complete
+**Plan:** 2 of 5 complete (01-01, 01-02)
 **Status:** In progress
-**Last activity:** 2026-01-19 - Completed 01-02-PLAN.md (PostgreSQL Docker Setup)
+**Last activity:** 2026-01-19 - Completed 01-01-PLAN.md (pnpm Monorepo Init)
 
 **Progress:**
 ```
@@ -39,7 +39,7 @@ Overall: 0/10 phases complete (Phase 1 in progress)
 | Plans completed | 2 | 01-01, 01-02 |
 | Requirements done | 0/78 | Infrastructure only so far |
 | Blockers hit | 1 | Docker daemon (resolved by user starting Docker) |
-| Decisions made | 4 | See below |
+| Decisions made | 6 | See below |
 
 ## Accumulated Context
 
@@ -47,6 +47,8 @@ Overall: 0/10 phases complete (Phase 1 in progress)
 
 | Decision | Rationale | Date |
 |----------|-----------|------|
+| pnpm 9.15.0 | Disk efficiency, workspace support, reproducible builds | 2026-01-19 |
+| @csz/types shared package | Cross-app TypeScript type definitions | 2026-01-19 |
 | postgres:16-alpine | Smaller image size for faster pulls | 2026-01-19 |
 | Named volume for postgres_data | Cleaner Docker management, portability | 2026-01-19 |
 | Health check with pg_isready | Container readiness detection | 2026-01-19 |
@@ -83,15 +85,15 @@ From research:
 
 ### Last Session Summary
 
-- Executed 01-02-PLAN.md (PostgreSQL Docker Setup)
-- Created docker/docker-compose.yml with PostgreSQL 16 config
-- Added db:start, db:stop, db:logs, db:reset scripts to package.json
-- Docker daemon was not running (acceptable per plan)
+- Executed 01-01-PLAN.md (pnpm Monorepo Init)
+- Created .gitignore and .env.example
+- Created @csz/types shared package placeholder
+- Note: Task 1 (monorepo structure) was pre-existing from earlier commit 37ce1d8
 
 ### Next Actions
 
-1. Start Docker Desktop
-2. Run `pnpm db:start` to verify PostgreSQL starts
+1. Start Docker Desktop (if not running)
+2. Run `pnpm db:start` to start PostgreSQL container
 3. Execute 01-03-PLAN.md (Strapi CMS Installation)
 
 ### Open Questions
@@ -104,4 +106,4 @@ From research that need resolution:
 
 ---
 *State initialized: 2026-01-19*
-*Last updated: 2026-01-19*
+*Last updated: 2026-01-19 21:33 UTC*
