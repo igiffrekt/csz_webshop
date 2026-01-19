@@ -12,13 +12,13 @@
 ## Current Position
 
 **Phase:** 1 of 10 (Infrastructure Foundation)
-**Plan:** 2 of 5 complete (01-01, 01-02)
+**Plan:** 4 of 5 complete (01-01, 01-02, 01-03, 01-04)
 **Status:** In progress
-**Last activity:** 2026-01-19 - Completed 01-01-PLAN.md (pnpm Monorepo Init)
+**Last activity:** 2026-01-19 - Completed 01-04-PLAN.md (Fastify API Backend)
 
 **Progress:**
 ```
-Phase 1:  [==        ] Infrastructure Foundation (2/5 plans)
+Phase 1:  [========  ] Infrastructure Foundation (4/5 plans)
 Phase 2:  [          ] Product Catalog Backend
 Phase 3:  [          ] Frontend Shell & Product Display
 Phase 4:  [          ] Shopping Cart
@@ -36,10 +36,10 @@ Overall: 0/10 phases complete (Phase 1 in progress)
 
 | Metric | Value | Notes |
 |--------|-------|-------|
-| Plans completed | 2 | 01-01, 01-02 |
+| Plans completed | 4 | 01-01, 01-02, 01-03, 01-04 |
 | Requirements done | 0/78 | Infrastructure only so far |
 | Blockers hit | 1 | Docker daemon (resolved by user starting Docker) |
-| Decisions made | 6 | See below |
+| Decisions made | 9 | See below |
 
 ## Accumulated Context
 
@@ -53,6 +53,9 @@ Overall: 0/10 phases complete (Phase 1 in progress)
 | Named volume for postgres_data | Cleaner Docker management, portability | 2026-01-19 |
 | Health check with pg_isready | Container readiness detection | 2026-01-19 |
 | npm scripts for db management | Consistent developer experience | 2026-01-19 |
+| Fastify 5 for API backend | High performance, excellent TypeScript support | 2026-01-19 |
+| tsx for development | Fast TypeScript execution with watch mode | 2026-01-19 |
+| Separate API from Strapi | Business logic isolation from CMS | 2026-01-19 |
 
 ### Architecture Notes
 
@@ -73,9 +76,9 @@ From research:
 ### Technical Todos
 
 - [x] Set up PostgreSQL database (docker-compose.yml created)
-- [ ] Install and configure Strapi 5
-- [ ] Scaffold Fastify API backend
-- [ ] Set up Next.js 16 frontend
+- [x] Install and configure Strapi 5 (01-03)
+- [x] Scaffold Fastify API backend (01-04)
+- [ ] Set up Next.js 16 frontend (01-05)
 
 ### Blockers
 
@@ -85,16 +88,16 @@ From research:
 
 ### Last Session Summary
 
-- Executed 01-01-PLAN.md (pnpm Monorepo Init)
-- Created .gitignore and .env.example
-- Created @csz/types shared package placeholder
-- Note: Task 1 (monorepo structure) was pre-existing from earlier commit 37ce1d8
+- Executed 01-04-PLAN.md (Fastify API Backend)
+- Created Fastify 5 API server at apps/api
+- Health check endpoint at /health returns 200 OK
+- CORS configured for frontend origin
+- Security headers via @fastify/helmet
 
 ### Next Actions
 
-1. Start Docker Desktop (if not running)
-2. Run `pnpm db:start` to start PostgreSQL container
-3. Execute 01-03-PLAN.md (Strapi CMS Installation)
+1. Execute 01-05-PLAN.md (Next.js Frontend Setup)
+2. Verify all Phase 1 infrastructure components can run together
 
 ### Open Questions
 
@@ -106,4 +109,4 @@ From research that need resolution:
 
 ---
 *State initialized: 2026-01-19*
-*Last updated: 2026-01-19 21:33 UTC*
+*Last updated: 2026-01-19 21:43 UTC*
