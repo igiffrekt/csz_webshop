@@ -1,0 +1,15 @@
+{
+  "name": "csz-webshop",
+  "private": true,
+  "packageManager": "pnpm@9.15.0",
+  "scripts": {
+    "dev:cms": "pnpm --filter @csz/cms dev",
+    "dev:api": "pnpm --filter @csz/api dev",
+    "dev:web": "pnpm --filter @csz/web dev",
+    "dev": "pnpm run --parallel dev:cms dev:api",
+    "build:cms": "pnpm --filter @csz/cms build",
+    "build:api": "pnpm --filter @csz/api build",
+    "build:web": "pnpm --filter @csz/web build",
+    "build": "pnpm run --parallel build:cms build:api build:web"
+  }
+}
