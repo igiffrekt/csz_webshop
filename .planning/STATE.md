@@ -39,7 +39,7 @@ Overall: 0/10 phases complete (Phase 1 in progress)
 | Plans completed | 4 | 01-01, 01-02, 01-03, 01-04 |
 | Requirements done | 0/78 | Infrastructure only so far |
 | Blockers hit | 1 | Docker daemon (resolved by user starting Docker) |
-| Decisions made | 9 | See below |
+| Decisions made | 11 | See below |
 
 ## Accumulated Context
 
@@ -56,6 +56,8 @@ Overall: 0/10 phases complete (Phase 1 in progress)
 | Fastify 5 for API backend | High performance, excellent TypeScript support | 2026-01-19 |
 | tsx for development | Fast TypeScript execution with watch mode | 2026-01-19 |
 | Separate API from Strapi | Business logic isolation from CMS | 2026-01-19 |
+| Strapi 5.33.3 with pg 8.8.0 | Latest Strapi with PostgreSQL driver | 2026-01-19 |
+| @csz/cms workspace name | Consistent monorepo package naming | 2026-01-19 |
 
 ### Architecture Notes
 
@@ -88,11 +90,11 @@ From research:
 
 ### Last Session Summary
 
-- Executed 01-04-PLAN.md (Fastify API Backend)
-- Created Fastify 5 API server at apps/api
-- Health check endpoint at /health returns 200 OK
-- CORS configured for frontend origin
-- Security headers via @fastify/helmet
+- Executed 01-03-PLAN.md (Strapi CMS Setup)
+- Created Strapi 5.33.3 CMS at apps/cms
+- PostgreSQL connection verified (csz_strapi database)
+- Admin panel accessible at http://localhost:1337/admin
+- Workspace scripts (dev:cms, build:cms) working
 
 ### Next Actions
 
@@ -109,4 +111,4 @@ From research that need resolution:
 
 ---
 *State initialized: 2026-01-19*
-*Last updated: 2026-01-19 21:43 UTC*
+*Last updated: 2026-01-19 21:56 UTC*
