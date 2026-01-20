@@ -7,14 +7,14 @@
 
 **Core Value:** Customers can browse fire safety products with clear certification info and complete purchases reliably
 
-**Current Focus:** Phase 5 in progress - Middleware and auth-aware header complete, proceed to account management pages
+**Current Focus:** Phase 5 COMPLETE - All authentication and user account features implemented
 
 ## Current Position
 
-**Phase:** 5 of 10 (Authentication & User Accounts)
-**Plan:** 4 of 5 complete (05-04)
-**Status:** In progress
-**Last activity:** 2026-01-20 - Completed 05-04-PLAN.md (Middleware & Auth-Aware Header)
+**Phase:** 5 of 10 (Authentication & User Accounts) COMPLETE
+**Plan:** 5 of 5 complete (05-05)
+**Status:** Phase complete
+**Last activity:** 2026-01-20 - Completed 05-05-PLAN.md (Account Management Pages)
 
 **Progress:**
 ```
@@ -22,25 +22,25 @@ Phase 1:  [==========] Infrastructure Foundation (5/5 plans) COMPLETE
 Phase 2:  [==========] Product Catalog Backend (4/4 plans) COMPLETE
 Phase 3:  [==========] Frontend Shell & Product Display (5/5 plans) COMPLETE
 Phase 4:  [==========] Shopping Cart (8/8 plans) COMPLETE
-Phase 5:  [========  ] Authentication & User Accounts (4/5 plans)
+Phase 5:  [==========] Authentication & User Accounts (5/5 plans) COMPLETE
 Phase 6:  [          ] Checkout & Payments
 Phase 7:  [          ] Admin Order Management
 Phase 8:  [          ] B2B Quote System
 Phase 9:  [          ] Content & Polish
 Phase 10: [          ] Migration & Launch
 
-Overall: 4/10 phases complete (26/36 plans)
+Overall: 5/10 phases complete (27/36 plans)
 ```
 
 ## Performance Metrics
 
 | Metric | Value | Notes |
 |--------|-------|-------|
-| Plans completed | 26 | 01-01 through 01-05, 02-01 through 02-04, 03-01 through 03-05, 04-01 through 04-08, 05-01 through 05-04 |
-| Phases completed | 4 | Infrastructure, Product Catalog, Frontend Shell, Shopping Cart |
-| Requirements done | 36/78 | +CART-01 through CART-07, ADMN-15 through ADMN-19, ANIM-05 |
+| Plans completed | 27 | 01-01 through 01-05, 02-01 through 02-04, 03-01 through 03-05, 04-01 through 04-08, 05-01 through 05-05 |
+| Phases completed | 5 | Infrastructure, Product Catalog, Frontend Shell, Shopping Cart, Authentication |
+| Requirements done | 38/78 | +ACCT-03 (update profile), ACCT-05 (company info) |
 | Blockers hit | 1 | Docker daemon (resolved by user starting Docker) |
-| Decisions made | 74 | See below |
+| Decisions made | 78 | See below |
 
 ## Accumulated Context
 
@@ -125,6 +125,10 @@ Overall: 4/10 phases complete (26/36 plans)
 | Middleware route protection | Protect /fiok and /penztar at middleware level | 2026-01-20 |
 | Redirect URL preservation | Save original URL in query param for post-login redirect | 2026-01-20 |
 | Async Server Component Header | Use getTranslations and verifySession directly | 2026-01-20 |
+| Server Component dashboard | Account dashboard pure Server Component with requireAuth | 2026-01-20 |
+| Client form island pattern | ProfileForm as client island for form state feedback | 2026-01-20 |
+| Strapi Users API for updates | PUT /api/users/:id for profile updates with JWT auth | 2026-01-20 |
+| GET /api/users/me for profile | Returns complete user object including custom B2B fields | 2026-01-20 |
 
 ### Architecture Notes
 
@@ -194,6 +198,10 @@ From research:
 - [x] Edge-compatible session decryption (05-04)
 - [x] UserMenu dropdown component (05-04)
 - [x] Auth-aware Header component (05-04)
+- [x] Account dashboard page at /fiok (05-05)
+- [x] Profile settings page at /fiok/profil (05-05)
+- [x] ProfileForm component with useActionState (05-05)
+- [x] updateProfileAction and getCurrentUserProfile (05-05)
 
 ### Blockers
 
@@ -203,19 +211,19 @@ From research:
 
 ### Last Session Summary
 
-- Continued Phase 5: Authentication & User Accounts
-- Completed 05-04: Middleware & Auth-Aware Header
-- Created Edge-compatible session-edge.ts for middleware
-- Created middleware with route protection for /fiok and /penztar
-- Created UserMenu dropdown component with logout action
-- Updated Header to show login button or UserMenu based on auth state
+- Completed Phase 5: Authentication & User Accounts
+- Completed 05-05: Account Management Pages
+- Created /fiok account dashboard with navigation cards
+- Created /fiok/profil profile settings page with editable form
+- Added updateProfileAction and getCurrentUserProfile to auth actions
+- ProfileForm component with useActionState for form feedback
 
 ### Next Actions
 
-1. Continue Phase 5 with 05-05: Account Management Pages
-2. Create /fiok account dashboard page
-3. Create /fiok/rendelesek orders page
-4. Create /fiok/cimek shipping addresses management
+1. Begin Phase 6: Checkout & Payments
+2. Create Order content type in Strapi
+3. Build checkout flow with shipping and payment
+4. Integrate Stripe payment processing
 
 ### Open Questions
 
@@ -244,3 +252,5 @@ From research that need resolution:
 *Phase 5 plan 05-02 completed: 2026-01-20*
 *Phase 5 plan 05-03 completed: 2026-01-20*
 *Phase 5 plan 05-04 completed: 2026-01-20*
+*Phase 5 plan 05-05 completed: 2026-01-20*
+*Phase 5 completed: 2026-01-20*
