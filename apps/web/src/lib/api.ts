@@ -14,6 +14,8 @@ export interface ProductFilters {
   search?: string;
   featured?: boolean;
   onSale?: boolean;
+  fireClass?: string; // Fire class filter: 'A', 'B', or 'C'
+  certification?: string[]; // Certification filter: ['CE', 'EN3']
   page?: number;
   pageSize?: number;
 }
@@ -30,6 +32,23 @@ export async function getProducts(
         ...(filters.search && { name: { $containsi: filters.search } }),
         ...(filters.featured && { isFeatured: { $eq: true } }),
         ...(filters.onSale && { isOnSale: { $eq: true } }),
+        // Fire class filter - filters products by fire class in specifications
+        // Assumes products have a specification with name containing "Tűzosztály" or "Fire Class"
+        ...(filters.fireClass && {
+          specifications: {
+            $or: [
+              { name: "Tűzosztály", value: { $containsi: filters.fireClass } },
+              { name: "Fire Class", value: { $containsi: filters.fireClass } },
+            ],
+          },
+        }),
+        // Certification filter - filters products by certification name
+        ...(filters.certification &&
+          filters.certification.length > 0 && {
+            certifications: {
+              name: { $in: filters.certification },
+            },
+          }),
       },
       populate: {
         images: {
@@ -37,6 +56,7 @@ export async function getProducts(
         },
         categories: { fields: ["name", "slug"] },
         certifications: true,
+        specifications: true,
       },
       pagination: {
         page: filters.page || 1,
