@@ -34,14 +34,36 @@
   },
   "products": {
     "title": "Termékek",
-    "search": "Keresés...",
+    "search": "Keresés termékek között...",
     "filter": "Szűrés",
-    "noResults": "Nincs találat",
+    "allCategories": "Minden kategória",
+    "allFireClasses": "Minden tűzosztály",
+    "fireClass": "Tűzosztály",
+    "certifications": "Tanúsítványok",
+    "noResults": "Nincs találat a keresési feltételeknek megfelelően",
+    "showing": "{count} termék megjelenítve",
+    "clearFilters": "Szűrők törlése",
     "addToCart": "Kosárba",
     "inStock": "Készleten",
     "outOfStock": "Nincs készleten",
     "featured": "Kiemelt termékek",
     "onSale": "Akció"
+  },
+  "product": {
+    "onSale": "Akció",
+    "featured": "Kiemelt",
+    "sku": "Cikkszám",
+    "inStock": "Készleten",
+    "outOfStock": "Nincs készleten",
+    "addToCart": "Kosárba",
+    "specifications": "Műszaki adatok",
+    "certifications": "Tanúsítványok",
+    "documents": "Letölthető dokumentumok",
+    "variants": "Változatok",
+    "description": "Leírás",
+    "notFound": "Termék nem található",
+    "notFoundDescription": "A keresett termék nem létezik vagy eltávolításra került.",
+    "backToProducts": "Vissza a termékekhez"
   },
   "categories": {
     "title": "Kategóriák",
@@ -52,5 +74,10 @@
     "empty": "A kosár üres",
     "total": "Összesen",
     "checkout": "Pénztár"
+  },
+  "pagination": {
+    "previous": "Előző",
+    "next": "Következő",
+    "showing": "{page}. oldal / {total}"
   }
 }
