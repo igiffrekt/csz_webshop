@@ -7,14 +7,14 @@
 
 **Core Value:** Customers can browse fire safety products with clear certification info and complete purchases reliably
 
-**Current Focus:** Phase 5 in progress - Session management and Server Actions complete, proceed to auth UI forms
+**Current Focus:** Phase 5 in progress - Middleware and auth-aware header complete, proceed to account management pages
 
 ## Current Position
 
 **Phase:** 5 of 10 (Authentication & User Accounts)
-**Plan:** 2 of 5 complete (05-02)
+**Plan:** 4 of 5 complete (05-04)
 **Status:** In progress
-**Last activity:** 2026-01-20 - Completed 05-02-PLAN.md (Session Management & Server Actions)
+**Last activity:** 2026-01-20 - Completed 05-04-PLAN.md (Middleware & Auth-Aware Header)
 
 **Progress:**
 ```
@@ -22,25 +22,25 @@ Phase 1:  [==========] Infrastructure Foundation (5/5 plans) COMPLETE
 Phase 2:  [==========] Product Catalog Backend (4/4 plans) COMPLETE
 Phase 3:  [==========] Frontend Shell & Product Display (5/5 plans) COMPLETE
 Phase 4:  [==========] Shopping Cart (8/8 plans) COMPLETE
-Phase 5:  [====      ] Authentication & User Accounts (2/5 plans)
+Phase 5:  [========  ] Authentication & User Accounts (4/5 plans)
 Phase 6:  [          ] Checkout & Payments
 Phase 7:  [          ] Admin Order Management
 Phase 8:  [          ] B2B Quote System
 Phase 9:  [          ] Content & Polish
 Phase 10: [          ] Migration & Launch
 
-Overall: 4/10 phases complete (24/36 plans)
+Overall: 4/10 phases complete (26/36 plans)
 ```
 
 ## Performance Metrics
 
 | Metric | Value | Notes |
 |--------|-------|-------|
-| Plans completed | 24 | 01-01 through 01-05, 02-01 through 02-04, 03-01 through 03-05, 04-01 through 04-08, 05-01 through 05-02 |
+| Plans completed | 26 | 01-01 through 01-05, 02-01 through 02-04, 03-01 through 03-05, 04-01 through 04-08, 05-01 through 05-04 |
 | Phases completed | 4 | Infrastructure, Product Catalog, Frontend Shell, Shopping Cart |
 | Requirements done | 36/78 | +CART-01 through CART-07, ADMN-15 through ADMN-19, ANIM-05 |
 | Blockers hit | 1 | Docker daemon (resolved by user starting Docker) |
-| Decisions made | 66 | See below |
+| Decisions made | 70 | See below |
 
 ## Accumulated Context
 
@@ -117,6 +117,10 @@ Overall: 4/10 phases complete (24/36 plans)
 | React cache() DAL | Deduplicate session verification within same request | 2026-01-20 |
 | Hungarian error messages | All zod validation in Hungarian for localized UX | 2026-01-20 |
 | Email enumeration protection | forgotPassword always returns success | 2026-01-20 |
+| Edge-compatible session module | Separate session-edge.ts for middleware runtime | 2026-01-20 |
+| Middleware route protection | Protect /fiok and /penztar at middleware level | 2026-01-20 |
+| Redirect URL preservation | Save original URL in query param for post-login redirect | 2026-01-20 |
+| Async Server Component Header | Use getTranslations and verifySession directly | 2026-01-20 |
 
 ### Architecture Notes
 
@@ -178,6 +182,10 @@ From research:
 - [x] Data Access Layer with React cache() (05-02)
 - [x] Server Actions for login/register/logout (05-02)
 - [x] Password reset Server Actions (05-02)
+- [x] Next.js middleware for route protection (05-04)
+- [x] Edge-compatible session decryption (05-04)
+- [x] UserMenu dropdown component (05-04)
+- [x] Auth-aware Header component (05-04)
 
 ### Blockers
 
@@ -188,18 +196,18 @@ From research:
 ### Last Session Summary
 
 - Continued Phase 5: Authentication & User Accounts
-- Completed 05-02: Session Management & Server Actions
-- Created session management library with jose JWT encryption
-- Created Data Access Layer with React cache() for session verification
-- Created Server Actions for login, register, logout, forgot password, reset password
-- All validation errors in Hungarian
+- Completed 05-04: Middleware & Auth-Aware Header
+- Created Edge-compatible session-edge.ts for middleware
+- Created middleware with route protection for /fiok and /penztar
+- Created UserMenu dropdown component with logout action
+- Updated Header to show login button or UserMenu based on auth state
 
 ### Next Actions
 
-1. Continue Phase 5 with 05-03: Registration and Login UI Forms
-2. Create login page with form using loginAction
-3. Create registration page with B2B fields using registerAction
-4. Create password reset pages
+1. Continue Phase 5 with 05-05: Account Management Pages
+2. Create /fiok account dashboard page
+3. Create /fiok/rendelesek orders page
+4. Create /fiok/cimek shipping addresses management
 
 ### Open Questions
 
@@ -226,3 +234,4 @@ From research that need resolution:
 *Phase 4 completed: 2026-01-20*
 *Phase 5 plan 05-01 completed: 2026-01-20*
 *Phase 5 plan 05-02 completed: 2026-01-20*
+*Phase 5 plan 05-04 completed: 2026-01-20*
