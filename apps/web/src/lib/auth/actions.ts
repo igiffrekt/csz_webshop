@@ -2,7 +2,8 @@
 
 import { redirect } from "next/navigation";
 import { z } from "zod";
-import { createSession, deleteSession } from "./session";
+import { createSession, deleteSession, getSession } from "./session";
+import type { User } from "@csz/types";
 
 const STRAPI_URL = process.env.STRAPI_URL || "http://localhost:1337";
 
@@ -249,4 +250,103 @@ export async function resetPasswordAction(
   }
 
   redirect("/hu/auth/bejelentkezes?reset=success");
+}
+
+// Schema for profile updates
+const updateProfileSchema = z.object({
+  firstName: z.string().max(100).optional(),
+  lastName: z.string().max(100).optional(),
+  phone: z.string().max(50).optional(),
+  companyName: z.string().max(255).optional(),
+  vatNumber: z.string().max(50).optional(),
+});
+
+/**
+ * Update user profile information
+ */
+export async function updateProfileAction(
+  prevState: AuthState,
+  formData: FormData
+): Promise<AuthState> {
+  // Get current session to get JWT for authenticated request
+  const session = await getSession();
+  if (!session) {
+    return { error: "Nincs bejelentkezve" };
+  }
+
+  const validatedFields = updateProfileSchema.safeParse({
+    firstName: formData.get("firstName") || undefined,
+    lastName: formData.get("lastName") || undefined,
+    phone: formData.get("phone") || undefined,
+    companyName: formData.get("companyName") || undefined,
+    vatNumber: formData.get("vatNumber") || undefined,
+  });
+
+  if (!validatedFields.success) {
+    return {
+      fieldErrors: validatedFields.error.flatten().fieldErrors,
+    };
+  }
+
+  try {
+    // Update user via Strapi Users & Permissions API
+    const res = await fetch(
+      `${STRAPI_URL}/api/users/${session.userId}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session.jwt}`,
+        },
+        body: JSON.stringify(validatedFields.data),
+      }
+    );
+
+    if (!res.ok) {
+      const error = await res.json();
+      return {
+        error: error.error?.message || "Profil frissitese sikertelen",
+      };
+    }
+
+    return { success: true };
+  } catch {
+    return {
+      error: "Hiba tortent a profil frissitese soran. Probald ujra kesobb.",
+    };
+  }
+}
+
+/**
+ * Get current user's full profile from Strapi
+ */
+export async function getCurrentUserProfile(): Promise<{
+  user: User | null;
+  error?: string;
+}> {
+  const session = await getSession();
+  if (!session) {
+    return { user: null, error: "Nincs bejelentkezve" };
+  }
+
+  try {
+    const res = await fetch(
+      `${STRAPI_URL}/api/users/me`,
+      {
+        headers: {
+          Authorization: `Bearer ${session.jwt}`,
+        },
+        cache: "no-store",
+      }
+    );
+
+    if (!res.ok) {
+      return { user: null, error: "Profil betoltese sikertelen" };
+    }
+
+    const user = await res.json();
+    return { user };
+  } catch {
+    return { user: null, error: "Hiba tortent" };
+  }
 }
