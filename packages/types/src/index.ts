@@ -164,3 +164,55 @@ export interface AppliedCoupon {
   discountValue: number;
   discountAmount: number;        // Calculated discount in HUF
 }
+
+// User profile from Strapi users-permissions
+export interface User {
+  id: number;
+  documentId: string;
+  username: string;
+  email: string;
+  provider: string;
+  confirmed: boolean;
+  blocked: boolean;
+  firstName?: string;
+  lastName?: string;
+  phone?: string;
+  companyName?: string;
+  vatNumber?: string;
+  shippingAddresses?: ShippingAddress[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+// Shipping address for user account
+export interface ShippingAddress {
+  id: number;
+  documentId: string;
+  label: string;
+  recipientName: string;
+  street: string;
+  city: string;
+  postalCode: string;
+  country: string;
+  phone?: string;
+  isDefault: boolean;
+  user?: User;
+  createdAt: string;
+  updatedAt: string;
+}
+
+// Auth response from Strapi login/register
+export interface AuthResponse {
+  jwt: string;
+  user: User;
+}
+
+// Session payload for encrypted cookie
+export interface SessionPayload {
+  jwt: string;
+  userId: number;
+  userDocumentId: string;
+  email: string;
+  username: string;
+  expiresAt: Date;
+}
