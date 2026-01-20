@@ -7,19 +7,19 @@
 
 **Core Value:** Customers can browse fire safety products with clear certification info and complete purchases reliably
 
-**Current Focus:** Phase 2 in progress - Product Catalog Backend
+**Current Focus:** Phase 2 complete - Ready for Phase 3 Frontend Shell
 
 ## Current Position
 
-**Phase:** 2 of 10 (Product Catalog Backend) - IN PROGRESS
-**Plan:** 3 of 4 complete (02-03)
-**Status:** In progress
-**Last activity:** 2026-01-20 - Completed 02-03-PLAN.md (ProductVariant Content Type)
+**Phase:** 2 of 10 (Product Catalog Backend) - COMPLETE
+**Plan:** 4 of 4 complete (02-04)
+**Status:** Phase complete
+**Last activity:** 2026-01-20 - Completed 02-04-PLAN.md (API Permissions)
 
 **Progress:**
 ```
 Phase 1:  [==========] Infrastructure Foundation (5/5 plans) COMPLETE
-Phase 2:  [=======   ] Product Catalog Backend (3/4 plans)
+Phase 2:  [==========] Product Catalog Backend (4/4 plans) COMPLETE
 Phase 3:  [          ] Frontend Shell & Product Display
 Phase 4:  [          ] Shopping Cart
 Phase 5:  [          ] Authentication & User Accounts
@@ -29,18 +29,18 @@ Phase 8:  [          ] B2B Quote System
 Phase 9:  [          ] Content & Polish
 Phase 10: [          ] Migration & Launch
 
-Overall: 1/10 phases complete
+Overall: 2/10 phases complete
 ```
 
 ## Performance Metrics
 
 | Metric | Value | Notes |
 |--------|-------|-------|
-| Plans completed | 8 | 01-01 through 01-05, 02-01, 02-02, 02-03 |
-| Phases completed | 1 | Infrastructure Foundation |
+| Plans completed | 9 | 01-01 through 01-05, 02-01 through 02-04 |
+| Phases completed | 2 | Infrastructure Foundation, Product Catalog Backend |
 | Requirements done | 11/78 | ADMN-26, ADMN-27, ADMN-28, ADMN-01, ADMN-02, ADMN-03, ADMN-04, ADMN-05, ADMN-06, ADMN-07, ADMN-08, ADMN-09 |
 | Blockers hit | 1 | Docker daemon (resolved by user starting Docker) |
-| Decisions made | 18 | See below |
+| Decisions made | 20 | See below |
 
 ## Accumulated Context
 
@@ -66,6 +66,8 @@ Overall: 1/10 phases complete
 | Remove variants relation until ProductVariant exists | Strapi 5 fails on forward references to non-existent content types | 2026-01-20 |
 | ProductVariant as collection type (not component) | Independent SKU, price, inventory tracking requires separate documents | 2026-01-20 |
 | 50MB upload limit for certificates | Large PDF technical documents for fire safety certifications | 2026-01-20 |
+| Programmatic permission configuration | Using Strapi bootstrap lifecycle for reproducibility across environments | 2026-01-20 |
+| Public read-only API pattern | find/findOne only for public role, authenticated writes for Store Manager | 2026-01-20 |
 
 ### Architecture Notes
 
@@ -96,7 +98,10 @@ From research:
 - [x] Create ProductVariant content type (02-03)
 - [x] Add Product-Variant relation (02-03)
 - [x] Configure upload plugin for 50MB files (02-03)
-- [ ] Configure API permissions (02-04)
+- [x] Configure API permissions (02-04)
+- [ ] Next.js app setup (03-01)
+- [ ] Product listing page (03-02)
+- [ ] Product detail page (03-03)
 
 ### Blockers
 
@@ -106,17 +111,17 @@ From research:
 
 ### Last Session Summary
 
-- Completed Plan 02-03: ProductVariant Content Type
-- Created ProductVariant collection type with independent SKU, price, stock
-- Added bidirectional oneToMany/manyToOne relation between Product and ProductVariant
-- Configured upload plugin for 50MB PDF certificates
-- ADMN-03 (product variants) is now satisfiable in Strapi admin
+- Completed Plan 02-04: API Permissions (final plan of Phase 2)
+- Configured public API read access via Strapi bootstrap lifecycle
+- Updated Store Manager role with full CRUD on product catalog
+- User verified product creation and API population workflow
+- Phase 2: Product Catalog Backend is now COMPLETE
 
 ### Next Actions
 
-1. Continue Phase 2: Execute 02-04-PLAN.md (API Permissions)
-2. Configure public read access for Product, ProductVariant, Category
-3. Test API endpoints return data instead of 403
+1. Start Phase 3: Frontend Shell & Product Display
+2. Initialize Next.js app with TypeScript and Tailwind
+3. Create product listing page consuming Strapi API
 
 ### Open Questions
 
@@ -130,6 +135,5 @@ From research that need resolution:
 *State initialized: 2026-01-19*
 *Last updated: 2026-01-20*
 *Phase 1 completed: 2026-01-20*
-*Plan 02-01 completed: 2026-01-20*
-*Plan 02-02 completed: 2026-01-20*
-*Plan 02-03 completed: 2026-01-20*
+*Phase 2 completed: 2026-01-20*
+*Plan 02-04 completed: 2026-01-20*
