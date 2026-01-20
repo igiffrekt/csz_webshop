@@ -133,9 +133,9 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Admin - Access
 
-- [ ] **ADMN-26**: System supports Admin role (full access)
-- [ ] **ADMN-27**: System supports Store Manager role (products, orders, coupons)
-- [ ] **ADMN-28**: System supports Content Manager role (pages, media, SEO)
+- [x] **ADMN-26**: System supports Admin role (full access)
+- [x] **ADMN-27**: System supports Store Manager role (products, orders, coupons)
+- [x] **ADMN-28**: System supports Content Manager role (pages, media, SEO)
 
 ### Animations & UX
 
@@ -300,9 +300,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | ADMN-23 | Phase 9 | Pending |
 | ADMN-24 | Phase 9 | Pending |
 | ADMN-25 | Phase 9 | Pending |
-| ADMN-26 | Phase 1 | Pending |
-| ADMN-27 | Phase 1 | Pending |
-| ADMN-28 | Phase 1 | Pending |
+| ADMN-26 | Phase 1 | Complete |
+| ADMN-27 | Phase 1 | Complete |
+| ADMN-28 | Phase 1 | Complete |
 | ANIM-01 | Phase 9 | Pending |
 | ANIM-02 | Phase 9 | Pending |
 | ANIM-03 | Phase 9 | Pending |
