@@ -13,13 +13,13 @@ export function CartSummary() {
   return (
     <div className="space-y-3">
       <div className="flex justify-between text-sm">
-        <span className="text-muted-foreground">Reszosszeg</span>
+        <span className="text-muted-foreground">Részösszeg</span>
         <span>{formatPrice(subtotal)}</span>
       </div>
 
       {coupon && (
         <div className="flex justify-between text-sm text-green-600">
-          <span>Kedvezmeny ({coupon.code})</span>
+          <span>Kedvezmény ({coupon.code})</span>
           <span>-{formatPrice(discount)}</span>
         </div>
       )}
@@ -27,12 +27,12 @@ export function CartSummary() {
       <Separator />
 
       <div className="flex justify-between font-semibold text-lg">
-        <span>Osszesen</span>
+        <span>Összesen</span>
         <span>{formatPrice(total)}</span>
       </div>
 
       <p className="text-xs text-muted-foreground">
-        Az arak tartalmazzak a 27% AFAt
+        Az árak tartalmazzák a 27% ÁFÁ-t
       </p>
     </div>
   );

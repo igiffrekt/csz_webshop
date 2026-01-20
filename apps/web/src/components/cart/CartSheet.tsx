@@ -31,12 +31,12 @@ export function CartSheet({ open, onOpenChange }: CartSheetProps) {
   if (!hydrated) {
     return (
       <Sheet open={open} onOpenChange={onOpenChange}>
-        <SheetContent className="flex flex-col w-full sm:max-w-lg">
-          <SheetHeader>
-            <SheetTitle>Kosar</SheetTitle>
+        <SheetContent className="flex flex-col w-full sm:max-w-lg p-0">
+          <SheetHeader className="p-6 pb-0">
+            <SheetTitle>Kosár</SheetTitle>
           </SheetHeader>
           <div className="flex-1 flex items-center justify-center">
-            <p className="text-muted-foreground">Betoltes...</p>
+            <p className="text-muted-foreground">Betöltés...</p>
           </div>
         </SheetContent>
       </Sheet>
@@ -47,24 +47,24 @@ export function CartSheet({ open, onOpenChange }: CartSheetProps) {
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent className="flex flex-col w-full sm:max-w-lg">
-        <SheetHeader>
+      <SheetContent className="flex flex-col w-full sm:max-w-lg p-0">
+        <SheetHeader className="p-6 pb-0">
           <SheetTitle>
-            Kosar {itemCount > 0 && `(${itemCount} termek)`}
+            Kosár {itemCount > 0 && `(${itemCount} termék)`}
           </SheetTitle>
         </SheetHeader>
 
         {items.length === 0 ? (
-          <div className="flex-1 flex flex-col items-center justify-center gap-4">
+          <div className="flex-1 flex flex-col items-center justify-center gap-4 p-6">
             <ShoppingBag className="h-16 w-16 text-muted-foreground/50" />
-            <p className="text-muted-foreground">A kosar ures</p>
+            <p className="text-muted-foreground">A kosár üres</p>
             <Button variant="outline" onClick={() => onOpenChange(false)} asChild>
-              <Link href="/termekek">Bongesszen termekeink kozott</Link>
+              <Link href="/termekek">Böngésszen termékeink között</Link>
             </Button>
           </div>
         ) : (
           <>
-            <ScrollArea className="flex-1 -mx-6 px-6">
+            <ScrollArea className="flex-1 px-6">
               <div className="divide-y">
                 {items.map((item) => (
                   <CartItem key={item.id} item={item} />
@@ -72,21 +72,20 @@ export function CartSheet({ open, onOpenChange }: CartSheetProps) {
               </div>
             </ScrollArea>
 
-            <div className="pt-4 space-y-4">
-              <Separator />
+            <div className="p-6 pt-4 space-y-4 border-t">
               <CouponInput />
               <Separator />
               <CartSummary />
             </div>
 
-            <SheetFooter className="mt-4 sm:flex-col sm:space-x-0 gap-2">
+            <SheetFooter className="p-6 pt-0 sm:flex-col sm:space-x-0 gap-2">
               <Button
                 asChild
                 size="lg"
                 className="w-full"
                 onClick={() => onOpenChange(false)}
               >
-                <Link href="/penztar">Tovabb a penztarhoz</Link>
+                <Link href="/penztar">Tovább a pénztárhoz</Link>
               </Button>
               <Button
                 variant="outline"
@@ -95,7 +94,7 @@ export function CartSheet({ open, onOpenChange }: CartSheetProps) {
                 onClick={() => onOpenChange(false)}
                 asChild
               >
-                <Link href="/termekek">Folytassa a vasarlast</Link>
+                <Link href="/termekek">Folytassa a vásárlást</Link>
               </Button>
             </SheetFooter>
           </>

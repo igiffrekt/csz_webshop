@@ -29,7 +29,7 @@ export function CartItem({ item }: CartItemProps) {
         </div>
       ) : (
         <div className="h-20 w-20 flex-shrink-0 rounded-md bg-muted flex items-center justify-center">
-          <span className="text-muted-foreground text-xs">Nincs kep</span>
+          <span className="text-muted-foreground text-xs">Nincs kép</span>
         </div>
       )}
 
@@ -48,7 +48,7 @@ export function CartItem({ item }: CartItemProps) {
           size="icon"
           className="h-8 w-8 text-muted-foreground hover:text-destructive"
           onClick={() => removeItem(item.id)}
-          aria-label="Termek torlese"
+          aria-label="Termék törlése"
         >
           <Trash2 className="h-4 w-4" />
         </Button>
@@ -60,7 +60,7 @@ export function CartItem({ item }: CartItemProps) {
             className="h-8 w-8"
             onClick={() => updateQuantity(item.id, item.quantity - 1)}
             disabled={item.quantity <= 1}
-            aria-label="Mennyiseg csokkentese"
+            aria-label="Mennyiség csökkentése"
           >
             <Minus className="h-3 w-3" />
           </Button>
@@ -75,7 +75,7 @@ export function CartItem({ item }: CartItemProps) {
             className="h-8 w-8"
             onClick={() => updateQuantity(item.id, item.quantity + 1)}
             disabled={item.quantity >= item.maxStock}
-            aria-label="Mennyiseg novelese"
+            aria-label="Mennyiség növelése"
           >
             <Plus className="h-3 w-3" />
           </Button>

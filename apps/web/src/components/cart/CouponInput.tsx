@@ -23,7 +23,7 @@ export function CouponInput() {
     const trimmedCode = code.trim().toUpperCase();
 
     if (!trimmedCode) {
-      setError('Kerem adja meg a kuponkodot');
+      setError('Kérem adja meg a kuponkódot');
       return;
     }
 
@@ -37,15 +37,15 @@ export function CouponInput() {
         applyCoupon(result.coupon);
         toast.success('Kupon sikeresen alkalmazva!', {
           description: result.coupon.discountType === 'percentage'
-            ? `${result.coupon.discountValue}% kedvezmeny`
-            : `${result.coupon.discountAmount.toLocaleString('hu-HU')} Ft kedvezmeny`,
+            ? `${result.coupon.discountValue}% kedvezmény`
+            : `${result.coupon.discountAmount.toLocaleString('hu-HU')} Ft kedvezmény`,
         });
         setCode('');
       } else {
-        setError(result.error || 'Ervenytelen kuponkod');
+        setError(result.error || 'Érvénytelen kuponkód');
       }
     } catch {
-      setError('Hiba tortent a kupon ellenorzese soran');
+      setError('Hiba történt a kupon ellenőrzése során');
     } finally {
       setIsLoading(false);
     }
@@ -53,7 +53,7 @@ export function CouponInput() {
 
   const handleRemoveCoupon = () => {
     removeCoupon();
-    toast.info('Kupon eltavolitva');
+    toast.info('Kupon eltávolítva');
   };
 
   // If coupon already applied, show it
@@ -67,7 +67,7 @@ export function CouponInput() {
           </span>
           <span className="text-xs text-green-600 dark:text-green-400">
             {coupon.discountType === 'percentage'
-              ? `${coupon.discountValue}% kedvezmeny`
+              ? `${coupon.discountValue}% kedvezmény`
               : `${coupon.discountAmount.toLocaleString('hu-HU')} Ft`}
           </span>
         </div>
@@ -76,7 +76,7 @@ export function CouponInput() {
           size="sm"
           onClick={handleRemoveCoupon}
           className="h-8 w-8 p-0 text-green-600 hover:text-green-700 hover:bg-green-100"
-          aria-label="Kupon eltavolitasa"
+          aria-label="Kupon eltávolítása"
         >
           <X className="h-4 w-4" />
         </Button>
@@ -94,10 +94,10 @@ export function CouponInput() {
             setCode(e.target.value.toUpperCase());
             setError(null);
           }}
-          placeholder="Kuponkod"
+          placeholder="Kuponkód"
           className="flex-1 uppercase"
           disabled={isLoading}
-          aria-label="Kuponkod"
+          aria-label="Kuponkód"
           aria-invalid={!!error}
           aria-describedby={error ? 'coupon-error' : undefined}
         />
