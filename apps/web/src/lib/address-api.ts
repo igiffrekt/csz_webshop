@@ -42,8 +42,6 @@ export async function getAddresses(): Promise<ApiResponse<ShippingAddress[]>> {
     );
 
     if (!res.ok) {
-      const errorBody = await res.text();
-      console.error("[getAddresses] Error:", res.status, errorBody);
       return { data: null, error: "Címek betöltése sikertelen" };
     }
 
@@ -68,7 +66,7 @@ export async function createAddress(
   try {
     // If this is set as default, unset other defaults first
     if (input.isDefault) {
-      await clearDefaultAddresses(session.jwt, session.userId);
+      await clearDefaultAddresses(session.jwt);
     }
 
     const res = await fetch(`${STRAPI_URL}/api/shipping-addresses`, {
@@ -116,7 +114,7 @@ export async function updateAddress(
   try {
     // If setting as default, unset other defaults first
     if (input.isDefault) {
-      await clearDefaultAddresses(session.jwt, session.userId);
+      await clearDefaultAddresses(session.jwt);
     }
 
     const res = await fetch(
@@ -179,12 +177,10 @@ export async function deleteAddress(
 }
 
 /**
- * Helper to clear all default flags before setting a new default
+ * Helper to clear all default flags before setting a new default.
+ * Uses parallel requests for better performance.
  */
-async function clearDefaultAddresses(
-  jwt: string,
-  _userId: number
-): Promise<void> {
+async function clearDefaultAddresses(jwt: string): Promise<void> {
   try {
     // Get all addresses that are currently default (controller filters by user automatically)
     const res = await fetch(
@@ -199,18 +195,20 @@ async function clearDefaultAddresses(
     const json = await res.json();
     const addresses = json.data || [];
 
-    // Unset default for each
-    for (const addr of addresses) {
-      await fetch(`${STRAPI_URL}/api/shipping-addresses/${addr.documentId}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${jwt}`,
-        },
-        body: JSON.stringify({ data: { isDefault: false } }),
-      });
-    }
+    // Unset default for all addresses in parallel for better performance
+    await Promise.all(
+      addresses.map((addr: { documentId: string }) =>
+        fetch(`${STRAPI_URL}/api/shipping-addresses/${addr.documentId}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${jwt}`,
+          },
+          body: JSON.stringify({ data: { isDefault: false } }),
+        })
+      )
+    );
   } catch {
-    // Ignore errors in cleanup
+    // Ignore errors in cleanup - this is a best-effort operation
   }
 }

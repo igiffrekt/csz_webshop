@@ -5,6 +5,9 @@ import { getAddresses } from "@/lib/address-api";
 import { AddressesClient } from "./AddressesClient";
 import { ArrowLeft } from "lucide-react";
 
+// Force dynamic rendering to always fetch fresh data
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Szállítási címek | CSZ Tűzvédelmi Webáruház",
   description: "Mentett szállítási címeid kezelése",

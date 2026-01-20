@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Plus, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -24,6 +24,11 @@ export function AddressesClient({ initialAddresses }: AddressesClientProps) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingAddress, setEditingAddress] = useState<ShippingAddress | undefined>();
 
+  // Sync state when initialAddresses changes (e.g., after router.refresh())
+  useEffect(() => {
+    setAddresses(initialAddresses);
+  }, [initialAddresses]);
+
   const handleAdd = () => {
     setEditingAddress(undefined);
     setIsDialogOpen(true);
@@ -35,7 +40,6 @@ export function AddressesClient({ initialAddresses }: AddressesClientProps) {
   };
 
   const handleSubmit = async (data: AddressFormData) => {
-    // Use Server Action via fetch to API route (simpler than complex client-side logic)
     const res = await fetch("/api/addresses", {
       method: editingAddress ? "PUT" : "POST",
       headers: { "Content-Type": "application/json" },
@@ -63,8 +67,8 @@ export function AddressesClient({ initialAddresses }: AddressesClientProps) {
       throw new Error("Törlés sikertelen");
     }
 
+    // Optimistic update - no need for router.refresh() since we update local state
     setAddresses(addresses.filter((a) => a.documentId !== documentId));
-    router.refresh();
   };
 
   const handleSetDefault = async (documentId: string) => {
