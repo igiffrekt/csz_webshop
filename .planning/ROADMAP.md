@@ -66,10 +66,10 @@ Plans:
 **Plans:** 4 plans in 4 waves
 
 Plans:
-- [ ] 02-01-PLAN.md — Create Specification/Certification components and Category content type (Wave 1)
-- [ ] 02-02-PLAN.md — Create Product content type with all fields (Wave 2)
-- [ ] 02-03-PLAN.md — Create ProductVariant content type and configure upload plugin (Wave 3)
-- [ ] 02-04-PLAN.md — Configure API permissions and verify complete catalog (Wave 4)
+- [x] 02-01-PLAN.md — Create Specification/Certification components and Category content type (Wave 1)
+- [x] 02-02-PLAN.md — Create Product content type with all fields (Wave 2)
+- [x] 02-03-PLAN.md — Create ProductVariant content type and configure upload plugin (Wave 3)
+- [x] 02-04-PLAN.md — Configure API permissions and verify complete catalog (Wave 4)
 
 ---
 
@@ -306,7 +306,7 @@ Plans:
 | Phase | Name | Status | Progress |
 |-------|------|--------|----------|
 | 1 | Infrastructure Foundation | Complete | 5/5 plans |
-| 2 | Product Catalog Backend | Planned | 0/4 plans |
+| 2 | Product Catalog Backend | Complete | 4/4 plans |
 | 3 | Frontend Shell & Product Display | Pending | [ ] |
 | 4 | Shopping Cart | Pending | [ ] |
 | 5 | Authentication & User Accounts | Pending | [ ] |

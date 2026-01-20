@@ -93,15 +93,15 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Admin - Products
 
-- [ ] **ADMN-01**: Admin can create products with title, description, images
-- [ ] **ADMN-02**: Admin can set product price and compare-at price
-- [ ] **ADMN-03**: Admin can create product variants
-- [ ] **ADMN-04**: Admin can assign products to categories
-- [ ] **ADMN-05**: Admin can add certification information to products
-- [ ] **ADMN-06**: Admin can upload technical specification data
-- [ ] **ADMN-07**: Admin can upload downloadable documents (certificates, data sheets)
-- [ ] **ADMN-08**: Admin can manage inventory quantities
-- [ ] **ADMN-09**: Admin can set product as featured or on sale
+- [x] **ADMN-01**: Admin can create products with title, description, images
+- [x] **ADMN-02**: Admin can set product price and compare-at price
+- [x] **ADMN-03**: Admin can create product variants
+- [x] **ADMN-04**: Admin can assign products to categories
+- [x] **ADMN-05**: Admin can add certification information to products
+- [x] **ADMN-06**: Admin can upload technical specification data
+- [x] **ADMN-07**: Admin can upload downloadable documents (certificates, data sheets)
+- [x] **ADMN-08**: Admin can manage inventory quantities
+- [x] **ADMN-09**: Admin can set product as featured or on sale
 
 ### Admin - Orders
 
@@ -275,15 +275,15 @@ Which phases cover which requirements. Updated during roadmap creation.
 | CONT-08 | Phase 9 | Pending |
 | CONT-09 | Phase 9 | Pending |
 | CONT-10 | Phase 9 | Pending |
-| ADMN-01 | Phase 2 | Pending |
-| ADMN-02 | Phase 2 | Pending |
-| ADMN-03 | Phase 2 | Pending |
-| ADMN-04 | Phase 2 | Pending |
-| ADMN-05 | Phase 2 | Pending |
-| ADMN-06 | Phase 2 | Pending |
-| ADMN-07 | Phase 2 | Pending |
-| ADMN-08 | Phase 2 | Pending |
-| ADMN-09 | Phase 2 | Pending |
+| ADMN-01 | Phase 2 | Complete |
+| ADMN-02 | Phase 2 | Complete |
+| ADMN-03 | Phase 2 | Complete |
+| ADMN-04 | Phase 2 | Complete |
+| ADMN-05 | Phase 2 | Complete |
+| ADMN-06 | Phase 2 | Complete |
+| ADMN-07 | Phase 2 | Complete |
+| ADMN-08 | Phase 2 | Complete |
+| ADMN-09 | Phase 2 | Complete |
 | ADMN-10 | Phase 7 | Pending |
 | ADMN-11 | Phase 7 | Pending |
 | ADMN-12 | Phase 7 | Pending |
