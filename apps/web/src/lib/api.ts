@@ -159,3 +159,33 @@ export async function getFeaturedProducts(): Promise<
 > {
   return getProducts({ featured: true, pageSize: 8 });
 }
+
+export async function getCategory(slug: string): Promise<Category | null> {
+  const query = qs.stringify(
+    {
+      filters: { slug: { $eq: slug } },
+      populate: {
+        image: { fields: ["url", "alternativeText", "width", "height"] },
+        children: {
+          fields: ["name", "slug", "description", "documentId"],
+          populate: {
+            image: { fields: ["url", "alternativeText"] },
+          },
+        },
+        parent: { fields: ["name", "slug"] },
+      },
+    },
+    { encodeValuesOnly: true }
+  );
+
+  const res = await fetch(`${STRAPI_URL}/api/categories?${query}`, {
+    next: { revalidate: 60 },
+  });
+
+  if (!res.ok) {
+    return null;
+  }
+
+  const data: StrapiListResponse<Category> = await res.json();
+  return data.data?.[0] ?? null;
+}
