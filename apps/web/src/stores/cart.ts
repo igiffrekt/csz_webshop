@@ -48,8 +48,10 @@ export const useCartStore = create<CartState>()(
             };
           }
 
-          const imageUrl = product.images?.[0]?.url
-            ? getStrapiMediaUrl(product.images[0].url)
+          // Use variant image if available, otherwise fall back to product image
+          const imageSource = variant?.image?.url ?? product.images?.[0]?.url;
+          const imageUrl = imageSource
+            ? getStrapiMediaUrl(imageSource)
             : undefined;
 
           const newItem: CartItem = {
