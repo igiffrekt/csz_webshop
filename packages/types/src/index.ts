@@ -120,3 +120,27 @@ export interface StrapiListResponse<T> {
     };
   };
 }
+
+// Cart item for client-side cart state
+export interface CartItem {
+  id: string;                    // Unique cart line item ID (productDocId-variantDocId or just productDocId)
+  productId: number;             // Strapi product ID
+  productDocumentId: string;     // Strapi documentId for API calls
+  variantId?: number;            // Optional variant ID
+  variantDocumentId?: string;    // Variant documentId
+  name: string;                  // Product name for display
+  variantName?: string;          // Variant name (e.g., "6kg")
+  sku: string;                   // SKU for the specific item
+  price: number;                 // Price at time of adding (in HUF)
+  quantity: number;              // Quantity in cart
+  image?: string;                // Product image URL (full URL)
+  maxStock: number;              // Max available for quantity validation
+}
+
+// Applied coupon in cart
+export interface AppliedCoupon {
+  code: string;
+  discountType: 'percentage' | 'fixed';
+  discountValue: number;
+  discountAmount: number;        // Calculated discount in HUF
+}
