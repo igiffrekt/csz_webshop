@@ -7,20 +7,20 @@
 
 **Core Value:** Customers can browse fire safety products with clear certification info and complete purchases reliably
 
-**Current Focus:** Phase 3 in progress - Next.js app initialized, ready for product pages
+**Current Focus:** Phase 3 in progress - Layout shell complete, home page assembled, ready for product detail page
 
 ## Current Position
 
 **Phase:** 3 of 10 (Frontend Shell & Product Display) - IN PROGRESS
-**Plan:** 1 of 3 complete (03-01)
+**Plan:** 2 of 3 complete (03-02)
 **Status:** In progress
-**Last activity:** 2026-01-20 - Completed 03-01-PLAN.md (Next.js App Setup)
+**Last activity:** 2026-01-20 - Completed 03-02-PLAN.md (Layout Shell & Home Page)
 
 **Progress:**
 ```
 Phase 1:  [==========] Infrastructure Foundation (5/5 plans) COMPLETE
 Phase 2:  [==========] Product Catalog Backend (4/4 plans) COMPLETE
-Phase 3:  [===       ] Frontend Shell & Product Display (1/3 plans)
+Phase 3:  [=======   ] Frontend Shell & Product Display (2/3 plans)
 Phase 4:  [          ] Shopping Cart
 Phase 5:  [          ] Authentication & User Accounts
 Phase 6:  [          ] Checkout & Payments
@@ -36,11 +36,11 @@ Overall: 2/10 phases complete (Phase 3 in progress)
 
 | Metric | Value | Notes |
 |--------|-------|-------|
-| Plans completed | 10 | 01-01 through 01-05, 02-01 through 02-04, 03-01 |
+| Plans completed | 11 | 01-01 through 01-05, 02-01 through 02-04, 03-01 through 03-02 |
 | Phases completed | 2 | Infrastructure Foundation, Product Catalog Backend |
 | Requirements done | 11/78 | ADMN-26, ADMN-27, ADMN-28, ADMN-01 through ADMN-09 |
 | Blockers hit | 1 | Docker daemon (resolved by user starting Docker) |
-| Decisions made | 25 | See below |
+| Decisions made | 28 | See below |
 
 ## Accumulated Context
 
@@ -73,6 +73,9 @@ Overall: 2/10 phases complete (Phase 3 in progress)
 | shadcn/ui New York style | Professional B2B appearance for fire safety shop | 2026-01-20 |
 | next-intl Hungarian only | Hungarian market focus, minimal overhead | 2026-01-20 |
 | @csz/types workspace dependency | Share types between api, cms, and web apps | 2026-01-20 |
+| Sheet for mobile nav | Accessible animated slide-out drawer with focus trap | 2026-01-20 |
+| Promise.allSettled for data fetching | Page renders even if one API fails | 2026-01-20 |
+| Server Component home page | Data fetching at build/request time, no client states | 2026-01-20 |
 
 ### Architecture Notes
 
@@ -105,7 +108,7 @@ From research:
 - [x] Configure upload plugin for 50MB files (02-03)
 - [x] Configure API permissions (02-04)
 - [x] Next.js app setup (03-01)
-- [ ] Product listing page (03-02)
+- [x] Layout shell & home page (03-02)
 - [ ] Product detail page (03-03)
 
 ### Blockers
@@ -116,19 +119,19 @@ From research:
 
 ### Last Session Summary
 
-- Completed Plan 03-01: Next.js App Setup (first plan of Phase 3)
-- Created Next.js 16.1.4 app with Tailwind CSS v4 and App Router
-- Initialized shadcn/ui with New York style and Button component
-- Set up API client for Strapi with getProducts, getProduct, getCategories
-- Added HUF price formatting (formatPrice returns "15 900 Ft")
-- Configured next-intl for Hungarian locale
+- Completed Plan 03-02: Layout Shell & Home Page
+- Created Header with navigation, Footer with links, MobileNav drawer
+- Built ProductCard, HeroSection, FeaturedProducts, CategoryGrid components
+- Assembled home page with parallel API fetching (Promise.allSettled)
+- Added placeholder.svg for missing images
+- All Hungarian translations in place
 
 ### Next Actions
 
-1. Continue Phase 3: Execute Plan 03-02 (Product Listing Page)
-2. Create ProductCard and ProductGrid components
-3. Implement product filtering with nuqs URL state
-4. Add category navigation sidebar
+1. Continue Phase 3: Execute Plan 03-03 (Product Detail Page)
+2. Create product detail page with gallery and specifications
+3. Add variant selector and certification display
+4. Implement breadcrumb navigation
 
 ### Open Questions
 
@@ -144,3 +147,4 @@ From research that need resolution:
 *Phase 1 completed: 2026-01-20*
 *Phase 2 completed: 2026-01-20*
 *Plan 03-01 completed: 2026-01-20*
+*Plan 03-02 completed: 2026-01-20*
