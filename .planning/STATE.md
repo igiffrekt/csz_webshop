@@ -7,20 +7,20 @@
 
 **Core Value:** Customers can browse fire safety products with clear certification info and complete purchases reliably
 
-**Current Focus:** Phase 3 in progress - Layout shell complete, home page assembled, ready for product detail page
+**Current Focus:** Phase 3 complete - Product listing with filters ready, proceed to Shopping Cart
 
 ## Current Position
 
-**Phase:** 3 of 10 (Frontend Shell & Product Display) - IN PROGRESS
-**Plan:** 2 of 3 complete (03-02)
-**Status:** In progress
-**Last activity:** 2026-01-20 - Completed 03-02-PLAN.md (Layout Shell & Home Page)
+**Phase:** 3 of 10 (Frontend Shell & Product Display) - COMPLETE
+**Plan:** 3 of 3 complete (03-03)
+**Status:** Phase complete
+**Last activity:** 2026-01-20 - Completed 03-03-PLAN.md (Product Listing Page)
 
 **Progress:**
 ```
 Phase 1:  [==========] Infrastructure Foundation (5/5 plans) COMPLETE
 Phase 2:  [==========] Product Catalog Backend (4/4 plans) COMPLETE
-Phase 3:  [=======   ] Frontend Shell & Product Display (2/3 plans)
+Phase 3:  [==========] Frontend Shell & Product Display (3/3 plans) COMPLETE
 Phase 4:  [          ] Shopping Cart
 Phase 5:  [          ] Authentication & User Accounts
 Phase 6:  [          ] Checkout & Payments
@@ -29,18 +29,18 @@ Phase 8:  [          ] B2B Quote System
 Phase 9:  [          ] Content & Polish
 Phase 10: [          ] Migration & Launch
 
-Overall: 2/10 phases complete (Phase 3 in progress)
+Overall: 3/10 phases complete
 ```
 
 ## Performance Metrics
 
 | Metric | Value | Notes |
 |--------|-------|-------|
-| Plans completed | 11 | 01-01 through 01-05, 02-01 through 02-04, 03-01 through 03-02 |
-| Phases completed | 2 | Infrastructure Foundation, Product Catalog Backend |
-| Requirements done | 11/78 | ADMN-26, ADMN-27, ADMN-28, ADMN-01 through ADMN-09 |
+| Plans completed | 12 | 01-01 through 01-05, 02-01 through 02-04, 03-01 through 03-03 |
+| Phases completed | 3 | Infrastructure Foundation, Product Catalog Backend, Frontend Shell |
+| Requirements done | 14/78 | ADMN-26, ADMN-27, ADMN-28, ADMN-01 through ADMN-09, PROD-01, PROD-02, PROD-03 |
 | Blockers hit | 1 | Docker daemon (resolved by user starting Docker) |
-| Decisions made | 28 | See below |
+| Decisions made | 32 | See below |
 
 ## Accumulated Context
 
@@ -76,6 +76,10 @@ Overall: 2/10 phases complete (Phase 3 in progress)
 | Sheet for mobile nav | Accessible animated slide-out drawer with focus trap | 2026-01-20 |
 | Promise.allSettled for data fetching | Page renders even if one API fails | 2026-01-20 |
 | Server Component home page | Data fetching at build/request time, no client states | 2026-01-20 |
+| nuqs for URL state | Type-safe URL params with server re-render via shallow:false | 2026-01-20 |
+| 500ms search throttle | Balance responsiveness and API call frequency | 2026-01-20 |
+| Fire class specification filter | Filter products by Tuzosztaly specification value | 2026-01-20 |
+| Certification name filter | Multi-select certifications with $in query | 2026-01-20 |
 
 ### Architecture Notes
 
@@ -109,7 +113,7 @@ From research:
 - [x] Configure API permissions (02-04)
 - [x] Next.js app setup (03-01)
 - [x] Layout shell & home page (03-02)
-- [ ] Product detail page (03-03)
+- [x] Product listing page with filters (03-03)
 
 ### Blockers
 
@@ -119,19 +123,20 @@ From research:
 
 ### Last Session Summary
 
-- Completed Plan 03-02: Layout Shell & Home Page
-- Created Header with navigation, Footer with links, MobileNav drawer
-- Built ProductCard, HeroSection, FeaturedProducts, CategoryGrid components
-- Assembled home page with parallel API fetching (Promise.allSettled)
-- Added placeholder.svg for missing images
+- Completed Plan 03-03: Product Listing Page
+- Created SearchInput with 500ms debounce via nuqs
+- Created ProductFilters with category, fire class, certification dropdowns
+- Built ProductGrid responsive layout and Pagination controls
+- Created /termekek page with server-side data fetching
+- Updated api.ts with fire class and certification filter support
 - All Hungarian translations in place
 
 ### Next Actions
 
-1. Continue Phase 3: Execute Plan 03-03 (Product Detail Page)
-2. Create product detail page with gallery and specifications
-3. Add variant selector and certification display
-4. Implement breadcrumb navigation
+1. Begin Phase 4: Shopping Cart
+2. Create cart context/store for state management
+3. Implement add to cart functionality on product pages
+4. Build cart drawer/page with quantity controls
 
 ### Open Questions
 
@@ -146,5 +151,4 @@ From research that need resolution:
 *Last updated: 2026-01-20*
 *Phase 1 completed: 2026-01-20*
 *Phase 2 completed: 2026-01-20*
-*Plan 03-01 completed: 2026-01-20*
-*Plan 03-02 completed: 2026-01-20*
+*Phase 3 completed: 2026-01-20*
