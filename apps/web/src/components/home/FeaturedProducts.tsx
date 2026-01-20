@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import type { Product } from "@csz/types";
 import { ProductCard } from "@/components/product/ProductCard";
 import { Button } from "@/components/ui/button";

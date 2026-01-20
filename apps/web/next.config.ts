@@ -5,12 +5,21 @@ const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
 
 const nextConfig: NextConfig = {
   images: {
+    // Disable optimization in dev - Strapi localhost images cause 400 errors
+    // Production will use proper CDN/domain configuration
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: "http",
         hostname: "localhost",
         port: "1337",
-        pathname: "/uploads/**",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "localhost",
+        port: "1337",
+        pathname: "/**",
       },
     ],
   },

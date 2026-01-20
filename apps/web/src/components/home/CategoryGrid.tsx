@@ -1,6 +1,6 @@
-import Link from "next/link";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import type { Category } from "@csz/types";
 import { getStrapiMediaUrl } from "@/lib/formatters";
 import { cn } from "@/lib/utils";
