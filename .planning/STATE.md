@@ -7,20 +7,20 @@
 
 **Core Value:** Customers can browse fire safety products with clear certification info and complete purchases reliably
 
-**Current Focus:** Phase 2 complete - Ready for Phase 3 Frontend Shell
+**Current Focus:** Phase 3 in progress - Next.js app initialized, ready for product pages
 
 ## Current Position
 
-**Phase:** 2 of 10 (Product Catalog Backend) - COMPLETE
-**Plan:** 4 of 4 complete (02-04)
-**Status:** Phase complete
-**Last activity:** 2026-01-20 - Completed 02-04-PLAN.md (API Permissions)
+**Phase:** 3 of 10 (Frontend Shell & Product Display) - IN PROGRESS
+**Plan:** 1 of 3 complete (03-01)
+**Status:** In progress
+**Last activity:** 2026-01-20 - Completed 03-01-PLAN.md (Next.js App Setup)
 
 **Progress:**
 ```
 Phase 1:  [==========] Infrastructure Foundation (5/5 plans) COMPLETE
 Phase 2:  [==========] Product Catalog Backend (4/4 plans) COMPLETE
-Phase 3:  [          ] Frontend Shell & Product Display
+Phase 3:  [===       ] Frontend Shell & Product Display (1/3 plans)
 Phase 4:  [          ] Shopping Cart
 Phase 5:  [          ] Authentication & User Accounts
 Phase 6:  [          ] Checkout & Payments
@@ -29,18 +29,18 @@ Phase 8:  [          ] B2B Quote System
 Phase 9:  [          ] Content & Polish
 Phase 10: [          ] Migration & Launch
 
-Overall: 2/10 phases complete
+Overall: 2/10 phases complete (Phase 3 in progress)
 ```
 
 ## Performance Metrics
 
 | Metric | Value | Notes |
 |--------|-------|-------|
-| Plans completed | 9 | 01-01 through 01-05, 02-01 through 02-04 |
+| Plans completed | 10 | 01-01 through 01-05, 02-01 through 02-04, 03-01 |
 | Phases completed | 2 | Infrastructure Foundation, Product Catalog Backend |
-| Requirements done | 11/78 | ADMN-26, ADMN-27, ADMN-28, ADMN-01, ADMN-02, ADMN-03, ADMN-04, ADMN-05, ADMN-06, ADMN-07, ADMN-08, ADMN-09 |
+| Requirements done | 11/78 | ADMN-26, ADMN-27, ADMN-28, ADMN-01 through ADMN-09 |
 | Blockers hit | 1 | Docker daemon (resolved by user starting Docker) |
-| Decisions made | 20 | See below |
+| Decisions made | 25 | See below |
 
 ## Accumulated Context
 
@@ -68,6 +68,11 @@ Overall: 2/10 phases complete
 | 50MB upload limit for certificates | Large PDF technical documents for fire safety certifications | 2026-01-20 |
 | Programmatic permission configuration | Using Strapi bootstrap lifecycle for reproducibility across environments | 2026-01-20 |
 | Public read-only API pattern | find/findOne only for public role, authenticated writes for Store Manager | 2026-01-20 |
+| Next.js 16.1.4 with Turbopack | Latest stable, Turbopack default, Server Components | 2026-01-20 |
+| Tailwind CSS v4 CSS-first | No tailwind.config.js needed, 100x faster builds | 2026-01-20 |
+| shadcn/ui New York style | Professional B2B appearance for fire safety shop | 2026-01-20 |
+| next-intl Hungarian only | Hungarian market focus, minimal overhead | 2026-01-20 |
+| @csz/types workspace dependency | Share types between api, cms, and web apps | 2026-01-20 |
 
 ### Architecture Notes
 
@@ -99,7 +104,7 @@ From research:
 - [x] Add Product-Variant relation (02-03)
 - [x] Configure upload plugin for 50MB files (02-03)
 - [x] Configure API permissions (02-04)
-- [ ] Next.js app setup (03-01)
+- [x] Next.js app setup (03-01)
 - [ ] Product listing page (03-02)
 - [ ] Product detail page (03-03)
 
@@ -111,17 +116,19 @@ From research:
 
 ### Last Session Summary
 
-- Completed Plan 02-04: API Permissions (final plan of Phase 2)
-- Configured public API read access via Strapi bootstrap lifecycle
-- Updated Store Manager role with full CRUD on product catalog
-- User verified product creation and API population workflow
-- Phase 2: Product Catalog Backend is now COMPLETE
+- Completed Plan 03-01: Next.js App Setup (first plan of Phase 3)
+- Created Next.js 16.1.4 app with Tailwind CSS v4 and App Router
+- Initialized shadcn/ui with New York style and Button component
+- Set up API client for Strapi with getProducts, getProduct, getCategories
+- Added HUF price formatting (formatPrice returns "15 900 Ft")
+- Configured next-intl for Hungarian locale
 
 ### Next Actions
 
-1. Start Phase 3: Frontend Shell & Product Display
-2. Initialize Next.js app with TypeScript and Tailwind
-3. Create product listing page consuming Strapi API
+1. Continue Phase 3: Execute Plan 03-02 (Product Listing Page)
+2. Create ProductCard and ProductGrid components
+3. Implement product filtering with nuqs URL state
+4. Add category navigation sidebar
 
 ### Open Questions
 
@@ -136,4 +143,4 @@ From research that need resolution:
 *Last updated: 2026-01-20*
 *Phase 1 completed: 2026-01-20*
 *Phase 2 completed: 2026-01-20*
-*Plan 02-04 completed: 2026-01-20*
+*Plan 03-01 completed: 2026-01-20*
