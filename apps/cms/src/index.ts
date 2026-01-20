@@ -26,6 +26,8 @@ async function configurePublicPermissions(strapi: Core.Strapi) {
     // Category
     { action: 'api::category.category.find' },
     { action: 'api::category.category.findOne' },
+    // Coupon (find only - for validation by code)
+    { action: 'api::coupon.coupon.find' },
   ];
 
   for (const permission of publicPermissions) {
@@ -68,7 +70,7 @@ async function configureStoreManagerPermissions(strapi: Core.Strapi) {
   }
 
   // Content types that Store Manager needs access to
-  const contentTypes = ['api::product.product', 'api::product-variant.product-variant', 'api::category.category'];
+  const contentTypes = ['api::product.product', 'api::product-variant.product-variant', 'api::category.category', 'api::coupon.coupon'];
 
   // CRUD actions for content-manager plugin
   const actions = ['create', 'read', 'update', 'delete', 'publish'];
