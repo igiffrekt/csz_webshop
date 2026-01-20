@@ -55,6 +55,55 @@ async function configurePublicPermissions(strapi: Core.Strapi) {
 }
 
 /**
+ * Configure authenticated user API permissions for user account features
+ * This grants CRUD access to shipping addresses for logged-in users
+ */
+async function configureAuthenticatedPermissions(strapi: Core.Strapi) {
+  // Find the Authenticated role from Users & Permissions plugin
+  const authenticatedRole = await strapi.db.query('plugin::users-permissions.role').findOne({
+    where: { type: 'authenticated' },
+  });
+
+  if (!authenticatedRole) {
+    strapi.log.warn('Authenticated role not found - skipping permission configuration');
+    return;
+  }
+
+  // Define authenticated permissions for user account features
+  const authenticatedPermissions = [
+    // ShippingAddress CRUD
+    { action: 'api::shipping-address.shipping-address.find' },
+    { action: 'api::shipping-address.shipping-address.findOne' },
+    { action: 'api::shipping-address.shipping-address.create' },
+    { action: 'api::shipping-address.shipping-address.update' },
+    { action: 'api::shipping-address.shipping-address.delete' },
+  ];
+
+  for (const permission of authenticatedPermissions) {
+    // Check if permission already exists
+    const existingPermission = await strapi.db.query('plugin::users-permissions.permission').findOne({
+      where: {
+        action: permission.action,
+        role: authenticatedRole.id,
+      },
+    });
+
+    if (!existingPermission) {
+      // Create the permission
+      await strapi.db.query('plugin::users-permissions.permission').create({
+        data: {
+          action: permission.action,
+          role: authenticatedRole.id,
+        },
+      });
+      strapi.log.info(`Created authenticated permission: ${permission.action}`);
+    }
+  }
+
+  strapi.log.info('Authenticated API permissions configured for user account features');
+}
+
+/**
  * Configure Store Manager role with product catalog permissions
  * This grants CRUD + publish access to Product, ProductVariant, Category in admin panel
  */
@@ -125,6 +174,7 @@ export default {
    */
   async bootstrap({ strapi }: { strapi: Core.Strapi }) {
     await configurePublicPermissions(strapi);
+    await configureAuthenticatedPermissions(strapi);
     await configureStoreManagerPermissions(strapi);
   },
 };
