@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_product_certifications",
+  "info": {
+    "displayName": "Certification"
+  },
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "standard": {
+      "type": "string"
+    },
+    "validUntil": {
+      "type": "date"
+    },
+    "certificate": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["files"]
+    }
+  }
+}
