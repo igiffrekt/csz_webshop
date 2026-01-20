@@ -9,14 +9,14 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Product Catalog
 
-- [ ] **PROD-01**: User can browse products by category
-- [ ] **PROD-02**: User can search products by name or keyword
-- [ ] **PROD-03**: User can filter products by category, fire class, certification
-- [ ] **PROD-04**: User can view product details with images and description
-- [ ] **PROD-05**: User can see product variants (size, type, capacity)
-- [ ] **PROD-06**: User can see certification badges (CE, EN standards) on product pages
-- [ ] **PROD-07**: User can view technical specifications in table format
-- [ ] **PROD-08**: User can download certificates and data sheets
+- [x] **PROD-01**: User can browse products by category
+- [x] **PROD-02**: User can search products by name or keyword
+- [x] **PROD-03**: User can filter products by category, fire class, certification
+- [x] **PROD-04**: User can view product details with images and description
+- [x] **PROD-05**: User can see product variants (size, type, capacity)
+- [x] **PROD-06**: User can see certification badges (CE, EN standards) on product pages
+- [x] **PROD-07**: User can view technical specifications in table format
+- [x] **PROD-08**: User can download certificates and data sheets
 
 ### Shopping Cart
 
@@ -80,9 +80,9 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Content Pages
 
-- [ ] **CONT-01**: Home page with hero section, featured products, categories
-- [ ] **CONT-02**: Category listing pages with product grid
-- [ ] **CONT-03**: Product detail pages
+- [x] **CONT-01**: Home page with hero section, featured products, categories
+- [x] **CONT-02**: Category listing pages with product grid
+- [x] **CONT-03**: Product detail pages
 - [ ] **CONT-04**: About page (CMS-managed)
 - [ ] **CONT-05**: FAQ page with accordion (CMS-managed)
 - [ ] **CONT-06**: Contact page
@@ -161,15 +161,15 @@ Requirements for initial release. Each maps to roadmap phases.
 
 - [ ] **PERF-01**: Product pages are SEO-optimized with meta tags
 - [ ] **PERF-02**: Site loads fast (target: good Lighthouse scores)
-- [ ] **PERF-03**: Images are optimized and lazy-loaded
-- [ ] **PERF-04**: Site is mobile-responsive
+- [x] **PERF-03**: Images are optimized and lazy-loaded
+- [x] **PERF-04**: Site is mobile-responsive
 
 ### Language & Localization
 
-- [ ] **LANG-01**: All UI text is in Hungarian
+- [x] **LANG-01**: All UI text is in Hungarian
 - [ ] **LANG-02**: All CMS content is in Hungarian
 - [ ] **LANG-03**: Date and number formats follow Hungarian conventions
-- [ ] **LANG-04**: Currency displayed as HUF
+- [x] **LANG-04**: Currency displayed as HUF
 
 ## v2 Requirements
 
@@ -218,14 +218,14 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| PROD-01 | Phase 3 | Pending |
-| PROD-02 | Phase 3 | Pending |
-| PROD-03 | Phase 3 | Pending |
-| PROD-04 | Phase 3 | Pending |
-| PROD-05 | Phase 3 | Pending |
-| PROD-06 | Phase 3 | Pending |
-| PROD-07 | Phase 3 | Pending |
-| PROD-08 | Phase 3 | Pending |
+| PROD-01 | Phase 3 | Complete |
+| PROD-02 | Phase 3 | Complete |
+| PROD-03 | Phase 3 | Complete |
+| PROD-04 | Phase 3 | Complete |
+| PROD-05 | Phase 3 | Complete |
+| PROD-06 | Phase 3 | Complete |
+| PROD-07 | Phase 3 | Complete |
+| PROD-08 | Phase 3 | Complete |
 | CART-01 | Phase 4 | Pending |
 | CART-02 | Phase 4 | Pending |
 | CART-03 | Phase 4 | Pending |
@@ -265,9 +265,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | QUOT-02 | Phase 8 | Pending |
 | QUOT-03 | Phase 8 | Pending |
 | QUOT-04 | Phase 8 | Pending |
-| CONT-01 | Phase 3 | Pending |
-| CONT-02 | Phase 3 | Pending |
-| CONT-03 | Phase 3 | Pending |
+| CONT-01 | Phase 3 | Complete |
+| CONT-02 | Phase 3 | Complete |
+| CONT-03 | Phase 3 | Complete |
 | CONT-04 | Phase 9 | Pending |
 | CONT-05 | Phase 9 | Pending |
 | CONT-06 | Phase 9 | Pending |
@@ -319,12 +319,12 @@ Which phases cover which requirements. Updated during roadmap creation.
 | MIGR-05 | Phase 10 | Pending |
 | PERF-01 | Phase 9 | Pending |
 | PERF-02 | Phase 9 | Pending |
-| PERF-03 | Phase 3 | Pending |
-| PERF-04 | Phase 3 | Pending |
-| LANG-01 | Phase 3 | Pending |
+| PERF-03 | Phase 3 | Complete |
+| PERF-04 | Phase 3 | Complete |
+| LANG-01 | Phase 3 | Complete |
 | LANG-02 | Phase 9 | Pending |
 | LANG-03 | Phase 6 | Pending |
-| LANG-04 | Phase 3 | Pending |
+| LANG-04 | Phase 3 | Complete |
 
 **Coverage:**
 - v1 requirements: 78 total
