@@ -1,24 +1,24 @@
 # Project State: CSZ Webshop
 
 **Initialized:** 2026-01-19
-**Last Session:** 2026-01-19
+**Last Session:** 2026-01-20
 
 ## Project Reference
 
 **Core Value:** Customers can browse fire safety products with clear certification info and complete purchases reliably
 
-**Current Focus:** Executing Phase 1 infrastructure plans
+**Current Focus:** Phase 1 complete - ready for Phase 2
 
 ## Current Position
 
-**Phase:** 1 of 10 (Infrastructure Foundation)
-**Plan:** 4 of 5 complete (01-01, 01-02, 01-03, 01-04)
-**Status:** In progress
-**Last activity:** 2026-01-19 - Completed 01-04-PLAN.md (Fastify API Backend)
+**Phase:** 1 of 10 (Infrastructure Foundation) - COMPLETE
+**Plan:** 5 of 5 complete (01-01, 01-02, 01-03, 01-04, 01-05)
+**Status:** Phase complete
+**Last activity:** 2026-01-20 - Completed 01-05-PLAN.md (Strapi Admin Roles)
 
 **Progress:**
 ```
-Phase 1:  [========  ] Infrastructure Foundation (4/5 plans)
+Phase 1:  [==========] Infrastructure Foundation (5/5 plans) COMPLETE
 Phase 2:  [          ] Product Catalog Backend
 Phase 3:  [          ] Frontend Shell & Product Display
 Phase 4:  [          ] Shopping Cart
@@ -29,17 +29,18 @@ Phase 8:  [          ] B2B Quote System
 Phase 9:  [          ] Content & Polish
 Phase 10: [          ] Migration & Launch
 
-Overall: 0/10 phases complete (Phase 1 in progress)
+Overall: 1/10 phases complete
 ```
 
 ## Performance Metrics
 
 | Metric | Value | Notes |
 |--------|-------|-------|
-| Plans completed | 4 | 01-01, 01-02, 01-03, 01-04 |
-| Requirements done | 0/78 | Infrastructure only so far |
+| Plans completed | 5 | 01-01, 01-02, 01-03, 01-04, 01-05 |
+| Phases completed | 1 | Infrastructure Foundation |
+| Requirements done | 3/78 | ADMN-26, ADMN-27, ADMN-28 (admin roles) |
 | Blockers hit | 1 | Docker daemon (resolved by user starting Docker) |
-| Decisions made | 11 | See below |
+| Decisions made | 14 | See below |
 
 ## Accumulated Context
 
@@ -58,6 +59,9 @@ Overall: 0/10 phases complete (Phase 1 in progress)
 | Separate API from Strapi | Business logic isolation from CMS | 2026-01-19 |
 | Strapi 5.33.3 with pg 8.8.0 | Latest Strapi with PostgreSQL driver | 2026-01-19 |
 | @csz/cms workspace name | Consistent monorepo package naming | 2026-01-19 |
+| Super Admin: Tamas Horvath | stickerey@gmail.com designated as Super Admin | 2026-01-20 |
+| Store Manager role | Media Library/Upload only until content types exist | 2026-01-20 |
+| Content Manager role | Media Library/Upload only until pages exist | 2026-01-20 |
 
 ### Architecture Notes
 
@@ -80,7 +84,7 @@ From research:
 - [x] Set up PostgreSQL database (docker-compose.yml created)
 - [x] Install and configure Strapi 5 (01-03)
 - [x] Scaffold Fastify API backend (01-04)
-- [ ] Set up Next.js 16 frontend (01-05)
+- [x] Configure admin roles RBAC (01-05)
 
 ### Blockers
 
@@ -90,16 +94,17 @@ From research:
 
 ### Last Session Summary
 
-- Executed 01-03-PLAN.md (Strapi CMS Setup)
-- Created Strapi 5.33.3 CMS at apps/cms
-- PostgreSQL connection verified (csz_strapi database)
-- Admin panel accessible at http://localhost:1337/admin
-- Workspace scripts (dev:cms, build:cms) working
+- Completed Phase 1: Infrastructure Foundation (all 5 plans)
+- Final plan 01-05: Configured Strapi admin roles via UI
+- Super Admin: Tamas Horvath (stickerey@gmail.com)
+- Store Manager and Content Manager roles created
+- All RBAC requirements satisfied (ADMN-26, ADMN-27, ADMN-28)
 
 ### Next Actions
 
-1. Execute 01-05-PLAN.md (Next.js Frontend Setup)
-2. Verify all Phase 1 infrastructure components can run together
+1. Begin Phase 2: Product Catalog Backend
+2. Create Product, Category content types in Strapi
+3. Update Store Manager role with product permissions
 
 ### Open Questions
 
@@ -111,4 +116,5 @@ From research that need resolution:
 
 ---
 *State initialized: 2026-01-19*
-*Last updated: 2026-01-19 21:56 UTC*
+*Last updated: 2026-01-20*
+*Phase 1 completed: 2026-01-20*
