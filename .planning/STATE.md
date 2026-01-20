@@ -7,21 +7,21 @@
 
 **Core Value:** Customers can browse fire safety products with clear certification info and complete purchases reliably
 
-**Current Focus:** Phase 3 complete - Category pages and full frontend verified, proceed to Shopping Cart
+**Current Focus:** Phase 4 in progress - Cart store and persistence implemented
 
 ## Current Position
 
-**Phase:** 3 of 10 (Frontend Shell & Product Display) - COMPLETE
-**Plan:** 5 of 5 complete (03-05)
-**Status:** Phase complete
-**Last activity:** 2026-01-20 - Completed 03-05-PLAN.md (Category Pages & Verification)
+**Phase:** 4 of 10 (Shopping Cart) - IN PROGRESS
+**Plan:** 2 of 8 complete (04-02)
+**Status:** In progress
+**Last activity:** 2026-01-20 - Completed 04-02-PLAN.md (Cart Store & Persistence)
 
 **Progress:**
 ```
 Phase 1:  [==========] Infrastructure Foundation (5/5 plans) COMPLETE
 Phase 2:  [==========] Product Catalog Backend (4/4 plans) COMPLETE
 Phase 3:  [==========] Frontend Shell & Product Display (5/5 plans) COMPLETE
-Phase 4:  [          ] Shopping Cart
+Phase 4:  [==        ] Shopping Cart (2/8 plans)
 Phase 5:  [          ] Authentication & User Accounts
 Phase 6:  [          ] Checkout & Payments
 Phase 7:  [          ] Admin Order Management
@@ -29,18 +29,18 @@ Phase 8:  [          ] B2B Quote System
 Phase 9:  [          ] Content & Polish
 Phase 10: [          ] Migration & Launch
 
-Overall: 3/10 phases complete
+Overall: 3/10 phases complete (16/36 plans)
 ```
 
 ## Performance Metrics
 
 | Metric | Value | Notes |
 |--------|-------|-------|
-| Plans completed | 14 | 01-01 through 01-05, 02-01 through 02-04, 03-01 through 03-05 |
+| Plans completed | 16 | 01-01 through 01-05, 02-01 through 02-04, 03-01 through 03-05, 04-01 through 04-02 |
 | Phases completed | 3 | Infrastructure Foundation, Product Catalog Backend, Frontend Shell |
 | Requirements done | 23/78 | ADMN-26 through ADMN-28, ADMN-01 through ADMN-09, PROD-01 through PROD-08, CONT-01 through CONT-03, LANG-01, LANG-04, PERF-03, PERF-04 |
 | Blockers hit | 1 | Docker daemon (resolved by user starting Docker) |
-| Decisions made | 37 | See below |
+| Decisions made | 40 | See below |
 
 ## Accumulated Context
 
@@ -85,6 +85,9 @@ Overall: 3/10 phases complete
 | Locale-aware Link from navigation.ts | All internal links preserve /hu locale prefix | 2026-01-20 |
 | unoptimized: true for dev images | Strapi image optimization fails in dev mode | 2026-01-20 |
 | Server Components for category pages | No client state needed for category browsing | 2026-01-20 |
+| Zustand 5.x for cart state | Minimal API, built-in persist middleware, excellent TypeScript support | 2026-01-20 |
+| localStorage cart persistence | Cart survives browser sessions under 'csz-cart' key | 2026-01-20 |
+| Hydration hook for SSR safety | Prevents hydration mismatches with useHydration() hook | 2026-01-20 |
 
 ### Architecture Notes
 
@@ -122,6 +125,9 @@ From research:
 - [x] Product detail page with SEO (03-04)
 - [x] Category listing and detail pages (03-05)
 - [x] Full frontend verification (03-05)
+- [x] Zustand cart store with localStorage persistence (04-02)
+- [x] Cart types (CartItem, AppliedCoupon) in @csz/types (04-02)
+- [x] Hydration hook for SSR safety (04-02)
 
 ### Blockers
 
@@ -131,21 +137,19 @@ From research:
 
 ### Last Session Summary
 
-- Completed Plan 03-05: Category Pages & Frontend Verification
-- Created CategoryCard and CategoryHeader components
-- Built /kategoriak listing page and /kategoriak/[slug] detail page
-- Added getCategory to api.ts with children/parent population
-- Fixed locale-aware navigation across all components
-- Fixed Strapi image optimization for development
-- User verified full frontend shell functionality
-- All browsing flows working: Home -> Category -> Product
+- Completed Plan 04-02: Cart Store & Persistence
+- Installed Zustand 5.0.10 for state management
+- Added CartItem and AppliedCoupon types to @csz/types
+- Created cart store with CRUD operations and localStorage persistence
+- Created hydration hook for SSR safety
+- Production build verified successfully
 
 ### Next Actions
 
-1. Begin Phase 4: Shopping Cart
-2. Create cart context/store for state management
-3. Implement add to cart functionality on product pages
-4. Build cart drawer/page with quantity controls
+1. Continue Phase 4: Shopping Cart
+2. Implement AddToCartButton component (04-03)
+3. Build cart drawer with quantity controls (04-04)
+4. Create dedicated cart page (04-05)
 
 ### Open Questions
 
@@ -161,3 +165,4 @@ From research that need resolution:
 *Phase 1 completed: 2026-01-20*
 *Phase 2 completed: 2026-01-20*
 *Phase 3 completed: 2026-01-20*
+*Phase 4 plan 04-02 completed: 2026-01-20*
