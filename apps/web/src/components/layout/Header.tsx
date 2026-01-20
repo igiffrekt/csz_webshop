@@ -1,9 +1,10 @@
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
-import { ShoppingCart, Search } from "lucide-react";
+import { Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Logo } from "./Logo";
 import { MobileNav } from "./MobileNav";
+import { HeaderCart } from "./HeaderCart";
 
 const navLinks = [
   { href: "/termekek", labelKey: "products" },
@@ -42,14 +43,7 @@ export function Header() {
             <Search className="h-5 w-5" />
             <span className="sr-only">{t("search")}</span>
           </Button>
-          <Button variant="ghost" size="icon" className="relative">
-            <ShoppingCart className="h-5 w-5" />
-            <span className="sr-only">{t("cart")}</span>
-            {/* Cart badge - will be functional in Phase 4 */}
-            {/* <span className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-primary text-[10px] font-medium text-primary-foreground flex items-center justify-center">
-              0
-            </span> */}
-          </Button>
+          <HeaderCart />
         </div>
       </div>
     </header>
