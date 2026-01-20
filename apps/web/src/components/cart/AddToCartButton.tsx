@@ -26,38 +26,44 @@ export function AddToCartButton({
   const [status, setStatus] = useState<'idle' | 'adding' | 'added'>('idle');
   const addItem = useCartStore((state) => state.addItem);
 
-  const handleAddToCart = async () => {
+  const handleAddToCart = () => {
     if (status !== 'idle') return;
 
     // Check if variant is required but not selected
     if (requiresVariant && !variant) {
-      toast.error('Kerem valasszon meretet');
+      toast.error('Kérem válasszon méretet');
       return;
     }
 
     // Check stock
     const stock = variant?.stock ?? product.stock;
     if (stock === 0) {
-      toast.error('A termek nincs keszleten');
+      toast.error('A termék nincs készleten');
       return;
     }
 
     setStatus('adding');
 
-    // Brief delay for animation effect
-    await new Promise(resolve => setTimeout(resolve, 300));
+    // Use setTimeout to ensure state updates properly
+    setTimeout(() => {
+      try {
+        addItem(product, variant ?? undefined, quantity);
+        setStatus('added');
 
-    addItem(product, variant ?? undefined, quantity);
-    setStatus('added');
+        toast.success('Hozzáadva a kosárhoz', {
+          description: variant
+            ? `${product.name} - ${variant.name || variant.attributeValue}`
+            : product.name,
+        });
 
-    toast.success('Hozzaadva a kosarhoz', {
-      description: variant
-        ? `${product.name} - ${variant.name || variant.attributeValue}`
-        : product.name,
-    });
-
-    // Reset after animation
-    setTimeout(() => setStatus('idle'), 1500);
+        // Reset after showing success
+        setTimeout(() => setStatus('idle'), 1500);
+      } catch (error) {
+        console.error('Add to cart error:', error);
+        toast.error('Hiba történt a kosárba helyezéskor');
+        setStatus('idle');
+      }
+    }, 300);
   };
 
   const stock = variant?.stock ?? product.stock;
