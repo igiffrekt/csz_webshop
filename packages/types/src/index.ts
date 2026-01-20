@@ -70,6 +70,26 @@ export interface ProductVariant {
   publishedAt: string;
 }
 
+// Coupon content type
+export interface Coupon {
+  id: number;
+  documentId: string;
+  code: string;
+  description?: string;
+  discountType: 'percentage' | 'fixed';
+  discountValue: number;
+  minimumOrderAmount: number;
+  maximumDiscount?: number;
+  usageLimit?: number;
+  usedCount: number;
+  validFrom?: string;
+  validUntil?: string;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string;
+}
+
 // Product content type
 export interface Product {
   id: number;
