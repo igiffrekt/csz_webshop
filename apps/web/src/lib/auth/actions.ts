@@ -1,6 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { createSession, deleteSession, getSession } from "./session";
 import type { User } from "@csz/types";
@@ -289,11 +290,8 @@ export async function updateProfileAction(
   }
 
   try {
-    // Update user via Strapi Users & Permissions /me endpoint
-    // This uses the updateMe permission instead of the general update permission
-    const res = await fetch(
-      `${STRAPI_URL}/api/users/me`,
-      {
+    // Update user via custom profile API
+    const res = await fetch(`${STRAPI_URL}/api/profile/me`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -309,6 +307,9 @@ export async function updateProfileAction(
         error: error.error?.message || "Profil frissítése sikertelen",
       };
     }
+
+    // Revalidate the profile page to show updated data
+    revalidatePath("/[locale]/fiok/profil", "page");
 
     return { success: true };
   } catch {
@@ -332,7 +333,7 @@ export async function getCurrentUserProfile(): Promise<{
 
   try {
     const res = await fetch(
-      `${STRAPI_URL}/api/users/me`,
+      `${STRAPI_URL}/api/profile/me`,
       {
         headers: {
           Authorization: `Bearer ${session.jwt}`,

@@ -30,10 +30,10 @@ export async function getAddresses(): Promise<ApiResponse<ShippingAddress[]>> {
   }
 
   try {
-    // Fetch addresses filtered by current user
-    const res = await fetch(
-      `${STRAPI_URL}/api/shipping-addresses?filters[user][id][$eq]=${session.userId}&sort=isDefault:desc,createdAt:desc`,
-      {
+    // Fetch addresses - controller automatically filters by authenticated user
+    const url = `${STRAPI_URL}/api/shipping-addresses?sort=isDefault:desc,createdAt:desc`;
+
+    const res = await fetch(url, {
         headers: {
           Authorization: `Bearer ${session.jwt}`,
         },
@@ -42,6 +42,8 @@ export async function getAddresses(): Promise<ApiResponse<ShippingAddress[]>> {
     );
 
     if (!res.ok) {
+      const errorBody = await res.text();
+      console.error("[getAddresses] Error:", res.status, errorBody);
       return { data: null, error: "Címek betöltése sikertelen" };
     }
 
@@ -79,7 +81,7 @@ export async function createAddress(
         data: {
           ...input,
           country: input.country || "Magyarország",
-          user: session.userId,
+          // user is automatically assigned by the controller
         },
       }),
     });
@@ -181,12 +183,12 @@ export async function deleteAddress(
  */
 async function clearDefaultAddresses(
   jwt: string,
-  userId: number
+  _userId: number
 ): Promise<void> {
   try {
-    // Get all addresses that are currently default
+    // Get all addresses that are currently default (controller filters by user automatically)
     const res = await fetch(
-      `${STRAPI_URL}/api/shipping-addresses?filters[user][id][$eq]=${userId}&filters[isDefault][$eq]=true`,
+      `${STRAPI_URL}/api/shipping-addresses?filters[isDefault][$eq]=true`,
       {
         headers: { Authorization: `Bearer ${jwt}` },
       }
