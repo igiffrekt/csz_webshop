@@ -2,6 +2,7 @@ import Fastify from 'fastify';
 import cors from '@fastify/cors';
 import helmet from '@fastify/helmet';
 import healthcheck from 'fastify-healthcheck';
+import { couponRoutes } from './routes/cart/coupon.js';
 
 const fastify = Fastify({
   logger: {
@@ -22,6 +23,9 @@ await fastify.register(helmet, {
 await fastify.register(healthcheck, {
   healthcheckUrl: '/health',
 });
+
+// Cart routes
+await fastify.register(couponRoutes);
 
 // Root route for basic info
 fastify.get('/', async () => {
