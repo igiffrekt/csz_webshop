@@ -1,27 +1,56 @@
 {
   "common": {
     "siteName": "CSZ Webshop",
-    "loading": "Betoltes...",
-    "error": "Hiba tortent"
+    "loading": "Betöltés...",
+    "error": "Hiba történt"
+  },
+  "nav": {
+    "products": "Termékek",
+    "categories": "Kategóriák",
+    "contact": "Kapcsolat",
+    "faq": "GYIK",
+    "cart": "Kosár",
+    "search": "Keresés"
+  },
+  "footer": {
+    "description": "Minőségi tűzvédelmi eszközök szakértőktől",
+    "quickLinks": "Gyors linkek",
+    "contactUs": "Kapcsolat",
+    "copyright": "© {year} CSZ Webshop. Minden jog fenntartva."
+  },
+  "home": {
+    "hero": {
+      "title": "Tűzvédelmi eszközök szakértőktől",
+      "subtitle": "Minősített poroltók, tűzjelzők és biztonsági felszerelések széles választéka",
+      "cta": "Termékek megtekintése"
+    },
+    "featured": {
+      "title": "Kiemelt termékeink",
+      "viewAll": "Összes termék megtekintése"
+    },
+    "categories": {
+      "title": "Kategóriák"
+    }
   },
   "products": {
-    "title": "Termekek",
-    "search": "Kereses...",
-    "filter": "Szures",
-    "noResults": "Nincs talalat",
-    "addToCart": "Kosarba",
-    "inStock": "Keszleten",
-    "outOfStock": "Nincs keszleten",
-    "featured": "Kiemelt termekek"
+    "title": "Termékek",
+    "search": "Keresés...",
+    "filter": "Szűrés",
+    "noResults": "Nincs találat",
+    "addToCart": "Kosárba",
+    "inStock": "Készleten",
+    "outOfStock": "Nincs készleten",
+    "featured": "Kiemelt termékek",
+    "onSale": "Akció"
   },
   "categories": {
-    "title": "Kategoriak",
-    "all": "Osszes kategoria"
+    "title": "Kategóriák",
+    "all": "Összes kategória"
   },
   "cart": {
-    "title": "Kosar",
-    "empty": "A kosar ures",
-    "total": "Osszesen",
-    "checkout": "Penztar"
+    "title": "Kosár",
+    "empty": "A kosár üres",
+    "total": "Összesen",
+    "checkout": "Pénztár"
   }
 }
