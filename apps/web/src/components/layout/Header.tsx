@@ -1,10 +1,12 @@
-import { useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Logo } from "./Logo";
 import { MobileNav } from "./MobileNav";
 import { HeaderCart } from "./HeaderCart";
+import { UserMenu } from "./UserMenu";
+import { verifySession } from "@/lib/auth/dal";
 
 const navLinks = [
   { href: "/termekek", labelKey: "products" },
@@ -12,8 +14,9 @@ const navLinks = [
   { href: "/kapcsolat", labelKey: "contact" },
 ] as const;
 
-export function Header() {
-  const t = useTranslations("nav");
+export async function Header() {
+  const t = await getTranslations("nav");
+  const { isAuth, session } = await verifySession();
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -43,6 +46,15 @@ export function Header() {
             <Search className="h-5 w-5" />
             <span className="sr-only">{t("search")}</span>
           </Button>
+          {isAuth && session ? (
+            <UserMenu username={session.username} email={session.email} />
+          ) : (
+            <Link href="/auth/bejelentkezes">
+              <Button variant="ghost" size="sm">
+                {t("login")}
+              </Button>
+            </Link>
+          )}
           <HeaderCart />
         </div>
       </div>
