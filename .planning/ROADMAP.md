@@ -32,11 +32,11 @@ This roadmap transforms the existing WooCommerce fire safety equipment store int
 **Plans:** 5 plans in 3 waves
 
 Plans:
-- [ ] 01-01-PLAN.md — Initialize pnpm monorepo structure (Wave 1)
-- [ ] 01-02-PLAN.md — Set up PostgreSQL via Docker Compose (Wave 1)
-- [ ] 01-03-PLAN.md — Install and configure Strapi 5 CMS (Wave 2)
-- [ ] 01-04-PLAN.md — Scaffold Fastify 5 API backend (Wave 2)
-- [ ] 01-05-PLAN.md — Configure admin roles in Strapi (Wave 3)
+- [x] 01-01-PLAN.md — Initialize pnpm monorepo structure (Wave 1)
+- [x] 01-02-PLAN.md — Set up PostgreSQL via Docker Compose (Wave 1)
+- [x] 01-03-PLAN.md — Install and configure Strapi 5 CMS (Wave 2)
+- [x] 01-04-PLAN.md — Scaffold Fastify 5 API backend (Wave 2)
+- [x] 01-05-PLAN.md — Configure admin roles in Strapi (Wave 3)
 
 ---
 
@@ -62,6 +62,14 @@ Plans:
 2. Admin can add fire safety certifications (CE, EN3, EN1866) and they display in product data
 3. Admin can upload PDF certificates and spec sheets that are downloadable via API
 4. Admin can mark products as featured or on sale and filter by these flags
+
+**Plans:** 4 plans in 4 waves
+
+Plans:
+- [ ] 02-01-PLAN.md — Create Specification/Certification components and Category content type (Wave 1)
+- [ ] 02-02-PLAN.md — Create Product content type with all fields (Wave 2)
+- [ ] 02-03-PLAN.md — Create ProductVariant content type and configure upload plugin (Wave 3)
+- [ ] 02-04-PLAN.md — Configure API permissions and verify complete catalog (Wave 4)
 
 ---
 
@@ -297,8 +305,8 @@ Plans:
 
 | Phase | Name | Status | Progress |
 |-------|------|--------|----------|
-| 1 | Infrastructure Foundation | ✓ Complete | 5/5 plans |
-| 2 | Product Catalog Backend | Pending | [ ] |
+| 1 | Infrastructure Foundation | Complete | 5/5 plans |
+| 2 | Product Catalog Backend | Planned | 0/4 plans |
 | 3 | Frontend Shell & Product Display | Pending | [ ] |
 | 4 | Shopping Cart | Pending | [ ] |
 | 5 | Authentication & User Accounts | Pending | [ ] |
