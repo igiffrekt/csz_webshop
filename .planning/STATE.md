@@ -7,20 +7,20 @@
 
 **Core Value:** Customers can browse fire safety products with clear certification info and complete purchases reliably
 
-**Current Focus:** Phase 3 complete - Product listing with filters ready, proceed to Shopping Cart
+**Current Focus:** Phase 3 complete - Product detail page with SEO ready, proceed to Shopping Cart
 
 ## Current Position
 
 **Phase:** 3 of 10 (Frontend Shell & Product Display) - COMPLETE
-**Plan:** 3 of 3 complete (03-03)
+**Plan:** 4 of 4 complete (03-04)
 **Status:** Phase complete
-**Last activity:** 2026-01-20 - Completed 03-03-PLAN.md (Product Listing Page)
+**Last activity:** 2026-01-20 - Completed 03-04-PLAN.md (Product Detail Page)
 
 **Progress:**
 ```
 Phase 1:  [==========] Infrastructure Foundation (5/5 plans) COMPLETE
 Phase 2:  [==========] Product Catalog Backend (4/4 plans) COMPLETE
-Phase 3:  [==========] Frontend Shell & Product Display (3/3 plans) COMPLETE
+Phase 3:  [==========] Frontend Shell & Product Display (4/4 plans) COMPLETE
 Phase 4:  [          ] Shopping Cart
 Phase 5:  [          ] Authentication & User Accounts
 Phase 6:  [          ] Checkout & Payments
@@ -36,11 +36,11 @@ Overall: 3/10 phases complete
 
 | Metric | Value | Notes |
 |--------|-------|-------|
-| Plans completed | 12 | 01-01 through 01-05, 02-01 through 02-04, 03-01 through 03-03 |
+| Plans completed | 13 | 01-01 through 01-05, 02-01 through 02-04, 03-01 through 03-04 |
 | Phases completed | 3 | Infrastructure Foundation, Product Catalog Backend, Frontend Shell |
-| Requirements done | 14/78 | ADMN-26, ADMN-27, ADMN-28, ADMN-01 through ADMN-09, PROD-01, PROD-02, PROD-03 |
+| Requirements done | 19/78 | ADMN-26 through ADMN-28, ADMN-01 through ADMN-09, PROD-01 through PROD-08 |
 | Blockers hit | 1 | Docker daemon (resolved by user starting Docker) |
-| Decisions made | 32 | See below |
+| Decisions made | 34 | See below |
 
 ## Accumulated Context
 
@@ -80,6 +80,8 @@ Overall: 3/10 phases complete
 | 500ms search throttle | Balance responsiveness and API call frequency | 2026-01-20 |
 | Fire class specification filter | Filter products by Tuzosztaly specification value | 2026-01-20 |
 | Certification name filter | Multi-select certifications with $in query | 2026-01-20 |
+| Native Tailwind for rich text | Tailwind v4 incompatible with typography plugin, use descendant selectors | 2026-01-20 |
+| Server Components for product display | Minimize JS bundle, data-fetching at server | 2026-01-20 |
 
 ### Architecture Notes
 
@@ -114,6 +116,7 @@ From research:
 - [x] Next.js app setup (03-01)
 - [x] Layout shell & home page (03-02)
 - [x] Product listing page with filters (03-03)
+- [x] Product detail page with SEO (03-04)
 
 ### Blockers
 
@@ -123,12 +126,13 @@ From research:
 
 ### Last Session Summary
 
-- Completed Plan 03-03: Product Listing Page
-- Created SearchInput with 500ms debounce via nuqs
-- Created ProductFilters with category, fire class, certification dropdowns
-- Built ProductGrid responsive layout and Pagination controls
-- Created /termekek page with server-side data fetching
-- Updated api.ts with fire class and certification filter support
+- Completed Plan 03-04: Product Detail Page
+- Created ProductGallery with thumbnail navigation (Client Component)
+- Created ProductInfo showing price, badges, stock status (Server Component)
+- Built SpecsTable, CertBadges, DocumentList for product details
+- Created VariantSelector for product variants (Client Component)
+- Created /termekek/[slug] page with generateMetadata and JSON-LD
+- Added not-found.tsx for 404 handling
 - All Hungarian translations in place
 
 ### Next Actions
