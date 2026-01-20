@@ -1,4 +1,4 @@
-import type { Core } from "@strapi/strapi";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 export default (plugin: { controllers: Record<string, unknown>; routes: { "content-api": { routes: Array<{ method: string; path: string; handler: string; config: { prefix: string; policies?: Array<string | { name: string; config: unknown }> } }> } } }) => {
   // Extend the user controller with updateMe action
@@ -10,7 +10,7 @@ export default (plugin: { controllers: Record<string, unknown>; routes: { "conte
     /**
      * Update the authenticated user's own profile
      */
-    async updateMe(ctx: Core.Context) {
+    async updateMe(ctx: any) {
       const authUser = ctx.state.user;
 
       if (!authUser) {
