@@ -180,6 +180,18 @@ Plans:
 4. User can save multiple shipping addresses and edit/delete them
 5. User can view past orders with status (order history empty until checkout works)
 
+**Plans:** 8 plans in 5 waves
+
+Plans:
+- [ ] 05-01-PLAN.md — Extend Strapi user model and create ShippingAddress content type (Wave 1)
+- [ ] 05-02-PLAN.md — Create Next.js session management and auth actions (Wave 1)
+- [ ] 05-03-PLAN.md — Create auth pages (login, register, password reset) (Wave 2)
+- [ ] 05-04-PLAN.md — Create middleware and Header auth integration (Wave 2)
+- [ ] 05-05-PLAN.md — Create account dashboard and profile management (Wave 3)
+- [ ] 05-06-PLAN.md — Create shipping address management (Wave 3)
+- [ ] 05-07-PLAN.md — Create order history pages (placeholder for Phase 6) (Wave 4)
+- [ ] 05-08-PLAN.md — Verify complete authentication and account functionality (Wave 5)
+
 ---
 
 ## Phase 6: Checkout & Payments
@@ -330,7 +342,7 @@ Plans:
 | 2 | Product Catalog Backend | Complete | 4/4 plans |
 | 3 | Frontend Shell & Product Display | Complete | 5/5 plans |
 | 4 | Shopping Cart | Complete | 8/8 plans |
-| 5 | Authentication & User Accounts | Pending | [ ] |
+| 5 | Authentication & User Accounts | Planned | 0/8 plans |
 | 6 | Checkout & Payments | Pending | [ ] |
 | 7 | Admin Order Management | Pending | [ ] |
 | 8 | B2B Quote System | Pending | [ ] |
