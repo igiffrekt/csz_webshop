@@ -48,3 +48,7 @@ coverage/
 # Misc
 *.tsbuildinfo
 .turbo/
+
+# Local files
+.claude/
+reference/
