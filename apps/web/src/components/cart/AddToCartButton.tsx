@@ -1,7 +1,6 @@
 'use client';
 
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { useState, useEffect, useRef } from 'react';
 import { ShoppingCart, Check, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
@@ -25,6 +24,16 @@ export function AddToCartButton({
 }: AddToCartButtonProps) {
   const [status, setStatus] = useState<'idle' | 'adding' | 'added'>('idle');
   const addItem = useCartStore((state) => state.addItem);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Cleanup timeouts on unmount
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
 
   const handleAddToCart = () => {
     if (status !== 'idle') return;
@@ -44,8 +53,8 @@ export function AddToCartButton({
 
     setStatus('adding');
 
-    // Use setTimeout to ensure state updates properly
-    setTimeout(() => {
+    // Small delay for visual feedback, then add to cart
+    timeoutRef.current = setTimeout(() => {
       try {
         addItem(product, variant ?? undefined, quantity);
         setStatus('added');
@@ -57,7 +66,9 @@ export function AddToCartButton({
         });
 
         // Reset after showing success
-        setTimeout(() => setStatus('idle'), 1500);
+        timeoutRef.current = setTimeout(() => {
+          setStatus('idle');
+        }, 1500);
       } catch (error) {
         console.error('Add to cart error:', error);
         toast.error('Hiba történt a kosárba helyezéskor');
@@ -70,51 +81,35 @@ export function AddToCartButton({
   const isOutOfStock = stock === 0;
   const needsVariant = requiresVariant && !variant;
 
+  const getButtonContent = () => {
+    if (status === 'adding') {
+      return <Loader2 className="h-4 w-4 animate-spin" />;
+    }
+    if (status === 'added') {
+      return (
+        <span className="flex items-center gap-2">
+          <Check className="h-4 w-4" />
+          Hozzáadva!
+        </span>
+      );
+    }
+    return (
+      <span className="flex items-center gap-2">
+        <ShoppingCart className="h-4 w-4" />
+        {isOutOfStock ? 'Elfogyott' : needsVariant ? 'Válasszon méretet' : 'Kosárba'}
+      </span>
+    );
+  };
+
   return (
     <Button
       onClick={handleAddToCart}
       disabled={disabled || isOutOfStock || status !== 'idle'}
-      className="relative overflow-hidden min-w-[160px]"
+      className="min-w-[160px] transition-all"
       size="lg"
+      variant={status === 'added' ? 'default' : 'default'}
     >
-      <AnimatePresence mode="wait">
-        {status === 'idle' && (
-          <motion.span
-            key="idle"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            className="flex items-center gap-2"
-          >
-            <ShoppingCart className="h-4 w-4" />
-            {isOutOfStock ? 'Elfogyott' : needsVariant ? 'Valasszon meretet' : 'Kosarba'}
-          </motion.span>
-        )}
-
-        {status === 'adding' && (
-          <motion.span
-            key="adding"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-          >
-            <Loader2 className="h-4 w-4 animate-spin" />
-          </motion.span>
-        )}
-
-        {status === 'added' && (
-          <motion.span
-            key="added"
-            initial={{ opacity: 0, scale: 0.5 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.5 }}
-            className="flex items-center gap-2 text-green-50"
-          >
-            <Check className="h-4 w-4" />
-            Hozzaadva!
-          </motion.span>
-        )}
-      </AnimatePresence>
+      {getButtonContent()}
     </Button>
   );
 }
