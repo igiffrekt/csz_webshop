@@ -16,6 +16,7 @@ import { useCartItems } from '@/stores/cart';
 import { useHydration } from '@/stores/useHydration';
 import { CartItem } from './CartItem';
 import { CartSummary } from './CartSummary';
+import { CouponInput } from './CouponInput';
 
 interface CartSheetProps {
   open: boolean;
@@ -72,6 +73,8 @@ export function CartSheet({ open, onOpenChange }: CartSheetProps) {
             </ScrollArea>
 
             <div className="pt-4 space-y-4">
+              <Separator />
+              <CouponInput />
               <Separator />
               <CartSummary />
             </div>
