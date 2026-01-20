@@ -40,7 +40,7 @@ Overall: 4/10 phases complete (26/36 plans)
 | Phases completed | 4 | Infrastructure, Product Catalog, Frontend Shell, Shopping Cart |
 | Requirements done | 36/78 | +CART-01 through CART-07, ADMN-15 through ADMN-19, ANIM-05 |
 | Blockers hit | 1 | Docker daemon (resolved by user starting Docker) |
-| Decisions made | 70 | See below |
+| Decisions made | 74 | See below |
 
 ## Accumulated Context
 
@@ -117,6 +117,10 @@ Overall: 4/10 phases complete (26/36 plans)
 | React cache() DAL | Deduplicate session verification within same request | 2026-01-20 |
 | Hungarian error messages | All zod validation in Hungarian for localized UX | 2026-01-20 |
 | Email enumeration protection | forgotPassword always returns success | 2026-01-20 |
+| useActionState pattern | React 19 form state with Server Actions for auth forms | 2026-01-20 |
+| Checkbox B2B toggle | Company fields revealed only when checkbox checked | 2026-01-20 |
+| Success state display | Forgot password shows success message not redirect | 2026-01-20 |
+| Code from searchParams | Reset password code passed via URL query param | 2026-01-20 |
 | Edge-compatible session module | Separate session-edge.ts for middleware runtime | 2026-01-20 |
 | Middleware route protection | Protect /fiok and /penztar at middleware level | 2026-01-20 |
 | Redirect URL preservation | Save original URL in query param for post-login redirect | 2026-01-20 |
@@ -182,6 +186,10 @@ From research:
 - [x] Data Access Layer with React cache() (05-02)
 - [x] Server Actions for login/register/logout (05-02)
 - [x] Password reset Server Actions (05-02)
+- [x] Login page at /auth/bejelentkezes (05-03)
+- [x] Registration page at /auth/regisztracio with B2B fields (05-03)
+- [x] Forgot password page at /auth/elfelejtett-jelszo (05-03)
+- [x] Reset password page at /auth/jelszo-visszaallitas (05-03)
 - [x] Next.js middleware for route protection (05-04)
 - [x] Edge-compatible session decryption (05-04)
 - [x] UserMenu dropdown component (05-04)
@@ -234,4 +242,5 @@ From research that need resolution:
 *Phase 4 completed: 2026-01-20*
 *Phase 5 plan 05-01 completed: 2026-01-20*
 *Phase 5 plan 05-02 completed: 2026-01-20*
+*Phase 5 plan 05-03 completed: 2026-01-20*
 *Phase 5 plan 05-04 completed: 2026-01-20*
