@@ -33,13 +33,16 @@ export function CartItem({ item }: CartItemProps) {
         </div>
       )}
 
-      <div className="flex-1 min-w-0">
-        <h4 className="font-medium truncate">{item.name}</h4>
+      <div className="flex-1 min-w-0 space-y-1">
+        <h4 className="font-medium leading-tight">{item.name}</h4>
         {item.variantName && (
-          <p className="text-sm text-muted-foreground">{item.variantName}</p>
+          <p className="text-sm">
+            <span className="text-muted-foreground">Változat: </span>
+            <span className="font-medium">{item.variantName}</span>
+          </p>
         )}
-        <p className="text-sm text-muted-foreground">SKU: {item.sku}</p>
-        <p className="font-semibold mt-1">{formatPrice(item.price)}</p>
+        <p className="text-xs text-muted-foreground">SKU: {item.sku}</p>
+        <p className="font-semibold">{formatPrice(item.price)}</p>
       </div>
 
       <div className="flex flex-col items-end justify-between">
