@@ -1,29 +1,36 @@
-import { useTranslations } from "next-intl";
-import { Button } from "@/components/ui/button";
-import { formatPrice } from "@/lib/formatters";
+import { getCategories, getFeaturedProducts } from "@/lib/api";
+import { HeroSection } from "@/components/home/HeroSection";
+import { FeaturedProducts } from "@/components/home/FeaturedProducts";
+import { CategoryGrid } from "@/components/home/CategoryGrid";
 
-export default function HomePage() {
-  const t = useTranslations();
+export default async function HomePage() {
+  // Fetch data in parallel with error handling
+  const [categoriesResult, featuredResult] = await Promise.allSettled([
+    getCategories(),
+    getFeaturedProducts(),
+  ]);
 
-  // Test price formatting
-  const testPrice = formatPrice(15900);
-  console.log("Price test:", testPrice); // Should output "15 900 Ft"
+  // Extract data with fallbacks for failed requests
+  const categories =
+    categoriesResult.status === "fulfilled" ? categoriesResult.value.data : [];
+  const featuredProducts =
+    featuredResult.status === "fulfilled" ? featuredResult.value.data : [];
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center gap-6 p-8">
-      <h1 className="text-4xl font-bold text-foreground">
-        {t("common.siteName")}
-      </h1>
-      <p className="text-lg text-muted-foreground">
-        Tuzvedelmi eszkozok es biztonsagi felszerelesek
-      </p>
-      <p className="text-sm text-muted-foreground">
-        Pelda ar: {testPrice}
-      </p>
-      <div className="flex gap-4">
-        <Button>{t("products.title")}</Button>
-        <Button variant="outline">{t("categories.title")}</Button>
-      </div>
-    </main>
+    <>
+      <HeroSection />
+
+      {/* Featured Products Section */}
+      <section className="container mx-auto px-4 py-12 md:py-16">
+        <FeaturedProducts products={featuredProducts} />
+      </section>
+
+      {/* Categories Section */}
+      <section className="bg-muted/30">
+        <div className="container mx-auto px-4 py-12 md:py-16">
+          <CategoryGrid categories={categories} />
+        </div>
+      </section>
+    </>
   );
 }

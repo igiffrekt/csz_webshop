@@ -19,7 +19,7 @@ export function formatPrice(amount: number): string {
  * @returns Full URL with Strapi base URL prepended if needed
  */
 export function getStrapiMediaUrl(url: string | undefined): string {
-  if (!url) return "/placeholder.jpg";
+  if (!url) return "/placeholder.svg";
   if (url.startsWith("http")) return url;
   const baseUrl =
     process.env.NEXT_PUBLIC_STRAPI_URL || "http://localhost:1337";
