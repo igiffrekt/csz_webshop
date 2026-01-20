@@ -30,19 +30,19 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Authentication
 
-- [ ] **AUTH-01**: User can create account with email and password
-- [ ] **AUTH-02**: User can log in with email and password
-- [ ] **AUTH-03**: User can log out
-- [ ] **AUTH-04**: User session persists across browser refresh
-- [ ] **AUTH-05**: User can reset password via email link
+- [x] **AUTH-01**: User can create account with email and password
+- [x] **AUTH-02**: User can log in with email and password
+- [x] **AUTH-03**: User can log out
+- [x] **AUTH-04**: User session persists across browser refresh
+- [x] **AUTH-05**: User can reset password via email link
 
 ### User Account
 
-- [ ] **ACCT-01**: User can view order history
-- [ ] **ACCT-02**: User can view order details and status
-- [ ] **ACCT-03**: User can update profile information
-- [ ] **ACCT-04**: User can manage shipping addresses
-- [ ] **ACCT-05**: User can add company information (name, VAT number)
+- [x] **ACCT-01**: User can view order history
+- [x] **ACCT-02**: User can view order details and status
+- [x] **ACCT-03**: User can update profile information
+- [x] **ACCT-04**: User can manage shipping addresses
+- [x] **ACCT-05**: User can add company information (name, VAT number)
 
 ### Checkout
 
@@ -233,16 +233,16 @@ Which phases cover which requirements. Updated during roadmap creation.
 | CART-05 | Phase 4 | Complete |
 | CART-06 | Phase 4 | Complete |
 | CART-07 | Phase 4 | Complete |
-| AUTH-01 | Phase 5 | Pending |
-| AUTH-02 | Phase 5 | Pending |
-| AUTH-03 | Phase 5 | Pending |
-| AUTH-04 | Phase 5 | Pending |
-| AUTH-05 | Phase 5 | Pending |
-| ACCT-01 | Phase 5 | Pending |
-| ACCT-02 | Phase 5 | Pending |
-| ACCT-03 | Phase 5 | Pending |
-| ACCT-04 | Phase 5 | Pending |
-| ACCT-05 | Phase 5 | Pending |
+| AUTH-01 | Phase 5 | Complete |
+| AUTH-02 | Phase 5 | Complete |
+| AUTH-03 | Phase 5 | Complete |
+| AUTH-04 | Phase 5 | Complete |
+| AUTH-05 | Phase 5 | Complete |
+| ACCT-01 | Phase 5 | Complete |
+| ACCT-02 | Phase 5 | Complete |
+| ACCT-03 | Phase 5 | Complete |
+| ACCT-04 | Phase 5 | Complete |
+| ACCT-05 | Phase 5 | Complete |
 | CHKT-01 | Phase 6 | Pending |
 | CHKT-02 | Phase 6 | Pending |
 | CHKT-03 | Phase 6 | Pending |
@@ -333,4 +333,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ---
 *Requirements defined: 2025-01-19*
-*Last updated: 2026-01-19 after roadmap creation*
+*Last updated: 2026-01-20 after Phase 5 completion*
