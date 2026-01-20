@@ -2,55 +2,77 @@
 
 import { useState } from 'react';
 import { formatPrice } from '@/lib/formatters';
-import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import type { ProductVariant } from '@csz/types';
 
 interface VariantSelectorProps {
   variants: ProductVariant[];
+  selectedVariant?: ProductVariant | null;
   onSelect?: (variant: ProductVariant) => void;
 }
 
-export function VariantSelector({ variants, onSelect }: VariantSelectorProps) {
-  const [selectedId, setSelectedId] = useState<number | null>(null);
+export function VariantSelector({
+  variants,
+  selectedVariant: controlledVariant,
+  onSelect,
+}: VariantSelectorProps) {
+  // Support both controlled and uncontrolled modes
+  const [internalVariant, setInternalVariant] = useState<ProductVariant | null>(null);
+  const selectedVariant = controlledVariant !== undefined ? controlledVariant : internalVariant;
 
+  const handleSelect = (variant: ProductVariant) => {
+    if (onSelect) {
+      onSelect(variant);
+    } else {
+      setInternalVariant(variant);
+    }
+  };
   if (!variants || variants.length === 0) {
     return null;
   }
 
-  const handleSelect = (variant: ProductVariant) => {
-    setSelectedId(variant.id);
-    onSelect?.(variant);
-  };
-
   // Group variants by attributeLabel if present
-  const label = variants[0]?.attributeLabel;
+  const label = variants[0]?.attributeLabel || 'Valasszon';
 
   return (
-    <div className="mt-4">
-      {label && (
-        <h3 className="text-sm font-medium mb-2">{label}</h3>
-      )}
+    <div className="space-y-3">
+      <label className="text-sm font-medium text-foreground">
+        {label}
+      </label>
       <div className="flex flex-wrap gap-2">
-        {variants.map((variant) => (
-          <Button
-            key={variant.id}
-            variant={selectedId === variant.id ? 'default' : 'outline'}
-            size="sm"
-            onClick={() => handleSelect(variant)}
-            className={cn(
-              'min-w-[80px]',
-              variant.stock === 0 && 'opacity-50'
-            )}
-            disabled={variant.stock === 0}
-          >
-            {variant.attributeValue || variant.name}
-            <span className="ml-2 text-xs">
-              {formatPrice(variant.price)}
-            </span>
-          </Button>
-        ))}
+        {variants.map((variant) => {
+          const isSelected = selectedVariant?.id === variant.id;
+          const isOutOfStock = variant.stock === 0;
+
+          return (
+            <button
+              key={variant.id}
+              type="button"
+              onClick={() => !isOutOfStock && handleSelect(variant)}
+              disabled={isOutOfStock}
+              className={cn(
+                'px-4 py-2 text-sm font-medium rounded-md border transition-colors',
+                isSelected
+                  ? 'border-primary bg-primary text-primary-foreground'
+                  : 'border-input bg-background hover:bg-accent hover:text-accent-foreground',
+                isOutOfStock && 'opacity-50 cursor-not-allowed line-through'
+              )}
+            >
+              {variant.name || variant.attributeValue}
+              {variant.price !== variants[0]?.price && (
+                <span className="ml-1 text-xs opacity-75">
+                  ({formatPrice(variant.price)})
+                </span>
+              )}
+            </button>
+          );
+        })}
       </div>
+      {selectedVariant && (
+        <p className="text-sm text-muted-foreground">
+          Keszlet: {selectedVariant.stock > 0 ? `${selectedVariant.stock} db` : 'Elfogyott'}
+        </p>
+      )}
     </div>
   );
 }
