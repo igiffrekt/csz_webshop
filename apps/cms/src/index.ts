@@ -52,6 +52,59 @@ async function configurePublicPermissions(strapi: Core.Strapi) {
   strapi.log.info('Public API permissions configured for product catalog');
 }
 
+/**
+ * Configure Store Manager role with product catalog permissions
+ * This grants CRUD + publish access to Product, ProductVariant, Category in admin panel
+ */
+async function configureStoreManagerPermissions(strapi: Core.Strapi) {
+  // Find the Store Manager role from Admin RBAC
+  const storeManagerRole = await strapi.db.query('admin::role').findOne({
+    where: { name: 'Store Manager' },
+  });
+
+  if (!storeManagerRole) {
+    strapi.log.warn('Store Manager role not found - skipping admin permission configuration');
+    return;
+  }
+
+  // Content types that Store Manager needs access to
+  const contentTypes = ['api::product.product', 'api::product-variant.product-variant', 'api::category.category'];
+
+  // CRUD actions for content-manager plugin
+  const actions = ['create', 'read', 'update', 'delete', 'publish'];
+
+  for (const contentType of contentTypes) {
+    for (const action of actions) {
+      const actionName = `plugin::content-manager.explorer.${action}`;
+
+      // Check if permission already exists
+      const existingPermission = await strapi.db.query('admin::permission').findOne({
+        where: {
+          action: actionName,
+          subject: contentType,
+          role: storeManagerRole.id,
+        },
+      });
+
+      if (!existingPermission) {
+        // Create the permission
+        await strapi.db.query('admin::permission').create({
+          data: {
+            action: actionName,
+            subject: contentType,
+            properties: {},
+            conditions: [],
+            role: storeManagerRole.id,
+          },
+        });
+        strapi.log.info(`Created Store Manager permission: ${action} on ${contentType}`);
+      }
+    }
+  }
+
+  strapi.log.info('Store Manager admin permissions configured for product catalog');
+}
+
 export default {
   /**
    * An asynchronous register function that runs before
@@ -70,5 +123,6 @@ export default {
    */
   async bootstrap({ strapi }: { strapi: Core.Strapi }) {
     await configurePublicPermissions(strapi);
+    await configureStoreManagerPermissions(strapi);
   },
 };
