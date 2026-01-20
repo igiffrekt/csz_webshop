@@ -11,10 +11,10 @@
 
 ## Current Position
 
-**Phase:** 4 of 10 (Shopping Cart) - COMPLETE
-**Plan:** 8 of 8 complete (04-08)
-**Status:** Phase complete
-**Last activity:** 2026-01-20 - Completed 04-08-PLAN.md (Shopping Cart Verification)
+**Phase:** 5 of 10 (Authentication & User Accounts)
+**Plan:** 1 of 5 complete (05-01)
+**Status:** In progress
+**Last activity:** 2026-01-20 - Completed 05-01-PLAN.md (User Model & Shipping Address)
 
 **Progress:**
 ```
@@ -22,21 +22,21 @@ Phase 1:  [==========] Infrastructure Foundation (5/5 plans) COMPLETE
 Phase 2:  [==========] Product Catalog Backend (4/4 plans) COMPLETE
 Phase 3:  [==========] Frontend Shell & Product Display (5/5 plans) COMPLETE
 Phase 4:  [==========] Shopping Cart (8/8 plans) COMPLETE
-Phase 5:  [          ] Authentication & User Accounts
+Phase 5:  [==        ] Authentication & User Accounts (1/5 plans)
 Phase 6:  [          ] Checkout & Payments
 Phase 7:  [          ] Admin Order Management
 Phase 8:  [          ] B2B Quote System
 Phase 9:  [          ] Content & Polish
 Phase 10: [          ] Migration & Launch
 
-Overall: 4/10 phases complete (22/36 plans)
+Overall: 4/10 phases complete (23/36 plans)
 ```
 
 ## Performance Metrics
 
 | Metric | Value | Notes |
 |--------|-------|-------|
-| Plans completed | 22 | 01-01 through 01-05, 02-01 through 02-04, 03-01 through 03-05, 04-01 through 04-08 |
+| Plans completed | 23 | 01-01 through 01-05, 02-01 through 02-04, 03-01 through 03-05, 04-01 through 04-08, 05-01 |
 | Phases completed | 4 | Infrastructure, Product Catalog, Frontend Shell, Shopping Cart |
 | Requirements done | 36/78 | +CART-01 through CART-07, ADMN-15 through ADMN-19, ANIM-05 |
 | Blockers hit | 1 | Docker daemon (resolved by user starting Docker) |
@@ -106,6 +106,11 @@ Overall: 4/10 phases complete (22/36 plans)
 | Uppercase coupon codes | Auto-convert input to uppercase for consistent code handling | 2026-01-20 |
 | Green badge for applied coupon | Visual confirmation with code, discount, and remove button | 2026-01-20 |
 | Cart API client pattern | Centralized fetch functions for cart-related API calls | 2026-01-20 |
+| User extension pattern | Schema extension via extensions/users-permissions directory | 2026-01-20 |
+| Shipping address collection | Separate collection type with user relation for multiple addresses | 2026-01-20 |
+| JWT expiry 7 days | Balance security and UX for e-commerce | 2026-01-20 |
+| Mailtrap dev emails | Default SMTP uses Mailtrap sandbox for safe testing | 2026-01-20 |
+| Auth rate limiting | 5 requests per 5 minutes on auth endpoints | 2026-01-20 |
 
 ### Architecture Notes
 
@@ -159,6 +164,10 @@ From research:
 - [x] Cart API client (04-07)
 - [x] CouponInput component (04-07)
 - [x] CouponInput integration in CartSheet (04-07)
+- [x] Extended user model with B2B fields (05-01)
+- [x] ShippingAddress content type (05-01)
+- [x] Email provider configuration (05-01)
+- [x] User/ShippingAddress TypeScript interfaces (05-01)
 
 ### Blockers
 
@@ -168,19 +177,18 @@ From research:
 
 ### Last Session Summary
 
-- Completed Phase 4: Shopping Cart (all 8 plans)
-- Fixed variant image switching in gallery with unified ProductDetails component
-- Resolved add-to-cart button infinite loading by removing motion animations
-- Fixed cart layout and Hungarian character support (Inter font with latin-ext)
-- Fixed cart to display variant images and separate variant names
-- Fixed locale-aware navigation for "Continue shopping" link
-- Verified all 13 requirements: CART-01 through CART-07, ADMN-15 through ADMN-19, ANIM-05
+- Started Phase 5: Authentication & User Accounts
+- Completed 05-01: User Model & Shipping Address
+- Extended Strapi user model with B2B fields (firstName, lastName, phone, companyName, vatNumber)
+- Created ShippingAddress content type with user relation
+- Configured nodemailer email provider with Mailtrap defaults
+- Added TypeScript interfaces for User, ShippingAddress, AuthResponse, SessionPayload
 
 ### Next Actions
 
-1. Start Phase 5: Authentication & User Accounts
-2. Research authentication approach (Strapi users-permissions or custom)
-3. Plan user registration, login, logout, session persistence, password reset
+1. Continue Phase 5 with 05-02: Registration & Login Flows
+2. Create registration form with extended user fields
+3. Implement login/logout with Strapi users-permissions
 
 ### Open Questions
 
@@ -205,3 +213,4 @@ From research that need resolution:
 *Phase 4 plan 04-07 completed: 2026-01-20*
 *Phase 4 plan 04-08 completed: 2026-01-20*
 *Phase 4 completed: 2026-01-20*
+*Phase 5 plan 05-01 completed: 2026-01-20*
