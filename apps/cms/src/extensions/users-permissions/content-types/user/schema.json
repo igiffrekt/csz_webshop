@@ -1,0 +1,42 @@
+{
+  "kind": "collectionType",
+  "collectionName": "up_users",
+  "info": {
+    "name": "user",
+    "description": "",
+    "singularName": "user",
+    "pluralName": "users",
+    "displayName": "User"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "firstName": {
+      "type": "string",
+      "maxLength": 100
+    },
+    "lastName": {
+      "type": "string",
+      "maxLength": 100
+    },
+    "phone": {
+      "type": "string",
+      "maxLength": 50
+    },
+    "companyName": {
+      "type": "string",
+      "maxLength": 255
+    },
+    "vatNumber": {
+      "type": "string",
+      "maxLength": 50
+    },
+    "shippingAddresses": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::shipping-address.shipping-address",
+      "mappedBy": "user"
+    }
+  }
+}
