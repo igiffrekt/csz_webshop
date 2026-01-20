@@ -7,14 +7,14 @@
 
 **Core Value:** Customers can browse fire safety products with clear certification info and complete purchases reliably
 
-**Current Focus:** Phase 4 in progress - Cart store and persistence implemented
+**Current Focus:** Phase 4 in progress - Coupon content type and cart store implemented
 
 ## Current Position
 
 **Phase:** 4 of 10 (Shopping Cart) - IN PROGRESS
-**Plan:** 2 of 8 complete (04-02)
+**Plan:** 2 of 8 complete (04-01, 04-02)
 **Status:** In progress
-**Last activity:** 2026-01-20 - Completed 04-02-PLAN.md (Cart Store & Persistence)
+**Last activity:** 2026-01-20 - Completed 04-01-PLAN.md (Coupon Content Type)
 
 **Progress:**
 ```
@@ -40,7 +40,7 @@ Overall: 3/10 phases complete (16/36 plans)
 | Phases completed | 3 | Infrastructure Foundation, Product Catalog Backend, Frontend Shell |
 | Requirements done | 23/78 | ADMN-26 through ADMN-28, ADMN-01 through ADMN-09, PROD-01 through PROD-08, CONT-01 through CONT-03, LANG-01, LANG-04, PERF-03, PERF-04 |
 | Blockers hit | 1 | Docker daemon (resolved by user starting Docker) |
-| Decisions made | 40 | See below |
+| Decisions made | 43 | See below |
 
 ## Accumulated Context
 
@@ -85,6 +85,9 @@ Overall: 3/10 phases complete (16/36 plans)
 | Locale-aware Link from navigation.ts | All internal links preserve /hu locale prefix | 2026-01-20 |
 | unoptimized: true for dev images | Strapi image optimization fails in dev mode | 2026-01-20 |
 | Server Components for category pages | No client state needed for category browsing | 2026-01-20 |
+| Coupon as collection type | Coupons need individual tracking (usedCount), dates, and draft/publish workflow | 2026-01-20 |
+| discountType enumeration | Clear distinction between percentage and fixed HUF discounts | 2026-01-20 |
+| Public find permission for coupons | Coupon validation by code, no browsing needed | 2026-01-20 |
 | Zustand 5.x for cart state | Minimal API, built-in persist middleware, excellent TypeScript support | 2026-01-20 |
 | localStorage cart persistence | Cart survives browser sessions under 'csz-cart' key | 2026-01-20 |
 | Hydration hook for SSR safety | Prevents hydration mismatches with useHydration() hook | 2026-01-20 |
@@ -125,6 +128,9 @@ From research:
 - [x] Product detail page with SEO (03-04)
 - [x] Category listing and detail pages (03-05)
 - [x] Full frontend verification (03-05)
+- [x] Coupon content type in Strapi (04-01)
+- [x] Coupon TypeScript interface in @csz/types (04-01)
+- [x] Coupon API permissions (04-01)
 - [x] Zustand cart store with localStorage persistence (04-02)
 - [x] Cart types (CartItem, AppliedCoupon) in @csz/types (04-02)
 - [x] Hydration hook for SSR safety (04-02)
@@ -137,19 +143,18 @@ From research:
 
 ### Last Session Summary
 
-- Completed Plan 04-02: Cart Store & Persistence
-- Installed Zustand 5.0.10 for state management
-- Added CartItem and AppliedCoupon types to @csz/types
-- Created cart store with CRUD operations and localStorage persistence
-- Created hydration hook for SSR safety
-- Production build verified successfully
+- Completed Plan 04-01: Coupon Content Type
+- Created Coupon collection type in Strapi with all discount management fields
+- Added full Coupon TypeScript interface to @csz/types
+- Configured public find and Store Manager CRUD permissions
+- Verified API endpoint returns coupon data correctly
 
 ### Next Actions
 
 1. Continue Phase 4: Shopping Cart
-2. Implement AddToCartButton component (04-03)
-3. Build cart drawer with quantity controls (04-04)
-4. Create dedicated cart page (04-05)
+2. Execute 04-03: Coupon Application UI
+3. Build AddToCartButton component (04-03)
+4. Build cart drawer with quantity controls (04-05)
 
 ### Open Questions
 
@@ -165,4 +170,5 @@ From research that need resolution:
 *Phase 1 completed: 2026-01-20*
 *Phase 2 completed: 2026-01-20*
 *Phase 3 completed: 2026-01-20*
+*Phase 4 plan 04-01 completed: 2026-01-20*
 *Phase 4 plan 04-02 completed: 2026-01-20*
