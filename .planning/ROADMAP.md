@@ -141,6 +141,17 @@ Plans:
 3. User can enter valid coupon code and see discount applied to cart total
 4. Admin can create coupon with 10% off, 100 uses max, expiring in 30 days
 
+**Plans:** 7 plans in 3 waves
+
+Plans:
+- [ ] 04-01-PLAN.md — Create Coupon content type in Strapi CMS (Wave 1)
+- [ ] 04-02-PLAN.md — Create Zustand cart store with localStorage persistence (Wave 1)
+- [ ] 04-03-PLAN.md — Implement add-to-cart with variant selection and animation (Wave 2)
+- [ ] 04-04-PLAN.md — Create cart UI components (CartSheet, CartItem, CartIcon) (Wave 2)
+- [ ] 04-05-PLAN.md — Create Fastify coupon validation API endpoint (Wave 2)
+- [ ] 04-06-PLAN.md — Integrate coupon input into cart with API validation (Wave 3)
+- [ ] 04-07-PLAN.md — Verify complete shopping cart functionality (Wave 3)
+
 ---
 
 ## Phase 5: Authentication & User Accounts
@@ -317,7 +328,7 @@ Plans:
 | 1 | Infrastructure Foundation | Complete | 5/5 plans |
 | 2 | Product Catalog Backend | Complete | 4/4 plans |
 | 3 | Frontend Shell & Product Display | Complete | 5/5 plans |
-| 4 | Shopping Cart | Pending | [ ] |
+| 4 | Shopping Cart | In Progress | 0/7 plans |
 | 5 | Authentication & User Accounts | Pending | [ ] |
 | 6 | Checkout & Payments | Pending | [ ] |
 | 7 | Admin Order Management | Pending | [ ] |
