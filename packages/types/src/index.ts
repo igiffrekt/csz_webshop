@@ -216,3 +216,73 @@ export interface SessionPayload {
   username: string;
   expiresAt: Date;
 }
+
+// Order line item (product in an order)
+export interface OrderLineItem {
+  id: number;
+  productId: number;
+  productDocumentId: string;
+  variantId?: number;
+  variantDocumentId?: string;
+  name: string;
+  variantName?: string;
+  sku: string;
+  price: number;
+  quantity: number;
+  total: number;
+}
+
+// Order status enum
+export type OrderStatus =
+  | "pending"           // Awaiting payment
+  | "paid"              // Payment confirmed
+  | "processing"        // Being prepared
+  | "shipped"           // Shipped to customer
+  | "delivered"         // Delivered
+  | "cancelled"         // Cancelled
+  | "refunded";         // Refunded
+
+// Order content type (placeholder - full implementation in Phase 6)
+export interface Order {
+  id: number;
+  documentId: string;
+  orderNumber: string;
+  status: OrderStatus;
+  user?: User;
+  // Pricing
+  subtotal: number;
+  discount: number;
+  shipping: number;
+  tax: number;
+  total: number;
+  // Address snapshot (copied at order time)
+  shippingAddress: {
+    recipientName: string;
+    street: string;
+    city: string;
+    postalCode: string;
+    country: string;
+    phone?: string;
+  };
+  billingAddress?: {
+    recipientName: string;
+    street: string;
+    city: string;
+    postalCode: string;
+    country: string;
+    companyName?: string;
+    vatNumber?: string;
+  };
+  // Line items
+  lineItems: OrderLineItem[];
+  // Coupon info if applied
+  couponCode?: string;
+  couponDiscount?: number;
+  // Payment info
+  paymentMethod?: string;
+  paymentId?: string;
+  paidAt?: string;
+  // Timestamps
+  createdAt: string;
+  updatedAt: string;
+}
