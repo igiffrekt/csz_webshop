@@ -12,14 +12,14 @@
 ## Current Position
 
 **Phase:** 2 of 10 (Product Catalog Backend) - IN PROGRESS
-**Plan:** 2 of 4 complete (02-02)
+**Plan:** 3 of 4 complete (02-03)
 **Status:** In progress
-**Last activity:** 2026-01-20 - Completed 02-02-PLAN.md (Product Content Type)
+**Last activity:** 2026-01-20 - Completed 02-03-PLAN.md (ProductVariant Content Type)
 
 **Progress:**
 ```
 Phase 1:  [==========] Infrastructure Foundation (5/5 plans) COMPLETE
-Phase 2:  [=====     ] Product Catalog Backend (2/4 plans)
+Phase 2:  [=======   ] Product Catalog Backend (3/4 plans)
 Phase 3:  [          ] Frontend Shell & Product Display
 Phase 4:  [          ] Shopping Cart
 Phase 5:  [          ] Authentication & User Accounts
@@ -36,11 +36,11 @@ Overall: 1/10 phases complete
 
 | Metric | Value | Notes |
 |--------|-------|-------|
-| Plans completed | 7 | 01-01 through 01-05, 02-01, 02-02 |
+| Plans completed | 8 | 01-01 through 01-05, 02-01, 02-02, 02-03 |
 | Phases completed | 1 | Infrastructure Foundation |
-| Requirements done | 10/78 | ADMN-26, ADMN-27, ADMN-28, ADMN-01, ADMN-02, ADMN-04, ADMN-05, ADMN-06, ADMN-07, ADMN-08, ADMN-09 |
+| Requirements done | 11/78 | ADMN-26, ADMN-27, ADMN-28, ADMN-01, ADMN-02, ADMN-03, ADMN-04, ADMN-05, ADMN-06, ADMN-07, ADMN-08, ADMN-09 |
 | Blockers hit | 1 | Docker daemon (resolved by user starting Docker) |
-| Decisions made | 16 | See below |
+| Decisions made | 18 | See below |
 
 ## Accumulated Context
 
@@ -64,6 +64,8 @@ Overall: 1/10 phases complete
 | Content Manager role | Media Library/Upload only until pages exist | 2026-01-20 |
 | Remove products relation until Product exists | Strapi 5 fails on forward references to non-existent content types | 2026-01-20 |
 | Remove variants relation until ProductVariant exists | Strapi 5 fails on forward references to non-existent content types | 2026-01-20 |
+| ProductVariant as collection type (not component) | Independent SKU, price, inventory tracking requires separate documents | 2026-01-20 |
+| 50MB upload limit for certificates | Large PDF technical documents for fire safety certifications | 2026-01-20 |
 
 ### Architecture Notes
 
@@ -91,8 +93,9 @@ From research:
 - [x] Create Category content type with hierarchy (02-01)
 - [x] Create Product content type (02-02)
 - [x] Add Category-Product relation (02-02)
-- [ ] Create ProductVariant content type (02-03)
-- [ ] Add Product-Variant relation (02-03)
+- [x] Create ProductVariant content type (02-03)
+- [x] Add Product-Variant relation (02-03)
+- [x] Configure upload plugin for 50MB files (02-03)
 - [ ] Configure API permissions (02-04)
 
 ### Blockers
@@ -103,16 +106,17 @@ From research:
 
 ### Last Session Summary
 
-- Completed Plan 02-02: Product Content Type
-- Created Product collection type with all ADMN-01 through ADMN-09 fields
-- Added bidirectional manyToMany relation between Product and Category
-- Fixed blocking issue: removed variants relation until ProductVariant exists (02-03)
+- Completed Plan 02-03: ProductVariant Content Type
+- Created ProductVariant collection type with independent SKU, price, stock
+- Added bidirectional oneToMany/manyToOne relation between Product and ProductVariant
+- Configured upload plugin for 50MB PDF certificates
+- ADMN-03 (product variants) is now satisfiable in Strapi admin
 
 ### Next Actions
 
-1. Continue Phase 2: Execute 02-03-PLAN.md (ProductVariant content type)
-2. Add bidirectional Product-Variant relation
-3. Configure API permissions (02-04)
+1. Continue Phase 2: Execute 02-04-PLAN.md (API Permissions)
+2. Configure public read access for Product, ProductVariant, Category
+3. Test API endpoints return data instead of 403
 
 ### Open Questions
 
@@ -128,3 +132,4 @@ From research that need resolution:
 *Phase 1 completed: 2026-01-20*
 *Plan 02-01 completed: 2026-01-20*
 *Plan 02-02 completed: 2026-01-20*
+*Plan 02-03 completed: 2026-01-20*
