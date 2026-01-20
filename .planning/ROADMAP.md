@@ -228,6 +228,18 @@ Plans:
 4. User selecting bank transfer receives account details and order shows "Awaiting Payment"
 5. Order status automatically updates to "Paid" when Stripe webhook confirms payment
 
+**Plans:** 8 plans in 4 waves
+
+Plans:
+- [ ] 06-01-PLAN.md — Create Order content type in Strapi CMS (Wave 1)
+- [ ] 06-02-PLAN.md — Set up Stripe SDK and webhook handler (Wave 1)
+- [ ] 06-03-PLAN.md — Create checkout store and calculation endpoints (Wave 1)
+- [ ] 06-04-PLAN.md — Create checkout page with shipping step (Wave 2)
+- [ ] 06-05-PLAN.md — Create billing step and order summary step (Wave 2)
+- [ ] 06-06-PLAN.md — Create payment step with Stripe Embedded Checkout (Wave 3)
+- [ ] 06-07-PLAN.md — Create success page and order confirmation (Wave 3)
+- [ ] 06-08-PLAN.md — Add bank transfer option and verify phase (Wave 4)
+
 ---
 
 ## Phase 7: Admin Order Management
@@ -343,7 +355,7 @@ Plans:
 | 3 | Frontend Shell & Product Display | Complete | 5/5 plans |
 | 4 | Shopping Cart | Complete | 8/8 plans |
 | 5 | Authentication & User Accounts | Complete | 8/8 plans |
-| 6 | Checkout & Payments | Pending | [ ] |
+| 6 | Checkout & Payments | Planned | 0/8 plans |
 | 7 | Admin Order Management | Pending | [ ] |
 | 8 | B2B Quote System | Pending | [ ] |
 | 9 | Content & Polish | Pending | [ ] |
