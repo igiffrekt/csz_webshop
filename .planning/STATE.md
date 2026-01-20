@@ -7,14 +7,14 @@
 
 **Core Value:** Customers can browse fire safety products with clear certification info and complete purchases reliably
 
-**Current Focus:** Phase 5 in progress - Shipping addresses management complete, continue with remaining account pages
+**Current Focus:** Phase 5 in progress - Order history pages complete, one plan remaining
 
 ## Current Position
 
 **Phase:** 5 of 10 (Authentication & User Accounts)
-**Plan:** 6 of 8 complete (05-06)
+**Plan:** 7 of 8 complete (05-07)
 **Status:** In progress
-**Last activity:** 2026-01-20 - Completed 05-06-PLAN.md (Shipping Addresses Management)
+**Last activity:** 2026-01-20 - Completed 05-07-PLAN.md (Order History Pages)
 
 **Progress:**
 ```
@@ -22,25 +22,25 @@ Phase 1:  [==========] Infrastructure Foundation (5/5 plans) COMPLETE
 Phase 2:  [==========] Product Catalog Backend (4/4 plans) COMPLETE
 Phase 3:  [==========] Frontend Shell & Product Display (5/5 plans) COMPLETE
 Phase 4:  [==========] Shopping Cart (8/8 plans) COMPLETE
-Phase 5:  [=======   ] Authentication & User Accounts (6/8 plans)
+Phase 5:  [========= ] Authentication & User Accounts (7/8 plans)
 Phase 6:  [          ] Checkout & Payments
 Phase 7:  [          ] Admin Order Management
 Phase 8:  [          ] B2B Quote System
 Phase 9:  [          ] Content & Polish
 Phase 10: [          ] Migration & Launch
 
-Overall: 4/10 phases complete (28/39 plans)
+Overall: 4/10 phases complete (29/39 plans)
 ```
 
 ## Performance Metrics
 
 | Metric | Value | Notes |
 |--------|-------|-------|
-| Plans completed | 28 | 01-01 through 01-05, 02-01 through 02-04, 03-01 through 03-05, 04-01 through 04-08, 05-01 through 05-06 |
+| Plans completed | 29 | 01-01 through 01-05, 02-01 through 02-04, 03-01 through 03-05, 04-01 through 04-08, 05-01 through 05-07 |
 | Phases completed | 4 | Infrastructure, Product Catalog, Frontend Shell, Shopping Cart |
 | Requirements done | 39/78 | +ACCT-04 (shipping addresses) |
 | Blockers hit | 1 | Docker daemon (resolved by user starting Docker) |
-| Decisions made | 82 | See below |
+| Decisions made | 83 | See below |
 
 ## Accumulated Context
 
@@ -133,6 +133,7 @@ Overall: 4/10 phases complete (28/39 plans)
 | API routes as bridge for client | Client components use /api/addresses routes to call server-only functions | 2026-01-20 |
 | Exclusive default address | Clear other defaults before setting new default | 2026-01-20 |
 | Dialog for address forms | Use Dialog overlay instead of separate pages for better UX | 2026-01-20 |
+| Placeholder types pattern | Define Order types before content type exists for parallel development | 2026-01-20 |
 
 ### Architecture Notes
 
@@ -210,6 +211,10 @@ From research:
 - [x] AddressCard and AddressForm components (05-06)
 - [x] Shipping addresses page at /fiok/cimek (05-06)
 - [x] API routes for address mutations (05-06)
+- [x] Order and OrderLineItem type placeholders (05-07)
+- [x] Order history page at /fiok/rendelesek (05-07)
+- [x] Order detail page at /fiok/rendelesek/[id] (05-07)
+- [x] OrderCard component for order listing (05-07)
 
 ### Blockers
 
@@ -220,17 +225,16 @@ From research:
 ### Last Session Summary
 
 - Continued Phase 5: Authentication & User Accounts
-- Completed 05-06: Shipping Addresses Management
-- Created address API functions for CRUD operations with Strapi
-- Created AddressCard and AddressForm components
-- Created /fiok/cimek shipping addresses page
-- Added API routes for client-side address mutations
+- Completed 05-07: Order History Pages
+- Added Order, OrderLineItem, OrderStatus types to @csz/types
+- Created order history page at /fiok/rendelesek with empty state
+- Created order detail page at /fiok/rendelesek/[id]
+- Created OrderCard component for order listing
 
 ### Next Actions
 
-1. Continue Phase 5 with 05-07 and 05-08
-2. Complete remaining account management pages
-3. Then proceed to Phase 6: Checkout & Payments
+1. Complete Phase 5 with 05-08 (Phase Verification)
+2. Then proceed to Phase 6: Checkout & Payments
 
 ### Open Questions
 
@@ -261,3 +265,4 @@ From research that need resolution:
 *Phase 5 plan 05-04 completed: 2026-01-20*
 *Phase 5 plan 05-05 completed: 2026-01-20*
 *Phase 5 plan 05-06 completed: 2026-01-20*
+*Phase 5 plan 05-07 completed: 2026-01-20*
