@@ -1,0 +1,27 @@
+@import "tailwindcss";
+
+/* Dark mode support */
+@variant dark (&:where(.dark, .dark *));
+
+/* Design tokens */
+@theme {
+  --color-background: #ffffff;
+  --color-foreground: #171717;
+  --color-brand: oklch(0.6 0.15 250);
+  --color-accent: oklch(0.7 0.2 30);
+  --font-sans: var(--font-geist-sans), system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+  @theme {
+    --color-background: #0a0a0a;
+    --color-foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
+}
