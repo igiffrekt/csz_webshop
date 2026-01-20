@@ -47,6 +47,10 @@ export default ({ env }) => ({
         interval: { min: 5 },
         max: 5,
       },
+      // Password reset URL - Strapi will append ?code=<token> to this URL
+      advanced: {
+        email_reset_password: env('STRAPI_RESET_PASSWORD_URL', 'http://localhost:3000/hu/auth/jelszo-visszaallitas'),
+      },
     },
   },
 });
