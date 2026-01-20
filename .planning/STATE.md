@@ -7,20 +7,20 @@
 
 **Core Value:** Customers can browse fire safety products with clear certification info and complete purchases reliably
 
-**Current Focus:** Phase 3 complete - Product detail page with SEO ready, proceed to Shopping Cart
+**Current Focus:** Phase 3 complete - Category pages and full frontend verified, proceed to Shopping Cart
 
 ## Current Position
 
 **Phase:** 3 of 10 (Frontend Shell & Product Display) - COMPLETE
-**Plan:** 4 of 4 complete (03-04)
+**Plan:** 5 of 5 complete (03-05)
 **Status:** Phase complete
-**Last activity:** 2026-01-20 - Completed 03-04-PLAN.md (Product Detail Page)
+**Last activity:** 2026-01-20 - Completed 03-05-PLAN.md (Category Pages & Verification)
 
 **Progress:**
 ```
 Phase 1:  [==========] Infrastructure Foundation (5/5 plans) COMPLETE
 Phase 2:  [==========] Product Catalog Backend (4/4 plans) COMPLETE
-Phase 3:  [==========] Frontend Shell & Product Display (4/4 plans) COMPLETE
+Phase 3:  [==========] Frontend Shell & Product Display (5/5 plans) COMPLETE
 Phase 4:  [          ] Shopping Cart
 Phase 5:  [          ] Authentication & User Accounts
 Phase 6:  [          ] Checkout & Payments
@@ -36,11 +36,11 @@ Overall: 3/10 phases complete
 
 | Metric | Value | Notes |
 |--------|-------|-------|
-| Plans completed | 13 | 01-01 through 01-05, 02-01 through 02-04, 03-01 through 03-04 |
+| Plans completed | 14 | 01-01 through 01-05, 02-01 through 02-04, 03-01 through 03-05 |
 | Phases completed | 3 | Infrastructure Foundation, Product Catalog Backend, Frontend Shell |
-| Requirements done | 19/78 | ADMN-26 through ADMN-28, ADMN-01 through ADMN-09, PROD-01 through PROD-08 |
+| Requirements done | 23/78 | ADMN-26 through ADMN-28, ADMN-01 through ADMN-09, PROD-01 through PROD-08, CONT-01 through CONT-03, LANG-01, LANG-04, PERF-03, PERF-04 |
 | Blockers hit | 1 | Docker daemon (resolved by user starting Docker) |
-| Decisions made | 34 | See below |
+| Decisions made | 37 | See below |
 
 ## Accumulated Context
 
@@ -82,6 +82,9 @@ Overall: 3/10 phases complete
 | Certification name filter | Multi-select certifications with $in query | 2026-01-20 |
 | Native Tailwind for rich text | Tailwind v4 incompatible with typography plugin, use descendant selectors | 2026-01-20 |
 | Server Components for product display | Minimize JS bundle, data-fetching at server | 2026-01-20 |
+| Locale-aware Link from navigation.ts | All internal links preserve /hu locale prefix | 2026-01-20 |
+| unoptimized: true for dev images | Strapi image optimization fails in dev mode | 2026-01-20 |
+| Server Components for category pages | No client state needed for category browsing | 2026-01-20 |
 
 ### Architecture Notes
 
@@ -117,6 +120,8 @@ From research:
 - [x] Layout shell & home page (03-02)
 - [x] Product listing page with filters (03-03)
 - [x] Product detail page with SEO (03-04)
+- [x] Category listing and detail pages (03-05)
+- [x] Full frontend verification (03-05)
 
 ### Blockers
 
@@ -126,14 +131,14 @@ From research:
 
 ### Last Session Summary
 
-- Completed Plan 03-04: Product Detail Page
-- Created ProductGallery with thumbnail navigation (Client Component)
-- Created ProductInfo showing price, badges, stock status (Server Component)
-- Built SpecsTable, CertBadges, DocumentList for product details
-- Created VariantSelector for product variants (Client Component)
-- Created /termekek/[slug] page with generateMetadata and JSON-LD
-- Added not-found.tsx for 404 handling
-- All Hungarian translations in place
+- Completed Plan 03-05: Category Pages & Frontend Verification
+- Created CategoryCard and CategoryHeader components
+- Built /kategoriak listing page and /kategoriak/[slug] detail page
+- Added getCategory to api.ts with children/parent population
+- Fixed locale-aware navigation across all components
+- Fixed Strapi image optimization for development
+- User verified full frontend shell functionality
+- All browsing flows working: Home -> Category -> Product
 
 ### Next Actions
 
