@@ -50,7 +50,7 @@ export function AddressCard({
       {address.isDefault && (
         <div className="absolute top-2 right-2 flex items-center gap-1 text-xs text-amber-600 bg-amber-50 px-2 py-1 rounded">
           <Star className="h-3 w-3 fill-current" />
-          Alapertelmezett
+          Alapértelmezett
         </div>
       )}
 
@@ -75,7 +75,7 @@ export function AddressCard({
           onClick={() => onEdit(address)}
         >
           <Pencil className="h-4 w-4 mr-1" />
-          Szerkesztes
+          Szerkesztés
         </Button>
 
         {!address.isDefault && (
@@ -86,7 +86,7 @@ export function AddressCard({
             disabled={isSettingDefault}
           >
             <Star className="h-4 w-4 mr-1" />
-            {isSettingDefault ? "Mentes..." : "Alapertelmezett"}
+            {isSettingDefault ? "Mentés..." : "Alapértelmezett"}
           </Button>
         )}
 
@@ -94,25 +94,25 @@ export function AddressCard({
           <AlertDialogTrigger asChild>
             <Button variant="ghost" size="sm" className="text-destructive">
               <Trash2 className="h-4 w-4 mr-1" />
-              Torles
+              Törlés
             </Button>
           </AlertDialogTrigger>
           <AlertDialogContent>
             <AlertDialogHeader>
-              <AlertDialogTitle>Cim torlese</AlertDialogTitle>
+              <AlertDialogTitle>Cím törlése</AlertDialogTitle>
               <AlertDialogDescription>
-                Biztosan torolni szeretned a(z) &quot;{address.label}&quot; cimet?
-                Ez a muvelet nem vonhato vissza.
+                Biztosan törölni szeretnéd a(z) &quot;{address.label}&quot; címet?
+                Ez a művelet nem vonható vissza.
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel>Megse</AlertDialogCancel>
+              <AlertDialogCancel>Mégse</AlertDialogCancel>
               <AlertDialogAction
                 onClick={handleDelete}
                 disabled={isDeleting}
                 className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
               >
-                {isDeleting ? "Torles..." : "Torles"}
+                {isDeleting ? "Törlés..." : "Törlés"}
               </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>

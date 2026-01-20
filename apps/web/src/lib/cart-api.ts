@@ -29,7 +29,7 @@ export async function applyCoupon(
   if (!response.ok) {
     return {
       valid: false,
-      error: 'Hiba tortent a kupon ellenorzese soran',
+      error: 'Hiba történt a kupon ellenőrzése során',
     };
   }
 

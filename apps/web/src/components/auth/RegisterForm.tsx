@@ -26,7 +26,7 @@ export function RegisterForm() {
 
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="space-y-2">
-          <Label htmlFor="firstName">Vezeteknev</Label>
+          <Label htmlFor="firstName">Vezetéknév</Label>
           <Input
             id="firstName"
             name="firstName"
@@ -42,7 +42,7 @@ export function RegisterForm() {
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="lastName">Keresztnev</Label>
+          <Label htmlFor="lastName">Keresztnév</Label>
           <Input
             id="lastName"
             name="lastName"
@@ -59,7 +59,7 @@ export function RegisterForm() {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="username">Felhasznalonev *</Label>
+        <Label htmlFor="username">Felhasználónév *</Label>
         <Input
           id="username"
           name="username"
@@ -76,12 +76,12 @@ export function RegisterForm() {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="email">Email cim *</Label>
+        <Label htmlFor="email">E-mail cím *</Label>
         <Input
           id="email"
           name="email"
           type="email"
-          placeholder="pelda@email.hu"
+          placeholder="példa@email.hu"
           required
           autoComplete="email"
           disabled={isPending}
@@ -94,7 +94,7 @@ export function RegisterForm() {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="phone">Telefonszam</Label>
+        <Label htmlFor="phone">Telefonszám</Label>
         <Input
           id="phone"
           name="phone"
@@ -111,7 +111,7 @@ export function RegisterForm() {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="password">Jelszo *</Label>
+        <Label htmlFor="password">Jelszó *</Label>
         <Input
           id="password"
           name="password"
@@ -128,7 +128,7 @@ export function RegisterForm() {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="passwordConfirm">Jelszo megerositese *</Label>
+        <Label htmlFor="passwordConfirm">Jelszó megerősítése *</Label>
         <Input
           id="passwordConfirm"
           name="passwordConfirm"
@@ -151,14 +151,14 @@ export function RegisterForm() {
           onCheckedChange={(checked) => setShowCompanyFields(checked === true)}
         />
         <Label htmlFor="isCompany" className="text-sm font-normal cursor-pointer">
-          Ceges vasarlo vagyok (szamlahoz szukseges adatok)
+          Céges vásárló vagyok (számlához szükséges adatok)
         </Label>
       </div>
 
       {showCompanyFields && (
         <div className="space-y-4 p-4 border rounded-lg bg-muted/50">
           <div className="space-y-2">
-            <Label htmlFor="companyName">Cegnev</Label>
+            <Label htmlFor="companyName">Cégnév</Label>
             <Input
               id="companyName"
               name="companyName"
@@ -174,7 +174,7 @@ export function RegisterForm() {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="vatNumber">Adoszam</Label>
+            <Label htmlFor="vatNumber">Adószám</Label>
             <Input
               id="vatNumber"
               name="vatNumber"
@@ -192,16 +192,16 @@ export function RegisterForm() {
       )}
 
       <Button type="submit" className="w-full" disabled={isPending}>
-        {isPending ? "Regisztracio..." : "Fiok letrehozasa"}
+        {isPending ? "Regisztráció..." : "Fiók létrehozása"}
       </Button>
 
       <p className="text-center text-sm text-muted-foreground">
-        Mar van fiokod?{" "}
+        Már van fiókod?{" "}
         <Link
           href="/auth/bejelentkezes"
           className="font-medium text-foreground hover:underline"
         >
-          Bejelentkezes
+          Bejelentkezés
         </Link>
       </p>
     </form>

@@ -7,8 +7,8 @@ import { Button } from "@/components/ui/button";
 import type { Order } from "@csz/types";
 
 export const metadata: Metadata = {
-  title: "Rendeleseim | CSZ Tuzvedelmi Webaruhaz",
-  description: "Korabbi rendeleseid megtekintese",
+  title: "Rendeléseim | CSZ Tűzvédelmi Webáruház",
+  description: "Korábbi rendeléseid megtekintése",
 };
 
 // Placeholder function - will fetch from Strapi in Phase 6
@@ -31,23 +31,23 @@ export default async function OrdersPage() {
           className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground mb-4"
         >
           <ArrowLeft className="h-4 w-4 mr-1" />
-          Vissza a fiokhoz
+          Vissza a fiókhoz
         </Link>
-        <h1 className="text-2xl font-bold">Rendeleseim</h1>
+        <h1 className="text-2xl font-bold">Rendeléseim</h1>
         <p className="text-muted-foreground mt-1">
-          Korabbi rendeleseid es azok statusza
+          Korábbi rendeléseid és azok státusza
         </p>
       </div>
 
       {orders.length === 0 ? (
         <div className="text-center py-12 border rounded-lg bg-muted/30">
           <Package className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-          <h3 className="font-semibold mb-2">Meg nincsenek rendeleseid</h3>
+          <h3 className="font-semibold mb-2">Még nincsenek rendeléseid</h3>
           <p className="text-sm text-muted-foreground mb-4">
-            A rendeleselozmenyed itt fog megjelenni
+            A rendeléselőzményed itt fog megjelenni
           </p>
           <Link href="/termekek">
-            <Button>Termekek bongeszese</Button>
+            <Button>Termékek böngészése</Button>
           </Link>
         </div>
       ) : (

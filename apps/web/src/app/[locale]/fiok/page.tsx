@@ -6,8 +6,8 @@ import { logoutAction } from "@/lib/auth/actions";
 import { User, Package, MapPin, Building2 } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Fiokom | CSZ Tuzvedelmi Webaruhaz",
-  description: "A fiok beallitasaid es rendeleseid",
+  title: "Fiókom | CSZ Tűzvédelmi Webáruház",
+  description: "A fiók beállításaid és rendeléseid",
 };
 
 export default async function AccountPage() {
@@ -16,9 +16,9 @@ export default async function AccountPage() {
   return (
     <div className="container py-8">
       <div className="mb-8">
-        <h1 className="text-2xl font-bold">Fiokom</h1>
+        <h1 className="text-2xl font-bold">Fiókom</h1>
         <p className="text-muted-foreground mt-1">
-          Udvozollek, {session.username}!
+          Üdvözöllek, {session.username}!
         </p>
       </div>
 
@@ -32,9 +32,9 @@ export default async function AccountPage() {
               <User className="h-6 w-6 text-primary" />
             </div>
             <div>
-              <h2 className="font-semibold">Profil beallitasok</h2>
+              <h2 className="font-semibold">Profil beállítások</h2>
               <p className="text-sm text-muted-foreground">
-                Szemelyes adatok modositasa
+                Személyes adatok módosítása
               </p>
             </div>
           </div>
@@ -49,9 +49,9 @@ export default async function AccountPage() {
               <MapPin className="h-6 w-6 text-primary" />
             </div>
             <div>
-              <h2 className="font-semibold">Szallitasi cimek</h2>
+              <h2 className="font-semibold">Szállítási címek</h2>
               <p className="text-sm text-muted-foreground">
-                Mentett cimek kezelese
+                Mentett címek kezelése
               </p>
             </div>
           </div>
@@ -66,9 +66,9 @@ export default async function AccountPage() {
               <Package className="h-6 w-6 text-primary" />
             </div>
             <div>
-              <h2 className="font-semibold">Rendeleseim</h2>
+              <h2 className="font-semibold">Rendeléseim</h2>
               <p className="text-sm text-muted-foreground">
-                Korabbi rendelesek megtekintese
+                Korábbi rendelések megtekintése
               </p>
             </div>
           </div>
@@ -78,15 +78,15 @@ export default async function AccountPage() {
       <div className="mt-8 p-6 border rounded-lg bg-muted/30">
         <div className="flex items-center gap-4 mb-4">
           <Building2 className="h-5 w-5 text-muted-foreground" />
-          <h3 className="font-semibold">Fiok informaciok</h3>
+          <h3 className="font-semibold">Fiók információk</h3>
         </div>
         <dl className="grid gap-2 text-sm">
           <div className="flex gap-2">
-            <dt className="text-muted-foreground">Email:</dt>
+            <dt className="text-muted-foreground">E-mail:</dt>
             <dd>{session.email}</dd>
           </div>
           <div className="flex gap-2">
-            <dt className="text-muted-foreground">Felhasznalonev:</dt>
+            <dt className="text-muted-foreground">Felhasználónév:</dt>
             <dd>{session.username}</dd>
           </div>
         </dl>
@@ -95,7 +95,7 @@ export default async function AccountPage() {
       <div className="mt-8">
         <form action={logoutAction}>
           <Button variant="outline" type="submit">
-            Kijelentkezes
+            Kijelentkezés
           </Button>
         </form>
       </div>

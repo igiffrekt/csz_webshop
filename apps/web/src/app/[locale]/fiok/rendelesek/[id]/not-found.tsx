@@ -6,12 +6,12 @@ export default function OrderNotFound() {
   return (
     <div className="container py-16 text-center">
       <Package className="h-16 w-16 mx-auto text-muted-foreground mb-4" />
-      <h1 className="text-2xl font-bold mb-2">Rendeles nem talalhato</h1>
+      <h1 className="text-2xl font-bold mb-2">Rendelés nem található</h1>
       <p className="text-muted-foreground mb-6">
-        Ez a rendeles nem letezik vagy nincs jogosultsagod a megtekinteshez.
+        Ez a rendelés nem létezik vagy nincs jogosultságod a megtekintéséhez.
       </p>
       <Link href="/fiok/rendelesek">
-        <Button>Vissza a rendelesekhez</Button>
+        <Button>Vissza a rendelésekhez</Button>
       </Link>
     </div>
   );

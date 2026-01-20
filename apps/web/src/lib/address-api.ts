@@ -42,13 +42,13 @@ export async function getAddresses(): Promise<ApiResponse<ShippingAddress[]>> {
     );
 
     if (!res.ok) {
-      return { data: null, error: "Cimek betoltese sikertelen" };
+      return { data: null, error: "Címek betöltése sikertelen" };
     }
 
     const json = await res.json();
     return { data: json.data || [] };
   } catch {
-    return { data: null, error: "Hiba tortent" };
+    return { data: null, error: "Hiba történt" };
   }
 }
 
@@ -78,7 +78,7 @@ export async function createAddress(
       body: JSON.stringify({
         data: {
           ...input,
-          country: input.country || "Magyarorszag",
+          country: input.country || "Magyarország",
           user: session.userId,
         },
       }),
@@ -88,14 +88,14 @@ export async function createAddress(
       const error = await res.json();
       return {
         data: null,
-        error: error.error?.message || "Cim letrehozasa sikertelen",
+        error: error.error?.message || "Cím létrehozása sikertelen",
       };
     }
 
     const json = await res.json();
     return { data: json.data };
   } catch {
-    return { data: null, error: "Hiba tortent" };
+    return { data: null, error: "Hiba történt" };
   }
 }
 
@@ -133,14 +133,14 @@ export async function updateAddress(
       const error = await res.json();
       return {
         data: null,
-        error: error.error?.message || "Cim frissitese sikertelen",
+        error: error.error?.message || "Cím frissítése sikertelen",
       };
     }
 
     const json = await res.json();
     return { data: json.data };
   } catch {
-    return { data: null, error: "Hiba tortent" };
+    return { data: null, error: "Hiba történt" };
   }
 }
 
@@ -167,12 +167,12 @@ export async function deleteAddress(
     );
 
     if (!res.ok) {
-      return { data: null, error: "Cim torlese sikertelen" };
+      return { data: null, error: "Cím törlése sikertelen" };
     }
 
     return { data: true };
   } catch {
-    return { data: null, error: "Hiba tortent" };
+    return { data: null, error: "Hiba történt" };
   }
 }
 

@@ -9,15 +9,15 @@ const STRAPI_URL = process.env.STRAPI_URL || "http://localhost:1337";
 
 // Validation schemas
 const loginSchema = z.object({
-  identifier: z.string().email("Ervenytelen email cim"),
-  password: z.string().min(6, "A jelszo legalabb 6 karakter"),
+  identifier: z.string().email("Érvénytelen e-mail cím"),
+  password: z.string().min(6, "A jelszó legalább 6 karakter"),
 });
 
 const registerSchema = z
   .object({
-    username: z.string().min(3, "A felhasznalonev legalabb 3 karakter"),
-    email: z.string().email("Ervenytelen email cim"),
-    password: z.string().min(6, "A jelszo legalabb 6 karakter"),
+    username: z.string().min(3, "A felhasználónév legalább 3 karakter"),
+    email: z.string().email("Érvénytelen e-mail cím"),
+    password: z.string().min(6, "A jelszó legalább 6 karakter"),
     passwordConfirm: z.string(),
     firstName: z.string().optional(),
     lastName: z.string().optional(),
@@ -31,13 +31,13 @@ const registerSchema = z
   });
 
 const forgotPasswordSchema = z.object({
-  email: z.string().email("Ervenytelen email cim"),
+  email: z.string().email("Érvénytelen e-mail cím"),
 });
 
 const resetPasswordSchema = z
   .object({
-    code: z.string().min(1, "Hianyzik a visszaallitasi kod"),
-    password: z.string().min(6, "A jelszo legalabb 6 karakter"),
+    code: z.string().min(1, "Hiányzik a visszaállítási kód"),
+    password: z.string().min(6, "A jelszó legalább 6 karakter"),
     passwordConfirmation: z.string(),
   })
   .refine((data) => data.password === data.passwordConfirmation, {
@@ -80,7 +80,7 @@ export async function loginAction(
     if (!res.ok) {
       const error = await res.json();
       return {
-        error: error.error?.message || "Hibas email cim vagy jelszo",
+        error: error.error?.message || "Hibás e-mail cím vagy jelszó",
       };
     }
 
@@ -88,7 +88,7 @@ export async function loginAction(
     await createSession(data);
   } catch {
     return {
-      error: "Hiba tortent a bejelentkezes soran. Probald ujra kesobb.",
+      error: "Hiba történt a bejelentkezés során. Próbáld újra később.",
     };
   }
 
@@ -137,13 +137,13 @@ export async function registerAction(
       // Handle common Strapi registration errors
       const message = error.error?.message || "";
       if (message.includes("Email") && message.includes("taken")) {
-        return { error: "Ez az email cim mar regisztralva van" };
+        return { error: "Ez az e-mail cím már regisztrálva van" };
       }
       if (message.includes("Username") && message.includes("taken")) {
-        return { error: "Ez a felhasznalonev mar foglalt" };
+        return { error: "Ez a felhasználónév már foglalt" };
       }
       return {
-        error: error.error?.message || "Regisztracio sikertelen",
+        error: error.error?.message || "Regisztráció sikertelen",
       };
     }
 
@@ -151,7 +151,7 @@ export async function registerAction(
     await createSession(data);
   } catch {
     return {
-      error: "Hiba tortent a regisztracio soran. Probald ujra kesobb.",
+      error: "Hiba történt a regisztráció során. Próbáld újra később.",
     };
   }
 
@@ -237,15 +237,15 @@ export async function resetPasswordAction(
       const error = await res.json();
       const message = error.error?.message || "";
       if (message.includes("code") || message.includes("invalid")) {
-        return { error: "Ervenytelen vagy lejart visszaallitasi link" };
+        return { error: "Érvénytelen vagy lejárt visszaállítási link" };
       }
       return {
-        error: error.error?.message || "Jelszo visszaallitas sikertelen",
+        error: error.error?.message || "Jelszó visszaállítás sikertelen",
       };
     }
   } catch {
     return {
-      error: "Hiba tortent. Probald ujra kesobb.",
+      error: "Hiba történt. Próbáld újra később.",
     };
   }
 
@@ -305,14 +305,14 @@ export async function updateProfileAction(
     if (!res.ok) {
       const error = await res.json();
       return {
-        error: error.error?.message || "Profil frissitese sikertelen",
+        error: error.error?.message || "Profil frissítése sikertelen",
       };
     }
 
     return { success: true };
   } catch {
     return {
-      error: "Hiba tortent a profil frissitese soran. Probald ujra kesobb.",
+      error: "Hiba történt a profil frissítése során. Próbáld újra később.",
     };
   }
 }
@@ -341,12 +341,12 @@ export async function getCurrentUserProfile(): Promise<{
     );
 
     if (!res.ok) {
-      return { user: null, error: "Profil betoltese sikertelen" };
+      return { user: null, error: "Profil betöltése sikertelen" };
     }
 
     const user = await res.json();
     return { user };
   } catch {
-    return { user: null, error: "Hiba tortent" };
+    return { user: null, error: "Hiba történt" };
   }
 }

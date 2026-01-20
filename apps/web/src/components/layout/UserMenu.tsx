@@ -24,7 +24,7 @@ export function UserMenu({ username, email }: UserMenuProps) {
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="icon" className="relative">
           <User className="h-5 w-5" />
-          <span className="sr-only">Felhasznaloi menu</span>
+          <span className="sr-only">Felhasználói menü</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56">
@@ -38,19 +38,19 @@ export function UserMenu({ username, email }: UserMenuProps) {
         <DropdownMenuItem asChild>
           <Link href="/fiok" className="cursor-pointer">
             <Settings className="mr-2 h-4 w-4" />
-            Fiokom
+            Fiókom
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
           <Link href="/fiok/rendelesek" className="cursor-pointer">
             <Package className="mr-2 h-4 w-4" />
-            Rendeleseim
+            Rendeléseim
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
           <Link href="/fiok/cimek" className="cursor-pointer">
             <MapPin className="mr-2 h-4 w-4" />
-            Szallitasi cimek
+            Szállítási címek
           </Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
@@ -61,7 +61,7 @@ export function UserMenu({ username, email }: UserMenuProps) {
               className="flex w-full items-center text-destructive cursor-pointer"
             >
               <LogOut className="mr-2 h-4 w-4" />
-              Kijelentkezes
+              Kijelentkezés
             </button>
           </form>
         </DropdownMenuItem>

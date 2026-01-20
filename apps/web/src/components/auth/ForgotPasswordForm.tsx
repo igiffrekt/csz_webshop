@@ -17,21 +17,21 @@ export function ForgotPasswordForm() {
     return (
       <div className="text-center space-y-4">
         <div className="bg-green-100 text-green-800 px-4 py-3 rounded-md">
-          Ha ez az email cim regisztralva van, hamarosan kapsz egy emailt a jelszo visszaallitasahoz.
+          Ha ez az e-mail cím regisztrálva van, hamarosan kapsz egy e-mailt a jelszó visszaállításához.
         </div>
         <p className="text-sm text-muted-foreground">
-          Nem kaptad meg? Ellenorizd a spam mappat, vagy{" "}
+          Nem kaptad meg? Ellenőrizd a spam mappát, vagy{" "}
           <button
             type="button"
             onClick={() => window.location.reload()}
             className="text-foreground hover:underline"
           >
-            probald ujra
+            próbáld újra
           </button>
         </p>
         <Link href="/auth/bejelentkezes">
           <Button variant="outline" className="w-full">
-            Vissza a bejelentkezeshez
+            Vissza a bejelentkezéshez
           </Button>
         </Link>
       </div>
@@ -47,12 +47,12 @@ export function ForgotPasswordForm() {
       )}
 
       <div className="space-y-2">
-        <Label htmlFor="email">Email cim</Label>
+        <Label htmlFor="email">E-mail cím</Label>
         <Input
           id="email"
           name="email"
           type="email"
-          placeholder="pelda@email.hu"
+          placeholder="példa@email.hu"
           required
           autoComplete="email"
           disabled={isPending}
@@ -65,16 +65,16 @@ export function ForgotPasswordForm() {
       </div>
 
       <Button type="submit" className="w-full" disabled={isPending}>
-        {isPending ? "Kuldese..." : "Jelszo visszaallitas kerese"}
+        {isPending ? "Küldés..." : "Jelszó visszaállítás kérése"}
       </Button>
 
       <p className="text-center text-sm text-muted-foreground">
-        Emlekszel a jelszavadra?{" "}
+        Emlékszel a jelszavadra?{" "}
         <Link
           href="/auth/bejelentkezes"
           className="font-medium text-foreground hover:underline"
         >
-          Bejelentkezes
+          Bejelentkezés
         </Link>
       </p>
     </form>

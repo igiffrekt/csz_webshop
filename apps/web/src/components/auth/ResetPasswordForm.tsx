@@ -27,7 +27,7 @@ export function ResetPasswordForm({ code }: ResetPasswordFormProps) {
       )}
 
       <div className="space-y-2">
-        <Label htmlFor="password">Uj jelszo</Label>
+        <Label htmlFor="password">Új jelszó</Label>
         <Input
           id="password"
           name="password"
@@ -44,7 +44,7 @@ export function ResetPasswordForm({ code }: ResetPasswordFormProps) {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="passwordConfirmation">Jelszo megerositese</Label>
+        <Label htmlFor="passwordConfirmation">Jelszó megerősítése</Label>
         <Input
           id="passwordConfirmation"
           name="passwordConfirmation"
@@ -61,7 +61,7 @@ export function ResetPasswordForm({ code }: ResetPasswordFormProps) {
       </div>
 
       <Button type="submit" className="w-full" disabled={isPending}>
-        {isPending ? "Mentes..." : "Jelszo megvaltoztatasa"}
+        {isPending ? "Mentés..." : "Jelszó megváltoztatása"}
       </Button>
     </form>
   );

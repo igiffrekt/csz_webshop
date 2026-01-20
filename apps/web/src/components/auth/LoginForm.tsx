@@ -30,12 +30,12 @@ export function LoginForm({ redirectTo }: LoginFormProps) {
       )}
 
       <div className="space-y-2">
-        <Label htmlFor="email">Email cim</Label>
+        <Label htmlFor="email">E-mail cím</Label>
         <Input
           id="email"
           name="email"
           type="email"
-          placeholder="pelda@email.hu"
+          placeholder="példa@email.hu"
           required
           autoComplete="email"
           disabled={isPending}
@@ -49,12 +49,12 @@ export function LoginForm({ redirectTo }: LoginFormProps) {
 
       <div className="space-y-2">
         <div className="flex items-center justify-between">
-          <Label htmlFor="password">Jelszo</Label>
+          <Label htmlFor="password">Jelszó</Label>
           <Link
             href="/auth/elfelejtett-jelszo"
             className="text-sm text-muted-foreground hover:text-foreground"
           >
-            Elfelejtett jelszo?
+            Elfelejtett jelszó?
           </Link>
         </div>
         <Input
@@ -73,16 +73,16 @@ export function LoginForm({ redirectTo }: LoginFormProps) {
       </div>
 
       <Button type="submit" className="w-full" disabled={isPending}>
-        {isPending ? "Bejelentkezes..." : "Bejelentkezes"}
+        {isPending ? "Bejelentkezés..." : "Bejelentkezés"}
       </Button>
 
       <p className="text-center text-sm text-muted-foreground">
-        Meg nincs fiokod?{" "}
+        Még nincs fiókod?{" "}
         <Link
           href="/auth/regisztracio"
           className="font-medium text-foreground hover:underline"
         >
-          Regisztracio
+          Regisztráció
         </Link>
       </p>
     </form>

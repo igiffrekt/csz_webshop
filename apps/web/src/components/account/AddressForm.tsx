@@ -42,14 +42,14 @@ export function AddressForm({ address, onSubmit, onCancel }: AddressFormProps) {
       street: formData.get("street") as string,
       city: formData.get("city") as string,
       postalCode: formData.get("postalCode") as string,
-      country: (formData.get("country") as string) || "Magyarorszag",
+      country: (formData.get("country") as string) || "Magyarország",
       phone: (formData.get("phone") as string) || "",
       isDefault: formData.get("isDefault") === "on",
     };
 
     // Basic validation
     if (!data.label || !data.recipientName || !data.street || !data.city || !data.postalCode) {
-      setError("Toltsd ki az osszes kotelezo mezot");
+      setError("Töltsd ki az összes kötelező mezőt");
       setIsSubmitting(false);
       return;
     }
@@ -57,7 +57,7 @@ export function AddressForm({ address, onSubmit, onCancel }: AddressFormProps) {
     try {
       await onSubmit(data);
     } catch {
-      setError("Hiba tortent a mentes soran");
+      setError("Hiba történt a mentés során");
     } finally {
       setIsSubmitting(false);
     }
@@ -72,7 +72,7 @@ export function AddressForm({ address, onSubmit, onCancel }: AddressFormProps) {
       )}
 
       <div className="space-y-2">
-        <Label htmlFor="label">Cim cimkeje *</Label>
+        <Label htmlFor="label">Cím címkéje *</Label>
         <Input
           id="label"
           name="label"
@@ -85,7 +85,7 @@ export function AddressForm({ address, onSubmit, onCancel }: AddressFormProps) {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="recipientName">Cimzett neve *</Label>
+        <Label htmlFor="recipientName">Címzett neve *</Label>
         <Input
           id="recipientName"
           name="recipientName"
@@ -98,7 +98,7 @@ export function AddressForm({ address, onSubmit, onCancel }: AddressFormProps) {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="street">Utca, hazszam *</Label>
+        <Label htmlFor="street">Utca, házszám *</Label>
         <Input
           id="street"
           name="street"
@@ -112,7 +112,7 @@ export function AddressForm({ address, onSubmit, onCancel }: AddressFormProps) {
 
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="space-y-2">
-          <Label htmlFor="postalCode">Iranyitoszam *</Label>
+          <Label htmlFor="postalCode">Irányítószám *</Label>
           <Input
             id="postalCode"
             name="postalCode"
@@ -125,7 +125,7 @@ export function AddressForm({ address, onSubmit, onCancel }: AddressFormProps) {
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="city">Varos *</Label>
+          <Label htmlFor="city">Város *</Label>
           <Input
             id="city"
             name="city"
@@ -139,19 +139,19 @@ export function AddressForm({ address, onSubmit, onCancel }: AddressFormProps) {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="country">Orszag</Label>
+        <Label htmlFor="country">Ország</Label>
         <Input
           id="country"
           name="country"
           type="text"
-          defaultValue={address?.country || "Magyarorszag"}
+          defaultValue={address?.country || "Magyarország"}
           autoComplete="country-name"
           disabled={isSubmitting}
         />
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="phone">Telefonszam</Label>
+        <Label htmlFor="phone">Telefonszám</Label>
         <Input
           id="phone"
           name="phone"
@@ -170,16 +170,16 @@ export function AddressForm({ address, onSubmit, onCancel }: AddressFormProps) {
           defaultChecked={address?.isDefault || false}
         />
         <Label htmlFor="isDefault" className="text-sm font-normal cursor-pointer">
-          Beallitas alapertelmezett cimkent
+          Beállítás alapértelmezett címként
         </Label>
       </div>
 
       <div className="flex gap-2 pt-4">
         <Button type="submit" disabled={isSubmitting}>
-          {isSubmitting ? "Mentes..." : isEdit ? "Cim frissitese" : "Cim mentese"}
+          {isSubmitting ? "Mentés..." : isEdit ? "Cím frissítése" : "Cím mentése"}
         </Button>
         <Button type="button" variant="outline" onClick={onCancel} disabled={isSubmitting}>
-          Megse
+          Mégse
         </Button>
       </div>
     </form>

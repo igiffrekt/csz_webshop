@@ -4,13 +4,13 @@ import { Badge } from "@/components/ui/badge";
 import type { Order, OrderStatus } from "@csz/types";
 
 const statusLabels: Record<OrderStatus, string> = {
-  pending: "Fizetesre var",
+  pending: "Fizetésre vár",
   paid: "Fizetve",
-  processing: "Feldolgozas alatt",
-  shipped: "Kiszallitva",
-  delivered: "Kiszallitva",
-  cancelled: "Torolt",
-  refunded: "Visszateritett",
+  processing: "Feldolgozás alatt",
+  shipped: "Kiszállítva",
+  delivered: "Kézbesítve",
+  cancelled: "Törölve",
+  refunded: "Visszatérítve",
 };
 
 const statusVariants: Record<OrderStatus, "default" | "secondary" | "destructive" | "outline"> = {
@@ -52,7 +52,7 @@ export function OrderCard({ order }: OrderCardProps) {
         <div className="text-right">
           <p className="font-semibold">{formatPrice(order.total)}</p>
           <p className="text-sm text-muted-foreground">
-            {order.lineItems.length} termek
+            {order.lineItems.length} termék
           </p>
         </div>
       </div>

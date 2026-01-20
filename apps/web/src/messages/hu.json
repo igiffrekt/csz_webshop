@@ -67,11 +67,11 @@
     "backToProducts": "Vissza a termékekhez"
   },
   "categories": {
-    "title": "Kategoriak",
-    "all": "Osszes kategoria",
-    "noCategories": "Jelenleg nincsenek kategoriak",
-    "subcategories": "Alkategoriak",
-    "products": "Termekek"
+    "title": "Kategóriák",
+    "all": "Összes kategória",
+    "noCategories": "Jelenleg nincsenek kategóriák",
+    "subcategories": "Alkategóriák",
+    "products": "Termékek"
   },
   "cart": {
     "title": "Kosár",

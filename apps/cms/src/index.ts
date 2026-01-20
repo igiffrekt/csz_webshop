@@ -71,6 +71,9 @@ async function configureAuthenticatedPermissions(strapi: Core.Strapi) {
 
   // Define authenticated permissions for user account features
   const authenticatedPermissions = [
+    // User profile - allow users to read and update their own profile
+    { action: 'plugin::users-permissions.user.me' },
+    { action: 'plugin::users-permissions.user.updateMe' },
     // ShippingAddress CRUD
     { action: 'api::shipping-address.shipping-address.find' },
     { action: 'api::shipping-address.shipping-address.findOne' },

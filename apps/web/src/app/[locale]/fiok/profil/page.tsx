@@ -7,8 +7,8 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Profil beallitasok | CSZ Tuzvedelmi Webaruhaz",
-  description: "Szemelyes es ceges adatok szerkesztese",
+  title: "Profil beállítások | CSZ Tűzvédelmi Webáruház",
+  description: "Személyes és céges adatok szerkesztése",
 };
 
 export default async function ProfilePage() {
@@ -22,10 +22,10 @@ export default async function ProfilePage() {
     return (
       <div className="container py-8">
         <div className="text-center">
-          <p className="text-destructive">{error || "Profil betoltese sikertelen"}</p>
+          <p className="text-destructive">{error || "Profil betöltése sikertelen"}</p>
           <Link href="/fiok">
             <Button variant="outline" className="mt-4">
-              Vissza a fiokhoz
+              Vissza a fiókhoz
             </Button>
           </Link>
         </div>
@@ -41,24 +41,24 @@ export default async function ProfilePage() {
           className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground mb-4"
         >
           <ArrowLeft className="h-4 w-4 mr-1" />
-          Vissza a fiokhoz
+          Vissza a fiókhoz
         </Link>
-        <h1 className="text-2xl font-bold">Profil beallitasok</h1>
+        <h1 className="text-2xl font-bold">Profil beállítások</h1>
         <p className="text-muted-foreground mt-1">
-          Frissitsd a szemelyes es ceges adataidat
+          Frissítsd a személyes és céges adataidat
         </p>
       </div>
 
       <div className="border rounded-lg p-6">
         <div className="mb-6 pb-4 border-b">
           <p className="text-sm text-muted-foreground">
-            <span className="font-medium">Email:</span> {user.email}
+            <span className="font-medium">E-mail:</span> {user.email}
           </p>
           <p className="text-sm text-muted-foreground">
-            <span className="font-medium">Felhasznalonev:</span> {user.username}
+            <span className="font-medium">Felhasználónév:</span> {user.username}
           </p>
           <p className="text-xs text-muted-foreground mt-2">
-            Az email cim es felhasznalonev nem modosithato.
+            Az e-mail cím és felhasználónév nem módosítható.
           </p>
         </div>
 

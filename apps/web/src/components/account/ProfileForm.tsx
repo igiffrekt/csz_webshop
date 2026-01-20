@@ -27,16 +27,16 @@ export function ProfileForm({ user }: ProfileFormProps) {
 
       {state.success && (
         <div className="bg-green-100 text-green-800 px-4 py-3 rounded-md text-sm">
-          Profil sikeresen frissitve!
+          Profil sikeresen frissítve!
         </div>
       )}
 
       <div className="space-y-4">
-        <h2 className="text-lg font-semibold">Szemelyes adatok</h2>
+        <h2 className="text-lg font-semibold">Személyes adatok</h2>
 
         <div className="grid gap-4 sm:grid-cols-2">
           <div className="space-y-2">
-            <Label htmlFor="firstName">Vezeteknev</Label>
+            <Label htmlFor="firstName">Vezetéknév</Label>
             <Input
               id="firstName"
               name="firstName"
@@ -53,7 +53,7 @@ export function ProfileForm({ user }: ProfileFormProps) {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="lastName">Keresztnev</Label>
+            <Label htmlFor="lastName">Keresztnév</Label>
             <Input
               id="lastName"
               name="lastName"
@@ -71,7 +71,7 @@ export function ProfileForm({ user }: ProfileFormProps) {
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="phone">Telefonszam</Label>
+          <Label htmlFor="phone">Telefonszám</Label>
           <Input
             id="phone"
             name="phone"
@@ -90,13 +90,13 @@ export function ProfileForm({ user }: ProfileFormProps) {
       </div>
 
       <div className="space-y-4 pt-4 border-t">
-        <h2 className="text-lg font-semibold">Ceges adatok (B2B)</h2>
+        <h2 className="text-lg font-semibold">Céges adatok (B2B)</h2>
         <p className="text-sm text-muted-foreground">
-          Toltsd ki, ha ceges szamlat szeretnel kerni
+          Töltsd ki, ha céges számlát szeretnél kérni
         </p>
 
         <div className="space-y-2">
-          <Label htmlFor="companyName">Cegnev</Label>
+          <Label htmlFor="companyName">Cégnév</Label>
           <Input
             id="companyName"
             name="companyName"
@@ -113,7 +113,7 @@ export function ProfileForm({ user }: ProfileFormProps) {
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="vatNumber">Adoszam</Label>
+          <Label htmlFor="vatNumber">Adószám</Label>
           <Input
             id="vatNumber"
             name="vatNumber"
@@ -132,7 +132,7 @@ export function ProfileForm({ user }: ProfileFormProps) {
 
       <div className="pt-4">
         <Button type="submit" disabled={isPending}>
-          {isPending ? "Mentes..." : "Valtozasok mentese"}
+          {isPending ? "Mentés..." : "Változások mentése"}
         </Button>
       </div>
     </form>

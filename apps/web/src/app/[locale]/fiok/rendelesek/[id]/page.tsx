@@ -8,13 +8,13 @@ import { ArrowLeft } from "lucide-react";
 import type { Order, OrderStatus } from "@csz/types";
 
 const statusLabels: Record<OrderStatus, string> = {
-  pending: "Fizetesre var",
+  pending: "Fizetésre vár",
   paid: "Fizetve",
-  processing: "Feldolgozas alatt",
-  shipped: "Kiszallitva",
-  delivered: "Kiszallitva",
-  cancelled: "Torolt",
-  refunded: "Visszateritett",
+  processing: "Feldolgozás alatt",
+  shipped: "Kiszállítva",
+  delivered: "Kézbesítve",
+  cancelled: "Törölve",
+  refunded: "Visszatérítve",
 };
 
 const statusVariants: Record<OrderStatus, "default" | "secondary" | "destructive" | "outline"> = {
@@ -34,7 +34,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { id } = await params;
   return {
-    title: `Rendeles #${id.substring(0, 8)} | CSZ Tuzvedelmi Webaruhaz`,
+    title: `Rendelés #${id.substring(0, 8)} | CSZ Tűzvédelmi Webáruház`,
   };
 }
 
@@ -74,11 +74,11 @@ export default async function OrderDetailPage({
           className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground mb-4"
         >
           <ArrowLeft className="h-4 w-4 mr-1" />
-          Vissza a rendelesekhez
+          Vissza a rendelésekhez
         </Link>
 
         <div className="flex items-center gap-3 mb-2">
-          <h1 className="text-2xl font-bold">Rendeles #{order.orderNumber}</h1>
+          <h1 className="text-2xl font-bold">Rendelés #{order.orderNumber}</h1>
           <Badge variant={statusVariants[order.status]}>
             {statusLabels[order.status]}
           </Badge>
@@ -91,7 +91,7 @@ export default async function OrderDetailPage({
         <div className="lg:col-span-2 space-y-6">
           <div className="border rounded-lg">
             <div className="p-4 border-b">
-              <h2 className="font-semibold">Rendelt termekek</h2>
+              <h2 className="font-semibold">Rendelt termékek</h2>
             </div>
             <div className="divide-y">
               {order.lineItems.map((item) => (
@@ -118,20 +118,20 @@ export default async function OrderDetailPage({
         <div className="space-y-6">
           {/* Price summary */}
           <div className="border rounded-lg p-4">
-            <h2 className="font-semibold mb-4">Osszesites</h2>
+            <h2 className="font-semibold mb-4">Összesítés</h2>
             <div className="space-y-2 text-sm">
               <div className="flex justify-between">
-                <span>Reszosszeg</span>
+                <span>Részösszeg</span>
                 <span>{formatPrice(order.subtotal)}</span>
               </div>
               {order.discount > 0 && (
                 <div className="flex justify-between text-green-600">
-                  <span>Kedvezmeny</span>
+                  <span>Kedvezmény</span>
                   <span>-{formatPrice(order.discount)}</span>
                 </div>
               )}
               <div className="flex justify-between">
-                <span>Szallitas</span>
+                <span>Szállítás</span>
                 <span>
                   {order.shipping === 0
                     ? "Ingyenes"
@@ -143,7 +143,7 @@ export default async function OrderDetailPage({
                 <span>{formatPrice(order.tax)}</span>
               </div>
               <div className="flex justify-between font-semibold text-base pt-2 border-t">
-                <span>Osszesen</span>
+                <span>Összesen</span>
                 <span>{formatPrice(order.total)}</span>
               </div>
             </div>
@@ -151,7 +151,7 @@ export default async function OrderDetailPage({
 
           {/* Shipping address */}
           <div className="border rounded-lg p-4">
-            <h2 className="font-semibold mb-3">Szallitasi cim</h2>
+            <h2 className="font-semibold mb-3">Szállítási cím</h2>
             <div className="text-sm text-muted-foreground space-y-1">
               <p>{order.shippingAddress.recipientName}</p>
               <p>{order.shippingAddress.street}</p>
@@ -168,7 +168,7 @@ export default async function OrderDetailPage({
           {/* Billing address */}
           {order.billingAddress && (
             <div className="border rounded-lg p-4">
-              <h2 className="font-semibold mb-3">Szamlazasi cim</h2>
+              <h2 className="font-semibold mb-3">Számlázási cím</h2>
               <div className="text-sm text-muted-foreground space-y-1">
                 {order.billingAddress.companyName && (
                   <p className="font-medium text-foreground">
@@ -176,7 +176,7 @@ export default async function OrderDetailPage({
                   </p>
                 )}
                 {order.billingAddress.vatNumber && (
-                  <p>Adoszam: {order.billingAddress.vatNumber}</p>
+                  <p>Adószám: {order.billingAddress.vatNumber}</p>
                 )}
                 <p>{order.billingAddress.recipientName}</p>
                 <p>{order.billingAddress.street}</p>
@@ -191,7 +191,7 @@ export default async function OrderDetailPage({
           {/* Payment info */}
           {order.paymentMethod && (
             <div className="border rounded-lg p-4">
-              <h2 className="font-semibold mb-3">Fizetes</h2>
+              <h2 className="font-semibold mb-3">Fizetés</h2>
               <div className="text-sm text-muted-foreground">
                 <p>{order.paymentMethod}</p>
                 {order.paidAt && (

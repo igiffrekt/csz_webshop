@@ -47,7 +47,7 @@ export function AddressesClient({ initialAddresses }: AddressesClientProps) {
 
     if (!res.ok) {
       const error = await res.json();
-      throw new Error(error.message || "Hiba tortent");
+      throw new Error(error.message || "Hiba történt");
     }
 
     setIsDialogOpen(false);
@@ -60,7 +60,7 @@ export function AddressesClient({ initialAddresses }: AddressesClientProps) {
     });
 
     if (!res.ok) {
-      throw new Error("Torles sikertelen");
+      throw new Error("Törlés sikertelen");
     }
 
     setAddresses(addresses.filter((a) => a.documentId !== documentId));
@@ -75,7 +75,7 @@ export function AddressesClient({ initialAddresses }: AddressesClientProps) {
     });
 
     if (!res.ok) {
-      throw new Error("Beallitas sikertelen");
+      throw new Error("Beállítás sikertelen");
     }
 
     router.refresh();
@@ -86,20 +86,20 @@ export function AddressesClient({ initialAddresses }: AddressesClientProps) {
       <div className="flex justify-end mb-6">
         <Button onClick={handleAdd}>
           <Plus className="h-4 w-4 mr-2" />
-          Uj cim hozzaadasa
+          Új cím hozzáadása
         </Button>
       </div>
 
       {addresses.length === 0 ? (
         <div className="text-center py-12 border rounded-lg bg-muted/30">
           <MapPin className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-          <h3 className="font-semibold mb-2">Nincsenek mentett cimek</h3>
+          <h3 className="font-semibold mb-2">Nincsenek mentett címek</h3>
           <p className="text-sm text-muted-foreground mb-4">
-            Adj hozza egy szallitasi cimet a gyorsabb penztari eljarashoz
+            Adj hozzá egy szállítási címet a gyorsabb pénztári eljáráshoz
           </p>
           <Button onClick={handleAdd}>
             <Plus className="h-4 w-4 mr-2" />
-            Cim hozzaadasa
+            Cím hozzáadása
           </Button>
         </div>
       ) : (
@@ -120,7 +120,7 @@ export function AddressesClient({ initialAddresses }: AddressesClientProps) {
         <DialogContent className="max-w-md">
           <DialogHeader>
             <DialogTitle>
-              {editingAddress ? "Cim szerkesztese" : "Uj cim hozzaadasa"}
+              {editingAddress ? "Cím szerkesztése" : "Új cím hozzáadása"}
             </DialogTitle>
           </DialogHeader>
           <AddressForm

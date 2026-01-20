@@ -4,8 +4,8 @@ import { Button } from "@/components/ui/button";
 import { ResetPasswordForm } from "@/components/auth/ResetPasswordForm";
 
 export const metadata: Metadata = {
-  title: "Jelszo visszaallitas | CSZ Tuzvedelmi Webaruhaz",
-  description: "Allitsd be az uj jelszavadat",
+  title: "Jelszó visszaállítás | CSZ Tűzvédelmi Webáruház",
+  description: "Állítsd be az új jelszavadat",
 };
 
 interface ResetPasswordPageProps {
@@ -21,12 +21,12 @@ export default async function ResetPasswordPage({
     return (
       <div className="container max-w-md py-16">
         <div className="text-center space-y-4">
-          <h1 className="text-2xl font-bold">Ervenytelen link</h1>
+          <h1 className="text-2xl font-bold">Érvénytelen link</h1>
           <p className="text-muted-foreground">
-            Ez a jelszo visszaallitasi link ervenytelen vagy lejart.
+            Ez a jelszó visszaállítási link érvénytelen vagy lejárt.
           </p>
           <Link href="/auth/elfelejtett-jelszo">
-            <Button>Uj link kerese</Button>
+            <Button>Új link kérése</Button>
           </Link>
         </div>
       </div>
@@ -36,9 +36,9 @@ export default async function ResetPasswordPage({
   return (
     <div className="container max-w-md py-16">
       <div className="text-center mb-8">
-        <h1 className="text-2xl font-bold">Uj jelszo beallitasa</h1>
+        <h1 className="text-2xl font-bold">Új jelszó beállítása</h1>
         <p className="text-muted-foreground mt-2">
-          Add meg az uj jelszavadat
+          Add meg az új jelszavadat
         </p>
       </div>
 
