@@ -7,21 +7,21 @@
 
 **Core Value:** Customers can browse fire safety products with clear certification info and complete purchases reliably
 
-**Current Focus:** Phase 4 in progress - Cart sheet and header integration complete
+**Current Focus:** Phase 4 in progress - Coupon UI integrated into cart
 
 ## Current Position
 
 **Phase:** 4 of 10 (Shopping Cart) - IN PROGRESS
-**Plan:** 6 of 8 complete (04-01, 04-02, 04-03, 04-04, 04-05, 04-06)
+**Plan:** 7 of 8 complete (04-01, 04-02, 04-03, 04-04, 04-05, 04-06, 04-07)
 **Status:** In progress
-**Last activity:** 2026-01-20 - Completed 04-05-PLAN.md (Cart Sheet & Header Integration)
+**Last activity:** 2026-01-20 - Completed 04-07-PLAN.md (Coupon UI & Cart Integration)
 
 **Progress:**
 ```
 Phase 1:  [==========] Infrastructure Foundation (5/5 plans) COMPLETE
 Phase 2:  [==========] Product Catalog Backend (4/4 plans) COMPLETE
 Phase 3:  [==========] Frontend Shell & Product Display (5/5 plans) COMPLETE
-Phase 4:  [=======   ] Shopping Cart (6/8 plans)
+Phase 4:  [========= ] Shopping Cart (7/8 plans)
 Phase 5:  [          ] Authentication & User Accounts
 Phase 6:  [          ] Checkout & Payments
 Phase 7:  [          ] Admin Order Management
@@ -29,18 +29,18 @@ Phase 8:  [          ] B2B Quote System
 Phase 9:  [          ] Content & Polish
 Phase 10: [          ] Migration & Launch
 
-Overall: 3/10 phases complete (20/36 plans)
+Overall: 3/10 phases complete (21/36 plans)
 ```
 
 ## Performance Metrics
 
 | Metric | Value | Notes |
 |--------|-------|-------|
-| Plans completed | 20 | 01-01 through 01-05, 02-01 through 02-04, 03-01 through 03-05, 04-01 through 04-06 |
+| Plans completed | 21 | 01-01 through 01-05, 02-01 through 02-04, 03-01 through 03-05, 04-01 through 04-07 |
 | Phases completed | 3 | Infrastructure Foundation, Product Catalog Backend, Frontend Shell |
 | Requirements done | 23/78 | ADMN-26 through ADMN-28, ADMN-01 through ADMN-09, PROD-01 through PROD-08, CONT-01 through CONT-03, LANG-01, LANG-04, PERF-03, PERF-04 |
 | Blockers hit | 1 | Docker daemon (resolved by user starting Docker) |
-| Decisions made | 54 | See below |
+| Decisions made | 58 | See below |
 
 ## Accumulated Context
 
@@ -102,6 +102,10 @@ Overall: 3/10 phases complete (20/36 plans)
 | ProductActions client wrapper | Product page remains Server Component, cart interactions in client island | 2026-01-20 |
 | Hydration-aware CartSheet | Loading state prevents SSR mismatch with localStorage cart | 2026-01-20 |
 | HeaderCart client island | Header stays Server Component, only cart interaction is client-side | 2026-01-20 |
+| Inline error for coupon validation | Error below input clearer than toast for validation messages | 2026-01-20 |
+| Uppercase coupon codes | Auto-convert input to uppercase for consistent code handling | 2026-01-20 |
+| Green badge for applied coupon | Visual confirmation with code, discount, and remove button | 2026-01-20 |
+| Cart API client pattern | Centralized fetch functions for cart-related API calls | 2026-01-20 |
 
 ### Architecture Notes
 
@@ -152,6 +156,9 @@ From research:
 - [x] ProductActions component for product page (04-03)
 - [x] CartSheet slide-out panel (04-05)
 - [x] HeaderCart integration (04-05)
+- [x] Cart API client (04-07)
+- [x] CouponInput component (04-07)
+- [x] CouponInput integration in CartSheet (04-07)
 
 ### Blockers
 
@@ -161,18 +168,17 @@ From research:
 
 ### Last Session Summary
 
-- Completed Plan 04-05: Cart Sheet & Header Integration
-- Created CartSheet slide-out panel with hydration-aware loading state
-- Created HeaderCart client component for cart state management
-- Integrated HeaderCart into Header, preserving Server Component pattern
-- Full cart viewing flow now operational: icon click opens sheet
+- Completed Plan 04-07: Coupon UI & Cart Integration
+- Created cart-api.ts with applyCoupon function
+- Created CouponInput component with form validation and applied coupon display
+- Integrated CouponInput into CartSheet between items and summary
+- Full coupon flow operational: entry, validation, display, removal
 
 ### Next Actions
 
 1. Continue Phase 4: Shopping Cart
-2. Execute remaining Wave 3 plans (04-07, 04-08)
-3. Create dedicated cart page (04-07)
-4. Add coupon UI to cart (04-08)
+2. Execute remaining plan (04-08)
+3. Create dedicated cart page (04-08)
 
 ### Open Questions
 
@@ -194,3 +200,4 @@ From research that need resolution:
 *Phase 4 plan 04-04 completed: 2026-01-20*
 *Phase 4 plan 04-05 completed: 2026-01-20*
 *Phase 4 plan 04-06 completed: 2026-01-20*
+*Phase 4 plan 04-07 completed: 2026-01-20*
