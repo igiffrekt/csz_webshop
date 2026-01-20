@@ -1,7 +1,6 @@
 import { formatPrice } from '@/lib/formatters';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { ShoppingCart, Check, X } from 'lucide-react';
+import { Check, X } from 'lucide-react';
 import { getTranslations } from 'next-intl/server';
 import type { Product } from '@csz/types';
 
@@ -66,12 +65,6 @@ export async function ProductInfo({ product }: ProductInfoProps) {
       {product.shortDescription && (
         <p className="text-muted-foreground">{product.shortDescription}</p>
       )}
-
-      {/* Add to cart button (placeholder - functional in Phase 4) */}
-      <Button size="lg" className="w-full sm:w-auto" disabled={!inStock}>
-        <ShoppingCart className="mr-2 h-5 w-5" />
-        {t('addToCart')}
-      </Button>
     </div>
   );
 }

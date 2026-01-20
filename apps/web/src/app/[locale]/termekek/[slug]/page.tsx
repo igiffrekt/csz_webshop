@@ -1,9 +1,8 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getProduct } from '@/lib/api';
-import { ProductGallery } from '@/components/product/ProductGallery';
 import { ProductInfo } from '@/components/product/ProductInfo';
-import { ProductActions } from '@/components/product/ProductActions';
+import { ProductDetails } from '@/components/product/ProductDetails';
 import { CertBadges } from '@/components/product/CertBadges';
 import { SpecsTable } from '@/components/product/SpecsTable';
 import { DocumentList } from '@/components/product/DocumentList';
@@ -81,27 +80,15 @@ export default async function ProductPage({ params }: Props) {
           <span>{product.name}</span>
         </nav>
 
-        {/* Main product section */}
-        <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
-          {/* Left: Gallery */}
-          <ProductGallery
-            images={product.images || []}
-            productName={product.name}
-          />
+        {/* Main product section - unified client component for gallery + variant selection */}
+        <ProductDetails product={product}>
+          <ProductInfo product={product} />
 
-          {/* Right: Product info */}
-          <div>
-            <ProductInfo product={product} />
-
-            {/* Certification badges */}
-            {product.certifications && product.certifications.length > 0 && (
-              <CertBadges certifications={product.certifications} />
-            )}
-
-            {/* Variant selector and add to cart */}
-            <ProductActions product={product} />
-          </div>
-        </div>
+          {/* Certification badges */}
+          {product.certifications && product.certifications.length > 0 && (
+            <CertBadges certifications={product.certifications} />
+          )}
+        </ProductDetails>
 
         {/* Full description */}
         {product.description && (
