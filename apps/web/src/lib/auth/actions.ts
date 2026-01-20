@@ -289,9 +289,10 @@ export async function updateProfileAction(
   }
 
   try {
-    // Update user via Strapi Users & Permissions API
+    // Update user via Strapi Users & Permissions /me endpoint
+    // This uses the updateMe permission instead of the general update permission
     const res = await fetch(
-      `${STRAPI_URL}/api/users/${session.userId}`,
+      `${STRAPI_URL}/api/users/me`,
       {
         method: "PUT",
         headers: {
