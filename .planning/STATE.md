@@ -7,21 +7,21 @@
 
 **Core Value:** Customers can browse fire safety products with clear certification info and complete purchases reliably
 
-**Current Focus:** Phase 4 in progress - Coupon content type and cart store implemented
+**Current Focus:** Phase 4 in progress - Coupon validation API endpoint implemented
 
 ## Current Position
 
 **Phase:** 4 of 10 (Shopping Cart) - IN PROGRESS
-**Plan:** 2 of 8 complete (04-01, 04-02)
+**Plan:** 3 of 8 complete (04-01, 04-02, 04-06)
 **Status:** In progress
-**Last activity:** 2026-01-20 - Completed 04-01-PLAN.md (Coupon Content Type)
+**Last activity:** 2026-01-20 - Completed 04-06-PLAN.md (Coupon Validation API)
 
 **Progress:**
 ```
 Phase 1:  [==========] Infrastructure Foundation (5/5 plans) COMPLETE
 Phase 2:  [==========] Product Catalog Backend (4/4 plans) COMPLETE
 Phase 3:  [==========] Frontend Shell & Product Display (5/5 plans) COMPLETE
-Phase 4:  [==        ] Shopping Cart (2/8 plans)
+Phase 4:  [===       ] Shopping Cart (3/8 plans)
 Phase 5:  [          ] Authentication & User Accounts
 Phase 6:  [          ] Checkout & Payments
 Phase 7:  [          ] Admin Order Management
@@ -29,18 +29,18 @@ Phase 8:  [          ] B2B Quote System
 Phase 9:  [          ] Content & Polish
 Phase 10: [          ] Migration & Launch
 
-Overall: 3/10 phases complete (16/36 plans)
+Overall: 3/10 phases complete (17/36 plans)
 ```
 
 ## Performance Metrics
 
 | Metric | Value | Notes |
 |--------|-------|-------|
-| Plans completed | 16 | 01-01 through 01-05, 02-01 through 02-04, 03-01 through 03-05, 04-01 through 04-02 |
+| Plans completed | 17 | 01-01 through 01-05, 02-01 through 02-04, 03-01 through 03-05, 04-01, 04-02, 04-06 |
 | Phases completed | 3 | Infrastructure Foundation, Product Catalog Backend, Frontend Shell |
 | Requirements done | 23/78 | ADMN-26 through ADMN-28, ADMN-01 through ADMN-09, PROD-01 through PROD-08, CONT-01 through CONT-03, LANG-01, LANG-04, PERF-03, PERF-04 |
 | Blockers hit | 1 | Docker daemon (resolved by user starting Docker) |
-| Decisions made | 43 | See below |
+| Decisions made | 47 | See below |
 
 ## Accumulated Context
 
@@ -91,6 +91,10 @@ Overall: 3/10 phases complete (16/36 plans)
 | Zustand 5.x for cart state | Minimal API, built-in persist middleware, excellent TypeScript support | 2026-01-20 |
 | localStorage cart persistence | Cart survives browser sessions under 'csz-cart' key | 2026-01-20 |
 | Hydration hook for SSR safety | Prevents hydration mismatches with useHydration() hook | 2026-01-20 |
+| qs for Strapi query building | Same library as web app, consistent filter construction | 2026-01-20 |
+| Server-side coupon validation | Frontend cannot manipulate discount amounts, all calculation on API | 2026-01-20 |
+| Case-insensitive coupon codes | Using Strapi $eqi operator for user-friendly code entry | 2026-01-20 |
+| Discount capped at subtotal | Prevents negative totals when fixed discount exceeds order amount | 2026-01-20 |
 
 ### Architecture Notes
 
@@ -134,6 +138,7 @@ From research:
 - [x] Zustand cart store with localStorage persistence (04-02)
 - [x] Cart types (CartItem, AppliedCoupon) in @csz/types (04-02)
 - [x] Hydration hook for SSR safety (04-02)
+- [x] Coupon validation API endpoint (04-06)
 
 ### Blockers
 
@@ -143,18 +148,18 @@ From research:
 
 ### Last Session Summary
 
-- Completed Plan 04-01: Coupon Content Type
-- Created Coupon collection type in Strapi with all discount management fields
-- Added full Coupon TypeScript interface to @csz/types
-- Configured public find and Store Manager CRUD permissions
-- Verified API endpoint returns coupon data correctly
+- Completed Plan 04-06: Coupon Validation API
+- Created POST /cart/apply-coupon Fastify endpoint
+- Validates coupons server-side against Strapi with full business logic
+- Returns calculated discount amount for percentage and fixed types
+- Hungarian error messages for all validation failures
 
 ### Next Actions
 
 1. Continue Phase 4: Shopping Cart
-2. Execute 04-03: Coupon Application UI
+2. Execute remaining Wave 2 plans (04-03 through 04-08)
 3. Build AddToCartButton component (04-03)
-4. Build cart drawer with quantity controls (04-05)
+4. Build cart drawer with coupon application UI (04-07)
 
 ### Open Questions
 
@@ -172,3 +177,4 @@ From research that need resolution:
 *Phase 3 completed: 2026-01-20*
 *Phase 4 plan 04-01 completed: 2026-01-20*
 *Phase 4 plan 04-02 completed: 2026-01-20*
+*Phase 4 plan 04-06 completed: 2026-01-20*
