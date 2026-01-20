@@ -144,14 +144,14 @@ Plans:
 **Plans:** 8 plans in 4 waves
 
 Plans:
-- [ ] 04-01-PLAN.md — Create Coupon content type in Strapi CMS (Wave 1)
-- [ ] 04-02-PLAN.md — Create Zustand cart store with localStorage persistence (Wave 1)
-- [ ] 04-03-PLAN.md — Implement add-to-cart with variant selection and animation (Wave 2)
-- [ ] 04-04-PLAN.md — Create cart UI foundation components (CartIcon, CartItem, CartSummary) (Wave 2)
-- [ ] 04-05-PLAN.md — Create CartSheet slide-out panel and Header integration (Wave 2)
-- [ ] 04-06-PLAN.md — Create Fastify coupon validation API endpoint (Wave 2)
-- [ ] 04-07-PLAN.md — Integrate coupon input into cart with API validation (Wave 3)
-- [ ] 04-08-PLAN.md — Verify complete shopping cart functionality (Wave 4)
+- [x] 04-01-PLAN.md — Create Coupon content type in Strapi CMS (Wave 1)
+- [x] 04-02-PLAN.md — Create Zustand cart store with localStorage persistence (Wave 1)
+- [x] 04-03-PLAN.md — Implement add-to-cart with variant selection and animation (Wave 2)
+- [x] 04-04-PLAN.md — Create cart UI foundation components (CartIcon, CartItem, CartSummary) (Wave 2)
+- [x] 04-05-PLAN.md — Create CartSheet slide-out panel and Header integration (Wave 3)
+- [x] 04-06-PLAN.md — Create Fastify coupon validation API endpoint (Wave 2)
+- [x] 04-07-PLAN.md — Integrate coupon input into cart with API validation (Wave 4)
+- [x] 04-08-PLAN.md — Verify complete shopping cart functionality (Wave 5)
 
 ---
 
@@ -329,7 +329,7 @@ Plans:
 | 1 | Infrastructure Foundation | Complete | 5/5 plans |
 | 2 | Product Catalog Backend | Complete | 4/4 plans |
 | 3 | Frontend Shell & Product Display | Complete | 5/5 plans |
-| 4 | Shopping Cart | In Progress | 0/8 plans |
+| 4 | Shopping Cart | Complete | 8/8 plans |
 | 5 | Authentication & User Accounts | Pending | [ ] |
 | 6 | Checkout & Payments | Pending | [ ] |
 | 7 | Admin Order Management | Pending | [ ] |

@@ -7,21 +7,21 @@
 
 **Core Value:** Customers can browse fire safety products with clear certification info and complete purchases reliably
 
-**Current Focus:** Phase 4 in progress - Coupon UI integrated into cart
+**Current Focus:** Phase 4 complete - Shopping cart with variants and coupons verified, proceed to Authentication
 
 ## Current Position
 
-**Phase:** 4 of 10 (Shopping Cart) - IN PROGRESS
-**Plan:** 7 of 8 complete (04-01, 04-02, 04-03, 04-04, 04-05, 04-06, 04-07)
-**Status:** In progress
-**Last activity:** 2026-01-20 - Completed 04-07-PLAN.md (Coupon UI & Cart Integration)
+**Phase:** 4 of 10 (Shopping Cart) - COMPLETE
+**Plan:** 8 of 8 complete (04-08)
+**Status:** Phase complete
+**Last activity:** 2026-01-20 - Completed 04-08-PLAN.md (Shopping Cart Verification)
 
 **Progress:**
 ```
 Phase 1:  [==========] Infrastructure Foundation (5/5 plans) COMPLETE
 Phase 2:  [==========] Product Catalog Backend (4/4 plans) COMPLETE
 Phase 3:  [==========] Frontend Shell & Product Display (5/5 plans) COMPLETE
-Phase 4:  [========= ] Shopping Cart (7/8 plans)
+Phase 4:  [==========] Shopping Cart (8/8 plans) COMPLETE
 Phase 5:  [          ] Authentication & User Accounts
 Phase 6:  [          ] Checkout & Payments
 Phase 7:  [          ] Admin Order Management
@@ -29,18 +29,18 @@ Phase 8:  [          ] B2B Quote System
 Phase 9:  [          ] Content & Polish
 Phase 10: [          ] Migration & Launch
 
-Overall: 3/10 phases complete (21/36 plans)
+Overall: 4/10 phases complete (22/36 plans)
 ```
 
 ## Performance Metrics
 
 | Metric | Value | Notes |
 |--------|-------|-------|
-| Plans completed | 21 | 01-01 through 01-05, 02-01 through 02-04, 03-01 through 03-05, 04-01 through 04-07 |
-| Phases completed | 3 | Infrastructure Foundation, Product Catalog Backend, Frontend Shell |
-| Requirements done | 23/78 | ADMN-26 through ADMN-28, ADMN-01 through ADMN-09, PROD-01 through PROD-08, CONT-01 through CONT-03, LANG-01, LANG-04, PERF-03, PERF-04 |
+| Plans completed | 22 | 01-01 through 01-05, 02-01 through 02-04, 03-01 through 03-05, 04-01 through 04-08 |
+| Phases completed | 4 | Infrastructure, Product Catalog, Frontend Shell, Shopping Cart |
+| Requirements done | 36/78 | +CART-01 through CART-07, ADMN-15 through ADMN-19, ANIM-05 |
 | Blockers hit | 1 | Docker daemon (resolved by user starting Docker) |
-| Decisions made | 58 | See below |
+| Decisions made | 60 | See below |
 
 ## Accumulated Context
 
@@ -168,17 +168,19 @@ From research:
 
 ### Last Session Summary
 
-- Completed Plan 04-07: Coupon UI & Cart Integration
-- Created cart-api.ts with applyCoupon function
-- Created CouponInput component with form validation and applied coupon display
-- Integrated CouponInput into CartSheet between items and summary
-- Full coupon flow operational: entry, validation, display, removal
+- Completed Phase 4: Shopping Cart (all 8 plans)
+- Fixed variant image switching in gallery with unified ProductDetails component
+- Resolved add-to-cart button infinite loading by removing motion animations
+- Fixed cart layout and Hungarian character support (Inter font with latin-ext)
+- Fixed cart to display variant images and separate variant names
+- Fixed locale-aware navigation for "Continue shopping" link
+- Verified all 13 requirements: CART-01 through CART-07, ADMN-15 through ADMN-19, ANIM-05
 
 ### Next Actions
 
-1. Continue Phase 4: Shopping Cart
-2. Execute remaining plan (04-08)
-3. Create dedicated cart page (04-08)
+1. Start Phase 5: Authentication & User Accounts
+2. Research authentication approach (Strapi users-permissions or custom)
+3. Plan user registration, login, logout, session persistence, password reset
 
 ### Open Questions
 
@@ -201,3 +203,5 @@ From research that need resolution:
 *Phase 4 plan 04-05 completed: 2026-01-20*
 *Phase 4 plan 04-06 completed: 2026-01-20*
 *Phase 4 plan 04-07 completed: 2026-01-20*
+*Phase 4 plan 04-08 completed: 2026-01-20*
+*Phase 4 completed: 2026-01-20*

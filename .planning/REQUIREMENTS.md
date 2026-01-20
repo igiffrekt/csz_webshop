@@ -20,13 +20,13 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Shopping Cart
 
-- [ ] **CART-01**: User can add products to cart
-- [ ] **CART-02**: User can select product variants when adding to cart
-- [ ] **CART-03**: User can view cart contents
-- [ ] **CART-04**: User can update quantities in cart
-- [ ] **CART-05**: User can remove items from cart
-- [ ] **CART-06**: Cart persists across browser sessions
-- [ ] **CART-07**: User can apply coupon code to cart
+- [x] **CART-01**: User can add products to cart
+- [x] **CART-02**: User can select product variants when adding to cart
+- [x] **CART-03**: User can view cart contents
+- [x] **CART-04**: User can update quantities in cart
+- [x] **CART-05**: User can remove items from cart
+- [x] **CART-06**: Cart persists across browser sessions
+- [x] **CART-07**: User can apply coupon code to cart
 
 ### Authentication
 
@@ -113,11 +113,11 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Admin - Coupons
 
-- [ ] **ADMN-15**: Admin can create coupon codes
-- [ ] **ADMN-16**: Admin can set coupon as percentage or fixed discount
-- [ ] **ADMN-17**: Admin can set coupon usage limits
-- [ ] **ADMN-18**: Admin can set coupon expiration date
-- [ ] **ADMN-19**: Admin can enable/disable coupons
+- [x] **ADMN-15**: Admin can create coupon codes
+- [x] **ADMN-16**: Admin can set coupon as percentage or fixed discount
+- [x] **ADMN-17**: Admin can set coupon usage limits
+- [x] **ADMN-18**: Admin can set coupon expiration date
+- [x] **ADMN-19**: Admin can enable/disable coupons
 
 ### Admin - Quotes
 
@@ -143,7 +143,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [ ] **ANIM-02**: Section reveals animate on scroll
 - [ ] **ANIM-03**: Page transitions are smooth cross-fades
 - [ ] **ANIM-04**: Product cards have hover interactions
-- [ ] **ANIM-05**: Add-to-cart has visual feedback animation
+- [x] **ANIM-05**: Add-to-cart has visual feedback animation
 - [ ] **ANIM-06**: Buttons and inputs have micro-interactions
 - [ ] **ANIM-07**: Loading states have skeleton/shimmer animations
 - [ ] **ANIM-08**: Animations respect reduced-motion preference
@@ -226,13 +226,13 @@ Which phases cover which requirements. Updated during roadmap creation.
 | PROD-06 | Phase 3 | Complete |
 | PROD-07 | Phase 3 | Complete |
 | PROD-08 | Phase 3 | Complete |
-| CART-01 | Phase 4 | Pending |
-| CART-02 | Phase 4 | Pending |
-| CART-03 | Phase 4 | Pending |
-| CART-04 | Phase 4 | Pending |
-| CART-05 | Phase 4 | Pending |
-| CART-06 | Phase 4 | Pending |
-| CART-07 | Phase 4 | Pending |
+| CART-01 | Phase 4 | Complete |
+| CART-02 | Phase 4 | Complete |
+| CART-03 | Phase 4 | Complete |
+| CART-04 | Phase 4 | Complete |
+| CART-05 | Phase 4 | Complete |
+| CART-06 | Phase 4 | Complete |
+| CART-07 | Phase 4 | Complete |
 | AUTH-01 | Phase 5 | Pending |
 | AUTH-02 | Phase 5 | Pending |
 | AUTH-03 | Phase 5 | Pending |
@@ -289,11 +289,11 @@ Which phases cover which requirements. Updated during roadmap creation.
 | ADMN-12 | Phase 7 | Pending |
 | ADMN-13 | Phase 7 | Pending |
 | ADMN-14 | Phase 7 | Pending |
-| ADMN-15 | Phase 4 | Pending |
-| ADMN-16 | Phase 4 | Pending |
-| ADMN-17 | Phase 4 | Pending |
-| ADMN-18 | Phase 4 | Pending |
-| ADMN-19 | Phase 4 | Pending |
+| ADMN-15 | Phase 4 | Complete |
+| ADMN-16 | Phase 4 | Complete |
+| ADMN-17 | Phase 4 | Complete |
+| ADMN-18 | Phase 4 | Complete |
+| ADMN-19 | Phase 4 | Complete |
 | ADMN-20 | Phase 8 | Pending |
 | ADMN-21 | Phase 8 | Pending |
 | ADMN-22 | Phase 8 | Pending |
@@ -307,7 +307,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | ANIM-02 | Phase 9 | Pending |
 | ANIM-03 | Phase 9 | Pending |
 | ANIM-04 | Phase 9 | Pending |
-| ANIM-05 | Phase 4 | Pending |
+| ANIM-05 | Phase 4 | Complete |
 | ANIM-06 | Phase 9 | Pending |
 | ANIM-07 | Phase 9 | Pending |
 | ANIM-08 | Phase 9 | Pending |
