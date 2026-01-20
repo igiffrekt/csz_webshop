@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 import { getProduct } from '@/lib/api';
 import { ProductGallery } from '@/components/product/ProductGallery';
 import { ProductInfo } from '@/components/product/ProductInfo';
-import { VariantSelector } from '@/components/product/VariantSelector';
+import { ProductActions } from '@/components/product/ProductActions';
 import { CertBadges } from '@/components/product/CertBadges';
 import { SpecsTable } from '@/components/product/SpecsTable';
 import { DocumentList } from '@/components/product/DocumentList';
@@ -98,10 +98,8 @@ export default async function ProductPage({ params }: Props) {
               <CertBadges certifications={product.certifications} />
             )}
 
-            {/* Variant selector */}
-            {product.variants && product.variants.length > 0 && (
-              <VariantSelector variants={product.variants} />
-            )}
+            {/* Variant selector and add to cart */}
+            <ProductActions product={product} />
           </div>
         </div>
 
