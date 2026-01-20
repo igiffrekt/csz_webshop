@@ -7,19 +7,19 @@
 
 **Core Value:** Customers can browse fire safety products with clear certification info and complete purchases reliably
 
-**Current Focus:** Phase 1 complete - ready for Phase 2
+**Current Focus:** Phase 2 in progress - Product Catalog Backend
 
 ## Current Position
 
-**Phase:** 1 of 10 (Infrastructure Foundation) - COMPLETE
-**Plan:** 5 of 5 complete (01-01, 01-02, 01-03, 01-04, 01-05)
-**Status:** Phase complete
-**Last activity:** 2026-01-20 - Completed 01-05-PLAN.md (Strapi Admin Roles)
+**Phase:** 2 of 10 (Product Catalog Backend) - IN PROGRESS
+**Plan:** 1 of 4 complete (02-01)
+**Status:** In progress
+**Last activity:** 2026-01-20 - Completed 02-01-PLAN.md (Product Catalog Foundation)
 
 **Progress:**
 ```
 Phase 1:  [==========] Infrastructure Foundation (5/5 plans) COMPLETE
-Phase 2:  [          ] Product Catalog Backend
+Phase 2:  [==        ] Product Catalog Backend (1/4 plans)
 Phase 3:  [          ] Frontend Shell & Product Display
 Phase 4:  [          ] Shopping Cart
 Phase 5:  [          ] Authentication & User Accounts
@@ -36,11 +36,11 @@ Overall: 1/10 phases complete
 
 | Metric | Value | Notes |
 |--------|-------|-------|
-| Plans completed | 5 | 01-01, 01-02, 01-03, 01-04, 01-05 |
+| Plans completed | 6 | 01-01 through 01-05, 02-01 |
 | Phases completed | 1 | Infrastructure Foundation |
 | Requirements done | 3/78 | ADMN-26, ADMN-27, ADMN-28 (admin roles) |
 | Blockers hit | 1 | Docker daemon (resolved by user starting Docker) |
-| Decisions made | 14 | See below |
+| Decisions made | 15 | See below |
 
 ## Accumulated Context
 
@@ -62,6 +62,7 @@ Overall: 1/10 phases complete
 | Super Admin: Tamas Horvath | stickerey@gmail.com designated as Super Admin | 2026-01-20 |
 | Store Manager role | Media Library/Upload only until content types exist | 2026-01-20 |
 | Content Manager role | Media Library/Upload only until pages exist | 2026-01-20 |
+| Remove products relation until Product exists | Strapi 5 fails on forward references to non-existent content types | 2026-01-20 |
 
 ### Architecture Notes
 
@@ -85,6 +86,10 @@ From research:
 - [x] Install and configure Strapi 5 (01-03)
 - [x] Scaffold Fastify API backend (01-04)
 - [x] Configure admin roles RBAC (01-05)
+- [x] Create Specification/Certification components (02-01)
+- [x] Create Category content type with hierarchy (02-01)
+- [ ] Create Product content type (02-02)
+- [ ] Add Category-Product relation (02-02)
 
 ### Blockers
 
@@ -94,17 +99,17 @@ From research:
 
 ### Last Session Summary
 
-- Completed Phase 1: Infrastructure Foundation (all 5 plans)
-- Final plan 01-05: Configured Strapi admin roles via UI
-- Super Admin: Tamas Horvath (stickerey@gmail.com)
-- Store Manager and Content Manager roles created
-- All RBAC requirements satisfied (ADMN-26, ADMN-27, ADMN-28)
+- Completed Plan 02-01: Product Catalog Foundation
+- Created Specification component (key/value/unit)
+- Created Certification component (name/standard/validUntil/certificate)
+- Created Category content type with parent/children hierarchy
+- Fixed blocking issue: removed products relation until Product exists
 
 ### Next Actions
 
-1. Begin Phase 2: Product Catalog Backend
-2. Create Product, Category content types in Strapi
-3. Update Store Manager role with product permissions
+1. Continue Phase 2: Execute 02-02-PLAN.md (Product content type)
+2. Add bidirectional Category-Product relation
+3. Create ProductVariant content type
 
 ### Open Questions
 
@@ -118,3 +123,4 @@ From research that need resolution:
 *State initialized: 2026-01-19*
 *Last updated: 2026-01-20*
 *Phase 1 completed: 2026-01-20*
+*Plan 02-01 completed: 2026-01-20*
