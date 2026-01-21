@@ -242,46 +242,52 @@ export type OrderStatus =
   | "cancelled"         // Cancelled
   | "refunded";         // Refunded
 
-// Order content type (placeholder - full implementation in Phase 6)
+// Address snapshot stored in orders (immutable copy at order time)
+export interface OrderAddressSnapshot {
+  recipientName: string;
+  street: string;
+  city: string;
+  postalCode: string;
+  country: string;
+  phone?: string;
+}
+
+// Billing address snapshot with B2B fields
+export interface BillingAddressSnapshot extends OrderAddressSnapshot {
+  companyName?: string;
+  vatNumber?: string;
+}
+
+// Order content type - matches Strapi schema
 export interface Order {
   id: number;
   documentId: string;
   orderNumber: string;
   status: OrderStatus;
   user?: User;
-  // Pricing
+  // Pricing (all integers in HUF)
   subtotal: number;
   discount: number;
   shipping: number;
-  tax: number;
+  vatAmount: number;
   total: number;
-  // Address snapshot (copied at order time)
-  shippingAddress: {
-    recipientName: string;
-    street: string;
-    city: string;
-    postalCode: string;
-    country: string;
-    phone?: string;
-  };
-  billingAddress?: {
-    recipientName: string;
-    street: string;
-    city: string;
-    postalCode: string;
-    country: string;
-    companyName?: string;
-    vatNumber?: string;
-  };
-  // Line items
+  // Address snapshots (JSON - copied at order time)
+  shippingAddress: OrderAddressSnapshot;
+  billingAddress?: BillingAddressSnapshot;
+  // Line items (JSON array)
   lineItems: OrderLineItem[];
   // Coupon info if applied
   couponCode?: string;
   couponDiscount?: number;
+  // B2B
+  poReference?: string;
   // Payment info
   paymentMethod?: string;
   paymentId?: string;
+  stripeSessionId?: string;
   paidAt?: string;
+  // Internal notes
+  notes?: string;
   // Timestamps
   createdAt: string;
   updatedAt: string;

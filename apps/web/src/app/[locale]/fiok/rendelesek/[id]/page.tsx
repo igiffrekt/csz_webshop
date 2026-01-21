@@ -140,7 +140,7 @@ export default async function OrderDetailPage({
               </div>
               <div className="flex justify-between">
                 <span>AFA (27%)</span>
-                <span>{formatPrice(order.tax)}</span>
+                <span>{formatPrice(order.vatAmount)}</span>
               </div>
               <div className="flex justify-between font-semibold text-base pt-2 border-t">
                 <span>Összesen</span>
