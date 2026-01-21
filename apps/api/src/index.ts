@@ -2,7 +2,10 @@ import Fastify from 'fastify';
 import cors from '@fastify/cors';
 import helmet from '@fastify/helmet';
 import healthcheck from 'fastify-healthcheck';
+import rawBody from 'fastify-raw-body';
 import { couponRoutes } from './routes/cart/coupon.js';
+import { webhookRoutes } from './routes/checkout/webhook.js';
+import { calculateRoutes } from './routes/checkout/calculate.js';
 
 const fastify = Fastify({
   logger: {
@@ -24,8 +27,22 @@ await fastify.register(healthcheck, {
   healthcheckUrl: '/health',
 });
 
+// Raw body plugin for webhook signature verification
+await fastify.register(rawBody, {
+  field: 'rawBody',
+  global: false, // Only enable where needed
+  encoding: 'utf8',
+  runFirst: true,
+});
+
 // Cart routes
 await fastify.register(couponRoutes);
+
+// Webhook routes
+await fastify.register(webhookRoutes, { prefix: '/webhook' });
+
+// Checkout routes
+await fastify.register(calculateRoutes, { prefix: '/checkout' });
 
 // Root route for basic info
 fastify.get('/', async () => {
