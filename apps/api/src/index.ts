@@ -7,6 +7,7 @@ import { couponRoutes } from './routes/cart/coupon.js';
 import { webhookRoutes } from './routes/checkout/webhook.js';
 import { calculateRoutes } from './routes/checkout/calculate.js';
 import { createSessionRoutes } from './routes/checkout/create-session.js';
+import { bankTransferRoutes } from './routes/checkout/bank-transfer.js';
 
 const fastify = Fastify({
   logger: {
@@ -45,6 +46,7 @@ await fastify.register(webhookRoutes, { prefix: '/webhook' });
 // Checkout routes
 await fastify.register(calculateRoutes, { prefix: '/checkout' });
 await fastify.register(createSessionRoutes, { prefix: '/checkout' });
+await fastify.register(bankTransferRoutes, { prefix: '/checkout' });
 
 // Root route for basic info
 fastify.get('/', async () => {
