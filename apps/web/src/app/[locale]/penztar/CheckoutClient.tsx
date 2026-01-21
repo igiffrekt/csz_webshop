@@ -5,6 +5,8 @@ import { useCheckoutStore, useCheckoutStep } from '@/stores/checkout';
 import { useCartStore, useCartItems } from '@/stores/cart';
 import { useHydration } from '@/stores/useHydration';
 import { ShippingStep } from './steps/ShippingStep';
+import { BillingStep } from './steps/BillingStep';
+import { SummaryStep } from './steps/SummaryStep';
 import { Button } from '@/components/ui/button';
 import { Link } from '@/i18n/navigation';
 import type { ShippingAddress } from '@csz/types';
@@ -99,16 +101,8 @@ export function CheckoutClient({ initialAddresses }: CheckoutClientProps) {
           {step === 'shipping' && (
             <ShippingStep addresses={initialAddresses} />
           )}
-          {step === 'billing' && (
-            <div className="p-8 border rounded-lg">
-              <p className="text-muted-foreground">Szamlazas (kovetkezo plan)</p>
-            </div>
-          )}
-          {step === 'summary' && (
-            <div className="p-8 border rounded-lg">
-              <p className="text-muted-foreground">Osszegzes (kovetkezo plan)</p>
-            </div>
-          )}
+          {step === 'billing' && <BillingStep />}
+          {step === 'summary' && <SummaryStep addresses={initialAddresses} />}
           {step === 'payment' && (
             <div className="p-8 border rounded-lg">
               <p className="text-muted-foreground">Fizetes (kovetkezo plan)</p>
