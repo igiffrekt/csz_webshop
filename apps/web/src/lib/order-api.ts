@@ -117,22 +117,4 @@ export async function getOrderByStripeSession(
   }
 }
 
-/**
- * Format order status in Hungarian
- */
-export function formatOrderStatus(status: string): {
-  label: string;
-  variant: 'default' | 'secondary' | 'destructive' | 'outline';
-} {
-  const statuses: Record<string, { label: string; variant: 'default' | 'secondary' | 'destructive' | 'outline' }> = {
-    pending: { label: 'Fizetesre var', variant: 'outline' },
-    paid: { label: 'Fizetve', variant: 'secondary' },
-    processing: { label: 'Feldolgozas alatt', variant: 'secondary' },
-    shipped: { label: 'Szallitas alatt', variant: 'default' },
-    delivered: { label: 'Kiszallitva', variant: 'default' },
-    cancelled: { label: 'Lemondva', variant: 'destructive' },
-    refunded: { label: 'Visszafizetve', variant: 'destructive' },
-  };
-
-  return statuses[status] || { label: status, variant: 'outline' };
-}
+// Note: formatOrderStatus is in formatters.ts for client-side usage
