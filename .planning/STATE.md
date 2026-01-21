@@ -7,14 +7,14 @@
 
 **Core Value:** Customers can browse fire safety products with clear certification info and complete purchases reliably
 
-**Current Focus:** Phase 6 IN PROGRESS - Checkout & Payments (6/8 plans complete)
+**Current Focus:** Phase 6 IN PROGRESS - Checkout & Payments (7/8 plans complete)
 
 ## Current Position
 
 **Phase:** 6 of 10 (Checkout & Payments) - IN PROGRESS
-**Plan:** 6 of 8 complete (06-06)
+**Plan:** 7 of 8 complete (06-07)
 **Status:** In progress
-**Last activity:** 2026-01-21 - Completed 06-06-PLAN.md (Stripe Payment Integration)
+**Last activity:** 2026-01-21 - Completed 06-07-PLAN.md (Order Confirmation & Success Page)
 
 **Progress:**
 ```
@@ -23,24 +23,24 @@ Phase 2:  [==========] Product Catalog Backend (4/4 plans) COMPLETE
 Phase 3:  [==========] Frontend Shell & Product Display (5/5 plans) COMPLETE
 Phase 4:  [==========] Shopping Cart (8/8 plans) COMPLETE
 Phase 5:  [==========] Authentication & User Accounts (8/8 plans) COMPLETE
-Phase 6:  [=======   ] Checkout & Payments (6/8 plans)
+Phase 6:  [========= ] Checkout & Payments (7/8 plans)
 Phase 7:  [          ] Admin Order Management
 Phase 8:  [          ] B2B Quote System
 Phase 9:  [          ] Content & Polish
 Phase 10: [          ] Migration & Launch
 
-Overall: 5/10 phases complete (36/39 plans)
+Overall: 5/10 phases complete (37/39 plans)
 ```
 
 ## Performance Metrics
 
 | Metric | Value | Notes |
 |--------|-------|-------|
-| Plans completed | 36 | 01-01 through 01-05, 02-01 through 02-04, 03-01 through 03-05, 04-01 through 04-08, 05-01 through 05-08, 06-01 through 06-06 |
+| Plans completed | 37 | 01-01 through 01-05, 02-01 through 02-04, 03-01 through 03-05, 04-01 through 04-08, 05-01 through 05-08, 06-01 through 06-07 |
 | Phases completed | 5 | Infrastructure, Product Catalog, Frontend Shell, Shopping Cart, Authentication |
-| Requirements done | 52/78 | +PAY-01 (card), PAY-02 (Apple Pay), PAY-03 (Google Pay) |
+| Requirements done | 55/78 | +PAY-05 (confirmation), ACCT-01, ACCT-02 (real order history) |
 | Blockers hit | 1 | Docker daemon (resolved by user starting Docker) |
-| Decisions made | 103 | See below |
+| Decisions made | 106 | See below |
 
 ## Accumulated Context
 
@@ -154,6 +154,9 @@ Overall: 5/10 phases complete (36/39 plans)
 | Stripe Embedded Checkout | EmbeddedCheckoutProvider with fetchClientSecret for React integration | 2026-01-21 |
 | Order-first flow | Create Strapi order before Stripe session for webhook correlation | 2026-01-21 |
 | One-time Stripe coupon | Map internal coupon discounts to Stripe via dynamic coupon creation | 2026-01-21 |
+| formatOrderStatus in formatters.ts | Client components need formatters; moved from server-only order-api.ts | 2026-01-21 |
+| Generic success fallback | Show success message even if order lookup fails (webhook processing) | 2026-01-21 |
+| Cart clear on success | useEffect clears cart and checkout state when OrderConfirmation mounts | 2026-01-21 |
 
 ### Architecture Notes
 
@@ -252,8 +255,9 @@ From research:
 - [x] Stripe React SDK installed (06-06)
 - [x] POST /checkout/create-session endpoint (06-06)
 - [x] PaymentStep with Stripe Embedded Checkout (06-06)
-- [ ] Order confirmation page at /penztar/siker (06-07)
-- [ ] Confirmation emails (06-07)
+- [x] Order API client for fetching orders (06-07)
+- [x] Order confirmation page at /penztar/siker (06-07)
+- [x] Order history with real orders from API (06-07)
 - [ ] Phase 6 verification (06-08)
 
 ### Blockers
@@ -264,18 +268,18 @@ From research:
 
 ### Last Session Summary
 
-- Completed 06-06: Stripe Payment Integration
-- Installed @stripe/stripe-js and @stripe/react-stripe-js packages
-- Created POST /checkout/create-session endpoint with order-first flow
-- PaymentStep component with Stripe Embedded Checkout (card/Apple Pay/Google Pay)
-- Server-side price verification - never trusts client-submitted amounts
-- Order created in Strapi before Stripe session for webhook correlation
+- Completed 06-07: Order Confirmation & Success Page
+- Created order-api.ts with getOrder/getOrders/getOrderByStripeSession
+- Success page at /penztar/siker retrieves order by Stripe session ID
+- OrderConfirmation clears cart and checkout state on mount
+- Updated order history pages to use real Strapi orders
+- Moved formatOrderStatus to formatters.ts for client compatibility
 
 ### Next Actions
 
-1. Continue Phase 6 with 06-07 (Order Confirmation & Emails)
-2. Then 06-08 (Phase 6 Verification)
-3. Then Phase 7 (Admin Order Management)
+1. Continue Phase 6 with 06-08 (Phase 6 Verification)
+2. Then Phase 7 (Admin Order Management)
+3. Then Phase 8 (B2B Quote System)
 
 ### Open Questions
 
@@ -315,3 +319,4 @@ From research that need resolution:
 *Phase 6 plan 06-04 completed: 2026-01-21*
 *Phase 6 plan 06-05 completed: 2026-01-21*
 *Phase 6 plan 06-06 completed: 2026-01-21*
+*Phase 6 plan 06-07 completed: 2026-01-21*
