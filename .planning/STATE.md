@@ -1,20 +1,20 @@
 # Project State: CSZ Webshop
 
 **Initialized:** 2026-01-19
-**Last Session:** 2026-01-20
+**Last Session:** 2026-01-21
 
 ## Project Reference
 
 **Core Value:** Customers can browse fire safety products with clear certification info and complete purchases reliably
 
-**Current Focus:** Phase 5 COMPLETE - Ready for Phase 6 (Checkout & Payments)
+**Current Focus:** Phase 6 IN PROGRESS - Checkout & Payments (2/8 plans complete)
 
 ## Current Position
 
-**Phase:** 5 of 10 (Authentication & User Accounts) - COMPLETE
-**Plan:** 8 of 8 complete (05-08)
-**Status:** Phase complete
-**Last activity:** 2026-01-20 - Completed 05-08-PLAN.md (Phase Verification)
+**Phase:** 6 of 10 (Checkout & Payments) - IN PROGRESS
+**Plan:** 2 of 8 complete (06-02)
+**Status:** In progress
+**Last activity:** 2026-01-21 - Completed 06-02-PLAN.md (Stripe SDK & Webhook Handler)
 
 **Progress:**
 ```
@@ -23,24 +23,24 @@ Phase 2:  [==========] Product Catalog Backend (4/4 plans) COMPLETE
 Phase 3:  [==========] Frontend Shell & Product Display (5/5 plans) COMPLETE
 Phase 4:  [==========] Shopping Cart (8/8 plans) COMPLETE
 Phase 5:  [==========] Authentication & User Accounts (8/8 plans) COMPLETE
-Phase 6:  [          ] Checkout & Payments
+Phase 6:  [==        ] Checkout & Payments (2/8 plans)
 Phase 7:  [          ] Admin Order Management
 Phase 8:  [          ] B2B Quote System
 Phase 9:  [          ] Content & Polish
 Phase 10: [          ] Migration & Launch
 
-Overall: 5/10 phases complete (30/39 plans)
+Overall: 5/10 phases complete (32/39 plans)
 ```
 
 ## Performance Metrics
 
 | Metric | Value | Notes |
 |--------|-------|-------|
-| Plans completed | 30 | 01-01 through 01-05, 02-01 through 02-04, 03-01 through 03-05, 04-01 through 04-08, 05-01 through 05-08 |
+| Plans completed | 32 | 01-01 through 01-05, 02-01 through 02-04, 03-01 through 03-05, 04-01 through 04-08, 05-01 through 05-08, 06-01 through 06-02 |
 | Phases completed | 5 | Infrastructure, Product Catalog, Frontend Shell, Shopping Cart, Authentication |
 | Requirements done | 49/78 | +AUTH-01 through AUTH-05, +ACCT-01 through ACCT-05 |
 | Blockers hit | 1 | Docker daemon (resolved by user starting Docker) |
-| Decisions made | 84 | See below |
+| Decisions made | 87 | See below |
 
 ## Accumulated Context
 
@@ -135,6 +135,9 @@ Overall: 5/10 phases complete (30/39 plans)
 | Dialog for address forms | Use Dialog overlay instead of separate pages for better UX | 2026-01-20 |
 | Placeholder types pattern | Define Order types before content type exists for parallel development | 2026-01-20 |
 | Strapi permissions UI | Configure users-permissions via admin UI rather than bootstrap | 2026-01-20 |
+| Stripe SDK ^20.2.0 | Latest Stripe SDK for payment processing | 2026-01-21 |
+| Lazy Stripe client initialization | API starts without Stripe credentials, throws on first use | 2026-01-21 |
+| Raw body plugin for webhooks | fastify-raw-body preserves request body for signature verification | 2026-01-21 |
 
 ### Architecture Notes
 
@@ -217,6 +220,15 @@ From research:
 - [x] Order detail page at /fiok/rendelesek/[id] (05-07)
 - [x] OrderCard component for order listing (05-07)
 - [x] Phase 5 verification complete (05-08)
+- [x] Order content type in Strapi (06-01)
+- [x] Order TypeScript interfaces (06-01)
+- [x] Stripe SDK installed and configured (06-02)
+- [x] Stripe webhook handler at /webhook/stripe (06-02)
+- [ ] VAT and shipping calculation (06-03)
+- [ ] Checkout session creation (06-04)
+- [ ] Checkout flow UI (06-05)
+- [ ] Order confirmation and emails (06-06)
+- [ ] Phase 6 verification (06-08)
 
 ### Blockers
 
@@ -226,18 +238,17 @@ From research:
 
 ### Last Session Summary
 
-- Completed Phase 5: Authentication & User Accounts
-- Completed 05-08: Phase Verification
-- All AUTH requirements verified (AUTH-01 through AUTH-05)
-- All ACCT requirements verified (ACCT-01 through ACCT-05)
-- Route protection and session persistence confirmed working
-- Phase 5 ready for Phase 6 integration
+- Completed 06-02: Stripe SDK & Webhook Handler
+- Stripe SDK v20.2.0 installed with fastify-raw-body for webhooks
+- Stripe client singleton with lazy initialization pattern
+- Webhook endpoint at POST /webhook/stripe with signature verification
+- Handles checkout.session.completed, async_payment_succeeded/failed
 
 ### Next Actions
 
-1. Begin Phase 6: Checkout & Payments
-2. Create Order content type in Strapi
-3. Implement checkout flow with Stripe integration
+1. Continue Phase 6 with 06-03 (VAT & Shipping Calculation)
+2. Then 06-04 (Checkout Session Creation)
+3. Then 06-05 (Checkout Flow UI)
 
 ### Open Questions
 
@@ -249,7 +260,7 @@ From research that need resolution:
 
 ---
 *State initialized: 2026-01-19*
-*Last updated: 2026-01-20*
+*Last updated: 2026-01-21*
 *Phase 1 completed: 2026-01-20*
 *Phase 2 completed: 2026-01-20*
 *Phase 3 completed: 2026-01-20*
@@ -271,3 +282,5 @@ From research that need resolution:
 *Phase 5 plan 05-07 completed: 2026-01-20*
 *Phase 5 plan 05-08 completed: 2026-01-20*
 *Phase 5 completed: 2026-01-20*
+*Phase 6 plan 06-01 completed: 2026-01-21*
+*Phase 6 plan 06-02 completed: 2026-01-21*
