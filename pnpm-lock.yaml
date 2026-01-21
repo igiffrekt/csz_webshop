@@ -22,9 +22,15 @@ importers:
       fastify-healthcheck:
         specifier: ^5.0.0
         version: 5.1.0
+      fastify-raw-body:
+        specifier: ^5.0.0
+        version: 5.0.0
       qs:
         specifier: ^6.14.1
         version: 6.14.1
+      stripe:
+        specifier: ^20.2.0
+        version: 20.2.0(@types/node@22.19.7)
     devDependencies:
       '@types/node':
         specifier: ^22.0.0
@@ -4968,6 +4974,10 @@ packages:
   fastify-plugin@5.1.0:
     resolution: {integrity: sha512-FAIDA8eovSt5qcDgcBvDuX/v0Cjz0ohGhENZ/wpc3y+oZCY2afZ9Baqql3g/lC+OHRnciQol4ww7tuthOb9idw==}
 
+  fastify-raw-body@5.0.0:
+    resolution: {integrity: sha512-2qfoaQ3BQDhZ1gtbkKZd6n0kKxJISJGM6u/skD9ljdWItAscjXrtZ1lnjr7PavmXX9j4EyCPmBDiIsLn07d5vA==}
+    engines: {node: '>= 10'}
+
   fastify@5.7.1:
     resolution: {integrity: sha512-ZW7S4fxlZhE+tYWVokFzjh+i56R+buYKNGhrVl6DtN8sxkyMEzpJnzvO8A/ZZrsg5w6X37u6I4EOQikYS5DXpA==}
 
@@ -7256,6 +7266,10 @@ packages:
     resolution: {integrity: sha512-s4VSOf6yN0rvbRZGxs8Om5CWj6seneMwK3oDb4lWDH0UPhWcxwOWw5+qk24bxq87szX1ydrwylIOp2uG1ojUpA==}
     engines: {node: '>= 0.8'}
 
+  raw-body@3.0.2:
+    resolution: {integrity: sha512-K5zQjDllxWkf7Z5xJdV0/B0WTNqx6vxG70zJE4N0kBs4LovmEYWJzQGxC9bS9RAKu3bgM40lrd5zoLJ12MQ5BA==}
+    engines: {node: '>= 0.10'}
+
   rc@1.2.8:
     resolution: {integrity: sha512-y3bGgqKj3QBdxLbLkomlohkvsA8gdAiUQlSBJnBhfn+BPxg4bc62d8TcBW15wavDfgexCgccckhcZvywyQYPOw==}
     hasBin: true
@@ -7710,6 +7724,9 @@ packages:
   scroll-into-view-if-needed@2.2.31:
     resolution: {integrity: sha512-dGCXy99wZQivjmjIqihaBQNjryrz5rueJY7eHfTdyWEiR4ttYpsajb14rn9s5d4DY4EcY6+4+U/maARBXJedkA==}
 
+  secure-json-parse@2.7.0:
+    resolution: {integrity: sha512-6aU+Rwsezw7VR8/nyvKTx8QpWH9FrcYiXXlqC4z5d5XQBDRqtbfsRjnwGyqbi3gddNtWHuEk9OANUotL26qKUw==}
+
   secure-json-parse@4.1.0:
     resolution: {integrity: sha512-l4KnYfEyqYJxDwlNVyRfO2E4NTHfMKAWdUuA8J0yve2Dz/E/PdBepY03RvyJpssIpRFwJoCD55wA+mEDs6ByWA==}
 
@@ -8028,6 +8045,15 @@ packages:
   strip-json-comments@3.1.1:
     resolution: {integrity: sha512-6fPc+R4ihwqP6N/aIv2f1gMH8lOVtWQHoqC4yK6oSDVVocumAsfCqjkXnqiYMhmMwS/mEHLp7Vehlt3ql6lEig==}
     engines: {node: '>=8'}
+
+  stripe@20.2.0:
+    resolution: {integrity: sha512-m8niTfdm3nPP/yQswRWMwQxqEUcTtB3RTJQ9oo6NINDzgi7aPOadsH/fPXIIfL1Sc5+lqQFKSk7WiO6CXmvaeA==}
+    engines: {node: '>=16'}
+    peerDependencies:
+      '@types/node': '>=16'
+    peerDependenciesMeta:
+      '@types/node':
+        optional: true
 
   strtok3@10.3.4:
     resolution: {integrity: sha512-KIy5nylvC5le1OdaaoCJ07L+8iQzJHGH6pWDuzS+d07Cu7n1MZ2x26P8ZKIWfbK02+XIL8Mp4RkWeqdUCrDMfg==}
@@ -9933,7 +9959,7 @@ snapshots:
   '@koa/router@12.0.2':
     dependencies:
       debug: 4.4.3(supports-color@5.5.0)
-      http-errors: 2.0.0
+      http-errors: 2.0.1
       koa-compose: 4.1.0
       methods: 1.1.2
       path-to-regexp: 6.3.0
@@ -11252,7 +11278,7 @@ snapshots:
       '@strapi/design-system': 2.0.1(@babel/runtime@7.28.6)(@codemirror/autocomplete@6.20.0)(@codemirror/language@6.12.1)(@codemirror/lint@6.9.2)(@codemirror/search@6.6.0)(@codemirror/state@6.5.4)(@codemirror/theme-one-dark@6.1.3)(@codemirror/view@6.39.11)(@strapi/icons@2.0.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-components@6.3.8(react-dom@18.3.1(react@18.3.1))(react@18.3.1)))(@types/react-dom@18.3.7(@types/react@18.3.27))(@types/react@18.3.27)(codemirror@5.65.20)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-components@6.3.8(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
       '@strapi/icons': 2.0.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-components@6.3.8(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
       '@strapi/permissions': 5.33.3
-      '@strapi/types': 5.33.3(@types/node@20.19.30)(pg@8.8.0)(typescript@5.9.3)
+      '@strapi/types': 5.33.3(@types/node@20.19.30)(pg@8.8.0)(typescript@5.4.4)
       '@strapi/typescript-utils': 5.33.3
       '@strapi/utils': 5.33.3
       '@testing-library/dom': 10.4.1
@@ -11450,7 +11476,7 @@ snapshots:
       '@strapi/database': 5.33.3(@types/node@20.19.30)(pg@8.8.0)
       '@strapi/design-system': 2.0.1(@babel/runtime@7.28.6)(@codemirror/autocomplete@6.20.0)(@codemirror/language@6.12.1)(@codemirror/lint@6.9.2)(@codemirror/search@6.6.0)(@codemirror/state@6.5.4)(@codemirror/theme-one-dark@6.1.3)(@codemirror/view@6.39.11)(@strapi/icons@2.0.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-components@6.3.8(react-dom@18.3.1(react@18.3.1))(react@18.3.1)))(@types/react-dom@18.3.7(@types/react@18.3.27))(@types/react@18.3.27)(codemirror@5.65.20)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-components@6.3.8(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
       '@strapi/icons': 2.0.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-components@6.3.8(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
-      '@strapi/types': 5.33.3(@types/node@20.19.30)(pg@8.8.0)(typescript@5.9.3)
+      '@strapi/types': 5.33.3(@types/node@20.19.30)(pg@8.8.0)(typescript@5.4.4)
       '@strapi/utils': 5.33.3
       date-fns: 2.30.0
       date-fns-tz: 2.0.1(date-fns@2.30.0)
@@ -11551,7 +11577,7 @@ snapshots:
       '@strapi/generators': 5.33.3(@types/node@20.19.30)
       '@strapi/logger': 5.33.3
       '@strapi/permissions': 5.33.3
-      '@strapi/types': 5.33.3(@types/node@20.19.30)(pg@8.8.0)(typescript@5.9.3)
+      '@strapi/types': 5.33.3(@types/node@20.19.30)(pg@8.8.0)(typescript@5.4.4)
       '@strapi/typescript-utils': 5.33.3
       '@strapi/utils': 5.33.3
       '@vercel/stega': 0.1.2
@@ -11991,7 +12017,7 @@ snapshots:
       '@strapi/openapi': 5.33.3
       '@strapi/permissions': 5.33.3
       '@strapi/review-workflows': 5.33.3(l4iv6ltarzi75hdoss6gfr66iq)
-      '@strapi/types': 5.33.3(@types/node@20.19.30)(pg@8.8.0)(typescript@5.9.3)
+      '@strapi/types': 5.33.3(@types/node@20.19.30)(pg@8.8.0)(typescript@5.4.4)
       '@strapi/typescript-utils': 5.33.3
       '@strapi/upload': 5.33.3(4wtyp5lnkwpyd643vgv7wcij2q)
       '@strapi/utils': 5.33.3
@@ -12094,6 +12120,36 @@ snapshots:
       - webpack-cli
       - webpack-dev-server
       - webpack-plugin-serve
+
+  '@strapi/types@5.33.3(@types/node@20.19.30)(pg@8.8.0)(typescript@5.4.4)':
+    dependencies:
+      '@casl/ability': 6.5.0
+      '@koa/cors': 5.0.0
+      '@koa/router': 12.0.2
+      '@strapi/database': 5.33.3(@types/node@20.19.30)(pg@8.8.0)
+      '@strapi/logger': 5.33.3
+      '@strapi/permissions': 5.33.3
+      '@strapi/utils': 5.33.3
+      commander: 8.3.0
+      json-logic-js: 2.0.5
+      koa: 2.16.3
+      koa-body: 6.0.1
+      node-schedule: 2.1.1
+      typedoc: 0.25.10(typescript@5.4.4)
+      typedoc-github-wiki-theme: 1.1.0(typedoc-plugin-markdown@3.17.1(typedoc@0.25.10(typescript@5.9.3)))(typedoc@0.25.10(typescript@5.9.3))
+      typedoc-plugin-markdown: 3.17.1(typedoc@0.25.10(typescript@5.9.3))
+      zod: 3.25.67
+    transitivePeerDependencies:
+      - '@types/node'
+      - better-sqlite3
+      - mysql
+      - mysql2
+      - pg
+      - pg-native
+      - sqlite3
+      - supports-color
+      - tedious
+      - typescript
 
   '@strapi/types@5.33.3(@types/node@20.19.30)(pg@8.8.0)(typescript@5.9.3)':
     dependencies:
@@ -14458,6 +14514,12 @@ snapshots:
       '@fastify/under-pressure': 9.0.3
 
   fastify-plugin@5.1.0: {}
+
+  fastify-raw-body@5.0.0:
+    dependencies:
+      fastify-plugin: 5.1.0
+      raw-body: 3.0.2
+      secure-json-parse: 2.7.0
 
   fastify@5.7.1:
     dependencies:
@@ -17027,6 +17089,13 @@ snapshots:
       iconv-lite: 0.4.24
       unpipe: 1.0.0
 
+  raw-body@3.0.2:
+    dependencies:
+      bytes: 3.1.2
+      http-errors: 2.0.1
+      iconv-lite: 0.7.2
+      unpipe: 1.0.0
+
   rc@1.2.8:
     dependencies:
       deep-extend: 0.6.0
@@ -17627,6 +17696,8 @@ snapshots:
     dependencies:
       compute-scroll-into-view: 1.0.20
 
+  secure-json-parse@2.7.0: {}
+
   secure-json-parse@4.1.0: {}
 
   semver-compare@1.0.0: {}
@@ -18022,6 +18093,12 @@ snapshots:
 
   strip-json-comments@3.1.1: {}
 
+  stripe@20.2.0(@types/node@22.19.7):
+    dependencies:
+      qs: 6.14.1
+    optionalDependencies:
+      '@types/node': 22.19.7
+
   strtok3@10.3.4:
     dependencies:
       '@tokenizer/token': 0.3.0
@@ -18300,6 +18377,14 @@ snapshots:
     dependencies:
       handlebars: 4.7.8
       typedoc: 0.25.10(typescript@5.9.3)
+
+  typedoc@0.25.10(typescript@5.4.4):
+    dependencies:
+      lunr: 2.3.9
+      marked: 4.3.0
+      minimatch: 9.0.5
+      shiki: 0.14.7
+      typescript: 5.4.4
 
   typedoc@0.25.10(typescript@5.9.3):
     dependencies:
