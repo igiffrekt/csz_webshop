@@ -31,7 +31,7 @@ export function ShippingStep({ addresses }: ShippingStepProps) {
     street: newShippingAddress?.street || '',
     city: newShippingAddress?.city || '',
     postalCode: newShippingAddress?.postalCode || '',
-    country: newShippingAddress?.country || 'Magyarorszag',
+    country: newShippingAddress?.country || 'Magyarország',
     phone: newShippingAddress?.phone || '',
   });
 
@@ -82,12 +82,12 @@ export function ShippingStep({ addresses }: ShippingStepProps) {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-xl font-semibold">Szallitasi cim</h2>
+        <h2 className="text-xl font-semibold">Szállítási cím</h2>
         {addresses.length > 0 && (
           <Button variant="ghost" size="sm" asChild>
             <Link href="/fiok/cimek">
               <MapPin className="h-4 w-4 mr-1" />
-              Cimek kezelese
+              Címek kezelése
             </Link>
           </Button>
         )}
@@ -97,11 +97,11 @@ export function ShippingStep({ addresses }: ShippingStepProps) {
         // No saved addresses - show new address form directly
         <div className="text-center py-8 border rounded-lg">
           <p className="text-muted-foreground mb-4">
-            Nincs mentett szallitasi cime.
+            Nincs mentett szállítási címe.
           </p>
           <Button onClick={() => setUseNewShippingAddress(true)}>
             <PlusCircle className="h-4 w-4 mr-2" />
-            Uj cim megadasa
+            Új cím megadása
           </Button>
         </div>
       ) : (
@@ -121,7 +121,7 @@ export function ShippingStep({ addresses }: ShippingStepProps) {
                   <span className="font-medium">{address.label}</span>
                   {address.isDefault && (
                     <span className="text-xs bg-primary/10 text-primary px-2 py-0.5 rounded">
-                      Alapertelmezett
+                      Alapértelmezett
                     </span>
                   )}
                 </div>
@@ -146,7 +146,7 @@ export function ShippingStep({ addresses }: ShippingStepProps) {
             <Label htmlFor="new-address" className="flex-1 cursor-pointer">
               <div className="flex items-center gap-2">
                 <PlusCircle className="h-4 w-4" />
-                <span className="font-medium">Uj cim megadasa</span>
+                <span className="font-medium">Új cím megadása</span>
               </div>
             </Label>
           </div>
@@ -158,27 +158,27 @@ export function ShippingStep({ addresses }: ShippingStepProps) {
         <div className="border rounded-lg p-6 space-y-4 mt-4">
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="sm:col-span-2">
-              <Label htmlFor="recipientName">Cimzett neve *</Label>
+              <Label htmlFor="recipientName">Címzett neve *</Label>
               <Input
                 id="recipientName"
                 value={newAddress.recipientName}
                 onChange={(e) => handleNewAddressChange('recipientName', e.target.value)}
-                placeholder="Kovacs Janos"
+                placeholder="Kovács János"
               />
             </div>
 
             <div className="sm:col-span-2">
-              <Label htmlFor="street">Utca, hazszam *</Label>
+              <Label htmlFor="street">Utca, házszám *</Label>
               <Input
                 id="street"
                 value={newAddress.street}
                 onChange={(e) => handleNewAddressChange('street', e.target.value)}
-                placeholder="Petofi utca 10."
+                placeholder="Petőfi utca 10."
               />
             </div>
 
             <div>
-              <Label htmlFor="postalCode">Iranyitoszam *</Label>
+              <Label htmlFor="postalCode">Irányítószám *</Label>
               <Input
                 id="postalCode"
                 value={newAddress.postalCode}
@@ -188,7 +188,7 @@ export function ShippingStep({ addresses }: ShippingStepProps) {
             </div>
 
             <div>
-              <Label htmlFor="city">Varos *</Label>
+              <Label htmlFor="city">Város *</Label>
               <Input
                 id="city"
                 value={newAddress.city}
@@ -198,7 +198,7 @@ export function ShippingStep({ addresses }: ShippingStepProps) {
             </div>
 
             <div>
-              <Label htmlFor="country">Orszag</Label>
+              <Label htmlFor="country">Ország</Label>
               <Input
                 id="country"
                 value={newAddress.country}
@@ -206,12 +206,12 @@ export function ShippingStep({ addresses }: ShippingStepProps) {
                 disabled
               />
               <p className="text-xs text-muted-foreground mt-1">
-                Csak Magyarorszagra szallitunk
+                Csak Magyarországra szállítunk
               </p>
             </div>
 
             <div>
-              <Label htmlFor="phone">Telefonszam</Label>
+              <Label htmlFor="phone">Telefonszám</Label>
               <Input
                 id="phone"
                 value={newAddress.phone}
@@ -226,10 +226,10 @@ export function ShippingStep({ addresses }: ShippingStepProps) {
       {/* Navigation */}
       <div className="flex justify-between pt-6 border-t">
         <Button variant="outline" asChild>
-          <Link href="/kosar">Vissza a kosarhoz</Link>
+          <Link href="/">Vissza a boltba</Link>
         </Button>
         <Button onClick={handleContinue} disabled={!canContinue()}>
-          Tovabb a szamlazashoz
+          Tovább a számlázáshoz
         </Button>
       </div>
     </div>

@@ -231,14 +231,14 @@ Plans:
 **Plans:** 8 plans in 4 waves
 
 Plans:
-- [ ] 06-01-PLAN.md — Create Order content type in Strapi CMS (Wave 1)
-- [ ] 06-02-PLAN.md — Set up Stripe SDK and webhook handler (Wave 1)
-- [ ] 06-03-PLAN.md — Create checkout store and calculation endpoints (Wave 1)
-- [ ] 06-04-PLAN.md — Create checkout page with shipping step (Wave 2)
-- [ ] 06-05-PLAN.md — Create billing step and order summary step (Wave 2)
-- [ ] 06-06-PLAN.md — Create payment step with Stripe Embedded Checkout (Wave 3)
-- [ ] 06-07-PLAN.md — Create success page and order confirmation (Wave 3)
-- [ ] 06-08-PLAN.md — Add bank transfer option and verify phase (Wave 4)
+- [x] 06-01-PLAN.md — Create Order content type in Strapi CMS (Wave 1)
+- [x] 06-02-PLAN.md — Set up Stripe SDK and webhook handler (Wave 1)
+- [x] 06-03-PLAN.md — Create checkout store and calculation endpoints (Wave 1)
+- [x] 06-04-PLAN.md — Create checkout page with shipping step (Wave 2)
+- [x] 06-05-PLAN.md — Create billing step and order summary step (Wave 2)
+- [x] 06-06-PLAN.md — Create payment step with Stripe Embedded Checkout (Wave 3)
+- [x] 06-07-PLAN.md — Create success page and order confirmation (Wave 3)
+- [x] 06-08-PLAN.md — Add bank transfer option and verify phase (Wave 4)
 
 ---
 
@@ -260,6 +260,13 @@ Plans:
 2. Admin can filter to "Pending" orders placed this week
 3. Admin can view full order details including line items, shipping address, and payment info
 4. Admin can update order from "Processing" to "Shipped" and customer sees updated status
+
+**Plans:** 3 plans in 2 waves
+
+Plans:
+- [x] 07-01-PLAN.md — Configure Order admin views and verify permissions (Wave 1)
+- [x] 07-02-PLAN.md — Add lifecycle hooks for status change notifications (Wave 1)
+- [x] 07-03-PLAN.md — Verify all admin requirements (Wave 2)
 
 ---
 
@@ -283,6 +290,15 @@ Plans:
 2. User receives confirmation email and sees quote in account history
 3. Admin can view quote, respond with pricing via email, and mark as converted
 4. User can see quote status updated from "Pending" to "Converted" in their account
+
+**Plans:** 5 plans in 3 waves
+
+Plans:
+- [x] 08-01-PLAN.md — Create QuoteRequest content type in Strapi (Wave 1)
+- [x] 08-02-PLAN.md — Create quote request form and submission (Wave 1)
+- [x] 08-03-PLAN.md — Create quote history pages in account (Wave 2)
+- [x] 08-04-PLAN.md — Add email notifications and lifecycle hooks (Wave 2)
+- [x] 08-05-PLAN.md — Verify all requirements (Wave 3)
 
 ---
 
@@ -322,15 +338,39 @@ Plans:
 4. User with reduced-motion preference sees no jarring animations
 5. Lighthouse performance score is 80+ on product pages
 
+**Plans:** 10 plans in 5 waves
+
+Plans:
+- [x] 09-01-PLAN.md — Create Page and FAQ content types with SEO component (Wave 1)
+- [x] 09-02-PLAN.md — Create static content pages (About, Privacy, Terms, Refund) (Wave 2)
+- [x] 09-03-PLAN.md — Create FAQ page with accordion (Wave 2)
+- [x] 09-04-PLAN.md — Create Contact page with form (Wave 2)
+- [x] 09-05-PLAN.md — Add Instagram placeholder to home page (Wave 3)
+- [x] 09-06-PLAN.md — Add scroll animations and section reveals (Wave 3)
+- [x] 09-07-PLAN.md — Add product card hover and micro-interactions (Wave 4)
+- [x] 09-08-PLAN.md — Add skeleton loaders and page transitions (Wave 4)
+- [x] 09-09-PLAN.md — SEO optimization and Lighthouse audit (Wave 5)
+- [x] 09-10-PLAN.md — Verify all requirements (Wave 5)
+
 ---
 
-## Phase 10: Migration & Launch
+## Phase 10: Design Implementation, Migration & Launch
 
-**Goal:** WooCommerce data migrated and site ready for production traffic
+**Goal:** Implement reference design, migrate WooCommerce data, and launch production site
 
-**Dependencies:** All previous phases (migrating into working system)
+**Dependencies:** All previous phases (design builds on existing frontend, migration into working system)
 
 **Requirements:**
+- DSGN-01: Header with mega-menu and search
+- DSGN-02: Hero banner with CTA
+- DSGN-03: Trust badges section
+- DSGN-04: Category grid
+- DSGN-05: Product collections with tabs
+- DSGN-06: Deals section with countdown
+- DSGN-07: Promotional banners
+- DSGN-08: Blog section
+- DSGN-09: Enhanced product cards
+- DSGN-10: Multi-column footer
 - MIGR-01: Products imported from WooCommerce
 - MIGR-02: Product categories imported from WooCommerce
 - MIGR-03: Customer accounts imported from WooCommerce
@@ -338,11 +378,30 @@ Plans:
 - MIGR-05: URL redirects implemented for SEO preservation
 
 **Success Criteria:**
-1. All ~200 products from WooCommerce appear in new catalog with correct data
-2. Existing customers can log in with migrated accounts (password reset required)
-3. Migrated customers can see their historical orders in account
+1. Home page matches reference design (01_Home.jpg) adapted for fire safety
+2. All design components responsive on mobile/tablet/desktop
+3. All ~200 products from WooCommerce appear in new catalog with correct data
 4. Old WooCommerce URLs redirect to new URLs with 301 status
-5. Google Search Console shows no spike in 404 errors after launch
+5. Site passes Lighthouse audit with 80+ scores
+6. Google Search Console shows no spike in 404 errors after launch
+
+**Plans:** 14 plans in 7 waves
+
+Plans:
+- [ ] 10-01-PLAN.md — Design system (colors, typography, spacing) (Wave 1)
+- [ ] 10-02-PLAN.md — Header redesign with mega-menu (Wave 1)
+- [ ] 10-03-PLAN.md — Hero banner and trust badges (Wave 2)
+- [ ] 10-04-PLAN.md — Category grid section (Wave 2)
+- [ ] 10-05-PLAN.md — Product collections with tabs (Wave 2)
+- [ ] 10-06-PLAN.md — Deals section and promo banners (Wave 3)
+- [ ] 10-07-PLAN.md — Blog section and enhanced footer (Wave 3)
+- [ ] 10-08-PLAN.md — Home page assembly (Wave 4)
+- [ ] 10-09-PLAN.md — Product pages polish (Wave 4)
+- [ ] 10-10-PLAN.md — Design verification (Wave 5)
+- [ ] 10-11-PLAN.md — WooCommerce migration scripts (Wave 6)
+- [ ] 10-12-PLAN.md — URL redirects and SEO preservation (Wave 6)
+- [ ] 10-13-PLAN.md — Production deployment configuration (Wave 7)
+- [ ] 10-14-PLAN.md — Final verification and launch (Wave 7)
 
 ---
 
@@ -355,12 +414,12 @@ Plans:
 | 3 | Frontend Shell & Product Display | Complete | 5/5 plans |
 | 4 | Shopping Cart | Complete | 8/8 plans |
 | 5 | Authentication & User Accounts | Complete | 8/8 plans |
-| 6 | Checkout & Payments | Planned | 0/8 plans |
-| 7 | Admin Order Management | Pending | [ ] |
-| 8 | B2B Quote System | Pending | [ ] |
-| 9 | Content & Polish | Pending | [ ] |
-| 10 | Migration & Launch | Pending | [ ] |
+| 6 | Checkout & Payments | Complete | 8/8 plans |
+| 7 | Admin Order Management | Complete | 3/3 plans |
+| 8 | B2B Quote System | Complete | 5/5 plans |
+| 9 | Content & Polish | Complete | 10/10 plans |
+| 10 | Design, Migration & Launch | Planned | 0/14 plans |
 
 ---
 *Roadmap created: 2026-01-19*
-*Last updated: 2026-01-20*
+*Last updated: 2026-01-21 (Phase 10 planned)*

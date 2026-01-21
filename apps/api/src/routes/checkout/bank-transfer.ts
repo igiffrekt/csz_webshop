@@ -8,7 +8,7 @@ const STRAPI_API_TOKEN = process.env.STRAPI_API_TOKEN;
 
 // Bank account details for bank transfer
 const BANK_ACCOUNT = {
-  accountHolder: 'CSZ Tuzvedelmi Kft.',
+  accountHolder: 'CSZ Tűzvédelmi Kft.',
   bankName: 'OTP Bank',
   iban: 'HU12 1234 5678 9012 3456 7890 1234',
   bic: 'OTPVHUHB',
@@ -144,15 +144,15 @@ export const bankTransferRoutes: FastifyPluginAsync = async (fastify) => {
     } = request.body;
 
     if (!lineItems || lineItems.length === 0) {
-      return reply.status(400).send({ error: 'A kosar ures' });
+      return reply.status(400).send({ error: 'A kosár üres' });
     }
 
     if (!shippingAddress) {
-      return reply.status(400).send({ error: 'Szallitasi cim szukseges' });
+      return reply.status(400).send({ error: 'Szállítási cím szükséges' });
     }
 
     if (!userId) {
-      return reply.status(400).send({ error: 'Felhasznalo azonosito szukseges' });
+      return reply.status(400).send({ error: 'Felhasználó azonosító szükséges' });
     }
 
     try {
@@ -178,7 +178,7 @@ export const bankTransferRoutes: FastifyPluginAsync = async (fastify) => {
         const priceInfo = prices.get(key);
 
         if (!priceInfo) {
-          return reply.status(400).send({ error: `Termek nem talalhato: ${item.name}` });
+          return reply.status(400).send({ error: `Termék nem található: ${item.name}` });
         }
 
         subtotal += priceInfo.price * item.quantity;
@@ -261,7 +261,7 @@ export const bankTransferRoutes: FastifyPluginAsync = async (fastify) => {
     } catch (error) {
       fastify.log.error(error, 'Failed to create bank transfer order');
       return reply.status(500).send({
-        error: 'Hiba tortent a rendeles letrehozasakor',
+        error: 'Hiba történt a rendelés létrehozásakor',
       });
     }
   });

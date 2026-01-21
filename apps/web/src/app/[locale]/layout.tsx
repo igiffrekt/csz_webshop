@@ -7,6 +7,7 @@ import { QueryProvider } from "@/components/providers/QueryProvider";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { Toaster } from "@/components/ui/sonner";
+import { generateOrganizationJsonLd } from "@/lib/structured-data";
 
 export default async function LocaleLayout({
   children,
@@ -25,10 +26,18 @@ export default async function LocaleLayout({
   // Load messages for the locale
   const messages = await getMessages();
 
+  const organizationJsonLd = generateOrganizationJsonLd();
+
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
       <NuqsAdapter>
         <QueryProvider>
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify(organizationJsonLd),
+            }}
+          />
           <div className="flex min-h-screen flex-col">
             <Header />
             <main className="flex-1">{children}</main>

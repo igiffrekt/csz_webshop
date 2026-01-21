@@ -34,11 +34,14 @@ export async function PUT(request: NextRequest) {
 export async function DELETE(request: NextRequest) {
   const documentId = request.nextUrl.searchParams.get("documentId");
 
+  console.log("[DELETE /api/addresses] documentId:", documentId);
+
   if (!documentId) {
     return NextResponse.json({ message: "documentId required" }, { status: 400 });
   }
 
   const result = await deleteAddress(documentId);
+  console.log("[DELETE /api/addresses] result:", result);
 
   if (result.error) {
     return NextResponse.json({ message: result.error }, { status: 400 });

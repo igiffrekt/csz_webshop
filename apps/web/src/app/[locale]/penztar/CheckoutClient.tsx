@@ -15,10 +15,10 @@ import type { ShippingAddress } from '@csz/types';
 // Step indicator component
 function StepIndicator({ currentStep }: { currentStep: string }) {
   const steps = [
-    { key: 'shipping', label: 'Szallitas' },
-    { key: 'billing', label: 'Szamlazas' },
-    { key: 'summary', label: 'Osszegzes' },
-    { key: 'payment', label: 'Fizetes' },
+    { key: 'shipping', label: 'Szállítás' },
+    { key: 'billing', label: 'Számlázás' },
+    { key: 'summary', label: 'Összegzés' },
+    { key: 'payment', label: 'Fizetés' },
   ];
 
   const currentIndex = steps.findIndex(s => s.key === currentStep);
@@ -76,7 +76,7 @@ export function CheckoutClient({ initialAddresses, userId }: CheckoutClientProps
   if (!hydrated) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <div className="animate-pulse text-muted-foreground">Betoltes...</div>
+        <div className="animate-pulse text-muted-foreground">Betöltés...</div>
       </div>
     );
   }
@@ -85,9 +85,9 @@ export function CheckoutClient({ initialAddresses, userId }: CheckoutClientProps
   if (items.length === 0) {
     return (
       <div className="text-center py-12">
-        <p className="text-muted-foreground mb-4">A kosara ures.</p>
+        <p className="text-muted-foreground mb-4">A kosara üres.</p>
         <Button asChild>
-          <Link href="/termekek">Termekek bongeszese</Link>
+          <Link href="/termekek">Termékek böngészése</Link>
         </Button>
       </div>
     );
@@ -113,7 +113,7 @@ export function CheckoutClient({ initialAddresses, userId }: CheckoutClientProps
         {/* Order summary sidebar */}
         <div className="lg:col-span-1">
           <div className="border rounded-lg p-6 sticky top-4">
-            <h2 className="font-semibold mb-4">Rendeles osszegzese</h2>
+            <h2 className="font-semibold mb-4">Rendelés összegzése</h2>
 
             <div className="space-y-3 mb-4">
               {items.map((item) => (
@@ -128,21 +128,21 @@ export function CheckoutClient({ initialAddresses, userId }: CheckoutClientProps
 
             <div className="border-t pt-4 space-y-2">
               <div className="flex justify-between text-sm">
-                <span>Reszosszeg</span>
+                <span>Részösszeg</span>
                 <span>{cartStore.getSubtotal().toLocaleString('hu-HU')} Ft</span>
               </div>
               {cartStore.coupon && (
                 <div className="flex justify-between text-sm text-green-600">
-                  <span>Kedvezmeny ({cartStore.coupon.code})</span>
+                  <span>Kedvezmény ({cartStore.coupon.code})</span>
                   <span>-{cartStore.getDiscount().toLocaleString('hu-HU')} Ft</span>
                 </div>
               )}
               <div className="flex justify-between text-sm">
-                <span>Szallitas</span>
-                <span className="text-muted-foreground">Szamolva...</span>
+                <span>Szállítás</span>
+                <span className="text-muted-foreground">Számolva...</span>
               </div>
               <div className="flex justify-between font-semibold pt-2 border-t">
-                <span>Osszesen</span>
+                <span>Összesen</span>
                 <span>{cartStore.getTotal().toLocaleString('hu-HU')} Ft</span>
               </div>
             </div>

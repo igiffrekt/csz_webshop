@@ -203,15 +203,15 @@ export const createSessionRoutes: FastifyPluginAsync = async (fastify) => {
 
     // Validate request
     if (!lineItems || lineItems.length === 0) {
-      return reply.status(400).send({ error: 'A kosar ures' });
+      return reply.status(400).send({ error: 'A kosár üres' });
     }
 
     if (!shippingAddress) {
-      return reply.status(400).send({ error: 'Szallitasi cim szukseges' });
+      return reply.status(400).send({ error: 'Szállítási cím szükséges' });
     }
 
     if (!userId) {
-      return reply.status(400).send({ error: 'Felhasznalo azonosito szukseges' });
+      return reply.status(400).send({ error: 'Felhasználó azonosító szükséges' });
     }
 
     try {
@@ -240,7 +240,7 @@ export const createSessionRoutes: FastifyPluginAsync = async (fastify) => {
         const priceInfo = prices.get(key);
 
         if (!priceInfo) {
-          return reply.status(400).send({ error: `Termek nem talalhato: ${item.name}` });
+          return reply.status(400).send({ error: `Termék nem található: ${item.name}` });
         }
 
         subtotal += priceInfo.price * item.quantity;
@@ -295,14 +295,18 @@ export const createSessionRoutes: FastifyPluginAsync = async (fastify) => {
         poReference,
       });
 
-      // Create Stripe line items (HUF is zero-decimal currency)
+      // Create Stripe line items
+      // NOTE: Stripe account may treat HUF as decimal currency (older API versions)
+      // We multiply by 100 to ensure correct amounts are charged
+      const HUF_MULTIPLIER = 100;
+
       const stripeLineItems = verifiedLineItems.map((item) => ({
         price_data: {
           currency: 'huf',
           product_data: {
             name: item.variantName ? `${item.name} - ${item.variantName}` : item.name,
           },
-          unit_amount: item.price, // HUF - no multiplication needed
+          unit_amount: item.price * HUF_MULTIPLIER,
         },
         quantity: item.quantity,
       }));
@@ -313,9 +317,9 @@ export const createSessionRoutes: FastifyPluginAsync = async (fastify) => {
           price_data: {
             currency: 'huf',
             product_data: {
-              name: 'Szallitasi dij',
+              name: 'Szállítási díj',
             },
-            unit_amount: shipping,
+            unit_amount: shipping * HUF_MULTIPLIER,
           },
           quantity: 1,
         });
@@ -326,10 +330,10 @@ export const createSessionRoutes: FastifyPluginAsync = async (fastify) => {
       if (discount > 0) {
         // Create a one-time coupon for this checkout
         const stripeCoupon = await stripe.coupons.create({
-          amount_off: discount,
+          amount_off: discount * HUF_MULTIPLIER,
           currency: 'huf',
           duration: 'once',
-          name: couponCode || 'Kedvezmeny',
+          name: couponCode || 'Kedvezmény',
         });
         discounts = [{ coupon: stripeCoupon.id }];
       }
@@ -368,9 +372,15 @@ export const createSessionRoutes: FastifyPluginAsync = async (fastify) => {
         orderNumber: order.orderNumber,
       });
     } catch (error) {
-      fastify.log.error(error, 'Failed to create checkout session');
+      const err = error as Error;
+      fastify.log.error({
+        msg: 'Failed to create checkout session',
+        error: err.message,
+        stack: err.stack,
+      });
       return reply.status(500).send({
-        error: 'Hiba tortent a fizetes inditasakor',
+        error: 'Hiba történt a fizetés indításakor',
+        details: process.env.NODE_ENV !== 'production' ? err.message : undefined,
       });
     }
   });

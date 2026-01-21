@@ -4,8 +4,8 @@ import { CheckoutClient } from './CheckoutClient';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Penztar | CSZ Tuzvedelmi Webshop',
-  description: 'Rendelese befejezese',
+  title: 'Pénztár | CSZ Tűzvédelmi Webshop',
+  description: 'Rendelése befejezése',
 };
 
 export default async function CheckoutPage() {
@@ -22,7 +22,7 @@ export default async function CheckoutPage() {
 
   return (
     <main className="container mx-auto px-4 py-8 max-w-4xl">
-      <h1 className="text-2xl font-bold mb-8">Penztar</h1>
+      <h1 className="text-2xl font-bold mb-8">Pénztár</h1>
       <CheckoutClient
         initialAddresses={addresses || []}
         userId={session.userId}

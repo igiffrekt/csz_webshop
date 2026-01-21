@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { Plus, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -13,6 +13,12 @@ import {
 import { AddressCard } from "@/components/account/AddressCard";
 import { AddressForm, type AddressFormData } from "@/components/account/AddressForm";
 import type { ShippingAddress } from "@csz/types";
+import {
+  createAddressAction,
+  updateAddressAction,
+  deleteAddressAction,
+  setDefaultAddressAction,
+} from "@/lib/actions/address-actions";
 
 interface AddressesClientProps {
   initialAddresses: ShippingAddress[];
@@ -20,6 +26,7 @@ interface AddressesClientProps {
 
 export function AddressesClient({ initialAddresses }: AddressesClientProps) {
   const router = useRouter();
+  const [isPending, startTransition] = useTransition();
   const [addresses, setAddresses] = useState(initialAddresses);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingAddress, setEditingAddress] = useState<ShippingAddress | undefined>();
@@ -40,55 +47,47 @@ export function AddressesClient({ initialAddresses }: AddressesClientProps) {
   };
 
   const handleSubmit = async (data: AddressFormData) => {
-    const res = await fetch("/api/addresses", {
-      method: editingAddress ? "PUT" : "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        documentId: editingAddress?.documentId,
-        ...data,
-      }),
-    });
+    const result = editingAddress
+      ? await updateAddressAction(editingAddress.documentId, data)
+      : await createAddressAction(data);
 
-    if (!res.ok) {
-      const error = await res.json();
-      throw new Error(error.message || "Hiba történt");
+    if (!result.success) {
+      throw new Error(result.error || "Hiba történt");
     }
 
     setIsDialogOpen(false);
-    router.refresh();
+    startTransition(() => {
+      router.refresh();
+    });
   };
 
   const handleDelete = async (documentId: string) => {
-    const res = await fetch(`/api/addresses?documentId=${documentId}`, {
-      method: "DELETE",
-    });
+    const result = await deleteAddressAction(documentId);
 
-    if (!res.ok) {
-      throw new Error("Törlés sikertelen");
+    if (!result.success) {
+      throw new Error(result.error || "Törlés sikertelen");
     }
 
-    // Optimistic update - no need for router.refresh() since we update local state
+    // Optimistic update
     setAddresses(addresses.filter((a) => a.documentId !== documentId));
   };
 
   const handleSetDefault = async (documentId: string) => {
-    const res = await fetch("/api/addresses/set-default", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ documentId }),
-    });
+    const result = await setDefaultAddressAction(documentId);
 
-    if (!res.ok) {
-      throw new Error("Beállítás sikertelen");
+    if (!result.success) {
+      throw new Error(result.error || "Beállítás sikertelen");
     }
 
-    router.refresh();
+    startTransition(() => {
+      router.refresh();
+    });
   };
 
   return (
     <>
       <div className="flex justify-end mb-6">
-        <Button onClick={handleAdd}>
+        <Button onClick={handleAdd} disabled={isPending}>
           <Plus className="h-4 w-4 mr-2" />
           Új cím hozzáadása
         </Button>

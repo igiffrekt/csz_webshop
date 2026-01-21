@@ -42,13 +42,85 @@ export async function calculateTotals(
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
-      return { data: null, error: errorData.error || 'Hiba tortent a szamitasnal' };
+      return { data: null, error: errorData.error || 'Hiba történt a számításnál' };
     }
 
     const data = await response.json();
     return { data };
   } catch {
-    return { data: null, error: 'Kapcsolodasi hiba' };
+    return { data: null, error: 'Kapcsolódási hiba' };
+  }
+}
+
+/**
+ * Create bank transfer order
+ */
+export interface BankTransferRequest {
+  lineItems: Array<{
+    productId: string;
+    variantId?: string;
+    quantity: number;
+    name: string;
+    variantName?: string;
+    sku: string;
+    price: number;
+  }>;
+  shippingAddress: {
+    recipientName: string;
+    street: string;
+    city: string;
+    postalCode: string;
+    country: string;
+    phone?: string;
+  };
+  billingAddress?: {
+    recipientName: string;
+    street: string;
+    city: string;
+    postalCode: string;
+    country: string;
+    companyName?: string;
+    vatNumber?: string;
+  };
+  couponCode?: string;
+  poReference?: string;
+  userId: number;
+}
+
+export interface BankTransferResponse {
+  orderId: string;
+  orderNumber: string;
+  total: number;
+  bankAccount: {
+    accountHolder: string;
+    bankName: string;
+    iban: string;
+    bic: string;
+  };
+  paymentReference: string;
+}
+
+export async function createBankTransferOrder(
+  request: BankTransferRequest
+): Promise<{ data: BankTransferResponse | null; error?: string }> {
+  try {
+    const response = await fetch(`${API_URL}/checkout/bank-transfer`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(request),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      return { data: null, error: errorData.error || 'Hiba történt a rendelés létrehozásakor' };
+    }
+
+    const data = await response.json();
+    return { data };
+  } catch {
+    return { data: null, error: 'Kapcsolódási hiba' };
   }
 }
 

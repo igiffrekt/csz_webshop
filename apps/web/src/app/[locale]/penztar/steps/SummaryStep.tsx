@@ -83,7 +83,7 @@ export function SummaryStep({ addresses }: SummaryStepProps) {
     return (
       <div className="flex items-center justify-center py-12">
         <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
-        <span className="ml-2 text-muted-foreground">Osszegzes szamitasa...</span>
+        <span className="ml-2 text-muted-foreground">Összegzés számítása...</span>
       </div>
     );
   }
@@ -93,7 +93,7 @@ export function SummaryStep({ addresses }: SummaryStepProps) {
       <div className="p-6 border border-destructive rounded-lg">
         <div className="flex items-center gap-2 text-destructive mb-4">
           <AlertCircle className="h-5 w-5" />
-          <span className="font-medium">Hiba tortent</span>
+          <span className="font-medium">Hiba történt</span>
         </div>
         <p className="text-muted-foreground mb-4">{error}</p>
         <Button variant="outline" onClick={prevStep}>
@@ -105,13 +105,13 @@ export function SummaryStep({ addresses }: SummaryStepProps) {
 
   return (
     <div className="space-y-6">
-      <h2 className="text-xl font-semibold">Rendeles osszegzese</h2>
+      <h2 className="text-xl font-semibold">Rendelés összegzése</h2>
 
       {/* Addresses */}
       <div className="grid md:grid-cols-2 gap-6">
         {/* Shipping Address */}
         <div className="border rounded-lg p-4">
-          <h3 className="font-medium mb-2">Szallitasi cim</h3>
+          <h3 className="font-medium mb-2">Szállítási cím</h3>
           {shippingAddress && (
             <div className="text-sm text-muted-foreground">
               <p>{shippingAddress.recipientName}</p>
@@ -125,14 +125,14 @@ export function SummaryStep({ addresses }: SummaryStepProps) {
 
         {/* Billing Address */}
         <div className="border rounded-lg p-4">
-          <h3 className="font-medium mb-2">Szamlazasi cim</h3>
+          <h3 className="font-medium mb-2">Számlázási cím</h3>
           {billingAddress && (
             <div className="text-sm text-muted-foreground">
               {newBillingAddress?.companyName && !useSameAsBilling && (
                 <p className="font-medium">{newBillingAddress.companyName}</p>
               )}
               {newBillingAddress?.vatNumber && !useSameAsBilling && (
-                <p>Adoszam: {newBillingAddress.vatNumber}</p>
+                <p>Adószám: {newBillingAddress.vatNumber}</p>
               )}
               <p>{billingAddress.recipientName}</p>
               <p>{billingAddress.street}</p>
@@ -142,7 +142,7 @@ export function SummaryStep({ addresses }: SummaryStepProps) {
           )}
           {useSameAsBilling && (
             <p className="text-xs text-muted-foreground mt-2">
-              (Megegyezik a szallitasi cimmel)
+              (Megegyezik a szállítási címmel)
             </p>
           )}
         </div>
@@ -151,14 +151,14 @@ export function SummaryStep({ addresses }: SummaryStepProps) {
       {/* PO Reference */}
       {poReference && (
         <div className="border rounded-lg p-4">
-          <h3 className="font-medium mb-2">Megrendelesi hivatkozas</h3>
+          <h3 className="font-medium mb-2">Megrendelési hivatkozás</h3>
           <p className="text-sm text-muted-foreground">{poReference}</p>
         </div>
       )}
 
       {/* Line Items */}
       <div className="border rounded-lg p-4">
-        <h3 className="font-medium mb-4">Termekek</h3>
+        <h3 className="font-medium mb-4">Termékek</h3>
         <div className="space-y-3">
           {items.map((item) => (
             <div key={item.id} className="flex justify-between items-center">
@@ -191,22 +191,22 @@ export function SummaryStep({ addresses }: SummaryStepProps) {
       {/* Totals with VAT breakdown */}
       {totals && (
         <div className="border rounded-lg p-4 space-y-3">
-          <h3 className="font-medium mb-4">Fizetendo osszeg</h3>
+          <h3 className="font-medium mb-4">Fizetendő összeg</h3>
 
           <div className="flex justify-between text-sm">
-            <span>Reszosszeg</span>
+            <span>Részösszeg</span>
             <span>{formatHUF(totals.subtotal)}</span>
           </div>
 
           {totals.discount > 0 && (
             <div className="flex justify-between text-sm text-green-600">
-              <span>Kedvezmeny {coupon && `(${coupon.code})`}</span>
+              <span>Kedvezmény {coupon && `(${coupon.code})`}</span>
               <span>-{formatHUF(totals.discount)}</span>
             </div>
           )}
 
           <div className="flex justify-between text-sm">
-            <span>Szallitasi dij</span>
+            <span>Szállítási díj</span>
             <span>
               {totals.shipping === 0 ? (
                 <span className="text-green-600">Ingyenes</span>
@@ -218,13 +218,13 @@ export function SummaryStep({ addresses }: SummaryStepProps) {
 
           {totals.shipping === 0 && (
             <p className="text-xs text-muted-foreground">
-              Ingyenes szallitas {formatHUF(totals.freeShippingThreshold)} feletti rendeleshez
+              Ingyenes szállítás {formatHUF(totals.freeShippingThreshold)} feletti rendeléshez
             </p>
           )}
 
           <div className="border-t pt-3 mt-3">
             <div className="flex justify-between text-sm text-muted-foreground">
-              <span>Netto osszeg</span>
+              <span>Nettó összeg</span>
               <span>{formatHUF(totals.netTotal)}</span>
             </div>
             <div className="flex justify-between text-sm text-muted-foreground">
@@ -234,7 +234,7 @@ export function SummaryStep({ addresses }: SummaryStepProps) {
           </div>
 
           <div className="flex justify-between font-semibold text-lg pt-3 border-t">
-            <span>Vegosszeg</span>
+            <span>Végösszeg</span>
             <span>{formatHUF(totals.total)}</span>
           </div>
         </div>
@@ -246,7 +246,7 @@ export function SummaryStep({ addresses }: SummaryStepProps) {
           Vissza
         </Button>
         <Button onClick={nextStep}>
-          Tovabb a fizeteshez
+          Tovább a fizetéshez
         </Button>
       </div>
     </div>

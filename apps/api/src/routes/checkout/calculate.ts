@@ -85,35 +85,35 @@ async function validateCoupon(
 
   const res = await fetch(`${STRAPI_URL}/api/coupons?${query}`);
   if (!res.ok) {
-    return { valid: false, discount: 0, error: 'Kupon ellenorzese sikertelen' };
+    return { valid: false, discount: 0, error: 'Kupon ellenőrzése sikertelen' };
   }
 
   const json = await res.json();
   const coupons = json.data || [];
 
   if (coupons.length === 0) {
-    return { valid: false, discount: 0, error: 'Ervenytelen kuponkod' };
+    return { valid: false, discount: 0, error: 'Érvénytelen kuponkód' };
   }
 
   const coupon = coupons[0];
 
   // Check if active
   if (!coupon.isActive) {
-    return { valid: false, discount: 0, error: 'Ez a kupon mar nem aktiv' };
+    return { valid: false, discount: 0, error: 'Ez a kupon már nem aktív' };
   }
 
   // Check dates
   const now = new Date();
   if (coupon.validFrom && new Date(coupon.validFrom) > now) {
-    return { valid: false, discount: 0, error: 'Ez a kupon meg nem ervenyes' };
+    return { valid: false, discount: 0, error: 'Ez a kupon még nem érvényes' };
   }
   if (coupon.validUntil && new Date(coupon.validUntil) < now) {
-    return { valid: false, discount: 0, error: 'Ez a kupon mar lejart' };
+    return { valid: false, discount: 0, error: 'Ez a kupon már lejárt' };
   }
 
   // Check usage limit
   if (coupon.maxUses && coupon.usedCount >= coupon.maxUses) {
-    return { valid: false, discount: 0, error: 'Ez a kupon elerte a felhasznalasi limitet' };
+    return { valid: false, discount: 0, error: 'Ez a kupon elérte a felhasználási limitet' };
   }
 
   // Check minimum order
@@ -121,7 +121,7 @@ async function validateCoupon(
     return {
       valid: false,
       discount: 0,
-      error: `Minimum rendelesi ertek: ${coupon.minOrderValue.toLocaleString('hu-HU')} Ft`
+      error: `Minimum rendelési érték: ${coupon.minOrderValue.toLocaleString('hu-HU')} Ft`
     };
   }
 
@@ -150,13 +150,13 @@ export const calculateRoutes: FastifyPluginAsync = async (fastify) => {
     // Validate shipping country
     if (!isValidShippingCountry(shippingCountry)) {
       return reply.status(400).send({
-        error: 'Sajnos csak Magyarorszagra szallitunk',
+        error: 'Sajnos csak Magyarországra szállítunk',
       });
     }
 
     if (!lineItems || lineItems.length === 0) {
       return reply.status(400).send({
-        error: 'A kosar ures',
+        error: 'A kosár üres',
       });
     }
 
@@ -173,7 +173,7 @@ export const calculateRoutes: FastifyPluginAsync = async (fastify) => {
 
       if (!priceInfo) {
         return reply.status(400).send({
-          error: `Termek nem talalhato: ${key}`,
+          error: `Termék nem található: ${key}`,
         });
       }
 

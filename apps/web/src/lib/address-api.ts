@@ -151,27 +151,33 @@ export async function deleteAddress(
   documentId: string
 ): Promise<ApiResponse<boolean>> {
   const session = await getSession();
+  console.log("[deleteAddress] session exists:", !!session);
   if (!session) {
     return { data: null, error: "Nincs bejelentkezve" };
   }
 
   try {
-    const res = await fetch(
-      `${STRAPI_URL}/api/shipping-addresses/${documentId}`,
-      {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${session.jwt}`,
-        },
-      }
-    );
+    const url = `${STRAPI_URL}/api/shipping-addresses/${documentId}`;
+    console.log("[deleteAddress] DELETE", url);
+
+    const res = await fetch(url, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${session.jwt}`,
+      },
+    });
+
+    console.log("[deleteAddress] status:", res.status);
 
     if (!res.ok) {
+      const text = await res.text();
+      console.log("[deleteAddress] error response:", text);
       return { data: null, error: "Cím törlése sikertelen" };
     }
 
     return { data: true };
-  } catch {
+  } catch (err) {
+    console.error("[deleteAddress] exception:", err);
     return { data: null, error: "Hiba történt" };
   }
 }

@@ -104,7 +104,16 @@ export const useCartStore = create<CartState>()(
 
       getDiscount: () => {
         const { coupon } = get();
-        return coupon ? coupon.discountAmount : 0;
+        if (!coupon) return 0;
+
+        const subtotal = get().getSubtotal();
+
+        // Recalculate discount based on current subtotal
+        if (coupon.discountType === 'percentage') {
+          return Math.round(subtotal * (coupon.discountValue / 100));
+        }
+        // Fixed discount - cap at subtotal
+        return Math.min(coupon.discountAmount, subtotal);
       },
 
       getTotal: () => Math.max(0, get().getSubtotal() - get().getDiscount()),

@@ -25,11 +25,36 @@ export interface ProductSpecification extends Struct.ComponentSchema {
   };
 }
 
+export interface SharedSeo extends Struct.ComponentSchema {
+  collectionName: 'components_shared_seos';
+  info: {
+    description: 'SEO metadata for pages';
+    displayName: 'SEO';
+    icon: 'search';
+  };
+  attributes: {
+    keywords: Schema.Attribute.String &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 255;
+      }>;
+    metaDescription: Schema.Attribute.Text &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 160;
+      }>;
+    metaImage: Schema.Attribute.Media<'images'>;
+    metaTitle: Schema.Attribute.String &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 60;
+      }>;
+  };
+}
+
 declare module '@strapi/strapi' {
   export module Public {
     export interface ComponentSchemas {
       'product.certification': ProductCertification;
       'product.specification': ProductSpecification;
+      'shared.seo': SharedSeo;
     }
   }
 }

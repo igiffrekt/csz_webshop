@@ -78,31 +78,79 @@ body {
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
+  /* Primary - Yellow/Gold for CSZ brand */
+  --primary: oklch(0.75 0.18 85);
+  --primary-foreground: oklch(0.145 0 0);
+  /* Secondary - Dark gray for professional look */
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
   --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
+  --muted-foreground: oklch(0.45 0 0);
   --accent: oklch(0.97 0 0);
   --accent-foreground: oklch(0.205 0 0);
   --destructive: oklch(0.577 0.245 27.325);
   --border: oklch(0.922 0 0);
   --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.646 0.222 41.116);
+  --ring: oklch(0.75 0.18 85);
+  --chart-1: oklch(0.75 0.18 85);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
   --chart-4: oklch(0.828 0.189 84.429);
   --chart-5: oklch(0.769 0.188 70.08);
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.75 0.18 85);
+  --sidebar-primary-foreground: oklch(0.145 0 0);
   --sidebar-accent: oklch(0.97 0 0);
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --sidebar-ring: oklch(0.75 0.18 85);
+
+  /* Extended palette for design system */
+  --color-primary-50: #fffbeb;
+  --color-primary-100: #fef3c7;
+  --color-primary-200: #fde68a;
+  --color-primary-300: #fcd34d;
+  --color-primary-400: #fbbf24;
+  --color-primary-500: #f59e0b;
+  --color-primary-600: #d97706;
+  --color-primary-700: #b45309;
+  --color-primary-800: #92400e;
+  --color-primary-900: #78350f;
+
+  --color-secondary-50: #f9fafb;
+  --color-secondary-100: #f3f4f6;
+  --color-secondary-200: #e5e7eb;
+  --color-secondary-300: #d1d5db;
+  --color-secondary-400: #9ca3af;
+  --color-secondary-500: #6b7280;
+  --color-secondary-600: #4b5563;
+  --color-secondary-700: #374151;
+  --color-secondary-800: #1f2937;
+  --color-secondary-900: #111827;
+
+  --color-success: #16a34a;
+  --color-danger: #dc2626;
+  --color-warning: #f59e0b;
+  --color-info: #2563eb;
+
+  /* Spacing */
+  --section-spacing: 5rem;
+  --section-spacing-sm: 2.5rem;
+  --container-max: 1280px;
+  --gutter: 1.5rem;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+
+  /* Transitions */
+  --transition-fast: 150ms;
+  --transition-base: 200ms;
+  --transition-slow: 300ms;
 }
 
 .dark {
@@ -146,4 +194,463 @@ body {
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Scroll reveal animations */
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.scroll-reveal.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.scroll-reveal-left {
+  opacity: 0;
+  transform: translateX(-20px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.scroll-reveal-left.revealed {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.scroll-reveal-right {
+  opacity: 0;
+  transform: translateX(20px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.scroll-reveal-right.revealed {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.scroll-reveal-scale {
+  opacity: 0;
+  transform: scale(0.95);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.scroll-reveal-scale.revealed {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Micro-interactions */
+.interactive-scale {
+  transition: transform 0.15s ease-out;
+}
+
+.interactive-scale:hover {
+  transform: scale(1.02);
+}
+
+.interactive-scale:active {
+  transform: scale(0.98);
+}
+
+/* Button press effect */
+.btn-press {
+  transition: transform 0.1s ease-out, box-shadow 0.1s ease-out;
+}
+
+.btn-press:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn-press:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Card hover effect */
+.card-hover {
+  transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+}
+
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+}
+
+/* Image zoom on hover */
+.img-zoom {
+  transition: transform 0.3s ease-out;
+}
+
+.img-zoom:hover {
+  transform: scale(1.05);
+}
+
+/* Skeleton shimmer animation */
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Accordion animations */
+@keyframes accordion-down {
+  from {
+    height: 0;
+  }
+  to {
+    height: var(--radix-accordion-content-height);
+  }
+}
+
+@keyframes accordion-up {
+  from {
+    height: var(--radix-accordion-content-height);
+  }
+  to {
+    height: 0;
+  }
+}
+
+/* Page transitions */
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root) {
+  animation: fade-out 0.2s ease-out;
+}
+
+::view-transition-new(root) {
+  animation: fade-in 0.2s ease-in;
+}
+
+@keyframes fade-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Non-blocking animations */
+.animate-non-blocking {
+  animation-fill-mode: forwards;
+  will-change: transform, opacity;
+}
+
+/* ============================================
+   Design System Utility Classes
+   ============================================ */
+
+/* Section spacing */
+.section {
+  padding-block: var(--section-spacing);
+}
+
+.section-sm {
+  padding-block: var(--section-spacing-sm);
+}
+
+/* Container variants */
+.container-narrow {
+  max-width: 960px;
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+/* Section headers */
+.section-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.section-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-secondary-900);
+  margin-bottom: 0.5rem;
+}
+
+.section-subtitle {
+  color: var(--color-secondary-500);
+  font-size: 1rem;
+}
+
+/* Badge styles */
+.badge-discount {
+  display: inline-block;
+  background-color: var(--color-danger);
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.25rem 0.625rem;
+  border-radius: 0.25rem;
+}
+
+.badge-new {
+  display: inline-block;
+  background-color: var(--color-primary-500);
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.25rem 0.625rem;
+  border-radius: 0.25rem;
+}
+
+.badge-featured {
+  display: inline-block;
+  background-color: var(--color-info);
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.25rem 0.625rem;
+  border-radius: 0.25rem;
+}
+
+.badge-stock {
+  display: inline-block;
+  background-color: var(--color-success);
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.25rem 0.625rem;
+  border-radius: 0.25rem;
+}
+
+.badge-out-of-stock {
+  display: inline-block;
+  background-color: var(--color-secondary-500);
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.25rem 0.625rem;
+  border-radius: 0.25rem;
+}
+
+/* Price styling */
+.price {
+  font-weight: 700;
+  color: var(--color-secondary-900);
+}
+
+.price-lg {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-secondary-900);
+}
+
+.price-original {
+  text-decoration: line-through;
+  color: var(--color-secondary-400);
+  font-weight: 400;
+}
+
+/* Rating stars container */
+.rating {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.rating-star {
+  color: var(--color-primary-500);
+}
+
+.rating-star-empty {
+  color: var(--color-secondary-300);
+}
+
+/* Image hover zoom container */
+.image-zoom {
+  overflow: hidden;
+}
+
+.image-zoom img {
+  transition: transform var(--transition-slow) ease;
+}
+
+.image-zoom:hover img {
+  transform: scale(1.05);
+}
+
+/* Card with enhanced hover lift */
+.card-lift {
+  transition: transform var(--transition-base) ease,
+              box-shadow var(--transition-base) ease;
+}
+
+.card-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Button variants for design system */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.625rem 1.5rem;
+  background-color: var(--color-primary-500);
+  color: white;
+  font-weight: 500;
+  border-radius: 9999px;
+  transition: background-color var(--transition-fast) ease;
+}
+
+.btn-primary:hover {
+  background-color: var(--color-primary-600);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.625rem 1.5rem;
+  background-color: var(--color-secondary-900);
+  color: white;
+  font-weight: 500;
+  border-radius: 9999px;
+  transition: background-color var(--transition-fast) ease;
+}
+
+.btn-secondary:hover {
+  background-color: var(--color-secondary-800);
+}
+
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.625rem 1.5rem;
+  background-color: transparent;
+  border: 2px solid var(--color-secondary-900);
+  color: var(--color-secondary-900);
+  font-weight: 500;
+  border-radius: 9999px;
+  transition: all var(--transition-fast) ease;
+}
+
+.btn-outline:hover {
+  background-color: var(--color-secondary-900);
+  color: white;
+}
+
+/* Text colors using design tokens */
+.text-primary {
+  color: var(--color-primary-500);
+}
+
+.text-primary-dark {
+  color: var(--color-primary-700);
+}
+
+.text-secondary {
+  color: var(--color-secondary-500);
+}
+
+.text-secondary-dark {
+  color: var(--color-secondary-900);
+}
+
+/* Background colors using design tokens */
+.bg-primary-light {
+  background-color: var(--color-primary-50);
+}
+
+.bg-primary {
+  background-color: var(--color-primary-500);
+}
+
+.bg-secondary-light {
+  background-color: var(--color-secondary-50);
+}
+
+.bg-secondary-dark {
+  background-color: var(--color-secondary-900);
+}
+
+/* Gradient backgrounds */
+.bg-gradient-primary {
+  background: linear-gradient(135deg, var(--color-primary-500), var(--color-primary-600));
+}
+
+.bg-gradient-dark {
+  background: linear-gradient(135deg, var(--color-secondary-800), var(--color-secondary-900));
+}
+
+/* Trust badge icon container */
+.trust-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  background-color: var(--color-primary-100);
+  border-radius: 9999px;
+  color: var(--color-primary-600);
+}
+
+/* Countdown timer blocks */
+.countdown-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 3rem;
+  padding: 0.5rem;
+  background-color: var(--color-secondary-900);
+  color: white;
+  border-radius: 0.5rem;
+}
+
+.countdown-value {
+  font-size: 1.125rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.countdown-label {
+  font-size: 0.625rem;
+  text-transform: uppercase;
+  color: var(--color-secondary-400);
+  margin-top: 0.25rem;
+}
+
+/* Line clamp utilities */
+.line-clamp-1 {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }

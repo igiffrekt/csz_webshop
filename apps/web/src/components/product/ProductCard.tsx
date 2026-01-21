@@ -27,7 +27,7 @@ export function ProductCard({ product, className }: ProductCardProps) {
     <Link
       href={`/termekek/${product.slug}`}
       className={cn(
-        "group block rounded-lg border border-border bg-card overflow-hidden transition-all hover:shadow-lg hover:border-primary/20",
+        "group block rounded-lg border border-border bg-card overflow-hidden card-hover",
         className
       )}
     >

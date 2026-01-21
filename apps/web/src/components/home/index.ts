@@ -1,0 +1,9 @@
+export { HeroSection } from './HeroSection';
+export { TrustBadges } from './TrustBadges';
+export { CategoryGrid } from './CategoryGrid';
+export { FeaturedProducts } from './FeaturedProducts';
+export { ProductCollections } from './ProductCollections';
+export { DealsSection } from './DealsSection';
+export { PromoBanners } from './PromoBanners';
+export { BlogSection } from './BlogSection';
+export { InstagramSection } from './InstagramSection';

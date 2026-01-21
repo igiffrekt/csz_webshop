@@ -26,7 +26,10 @@ export async function middleware(request: NextRequest) {
   const localeApiMatch = pathname.match(/^\/(hu|en)(\/api\/.*)$/);
   if (localeApiMatch) {
     const apiPath = localeApiMatch[2]; // e.g., /api/addresses
-    return NextResponse.rewrite(new URL(apiPath, request.url));
+    const rewriteUrl = new URL(apiPath, request.url);
+    // Preserve query string from original request
+    rewriteUrl.search = request.nextUrl.search;
+    return NextResponse.rewrite(rewriteUrl);
   }
 
   // Remove locale prefix for route matching (e.g., /hu/fiok -> /fiok)

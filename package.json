@@ -15,5 +15,8 @@
     "db:stop": "docker compose -f docker/docker-compose.yml down",
     "db:logs": "docker compose -f docker/docker-compose.yml logs -f postgres",
     "db:reset": "docker compose -f docker/docker-compose.yml down -v && docker compose -f docker/docker-compose.yml up -d"
+  },
+  "devDependencies": {
+    "csv-parse": "^6.1.0"
   }
 }

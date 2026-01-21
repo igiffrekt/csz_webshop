@@ -24,7 +24,7 @@ export function BillingStep() {
     street: newBillingAddress?.street || '',
     city: newBillingAddress?.city || '',
     postalCode: newBillingAddress?.postalCode || '',
-    country: newBillingAddress?.country || 'Magyarorszag',
+    country: newBillingAddress?.country || 'Magyarország',
     companyName: newBillingAddress?.companyName || '',
     vatNumber: newBillingAddress?.vatNumber || '',
   });
@@ -63,7 +63,7 @@ export function BillingStep() {
 
   return (
     <div className="space-y-6">
-      <h2 className="text-xl font-semibold">Szamlazasi adatok</h2>
+      <h2 className="text-xl font-semibold">Számlázási adatok</h2>
 
       {/* Same as shipping checkbox */}
       <div className="flex items-center space-x-2 p-4 border rounded-lg">
@@ -73,32 +73,32 @@ export function BillingStep() {
           onCheckedChange={(checked) => setUseSameAsBilling(checked === true)}
         />
         <Label htmlFor="sameAsBilling" className="cursor-pointer">
-          A szamlazasi cim megegyezik a szallitasi cimmel
+          A számlázási cím megegyezik a szállítási címmel
         </Label>
       </div>
 
       {/* Billing address form (only if different) */}
       {!useSameAsBilling && (
         <div className="border rounded-lg p-6 space-y-4">
-          <h3 className="font-medium">Szamlazasi cim</h3>
+          <h3 className="font-medium">Számlázási cím</h3>
 
           <div className="grid gap-4 sm:grid-cols-2">
             {/* Company fields (optional) */}
             <div className="sm:col-span-2 p-4 bg-muted/50 rounded-lg space-y-4">
-              <p className="text-sm font-medium">Ceges adatok (opcionalis)</p>
+              <p className="text-sm font-medium">Céges adatok (opcionális)</p>
 
               <div>
-                <Label htmlFor="companyName">Cegnev</Label>
+                <Label htmlFor="companyName">Cégnév</Label>
                 <Input
                   id="companyName"
                   value={billingForm.companyName}
                   onChange={(e) => handleBillingChange('companyName', e.target.value)}
-                  placeholder="Ceg Kft."
+                  placeholder="Cég Kft."
                 />
               </div>
 
               <div>
-                <Label htmlFor="vatNumber">Adoszam</Label>
+                <Label htmlFor="vatNumber">Adószám</Label>
                 <Input
                   id="vatNumber"
                   value={billingForm.vatNumber}
@@ -109,27 +109,27 @@ export function BillingStep() {
             </div>
 
             <div className="sm:col-span-2">
-              <Label htmlFor="billingRecipientName">Nev *</Label>
+              <Label htmlFor="billingRecipientName">Név *</Label>
               <Input
                 id="billingRecipientName"
                 value={billingForm.recipientName}
                 onChange={(e) => handleBillingChange('recipientName', e.target.value)}
-                placeholder="Kovacs Janos"
+                placeholder="Kovács János"
               />
             </div>
 
             <div className="sm:col-span-2">
-              <Label htmlFor="billingStreet">Utca, hazszam *</Label>
+              <Label htmlFor="billingStreet">Utca, házszám *</Label>
               <Input
                 id="billingStreet"
                 value={billingForm.street}
                 onChange={(e) => handleBillingChange('street', e.target.value)}
-                placeholder="Petofi utca 10."
+                placeholder="Petőfi utca 10."
               />
             </div>
 
             <div>
-              <Label htmlFor="billingPostalCode">Iranyitoszam *</Label>
+              <Label htmlFor="billingPostalCode">Irányítószám *</Label>
               <Input
                 id="billingPostalCode"
                 value={billingForm.postalCode}
@@ -139,7 +139,7 @@ export function BillingStep() {
             </div>
 
             <div>
-              <Label htmlFor="billingCity">Varos *</Label>
+              <Label htmlFor="billingCity">Város *</Label>
               <Input
                 id="billingCity"
                 value={billingForm.city}
@@ -149,7 +149,7 @@ export function BillingStep() {
             </div>
 
             <div className="sm:col-span-2">
-              <Label htmlFor="billingCountry">Orszag</Label>
+              <Label htmlFor="billingCountry">Ország</Label>
               <Input
                 id="billingCountry"
                 value={billingForm.country}
@@ -162,12 +162,12 @@ export function BillingStep() {
 
       {/* PO Reference (B2B) */}
       <div className="border rounded-lg p-6 space-y-4">
-        <h3 className="font-medium">Megrendelesi hivatkozas (opcionalis)</h3>
+        <h3 className="font-medium">Megrendelési hivatkozás (opcionális)</h3>
         <p className="text-sm text-muted-foreground">
-          Ceges rendeles eseten megadhatja a belso megrendelesi szamot, ami megjelenik a szamlan.
+          Céges rendelés esetén megadhatja a belső megrendelési számot, ami megjelenik a számlán.
         </p>
         <div>
-          <Label htmlFor="poReference">PO szam / Hivatkozas</Label>
+          <Label htmlFor="poReference">PO szám / Hivatkozás</Label>
           <Input
             id="poReference"
             value={poRef}
@@ -184,7 +184,7 @@ export function BillingStep() {
           Vissza
         </Button>
         <Button onClick={handleContinue} disabled={!canContinue()}>
-          Tovabb az osszegzeshez
+          Tovább az összegzéshez
         </Button>
       </div>
     </div>

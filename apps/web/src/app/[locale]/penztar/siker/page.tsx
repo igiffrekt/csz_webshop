@@ -5,8 +5,8 @@ import { OrderConfirmation } from './OrderConfirmation';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Sikeres rendeles | CSZ Tuzvedelmi Webshop',
-  description: 'Koszonjuk a rendeleset!',
+  title: 'Sikeres rendelés | CSZ Tűzvédelmi Webshop',
+  description: 'Köszönjük a rendelését!',
 };
 
 interface Props {
@@ -46,15 +46,15 @@ export default async function CheckoutSuccessPage({ searchParams }: Props) {
               />
             </svg>
           </div>
-          <h1 className="text-2xl font-bold mb-4">Koszonjuk a rendeleset!</h1>
+          <h1 className="text-2xl font-bold mb-4">Köszönjük a rendelését!</h1>
           <p className="text-muted-foreground mb-6">
-            A rendeleset feldolgozzuk. Hamarosan email ertesitest kuldunk a reszletekkel.
+            A rendelését feldolgozzuk. Hamarosan email értesítést küldünk a részletekkel.
           </p>
           <a
             href="/hu/fiok/rendelesek"
             className="text-primary hover:underline"
           >
-            Rendeleseim megtekintese
+            Rendeléseim megtekintése
           </a>
         </div>
       </main>
