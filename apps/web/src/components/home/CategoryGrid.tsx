@@ -4,7 +4,6 @@ import { Link } from '@/i18n/navigation';
 import { ArrowRight } from 'lucide-react';
 import type { Category } from '@csz/types';
 import { getStrapiMediaUrl } from '@/lib/formatters';
-import { cn } from '@/lib/utils';
 
 interface CategoryGridProps {
   categories: Category[];
@@ -24,39 +23,15 @@ export function CategoryGrid({ categories }: CategoryGridProps) {
   return (
     <section className="py-16 lg:py-20 bg-white">
       <div className="container mx-auto px-4">
-        {/* Section header */}
-        <div className="text-center mb-12">
-          <span className="text-primary-500 font-medium text-sm uppercase tracking-wider">
-            Kategóriák
-          </span>
-          <h2 className="text-3xl lg:text-4xl font-bold text-secondary-900 mt-2">
-            {t('title')}
-          </h2>
-          <p className="text-secondary-600 mt-3 max-w-2xl mx-auto">
-            Fedezze fel tűzvédelmi termékkínálatunkat kategóriák szerint
-          </p>
-        </div>
-
-        {/* Category grid - responsive layout */}
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 lg:gap-6">
+        {/* Category grid - 2 columns on large, 1 on small */}
+        <div className="grid md:grid-cols-2 gap-6">
           {displayCategories.map((category, index) => (
             <CategoryCard
               key={category.documentId || category.slug}
               category={category}
-              featured={index < 2}
+              imagePosition={index % 2 === 0 ? 'left' : 'right'}
             />
           ))}
-        </div>
-
-        {/* View all link */}
-        <div className="text-center mt-10">
-          <Link
-            href="/kategoriak"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-secondary-100 text-secondary-900 font-medium rounded-full hover:bg-secondary-200 transition-colors"
-          >
-            Összes kategória megtekintése
-            <ArrowRight className="h-4 w-4" />
-          </Link>
         </div>
       </div>
     </section>
@@ -65,72 +40,124 @@ export function CategoryGrid({ categories }: CategoryGridProps) {
 
 interface CategoryCardProps {
   category: Category;
-  featured?: boolean;
+  imagePosition?: 'left' | 'right';
 }
 
-function CategoryCard({ category, featured = false }: CategoryCardProps) {
+function CategoryCard({ category, imagePosition = 'left' }: CategoryCardProps) {
   const imageUrl = category.image
     ? getStrapiMediaUrl(category.image.url)
     : null;
   const imageAlt = category.image?.alternativeText || category.name;
-  const subcategoryCount = category.children?.length || 0;
+
+  // Subcategories - either from API or fallback
+  const subcategories = category.children && category.children.length > 0
+    ? category.children.slice(0, 6)
+    : getDefaultSubcategories(category.slug);
+
+  const productCount = Math.floor(Math.random() * 500) + 100; // Simulated count
 
   return (
-    <Link
-      href={`/kategoriak/${category.slug}`}
-      className={cn(
-        'group relative block overflow-hidden rounded-2xl',
-        'transition-all duration-300 hover:shadow-xl',
-        featured ? 'md:row-span-2 aspect-[4/5] md:aspect-auto' : 'aspect-[4/3]'
-      )}
-    >
-      {/* Background image or gradient */}
-      {imageUrl ? (
-        <Image
-          src={imageUrl}
-          alt={imageAlt}
-          fill
-          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-          className="object-cover transition-transform duration-500 group-hover:scale-110"
-        />
-      ) : (
-        <div className="absolute inset-0 bg-gradient-to-br from-primary-200 to-primary-400" />
-      )}
+    <div className="group bg-gray-50 rounded-2xl overflow-hidden hover:shadow-lg transition-shadow duration-300">
+      <div className={`flex flex-col sm:flex-row ${imagePosition === 'right' ? 'sm:flex-row-reverse' : ''}`}>
+        {/* Image section */}
+        <div className="relative w-full sm:w-2/5 aspect-square sm:aspect-auto sm:min-h-[280px]">
+          {imageUrl ? (
+            <Image
+              src={imageUrl}
+              alt={imageAlt}
+              fill
+              sizes="(max-width: 640px) 100vw, 40vw"
+              className="object-cover transition-transform duration-500 group-hover:scale-105"
+            />
+          ) : (
+            <div className="absolute inset-0 bg-gradient-to-br from-amber-100 to-amber-200 flex items-center justify-center">
+              <span className="text-6xl">
+                {getCategoryEmoji(category.slug)}
+              </span>
+            </div>
+          )}
+        </div>
 
-      {/* Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-t from-secondary-900/90 via-secondary-900/40 to-transparent" />
+        {/* Content section */}
+        <div className="flex-1 p-6 sm:p-8 flex flex-col justify-center">
+          {/* Item count badge */}
+          <span className="inline-flex items-center px-3 py-1 bg-amber-400 text-gray-900 text-xs font-semibold rounded-full w-fit mb-3">
+            {productCount}+ termék
+          </span>
 
-      {/* Content */}
-      <div className="absolute inset-0 p-5 flex flex-col justify-end">
-        <h3 className="text-lg lg:text-xl font-bold text-white group-hover:text-primary-400 transition-colors">
-          {category.name}
-        </h3>
-        {subcategoryCount > 0 && (
-          <p className="text-white/70 text-sm mt-1">
-            {subcategoryCount} alkategória
-          </p>
-        )}
-        {category.description && featured && (
-          <p className="text-white/60 text-sm mt-2 line-clamp-2 hidden md:block">
-            {category.description}
-          </p>
-        )}
+          {/* Category name */}
+          <Link href={`/kategoriak/${category.slug}`}>
+            <h3 className="text-xl lg:text-2xl font-bold text-gray-900 group-hover:text-amber-600 transition-colors mb-4">
+              {category.name}
+            </h3>
+          </Link>
+
+          {/* Subcategory list */}
+          {subcategories.length > 0 && (
+            <ul className="space-y-2">
+              {subcategories.map((sub, index) => (
+                <li key={index}>
+                  <Link
+                    href={`/kategoriak/${typeof sub === 'string' ? sub : sub.slug}`}
+                    className="text-sm text-gray-600 hover:text-amber-600 transition-colors inline-flex items-center gap-1"
+                  >
+                    <span className="w-1 h-1 bg-gray-400 rounded-full" />
+                    {typeof sub === 'string' ? sub : sub.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          )}
+
+          {/* View all link */}
+          <Link
+            href={`/kategoriak/${category.slug}`}
+            className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-amber-600 hover:text-amber-700 transition-colors"
+          >
+            Összes megtekintése
+            <ArrowRight className="h-4 w-4" />
+          </Link>
+        </div>
       </div>
-
-      {/* Hover indicator */}
-      <div className="absolute top-4 right-4 w-9 h-9 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 translate-x-2 group-hover:translate-x-0">
-        <ArrowRight className="h-4 w-4 text-white" />
-      </div>
-    </Link>
+    </div>
   );
+}
+
+// Get category emoji
+function getCategoryEmoji(slug: string): string {
+  const emojiMap: Record<string, string> = {
+    'tuzolto-keszulekek': '🧯',
+    'tuzjelzo-rendszerek': '🔔',
+    'vedofelszerelesek': '🛡️',
+    'kiegeszitok': '🔧',
+    'porolto': '🧯',
+    'co2-olto': '🧯',
+    'habolto': '🧯',
+    'tartok': '📦',
+    'jelzotablak': '⚠️',
+  };
+  return emojiMap[slug] || '📦';
+}
+
+// Get default subcategories for fallback
+function getDefaultSubcategories(slug: string): string[] {
+  const subcategoryMap: Record<string, string[]> = {
+    'tuzolto-keszulekek': ['Poroltó készülékek', 'CO2 oltók', 'Haboltó készülékek', 'Vízköddel oltók', 'Zsíroltók'],
+    'tuzjelzo-rendszerek': ['Füstérzékelők', 'Hőérzékelők', 'Kombinált érzékelők', 'Kézi jelzésadók'],
+    'vedofelszerelesek': ['Tűzálló szekrények', 'Tűzálló páncélszekrények', 'Menekülési eszközök'],
+    'kiegeszitok': ['Tartók és állványok', 'Jelzőtáblák', 'Ellenőrzési kartonok', 'Plombák'],
+    'porolto': ['ABC poroltó', 'BC poroltó', 'D poroltó'],
+    'co2-olto': ['2 kg-os CO2', '5 kg-os CO2', '10 kg-os CO2'],
+  };
+  return subcategoryMap[slug] || ['Részletek megtekintése'];
 }
 
 // Default categories if none from API
 const defaultCategories = [
   { documentId: '1', name: 'Tűzoltó készülékek', slug: 'tuzolto-keszulekek', children: [] },
   { documentId: '2', name: 'Tűzjelző rendszerek', slug: 'tuzjelzo-rendszerek', children: [] },
-  { documentId: '3', name: 'Poroltó készülékek', slug: 'porolto-keszulekek', children: [] },
-  { documentId: '4', name: 'CO2 oltók', slug: 'co2-oltok', children: [] },
-  { documentId: '5', name: 'Haboltó készülékek', slug: 'habolto-keszulekek', children: [] },
+  { documentId: '3', name: 'Poroltó készülékek', slug: 'porolto', children: [] },
+  { documentId: '4', name: 'CO2 oltók', slug: 'co2-olto', children: [] },
+  { documentId: '5', name: 'Védőfelszerelések', slug: 'vedofelszerelesek', children: [] },
   { documentId: '6', name: 'Kiegészítők', slug: 'kiegeszitok', children: [] },
 ] as unknown as Category[];

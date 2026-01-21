@@ -1,34 +1,38 @@
+import Image from 'next/image';
 import { Link } from '@/i18n/navigation';
-import { ArrowRight, Flame, Shield } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 
 interface PromoBanner {
   title: string;
   subtitle: string;
-  discount?: string;
+  discount: string;
   ctaText: string;
   ctaLink: string;
   bgColor: string;
-  icon?: React.ReactNode;
+  textColor: string;
+  buttonBg: string;
 }
 
 const defaultBanners: PromoBanner[] = [
   {
-    title: 'Poroltó készülékek',
-    subtitle: 'Teljes kínálat egy helyen',
     discount: '20% kedvezmény',
-    ctaText: 'Vásárlás most',
-    ctaLink: '/kategoriak/porolto-keszulekek',
-    bgColor: 'bg-gradient-to-br from-primary-500 via-primary-600 to-primary-700',
-    icon: <Flame className="h-16 w-16" />,
+    title: 'Legújabb poroltó készülékek',
+    subtitle: 'Professzionális megoldások minden igényre, CE tanúsítvánnyal.',
+    ctaText: 'Vásárlás',
+    ctaLink: '/kategoriak/porolto',
+    bgColor: 'bg-gradient-to-br from-green-600 to-green-700',
+    textColor: 'text-white',
+    buttonBg: 'bg-amber-400 hover:bg-amber-500 text-gray-900',
   },
   {
-    title: 'Tűzjelző rendszerek',
-    subtitle: 'Professzionális megoldások',
     discount: '15% kedvezmény',
-    ctaText: 'Vásárlás most',
+    title: 'Tűzjelző rendszer kollekció',
+    subtitle: 'Biztonságos otthon és munkahely érzékelőkkel.',
+    ctaText: 'Vásárlás',
     ctaLink: '/kategoriak/tuzjelzo-rendszerek',
-    bgColor: 'bg-gradient-to-br from-secondary-800 via-secondary-900 to-secondary-950',
-    icon: <Shield className="h-16 w-16" />,
+    bgColor: 'bg-gradient-to-br from-amber-100 to-amber-200',
+    textColor: 'text-gray-900',
+    buttonBg: 'bg-amber-400 hover:bg-amber-500 text-gray-900',
   },
 ];
 
@@ -46,41 +50,37 @@ export function PromoBanners({ banners = defaultBanners }: PromoBannersProps) {
               key={index}
               href={banner.ctaLink}
               className={`
-                relative overflow-hidden rounded-2xl p-8 lg:p-10 min-h-[220px]
-                flex items-center group text-white
-                ${banner.bgColor}
+                relative overflow-hidden rounded-2xl p-8 lg:p-10 min-h-[240px]
+                flex items-center group
+                ${banner.bgColor} ${banner.textColor}
               `}
             >
               {/* Content */}
-              <div className="relative z-10 max-w-sm">
-                {banner.discount && (
-                  <span className="inline-block px-4 py-1.5 bg-white/20 backdrop-blur-sm rounded-full text-sm font-semibold mb-4">
-                    {banner.discount}
-                  </span>
-                )}
-                <h3 className="text-2xl lg:text-3xl font-bold mb-2">
+              <div className="relative z-10 max-w-[65%]">
+                <span className={`inline-block px-3 py-1 ${index === 0 ? 'bg-white/20' : 'bg-amber-400/50'} rounded-full text-xs font-semibold mb-4`}>
+                  {banner.discount}
+                </span>
+                <h3 className="text-xl lg:text-2xl font-bold mb-2 leading-tight">
                   {banner.title}
                 </h3>
-                <p className="text-white/80 mb-5 text-lg">
+                <p className={`${index === 0 ? 'text-white/80' : 'text-gray-600'} mb-5 text-sm`}>
                   {banner.subtitle}
                 </p>
-                <span className="inline-flex items-center gap-2 font-semibold text-lg group-hover:gap-4 transition-all duration-300">
+                <span className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-md font-semibold text-sm ${banner.buttonBg} transition-all duration-300`}>
                   {banner.ctaText}
-                  <ArrowRight className="h-5 w-5" />
+                  <ArrowRight className="h-4 w-4" />
                 </span>
               </div>
 
-              {/* Icon decoration */}
-              {banner.icon && (
-                <div className="absolute right-8 top-1/2 -translate-y-1/2 text-white/10 group-hover:text-white/20 transition-colors duration-300">
-                  {banner.icon}
-                </div>
-              )}
+              {/* Decorative image placeholder */}
+              <div className="absolute right-4 bottom-4 w-32 h-32 lg:w-40 lg:h-40 flex items-center justify-center opacity-80">
+                <span className="text-7xl lg:text-8xl">
+                  {index === 0 ? '🧯' : '🔔'}
+                </span>
+              </div>
 
               {/* Decorative circles */}
-              <div className="absolute -right-20 -bottom-20 w-72 h-72 bg-white/5 rounded-full transition-transform duration-500 group-hover:scale-110" />
-              <div className="absolute -right-12 -bottom-12 w-56 h-56 bg-white/5 rounded-full transition-transform duration-500 group-hover:scale-110" />
-              <div className="absolute -left-16 -top-16 w-40 h-40 bg-white/5 rounded-full" />
+              <div className={`absolute -right-10 -bottom-10 w-48 h-48 ${index === 0 ? 'bg-white/5' : 'bg-amber-300/30'} rounded-full`} />
             </Link>
           ))}
         </div>

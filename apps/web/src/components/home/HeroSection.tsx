@@ -1,114 +1,184 @@
+'use client';
+
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, ShieldCheck } from 'lucide-react';
+import {
+  ArrowRight,
+  Flame,
+  Bell,
+  Shield,
+  Wrench,
+  Package,
+  Tag,
+  Star,
+  Percent,
+  ChevronRight
+} from 'lucide-react';
+import type { Category, StrapiListResponse } from '@csz/types';
 
 interface HeroSectionProps {
   backgroundImage?: string;
 }
 
+// Category icons mapping
+const categoryIcons: Record<string, React.ReactNode> = {
+  'napi-ajanlat': <Tag className="h-4 w-4" />,
+  'top-100': <Star className="h-4 w-4" />,
+  'uj-termekek': <Package className="h-4 w-4" />,
+  'tuzolto-keszulekek': <Flame className="h-4 w-4" />,
+  'tuzjelzo-rendszerek': <Bell className="h-4 w-4" />,
+  'vedofelszerelesek': <Shield className="h-4 w-4" />,
+  'kiegeszitok': <Wrench className="h-4 w-4" />,
+};
+
+// Fallback categories for sidebar
+const sidebarCategories = [
+  { name: 'Napi ajánlat', slug: 'termekek?deal=true', icon: <Percent className="h-4 w-4 text-amber-500" />, highlight: true },
+  { name: 'Top 100 ajánlat', slug: 'termekek?top=true', icon: <Star className="h-4 w-4" /> },
+  { name: 'Új termékek', slug: 'termekek?new=true', icon: <Package className="h-4 w-4" /> },
+  { name: 'Tűzoltó készülékek', slug: 'kategoriak/tuzolto-keszulekek', icon: <Flame className="h-4 w-4" /> },
+  { name: 'Tűzjelző rendszerek', slug: 'kategoriak/tuzjelzo-rendszerek', icon: <Bell className="h-4 w-4" /> },
+  { name: 'Védőfelszerelések', slug: 'kategoriak/vedofelszerelesek', icon: <Shield className="h-4 w-4" /> },
+  { name: 'Kiegészítők', slug: 'kategoriak/kiegeszitok', icon: <Wrench className="h-4 w-4" /> },
+  { name: 'Tartók és állványok', slug: 'kategoriak/tartok', icon: <Package className="h-4 w-4" /> },
+  { name: 'Jelzőtáblák', slug: 'kategoriak/jelzotablak', icon: <Tag className="h-4 w-4" /> },
+  { name: 'Akciós termékek', slug: 'termekek?onSale=true', icon: <Percent className="h-4 w-4 text-red-500" />, highlight: true },
+];
+
 export function HeroSection({ backgroundImage }: HeroSectionProps) {
-  const t = useTranslations('home.hero');
+  const [categories, setCategories] = useState<Category[]>([]);
+
+  useEffect(() => {
+    async function fetchCategories() {
+      try {
+        const res = await fetch('/api/categories');
+        if (res.ok) {
+          const data: StrapiListResponse<Category> = await res.json();
+          const topLevel = data.data.filter((cat) => !cat.parent);
+          setCategories(topLevel);
+        }
+      } catch (error) {
+        console.error('Failed to fetch categories:', error);
+      }
+    }
+
+    fetchCategories();
+  }, []);
 
   return (
-    <section className="relative bg-gradient-to-r from-secondary-100 to-secondary-50 overflow-hidden">
-      <div className="container mx-auto px-4">
-        <div className="grid lg:grid-cols-2 gap-8 items-center min-h-[500px] lg:min-h-[550px] py-12 lg:py-16">
-          {/* Content */}
-          <div className="relative z-10 max-w-xl">
-            <span className="inline-flex items-center gap-2 px-4 py-1.5 bg-primary-500 text-white text-sm font-medium rounded-full mb-6">
-              <ShieldCheck className="h-4 w-4" />
-              CE Tanúsított termékek
-            </span>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-secondary-900 leading-tight mb-6">
-              {t('title')}{' '}
-              <span className="text-primary-500">{t('titleHighlight', { defaultValue: 'Megoldások' })}</span>
-            </h1>
-            <p className="text-lg text-secondary-600 mb-8 leading-relaxed">
-              {t('subtitle')}
-            </p>
-            <div className="flex flex-wrap gap-4">
-              <Button asChild size="lg" className="gap-2 rounded-full">
-                <Link href="/termekek">
-                  {t('cta')}
-                  <ArrowRight className="h-5 w-5" />
-                </Link>
-              </Button>
-              <Button asChild variant="outline" size="lg" className="rounded-full">
-                <Link href="/ajanlatkeres">
-                  Árajánlat kérés
-                </Link>
-              </Button>
-            </div>
-
-            {/* Trust indicators */}
-            <div className="flex items-center gap-8 mt-10 pt-8 border-t border-secondary-200">
-              <div className="text-center">
-                <div className="text-3xl font-bold text-secondary-900">500+</div>
-                <div className="text-sm text-secondary-600">Termék</div>
-              </div>
-              <div className="h-10 w-px bg-secondary-200" />
-              <div className="text-center">
-                <div className="text-3xl font-bold text-secondary-900">10+</div>
-                <div className="text-sm text-secondary-600">Év tapasztalat</div>
-              </div>
-              <div className="h-10 w-px bg-secondary-200" />
-              <div className="text-center">
-                <div className="text-3xl font-bold text-secondary-900">1000+</div>
-                <div className="text-sm text-secondary-600">Elégedett ügyfél</div>
-              </div>
+    <section className="bg-gradient-to-br from-green-50 via-yellow-50 to-amber-50">
+      <div className="container mx-auto px-4 py-6">
+        <div className="flex gap-6">
+          {/* Left sidebar - Category menu (desktop only) */}
+          <div className="hidden lg:block w-64 flex-shrink-0">
+            <div className="bg-white rounded-lg shadow-sm border overflow-hidden">
+              <ul className="py-2">
+                {sidebarCategories.map((cat, index) => (
+                  <li key={index}>
+                    <Link
+                      href={`/${cat.slug}`}
+                      className={`flex items-center gap-3 px-4 py-2.5 text-sm transition-colors hover:bg-amber-50 ${
+                        cat.highlight
+                          ? 'text-amber-600 font-medium'
+                          : 'text-gray-700'
+                      }`}
+                    >
+                      <span className="text-gray-500">{cat.icon}</span>
+                      <span className="flex-1">{cat.name}</span>
+                      <ChevronRight className="h-4 w-4 text-gray-400" />
+                    </Link>
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
 
-          {/* Image */}
-          <div className="relative hidden lg:block">
-            <div className="relative aspect-square max-w-lg ml-auto">
-              {backgroundImage ? (
-                <Image
-                  src={backgroundImage}
-                  alt="Tűzvédelmi termékek"
-                  fill
-                  className="object-contain"
-                  priority
-                />
-              ) : (
-                <div className="w-full h-full bg-gradient-to-br from-primary-100 to-primary-200 rounded-3xl flex items-center justify-center relative overflow-hidden">
-                  {/* Fire extinguisher illustration */}
-                  <div className="text-center relative z-10">
-                    <div className="text-8xl mb-4">🧯</div>
-                    <p className="text-secondary-700 font-medium text-lg">Professzionális felszerelés</p>
-                    <p className="text-secondary-500 text-sm mt-1">minden igényre</p>
-                  </div>
-                  {/* Decorative circles */}
-                  <div className="absolute top-8 right-8 w-20 h-20 bg-primary-300/30 rounded-full" />
-                  <div className="absolute bottom-12 left-12 w-16 h-16 bg-primary-400/20 rounded-full" />
-                </div>
-              )}
-            </div>
+          {/* Main hero content */}
+          <div className="flex-1">
+            <div className="relative bg-gradient-to-r from-green-100 to-lime-50 rounded-2xl overflow-hidden min-h-[400px] lg:min-h-[460px]">
+              {/* Background pattern */}
+              <div className="absolute inset-0 opacity-10">
+                <div className="absolute top-10 right-10 w-64 h-64 bg-green-500 rounded-full blur-3xl" />
+                <div className="absolute bottom-10 left-10 w-48 h-48 bg-yellow-400 rounded-full blur-3xl" />
+              </div>
 
-            {/* Floating badge */}
-            <div className="absolute top-8 right-0 bg-white rounded-lg shadow-lg p-4 animate-bounce-slow">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
-                  <ShieldCheck className="h-5 w-5 text-green-600" />
+              <div className="relative z-10 grid lg:grid-cols-2 gap-8 h-full p-8 lg:p-12">
+                {/* Text content */}
+                <div className="flex flex-col justify-center">
+                  <span className="inline-flex items-center gap-2 px-3 py-1 bg-amber-400 text-gray-900 text-xs font-semibold rounded-full w-fit mb-4">
+                    Új kollekció
+                  </span>
+                  <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight mb-4">
+                    Professzionális
+                    <br />
+                    <span className="text-green-600">Tűzvédelem.</span>
+                  </h1>
+                  <p className="text-gray-600 mb-2">
+                    Akár <span className="font-bold text-2xl text-gray-900">30%</span> kedvezmény
+                  </p>
+                  <p className="text-lg font-semibold text-gray-900 mb-6">
+                    69.990 Ft-tól
+                  </p>
+                  <div className="flex gap-3">
+                    <Button
+                      asChild
+                      className="bg-amber-400 hover:bg-amber-500 text-gray-900 font-semibold rounded-md px-6"
+                    >
+                      <Link href="/termekek">
+                        Vásárlás
+                        <ArrowRight className="h-4 w-4 ml-2" />
+                      </Link>
+                    </Button>
+                    <Button
+                      asChild
+                      variant="outline"
+                      className="border-gray-300 hover:bg-white/50 rounded-md"
+                    >
+                      <Link href="/kategoriak">
+                        Kategóriák
+                      </Link>
+                    </Button>
+                  </div>
                 </div>
-                <div>
-                  <p className="font-semibold text-secondary-900 text-sm">Garancia</p>
-                  <p className="text-xs text-secondary-500">Minőségre</p>
+
+                {/* Image */}
+                <div className="relative hidden lg:flex items-center justify-center">
+                  {backgroundImage ? (
+                    <Image
+                      src={backgroundImage}
+                      alt="Tűzvédelmi termékek"
+                      fill
+                      className="object-contain"
+                      priority
+                    />
+                  ) : (
+                    <div className="relative">
+                      {/* Product showcase */}
+                      <div className="w-72 h-72 bg-white/40 rounded-full flex items-center justify-center backdrop-blur-sm">
+                        <div className="text-center">
+                          <div className="text-8xl">🧯</div>
+                          <p className="text-gray-700 font-medium mt-2">Minőségi termékek</p>
+                        </div>
+                      </div>
+                      {/* Floating badges */}
+                      <div className="absolute -top-4 -right-4 bg-white rounded-lg shadow-lg px-3 py-2">
+                        <p className="text-xs text-gray-500">Garancia</p>
+                        <p className="font-bold text-green-600">2 év</p>
+                      </div>
+                      <div className="absolute -bottom-4 -left-4 bg-amber-400 rounded-lg px-3 py-2">
+                        <p className="text-xs text-gray-800">Kedvezmény</p>
+                        <p className="font-bold text-gray-900">-30%</p>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
-
-            {/* Decorative elements */}
-            <div className="absolute -top-4 -right-4 w-24 h-24 bg-primary-500 rounded-full opacity-20" />
-            <div className="absolute -bottom-8 -left-8 w-32 h-32 bg-primary-400 rounded-full opacity-10" />
           </div>
         </div>
       </div>
-
-      {/* Background decoration */}
-      <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-primary-50 to-transparent opacity-50" />
     </section>
   );
 }

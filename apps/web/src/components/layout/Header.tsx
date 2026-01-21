@@ -1,5 +1,5 @@
 import { Suspense } from 'react';
-import { User, Heart } from 'lucide-react';
+import { User, Heart, Truck } from 'lucide-react';
 import { getTranslations } from 'next-intl/server';
 import { Link } from '@/i18n/navigation';
 import { Button } from '@/components/ui/button';
@@ -73,42 +73,44 @@ export async function Header() {
       {/* Navigation bar - desktop only */}
       <nav className="hidden lg:block border-b bg-white">
         <div className="container mx-auto px-4">
-          <div className="flex items-center gap-8 h-12">
-            {/* Mega menu */}
-            <MegaMenu />
+          <div className="flex items-center justify-between h-14">
+            <div className="flex items-center gap-8">
+              {/* Mega menu */}
+              <MegaMenu />
 
-            {/* Main nav links */}
-            <div className="flex items-center gap-6">
-              <Link
-                href="/termekek"
-                className="text-sm font-medium text-secondary-700 hover:text-primary-500 transition-colors"
-              >
-                Összes termék
-              </Link>
-              <Link
-                href="/termekek?featured=true"
-                className="text-sm font-medium text-secondary-700 hover:text-primary-500 transition-colors"
-              >
-                Kiemelt
-              </Link>
-              <Link
-                href="/termekek?onSale=true"
-                className="text-sm font-medium text-danger hover:text-danger/80 transition-colors"
-              >
-                Akciók
-              </Link>
-              <Link
-                href="/ajanlatkeres"
-                className="text-sm font-medium text-secondary-700 hover:text-primary-500 transition-colors"
-              >
-                Árajánlat
-              </Link>
-              <Link
-                href="/kapcsolat"
-                className="text-sm font-medium text-secondary-700 hover:text-primary-500 transition-colors"
-              >
-                Kapcsolat
-              </Link>
+              {/* Main nav links */}
+              <div className="flex items-center gap-6">
+                <Link
+                  href="/termekek"
+                  className="text-sm font-medium text-secondary-700 hover:text-primary-500 transition-colors"
+                >
+                  Összes ajánlat
+                </Link>
+                <Link
+                  href="/termekek?featured=true"
+                  className="text-sm font-medium text-secondary-700 hover:text-primary-500 transition-colors"
+                >
+                  Kiemelt márkák
+                </Link>
+                <Link
+                  href="/termekek?onSale=true"
+                  className="text-sm font-medium text-danger hover:text-danger/80 transition-colors"
+                >
+                  Akciók
+                </Link>
+                <Link
+                  href="/ajanlatkeres"
+                  className="text-sm font-medium text-secondary-700 hover:text-primary-500 transition-colors"
+                >
+                  Árajánlat
+                </Link>
+              </div>
+            </div>
+
+            {/* Free shipping message */}
+            <div className="flex items-center gap-2 text-sm text-secondary-600">
+              <Truck className="h-4 w-4 text-amber-500" />
+              <span>Ingyenes szállítás <strong className="text-secondary-900">50.000 Ft</strong> felett</span>
             </div>
           </div>
         </div>

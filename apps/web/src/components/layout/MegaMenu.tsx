@@ -80,16 +80,16 @@ export function MegaMenu() {
       onMouseEnter={() => setIsOpen(true)}
       onMouseLeave={() => setIsOpen(false)}
     >
-      {/* Trigger button */}
+      {/* Trigger button - prominent yellow style matching reference */}
       <button
         className={cn(
-          'flex items-center gap-2 px-4 py-2 rounded-md font-medium transition-colors',
-          'bg-primary-500 text-white hover:bg-primary-600',
-          isOpen && 'bg-primary-600'
+          'flex items-center gap-2 px-5 py-2.5 rounded-md font-semibold transition-colors',
+          'bg-amber-400 text-gray-900 hover:bg-amber-500',
+          isOpen && 'bg-amber-500'
         )}
       >
         <Grid3X3 className="h-5 w-5" />
-        <span>Kategóriák</span>
+        <span>Összes kategória</span>
         <ChevronDown
           className={cn(
             'h-4 w-4 transition-transform',

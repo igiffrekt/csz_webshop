@@ -7,6 +7,7 @@ import {
   DealsSection,
   PromoBanners,
   BlogSection,
+  FAQSection,
   InstagramSection,
 } from '@/components/home';
 
@@ -48,6 +49,9 @@ export default async function HomePage() {
 
       {/* Blog Section */}
       <BlogSection />
+
+      {/* FAQ Section */}
+      <FAQSection />
 
       {/* Instagram Section */}
       <InstagramSection />

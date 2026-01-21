@@ -13,10 +13,10 @@ interface ProductCollectionsProps {
 }
 
 const tabs = [
-  { id: 'all', label: 'Összes' },
+  { id: 'all', label: 'Összes termék' },
   { id: 'latest', label: 'Legújabb' },
   { id: 'bestsellers', label: 'Legnépszerűbb' },
-  { id: 'featured', label: 'Kiemelt' },
+  { id: 'featured', label: 'Kiemelt termékek' },
 ] as const;
 
 export function ProductCollections({
@@ -52,32 +52,29 @@ export function ProductCollections({
   }
 
   return (
-    <section className="py-16 lg:py-20 bg-secondary-50">
+    <section className="py-16 lg:py-20 bg-gray-50">
       <div className="container mx-auto px-4">
         {/* Section header */}
         <div className="text-center mb-10">
-          <span className="text-primary-500 font-medium text-sm uppercase tracking-wider">
+          <span className="text-amber-600 font-medium text-sm uppercase tracking-wider">
             Termékeink
           </span>
-          <h2 className="text-3xl lg:text-4xl font-bold text-secondary-900 mt-2">
+          <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mt-2">
             Termékkínálatunk
           </h2>
-          <p className="text-secondary-600 mt-3 max-w-2xl mx-auto">
-            Professzionális tűzvédelmi felszerelések minden igényre
-          </p>
         </div>
 
-        {/* Tabs */}
-        <div className="flex flex-wrap justify-center gap-2 mb-10">
+        {/* Tabs - styled like reference */}
+        <div className="flex flex-wrap justify-center gap-1 mb-10 bg-white rounded-lg p-1 max-w-xl mx-auto shadow-sm">
           {tabs.map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
               className={cn(
-                'px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-200',
+                'px-5 py-2.5 rounded-md text-sm font-medium transition-all duration-200',
                 activeTab === tab.id
-                  ? 'bg-primary-500 text-white shadow-md shadow-primary-500/25'
-                  : 'bg-white text-secondary-700 hover:bg-secondary-100 border border-secondary-200'
+                  ? 'bg-amber-400 text-gray-900'
+                  : 'text-gray-600 hover:text-gray-900'
               )}
             >
               {tab.label}
@@ -88,7 +85,11 @@ export function ProductCollections({
         {/* Product grid */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
           {displayProducts.map((product) => (
-            <ProductCardEnhanced key={product.documentId} product={product} />
+            <ProductCardEnhanced
+              key={product.documentId}
+              product={product}
+              showCountdown={true}
+            />
           ))}
         </div>
 
@@ -96,7 +97,7 @@ export function ProductCollections({
         <div className="text-center mt-10">
           <Link
             href="/termekek"
-            className="inline-flex items-center gap-2 px-8 py-3 bg-secondary-900 text-white font-medium rounded-full hover:bg-secondary-800 transition-colors"
+            className="inline-flex items-center gap-2 px-8 py-3 bg-gray-900 text-white font-medium rounded-md hover:bg-gray-800 transition-colors"
           >
             Összes termék megtekintése
             <ArrowRight className="h-4 w-4" />
