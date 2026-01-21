@@ -7,14 +7,14 @@
 
 **Core Value:** Customers can browse fire safety products with clear certification info and complete purchases reliably
 
-**Current Focus:** Phase 6 IN PROGRESS - Checkout & Payments (2/8 plans complete)
+**Current Focus:** Phase 6 IN PROGRESS - Checkout & Payments (3/8 plans complete)
 
 ## Current Position
 
 **Phase:** 6 of 10 (Checkout & Payments) - IN PROGRESS
-**Plan:** 2 of 8 complete (06-02)
+**Plan:** 3 of 8 complete (06-03)
 **Status:** In progress
-**Last activity:** 2026-01-21 - Completed 06-02-PLAN.md (Stripe SDK & Webhook Handler)
+**Last activity:** 2026-01-21 - Completed 06-03-PLAN.md (Checkout State & Calculations)
 
 **Progress:**
 ```
@@ -23,24 +23,24 @@ Phase 2:  [==========] Product Catalog Backend (4/4 plans) COMPLETE
 Phase 3:  [==========] Frontend Shell & Product Display (5/5 plans) COMPLETE
 Phase 4:  [==========] Shopping Cart (8/8 plans) COMPLETE
 Phase 5:  [==========] Authentication & User Accounts (8/8 plans) COMPLETE
-Phase 6:  [==        ] Checkout & Payments (2/8 plans)
+Phase 6:  [===       ] Checkout & Payments (3/8 plans)
 Phase 7:  [          ] Admin Order Management
 Phase 8:  [          ] B2B Quote System
 Phase 9:  [          ] Content & Polish
 Phase 10: [          ] Migration & Launch
 
-Overall: 5/10 phases complete (32/39 plans)
+Overall: 5/10 phases complete (33/39 plans)
 ```
 
 ## Performance Metrics
 
 | Metric | Value | Notes |
 |--------|-------|-------|
-| Plans completed | 32 | 01-01 through 01-05, 02-01 through 02-04, 03-01 through 03-05, 04-01 through 04-08, 05-01 through 05-08, 06-01 through 06-02 |
+| Plans completed | 33 | 01-01 through 01-05, 02-01 through 02-04, 03-01 through 03-05, 04-01 through 04-08, 05-01 through 05-08, 06-01 through 06-03 |
 | Phases completed | 5 | Infrastructure, Product Catalog, Frontend Shell, Shopping Cart, Authentication |
 | Requirements done | 49/78 | +AUTH-01 through AUTH-05, +ACCT-01 through ACCT-05 |
 | Blockers hit | 1 | Docker daemon (resolved by user starting Docker) |
-| Decisions made | 87 | See below |
+| Decisions made | 92 | See below |
 
 ## Accumulated Context
 
@@ -138,6 +138,11 @@ Overall: 5/10 phases complete (32/39 plans)
 | Stripe SDK ^20.2.0 | Latest Stripe SDK for payment processing | 2026-01-21 |
 | Lazy Stripe client initialization | API starts without Stripe credentials, throws on first use | 2026-01-21 |
 | Raw body plugin for webhooks | fastify-raw-body preserves request body for signature verification | 2026-01-21 |
+| Server-side price calculation | Fetch prices from Strapi, never trust client-submitted amounts | 2026-01-21 |
+| VAT extraction from gross | Hungarian prices include VAT, extract breakdown using 27% rate | 2026-01-21 |
+| Integer math for HUF currency | Math.round avoids floating point issues with currency amounts | 2026-01-21 |
+| Shipping thresholds | 1,990 Ft base, free over 50,000 Ft, +500 Ft/kg over 5kg | 2026-01-21 |
+| Don't persist calculated totals | calculatedTotals excluded from localStorage, always fetch fresh | 2026-01-21 |
 
 ### Architecture Notes
 
@@ -224,7 +229,9 @@ From research:
 - [x] Order TypeScript interfaces (06-01)
 - [x] Stripe SDK installed and configured (06-02)
 - [x] Stripe webhook handler at /webhook/stripe (06-02)
-- [ ] VAT and shipping calculation (06-03)
+- [x] VAT and shipping calculation (06-03)
+- [x] Checkout Zustand store with localStorage persistence (06-03)
+- [x] POST /checkout/calculate endpoint (06-03)
 - [ ] Checkout session creation (06-04)
 - [ ] Checkout flow UI (06-05)
 - [ ] Order confirmation and emails (06-06)
@@ -238,17 +245,17 @@ From research:
 
 ### Last Session Summary
 
-- Completed 06-02: Stripe SDK & Webhook Handler
-- Stripe SDK v20.2.0 installed with fastify-raw-body for webhooks
-- Stripe client singleton with lazy initialization pattern
-- Webhook endpoint at POST /webhook/stripe with signature verification
-- Handles checkout.session.completed, async_payment_succeeded/failed
+- Completed 06-03: Checkout State & Calculations
+- Zustand checkout store with multi-step persistence under 'csz-checkout'
+- Hungarian VAT calculation library extracting 27% from gross prices
+- Shipping calculation with free shipping over 50,000 Ft
+- POST /checkout/calculate endpoint with server-side validation
 
 ### Next Actions
 
-1. Continue Phase 6 with 06-03 (VAT & Shipping Calculation)
-2. Then 06-04 (Checkout Session Creation)
-3. Then 06-05 (Checkout Flow UI)
+1. Continue Phase 6 with 06-04 (Checkout Flow UI Pages)
+2. Then 06-05 (Checkout Session Creation - Stripe integration)
+3. Then 06-06 (Order Confirmation & Emails)
 
 ### Open Questions
 
@@ -284,3 +291,4 @@ From research that need resolution:
 *Phase 5 completed: 2026-01-20*
 *Phase 6 plan 06-01 completed: 2026-01-21*
 *Phase 6 plan 06-02 completed: 2026-01-21*
+*Phase 6 plan 06-03 completed: 2026-01-21*
