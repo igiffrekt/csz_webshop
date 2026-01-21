@@ -7,6 +7,7 @@ import { useHydration } from '@/stores/useHydration';
 import { ShippingStep } from './steps/ShippingStep';
 import { BillingStep } from './steps/BillingStep';
 import { SummaryStep } from './steps/SummaryStep';
+import { PaymentStep } from './steps/PaymentStep';
 import { Button } from '@/components/ui/button';
 import { Link } from '@/i18n/navigation';
 import type { ShippingAddress } from '@csz/types';
@@ -55,9 +56,10 @@ function StepIndicator({ currentStep }: { currentStep: string }) {
 
 interface CheckoutClientProps {
   initialAddresses: ShippingAddress[];
+  userId: number;
 }
 
-export function CheckoutClient({ initialAddresses }: CheckoutClientProps) {
+export function CheckoutClient({ initialAddresses, userId }: CheckoutClientProps) {
   const hydrated = useHydration();
   const step = useCheckoutStep();
   const items = useCartItems();
@@ -104,9 +106,7 @@ export function CheckoutClient({ initialAddresses }: CheckoutClientProps) {
           {step === 'billing' && <BillingStep />}
           {step === 'summary' && <SummaryStep addresses={initialAddresses} />}
           {step === 'payment' && (
-            <div className="p-8 border rounded-lg">
-              <p className="text-muted-foreground">Fizetes (kovetkezo plan)</p>
-            </div>
+            <PaymentStep addresses={initialAddresses} userId={userId} />
           )}
         </div>
 

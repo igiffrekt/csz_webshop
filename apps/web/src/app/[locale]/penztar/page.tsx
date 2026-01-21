@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default async function CheckoutPage() {
   // Require authentication - redirects to login if not authenticated
-  await requireAuth();
+  const session = await requireAuth();
 
   // Fetch saved addresses
   const { data: addresses, error } = await getAddresses();
@@ -23,7 +23,10 @@ export default async function CheckoutPage() {
   return (
     <main className="container mx-auto px-4 py-8 max-w-4xl">
       <h1 className="text-2xl font-bold mb-8">Penztar</h1>
-      <CheckoutClient initialAddresses={addresses || []} />
+      <CheckoutClient
+        initialAddresses={addresses || []}
+        userId={session.userId}
+      />
     </main>
   );
 }
