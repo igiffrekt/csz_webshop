@@ -1,210 +1,164 @@
-import { Metadata } from "next";
-import { notFound } from "next/navigation";
-import { Link } from "@/i18n/navigation";
-import { requireAuth } from "@/lib/auth/dal";
-import { formatPrice } from "@/lib/formatters";
-import { Badge } from "@/components/ui/badge";
-import { ArrowLeft } from "lucide-react";
-import type { Order, OrderStatus } from "@csz/types";
+import { requireAuth } from '@/lib/auth/dal';
+import { getOrder } from '@/lib/order-api';
+import { formatOrderStatus, formatPrice } from '@/lib/formatters';
+import { notFound } from 'next/navigation';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Link } from '@/i18n/navigation';
+import { ArrowLeft, Package, FileText } from 'lucide-react';
+import type { Metadata } from 'next';
 
-const statusLabels: Record<OrderStatus, string> = {
-  pending: "Fizetésre vár",
-  paid: "Fizetve",
-  processing: "Feldolgozás alatt",
-  shipped: "Kiszállítva",
-  delivered: "Kézbesítve",
-  cancelled: "Törölve",
-  refunded: "Visszatérítve",
+export const metadata: Metadata = {
+  title: 'Rendeles reszletei | CSZ Tuzvedelmi Webshop',
 };
 
-const statusVariants: Record<OrderStatus, "default" | "secondary" | "destructive" | "outline"> = {
-  pending: "outline",
-  paid: "default",
-  processing: "secondary",
-  shipped: "secondary",
-  delivered: "default",
-  cancelled: "destructive",
-  refunded: "destructive",
-};
-
-export async function generateMetadata({
-  params,
-}: {
+interface Props {
   params: Promise<{ id: string }>;
-}): Promise<Metadata> {
-  const { id } = await params;
-  return {
-    title: `Rendelés #${id.substring(0, 8)} | CSZ Tűzvédelmi Webáruház`,
-  };
 }
 
-// Placeholder function - will fetch from Strapi in Phase 6
-async function getOrder(documentId: string): Promise<Order | null> {
-  // TODO: Implement in Phase 6 when Order content type exists
-  return null;
-}
-
-export default async function OrderDetailPage({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
+export default async function OrderDetailPage({ params }: Props) {
   await requireAuth();
+
   const { id } = await params;
+  const { data: order, error } = await getOrder(id);
 
-  const order = await getOrder(id);
-
-  if (!order) {
+  if (error || !order) {
     notFound();
   }
 
-  const formattedDate = new Date(order.createdAt).toLocaleDateString("hu-HU", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
+  const status = formatOrderStatus(order.status);
+  const orderDate = new Date(order.createdAt).toLocaleDateString('hu-HU', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
   });
 
   return (
-    <div className="container py-8">
-      <div className="mb-6">
-        <Link
-          href="/fiok/rendelesek"
-          className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground mb-4"
-        >
-          <ArrowLeft className="h-4 w-4 mr-1" />
-          Vissza a rendelésekhez
-        </Link>
-
-        <div className="flex items-center gap-3 mb-2">
-          <h1 className="text-2xl font-bold">Rendelés #{order.orderNumber}</h1>
-          <Badge variant={statusVariants[order.status]}>
-            {statusLabels[order.status]}
-          </Badge>
+    <main className="container mx-auto px-4 py-8 max-w-4xl">
+      {/* Header */}
+      <div className="flex items-center gap-4 mb-8">
+        <Button variant="ghost" size="icon" asChild>
+          <Link href="/fiok/rendelesek">
+            <ArrowLeft className="h-5 w-5" />
+          </Link>
+        </Button>
+        <div>
+          <h1 className="text-2xl font-bold font-mono">{order.orderNumber}</h1>
+          <p className="text-sm text-muted-foreground">{orderDate}</p>
         </div>
-        <p className="text-muted-foreground">{formattedDate}</p>
+        <Badge variant={status.variant} className="ml-auto">
+          {status.label}
+        </Badge>
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-3">
-        {/* Order items */}
+      <div className="grid lg:grid-cols-3 gap-8">
+        {/* Order details */}
         <div className="lg:col-span-2 space-y-6">
-          <div className="border rounded-lg">
-            <div className="p-4 border-b">
-              <h2 className="font-semibold">Rendelt termékek</h2>
-            </div>
-            <div className="divide-y">
-              {order.lineItems.map((item) => (
-                <div key={item.id} className="p-4 flex gap-4">
-                  <div className="flex-1">
+          {/* Line items */}
+          <div className="border rounded-lg p-6">
+            <h2 className="font-semibold mb-4 flex items-center gap-2">
+              <Package className="h-5 w-5" />
+              Termekek
+            </h2>
+            <div className="space-y-4">
+              {order.lineItems.map((item, index) => (
+                <div key={index} className="flex justify-between items-center">
+                  <div>
                     <p className="font-medium">{item.name}</p>
                     {item.variantName && (
-                      <p className="text-sm text-muted-foreground">
-                        {item.variantName}
-                      </p>
+                      <p className="text-sm text-muted-foreground">{item.variantName}</p>
                     )}
                     <p className="text-sm text-muted-foreground">
-                      {item.quantity} db x {formatPrice(item.price)}
+                      {item.quantity} x {formatPrice(item.price)}
                     </p>
                   </div>
-                  <p className="font-medium">{formatPrice(item.total)}</p>
+                  <span className="font-medium">{formatPrice(item.total)}</span>
                 </div>
               ))}
             </div>
           </div>
+
+          {/* Addresses */}
+          <div className="grid sm:grid-cols-2 gap-4">
+            <div className="border rounded-lg p-6">
+              <h2 className="font-semibold mb-2">Szallitasi cim</h2>
+              <div className="text-sm text-muted-foreground">
+                <p>{order.shippingAddress.recipientName}</p>
+                <p>{order.shippingAddress.street}</p>
+                <p>{order.shippingAddress.postalCode} {order.shippingAddress.city}</p>
+              </div>
+            </div>
+
+            {order.billingAddress && (
+              <div className="border rounded-lg p-6">
+                <h2 className="font-semibold mb-2">Szamlazasi cim</h2>
+                <div className="text-sm text-muted-foreground">
+                  {order.billingAddress.companyName && (
+                    <p className="font-medium">{order.billingAddress.companyName}</p>
+                  )}
+                  {order.billingAddress.vatNumber && (
+                    <p>Adoszam: {order.billingAddress.vatNumber}</p>
+                  )}
+                  <p>{order.billingAddress.recipientName}</p>
+                  <p>{order.billingAddress.street}</p>
+                  <p>{order.billingAddress.postalCode} {order.billingAddress.city}</p>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* PO Reference */}
+          {order.poReference && (
+            <div className="border rounded-lg p-6">
+              <h2 className="font-semibold mb-2 flex items-center gap-2">
+                <FileText className="h-5 w-5" />
+                Megrendelesi hivatkozas
+              </h2>
+              <p className="font-mono">{order.poReference}</p>
+            </div>
+          )}
         </div>
 
-        {/* Order summary and addresses */}
-        <div className="space-y-6">
-          {/* Price summary */}
-          <div className="border rounded-lg p-4">
-            <h2 className="font-semibold mb-4">Összesítés</h2>
+        {/* Order summary */}
+        <div className="lg:col-span-1">
+          <div className="border rounded-lg p-6 sticky top-4">
+            <h2 className="font-semibold mb-4">Osszegzes</h2>
+
             <div className="space-y-2 text-sm">
               <div className="flex justify-between">
-                <span>Részösszeg</span>
+                <span>Reszosszeg</span>
                 <span>{formatPrice(order.subtotal)}</span>
               </div>
               {order.discount > 0 && (
                 <div className="flex justify-between text-green-600">
-                  <span>Kedvezmény</span>
+                  <span>Kedvezmeny</span>
                   <span>-{formatPrice(order.discount)}</span>
                 </div>
               )}
               <div className="flex justify-between">
-                <span>Szállítás</span>
-                <span>
-                  {order.shipping === 0
-                    ? "Ingyenes"
-                    : formatPrice(order.shipping)}
-                </span>
+                <span>Szallitas</span>
+                <span>{order.shipping === 0 ? 'Ingyenes' : formatPrice(order.shipping)}</span>
               </div>
-              <div className="flex justify-between">
+              <div className="flex justify-between text-muted-foreground">
                 <span>AFA (27%)</span>
                 <span>{formatPrice(order.vatAmount)}</span>
               </div>
-              <div className="flex justify-between font-semibold text-base pt-2 border-t">
-                <span>Összesen</span>
+              <div className="flex justify-between font-semibold text-lg pt-2 border-t">
+                <span>Osszesen</span>
                 <span>{formatPrice(order.total)}</span>
               </div>
             </div>
-          </div>
 
-          {/* Shipping address */}
-          <div className="border rounded-lg p-4">
-            <h2 className="font-semibold mb-3">Szállítási cím</h2>
-            <div className="text-sm text-muted-foreground space-y-1">
-              <p>{order.shippingAddress.recipientName}</p>
-              <p>{order.shippingAddress.street}</p>
-              <p>
-                {order.shippingAddress.postalCode} {order.shippingAddress.city}
+            {order.paidAt && (
+              <p className="text-xs text-muted-foreground mt-4">
+                Fizetve: {new Date(order.paidAt).toLocaleDateString('hu-HU')}
               </p>
-              <p>{order.shippingAddress.country}</p>
-              {order.shippingAddress.phone && (
-                <p>Tel: {order.shippingAddress.phone}</p>
-              )}
-            </div>
+            )}
           </div>
-
-          {/* Billing address */}
-          {order.billingAddress && (
-            <div className="border rounded-lg p-4">
-              <h2 className="font-semibold mb-3">Számlázási cím</h2>
-              <div className="text-sm text-muted-foreground space-y-1">
-                {order.billingAddress.companyName && (
-                  <p className="font-medium text-foreground">
-                    {order.billingAddress.companyName}
-                  </p>
-                )}
-                {order.billingAddress.vatNumber && (
-                  <p>Adószám: {order.billingAddress.vatNumber}</p>
-                )}
-                <p>{order.billingAddress.recipientName}</p>
-                <p>{order.billingAddress.street}</p>
-                <p>
-                  {order.billingAddress.postalCode} {order.billingAddress.city}
-                </p>
-                <p>{order.billingAddress.country}</p>
-              </div>
-            </div>
-          )}
-
-          {/* Payment info */}
-          {order.paymentMethod && (
-            <div className="border rounded-lg p-4">
-              <h2 className="font-semibold mb-3">Fizetés</h2>
-              <div className="text-sm text-muted-foreground">
-                <p>{order.paymentMethod}</p>
-                {order.paidAt && (
-                  <p>
-                    Fizetve:{" "}
-                    {new Date(order.paidAt).toLocaleDateString("hu-HU")}
-                  </p>
-                )}
-              </div>
-            </div>
-          )}
         </div>
       </div>
-    </div>
+    </main>
   );
 }
