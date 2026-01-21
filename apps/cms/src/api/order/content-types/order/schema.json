@@ -1,0 +1,98 @@
+{
+  "kind": "collectionType",
+  "collectionName": "orders",
+  "info": {
+    "singularName": "order",
+    "pluralName": "orders",
+    "displayName": "Order",
+    "description": "Customer orders with line items, pricing, and payment info"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "orderNumber": {
+      "type": "string",
+      "required": true,
+      "unique": true,
+      "maxLength": 50
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": ["pending", "paid", "processing", "shipped", "delivered", "cancelled", "refunded"],
+      "required": true,
+      "default": "pending"
+    },
+    "user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user"
+    },
+    "subtotal": {
+      "type": "integer",
+      "required": true,
+      "min": 0
+    },
+    "discount": {
+      "type": "integer",
+      "default": 0,
+      "min": 0
+    },
+    "shipping": {
+      "type": "integer",
+      "required": true,
+      "min": 0
+    },
+    "vatAmount": {
+      "type": "integer",
+      "required": true,
+      "min": 0
+    },
+    "total": {
+      "type": "integer",
+      "required": true,
+      "min": 0
+    },
+    "shippingAddress": {
+      "type": "json",
+      "required": true
+    },
+    "billingAddress": {
+      "type": "json"
+    },
+    "lineItems": {
+      "type": "json",
+      "required": true
+    },
+    "couponCode": {
+      "type": "string",
+      "maxLength": 50
+    },
+    "couponDiscount": {
+      "type": "integer",
+      "min": 0
+    },
+    "poReference": {
+      "type": "string",
+      "maxLength": 100
+    },
+    "paymentMethod": {
+      "type": "string",
+      "maxLength": 50
+    },
+    "paymentId": {
+      "type": "string",
+      "maxLength": 255
+    },
+    "stripeSessionId": {
+      "type": "string",
+      "maxLength": 255
+    },
+    "paidAt": {
+      "type": "datetime"
+    },
+    "notes": {
+      "type": "text"
+    }
+  }
+}
