@@ -7,14 +7,14 @@
 
 **Core Value:** Customers can browse fire safety products with clear certification info and complete purchases reliably
 
-**Current Focus:** Phase 6 IN PROGRESS - Checkout & Payments (5/8 plans complete)
+**Current Focus:** Phase 6 IN PROGRESS - Checkout & Payments (6/8 plans complete)
 
 ## Current Position
 
 **Phase:** 6 of 10 (Checkout & Payments) - IN PROGRESS
-**Plan:** 5 of 8 complete (06-05)
+**Plan:** 6 of 8 complete (06-06)
 **Status:** In progress
-**Last activity:** 2026-01-21 - Completed 06-05-PLAN.md (Billing & Summary Steps)
+**Last activity:** 2026-01-21 - Completed 06-06-PLAN.md (Stripe Payment Integration)
 
 **Progress:**
 ```
@@ -23,24 +23,24 @@ Phase 2:  [==========] Product Catalog Backend (4/4 plans) COMPLETE
 Phase 3:  [==========] Frontend Shell & Product Display (5/5 plans) COMPLETE
 Phase 4:  [==========] Shopping Cart (8/8 plans) COMPLETE
 Phase 5:  [==========] Authentication & User Accounts (8/8 plans) COMPLETE
-Phase 6:  [======    ] Checkout & Payments (5/8 plans)
+Phase 6:  [=======   ] Checkout & Payments (6/8 plans)
 Phase 7:  [          ] Admin Order Management
 Phase 8:  [          ] B2B Quote System
 Phase 9:  [          ] Content & Polish
 Phase 10: [          ] Migration & Launch
 
-Overall: 5/10 phases complete (35/39 plans)
+Overall: 5/10 phases complete (36/39 plans)
 ```
 
 ## Performance Metrics
 
 | Metric | Value | Notes |
 |--------|-------|-------|
-| Plans completed | 35 | 01-01 through 01-05, 02-01 through 02-04, 03-01 through 03-05, 04-01 through 04-08, 05-01 through 05-08, 06-01 through 06-05 |
+| Plans completed | 36 | 01-01 through 01-05, 02-01 through 02-04, 03-01 through 03-05, 04-01 through 04-08, 05-01 through 05-08, 06-01 through 06-06 |
 | Phases completed | 5 | Infrastructure, Product Catalog, Frontend Shell, Shopping Cart, Authentication |
-| Requirements done | 49/78 | +AUTH-01 through AUTH-05, +ACCT-01 through ACCT-05 |
+| Requirements done | 52/78 | +PAY-01 (card), PAY-02 (Apple Pay), PAY-03 (Google Pay) |
 | Blockers hit | 1 | Docker daemon (resolved by user starting Docker) |
-| Decisions made | 100 | See below |
+| Decisions made | 103 | See below |
 
 ## Accumulated Context
 
@@ -151,6 +151,9 @@ Overall: 5/10 phases complete (35/39 plans)
 | Server-only totals display | SummaryStep fetches from calculateTotals API, never calculates locally | 2026-01-21 |
 | VAT breakdown transparency | Display net amount and 27% AFA separately for Hungarian compliance | 2026-01-21 |
 | PO reference optional | B2B customers can add purchase order numbers for invoice matching | 2026-01-21 |
+| Stripe Embedded Checkout | EmbeddedCheckoutProvider with fetchClientSecret for React integration | 2026-01-21 |
+| Order-first flow | Create Strapi order before Stripe session for webhook correlation | 2026-01-21 |
+| One-time Stripe coupon | Map internal coupon discounts to Stripe via dynamic coupon creation | 2026-01-21 |
 
 ### Architecture Notes
 
@@ -246,7 +249,11 @@ From research:
 - [x] Checkout API client for server-calculated totals (06-05)
 - [x] Billing step with same-as-shipping and B2B fields (06-05)
 - [x] Order summary step with VAT breakdown (06-05)
-- [ ] Order confirmation and emails (06-06)
+- [x] Stripe React SDK installed (06-06)
+- [x] POST /checkout/create-session endpoint (06-06)
+- [x] PaymentStep with Stripe Embedded Checkout (06-06)
+- [ ] Order confirmation page at /penztar/siker (06-07)
+- [ ] Confirmation emails (06-07)
 - [ ] Phase 6 verification (06-08)
 
 ### Blockers
@@ -257,18 +264,18 @@ From research:
 
 ### Last Session Summary
 
-- Completed 06-05: Billing & Summary Steps
-- Checkout API client with calculateTotals() for server-side totals
-- Billing step with same-as-shipping checkbox (default enabled)
-- B2B fields for company name, VAT number, and PO reference
-- Order summary step with server-calculated totals and 27% VAT breakdown
-- Free shipping indicator for orders over threshold
+- Completed 06-06: Stripe Payment Integration
+- Installed @stripe/stripe-js and @stripe/react-stripe-js packages
+- Created POST /checkout/create-session endpoint with order-first flow
+- PaymentStep component with Stripe Embedded Checkout (card/Apple Pay/Google Pay)
+- Server-side price verification - never trusts client-submitted amounts
+- Order created in Strapi before Stripe session for webhook correlation
 
 ### Next Actions
 
-1. Continue Phase 6 with 06-06 (Order Creation & Payment)
-2. Then 06-07 (Order Confirmation & Emails)
-3. Then 06-08 (Phase 6 Verification)
+1. Continue Phase 6 with 06-07 (Order Confirmation & Emails)
+2. Then 06-08 (Phase 6 Verification)
+3. Then Phase 7 (Admin Order Management)
 
 ### Open Questions
 
@@ -307,3 +314,4 @@ From research that need resolution:
 *Phase 6 plan 06-03 completed: 2026-01-21*
 *Phase 6 plan 06-04 completed: 2026-01-21*
 *Phase 6 plan 06-05 completed: 2026-01-21*
+*Phase 6 plan 06-06 completed: 2026-01-21*
