@@ -7,14 +7,14 @@
 
 **Core Value:** Customers can browse fire safety products with clear certification info and complete purchases reliably
 
-**Current Focus:** Phase 6 IN PROGRESS - Checkout & Payments (4/8 plans complete)
+**Current Focus:** Phase 6 IN PROGRESS - Checkout & Payments (5/8 plans complete)
 
 ## Current Position
 
 **Phase:** 6 of 10 (Checkout & Payments) - IN PROGRESS
-**Plan:** 4 of 8 complete (06-04)
+**Plan:** 5 of 8 complete (06-05)
 **Status:** In progress
-**Last activity:** 2026-01-21 - Completed 06-04-PLAN.md (Checkout Page Shell & Shipping Step)
+**Last activity:** 2026-01-21 - Completed 06-05-PLAN.md (Billing & Summary Steps)
 
 **Progress:**
 ```
@@ -23,24 +23,24 @@ Phase 2:  [==========] Product Catalog Backend (4/4 plans) COMPLETE
 Phase 3:  [==========] Frontend Shell & Product Display (5/5 plans) COMPLETE
 Phase 4:  [==========] Shopping Cart (8/8 plans) COMPLETE
 Phase 5:  [==========] Authentication & User Accounts (8/8 plans) COMPLETE
-Phase 6:  [=====     ] Checkout & Payments (4/8 plans)
+Phase 6:  [======    ] Checkout & Payments (5/8 plans)
 Phase 7:  [          ] Admin Order Management
 Phase 8:  [          ] B2B Quote System
 Phase 9:  [          ] Content & Polish
 Phase 10: [          ] Migration & Launch
 
-Overall: 5/10 phases complete (34/39 plans)
+Overall: 5/10 phases complete (35/39 plans)
 ```
 
 ## Performance Metrics
 
 | Metric | Value | Notes |
 |--------|-------|-------|
-| Plans completed | 34 | 01-01 through 01-05, 02-01 through 02-04, 03-01 through 03-05, 04-01 through 04-08, 05-01 through 05-08, 06-01 through 06-04 |
+| Plans completed | 35 | 01-01 through 01-05, 02-01 through 02-04, 03-01 through 03-05, 04-01 through 04-08, 05-01 through 05-08, 06-01 through 06-05 |
 | Phases completed | 5 | Infrastructure, Product Catalog, Frontend Shell, Shopping Cart, Authentication |
 | Requirements done | 49/78 | +AUTH-01 through AUTH-05, +ACCT-01 through ACCT-05 |
 | Blockers hit | 1 | Docker daemon (resolved by user starting Docker) |
-| Decisions made | 96 | See below |
+| Decisions made | 100 | See below |
 
 ## Accumulated Context
 
@@ -147,6 +147,10 @@ Overall: 5/10 phases complete (34/39 plans)
 | Default address auto-selection | useEffect selects default address on mount for proper hydration | 2026-01-21 |
 | Country locked to Hungary | Shipping only to Magyarorszag, country field disabled | 2026-01-21 |
 | RadioGroup for address selection | Saved addresses as radio items, new address expands inline form | 2026-01-21 |
+| Same-as-shipping default | useSameAsBilling defaults true for simpler checkout flow | 2026-01-21 |
+| Server-only totals display | SummaryStep fetches from calculateTotals API, never calculates locally | 2026-01-21 |
+| VAT breakdown transparency | Display net amount and 27% AFA separately for Hungarian compliance | 2026-01-21 |
+| PO reference optional | B2B customers can add purchase order numbers for invoice matching | 2026-01-21 |
 
 ### Architecture Notes
 
@@ -239,7 +243,9 @@ From research:
 - [x] Protected checkout page at /penztar (06-04)
 - [x] Shipping address step with RadioGroup selection (06-04)
 - [x] Step indicator for multi-step checkout (06-04)
-- [ ] Checkout flow UI - billing/summary/payment steps (06-05)
+- [x] Checkout API client for server-calculated totals (06-05)
+- [x] Billing step with same-as-shipping and B2B fields (06-05)
+- [x] Order summary step with VAT breakdown (06-05)
 - [ ] Order confirmation and emails (06-06)
 - [ ] Phase 6 verification (06-08)
 
@@ -251,18 +257,18 @@ From research:
 
 ### Last Session Summary
 
-- Completed 06-04: Checkout Page Shell & Shipping Step
-- Protected checkout page at /penztar with requireAuth
-- Shipping address step with saved addresses selection (RadioGroup)
-- New address inline form with field validation
-- Step indicator showing checkout progress
-- Order summary sidebar with cart items and totals
+- Completed 06-05: Billing & Summary Steps
+- Checkout API client with calculateTotals() for server-side totals
+- Billing step with same-as-shipping checkbox (default enabled)
+- B2B fields for company name, VAT number, and PO reference
+- Order summary step with server-calculated totals and 27% VAT breakdown
+- Free shipping indicator for orders over threshold
 
 ### Next Actions
 
-1. Continue Phase 6 with 06-05 (Checkout Flow UI - billing/summary/payment)
-2. Then 06-06 (Order Confirmation & Emails)
-3. Then 06-07/06-08 (Payment integration and verification)
+1. Continue Phase 6 with 06-06 (Order Creation & Payment)
+2. Then 06-07 (Order Confirmation & Emails)
+3. Then 06-08 (Phase 6 Verification)
 
 ### Open Questions
 
@@ -300,3 +306,4 @@ From research that need resolution:
 *Phase 6 plan 06-02 completed: 2026-01-21*
 *Phase 6 plan 06-03 completed: 2026-01-21*
 *Phase 6 plan 06-04 completed: 2026-01-21*
+*Phase 6 plan 06-05 completed: 2026-01-21*
