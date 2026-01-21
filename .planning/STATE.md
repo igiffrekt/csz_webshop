@@ -7,14 +7,14 @@
 
 **Core Value:** Customers can browse fire safety products with clear certification info and complete purchases reliably
 
-**Current Focus:** Phase 6 IN PROGRESS - Checkout & Payments (3/8 plans complete)
+**Current Focus:** Phase 6 IN PROGRESS - Checkout & Payments (4/8 plans complete)
 
 ## Current Position
 
 **Phase:** 6 of 10 (Checkout & Payments) - IN PROGRESS
-**Plan:** 3 of 8 complete (06-03)
+**Plan:** 4 of 8 complete (06-04)
 **Status:** In progress
-**Last activity:** 2026-01-21 - Completed 06-03-PLAN.md (Checkout State & Calculations)
+**Last activity:** 2026-01-21 - Completed 06-04-PLAN.md (Checkout Page Shell & Shipping Step)
 
 **Progress:**
 ```
@@ -23,24 +23,24 @@ Phase 2:  [==========] Product Catalog Backend (4/4 plans) COMPLETE
 Phase 3:  [==========] Frontend Shell & Product Display (5/5 plans) COMPLETE
 Phase 4:  [==========] Shopping Cart (8/8 plans) COMPLETE
 Phase 5:  [==========] Authentication & User Accounts (8/8 plans) COMPLETE
-Phase 6:  [===       ] Checkout & Payments (3/8 plans)
+Phase 6:  [=====     ] Checkout & Payments (4/8 plans)
 Phase 7:  [          ] Admin Order Management
 Phase 8:  [          ] B2B Quote System
 Phase 9:  [          ] Content & Polish
 Phase 10: [          ] Migration & Launch
 
-Overall: 5/10 phases complete (33/39 plans)
+Overall: 5/10 phases complete (34/39 plans)
 ```
 
 ## Performance Metrics
 
 | Metric | Value | Notes |
 |--------|-------|-------|
-| Plans completed | 33 | 01-01 through 01-05, 02-01 through 02-04, 03-01 through 03-05, 04-01 through 04-08, 05-01 through 05-08, 06-01 through 06-03 |
+| Plans completed | 34 | 01-01 through 01-05, 02-01 through 02-04, 03-01 through 03-05, 04-01 through 04-08, 05-01 through 05-08, 06-01 through 06-04 |
 | Phases completed | 5 | Infrastructure, Product Catalog, Frontend Shell, Shopping Cart, Authentication |
 | Requirements done | 49/78 | +AUTH-01 through AUTH-05, +ACCT-01 through ACCT-05 |
 | Blockers hit | 1 | Docker daemon (resolved by user starting Docker) |
-| Decisions made | 92 | See below |
+| Decisions made | 96 | See below |
 
 ## Accumulated Context
 
@@ -143,6 +143,10 @@ Overall: 5/10 phases complete (33/39 plans)
 | Integer math for HUF currency | Math.round avoids floating point issues with currency amounts | 2026-01-21 |
 | Shipping thresholds | 1,990 Ft base, free over 50,000 Ft, +500 Ft/kg over 5kg | 2026-01-21 |
 | Don't persist calculated totals | calculatedTotals excluded from localStorage, always fetch fresh | 2026-01-21 |
+| Server-side address fetch for checkout | Page.tsx calls getAddresses() server-side, passes to client component | 2026-01-21 |
+| Default address auto-selection | useEffect selects default address on mount for proper hydration | 2026-01-21 |
+| Country locked to Hungary | Shipping only to Magyarorszag, country field disabled | 2026-01-21 |
+| RadioGroup for address selection | Saved addresses as radio items, new address expands inline form | 2026-01-21 |
 
 ### Architecture Notes
 
@@ -232,8 +236,10 @@ From research:
 - [x] VAT and shipping calculation (06-03)
 - [x] Checkout Zustand store with localStorage persistence (06-03)
 - [x] POST /checkout/calculate endpoint (06-03)
-- [ ] Checkout session creation (06-04)
-- [ ] Checkout flow UI (06-05)
+- [x] Protected checkout page at /penztar (06-04)
+- [x] Shipping address step with RadioGroup selection (06-04)
+- [x] Step indicator for multi-step checkout (06-04)
+- [ ] Checkout flow UI - billing/summary/payment steps (06-05)
 - [ ] Order confirmation and emails (06-06)
 - [ ] Phase 6 verification (06-08)
 
@@ -245,17 +251,18 @@ From research:
 
 ### Last Session Summary
 
-- Completed 06-03: Checkout State & Calculations
-- Zustand checkout store with multi-step persistence under 'csz-checkout'
-- Hungarian VAT calculation library extracting 27% from gross prices
-- Shipping calculation with free shipping over 50,000 Ft
-- POST /checkout/calculate endpoint with server-side validation
+- Completed 06-04: Checkout Page Shell & Shipping Step
+- Protected checkout page at /penztar with requireAuth
+- Shipping address step with saved addresses selection (RadioGroup)
+- New address inline form with field validation
+- Step indicator showing checkout progress
+- Order summary sidebar with cart items and totals
 
 ### Next Actions
 
-1. Continue Phase 6 with 06-04 (Checkout Flow UI Pages)
-2. Then 06-05 (Checkout Session Creation - Stripe integration)
-3. Then 06-06 (Order Confirmation & Emails)
+1. Continue Phase 6 with 06-05 (Checkout Flow UI - billing/summary/payment)
+2. Then 06-06 (Order Confirmation & Emails)
+3. Then 06-07/06-08 (Payment integration and verification)
 
 ### Open Questions
 
@@ -292,3 +299,4 @@ From research that need resolution:
 *Phase 6 plan 06-01 completed: 2026-01-21*
 *Phase 6 plan 06-02 completed: 2026-01-21*
 *Phase 6 plan 06-03 completed: 2026-01-21*
+*Phase 6 plan 06-04 completed: 2026-01-21*
