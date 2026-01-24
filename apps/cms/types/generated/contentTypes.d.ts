@@ -433,7 +433,8 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
 export interface ApiCategoryCategory extends Struct.CollectionTypeSchema {
   collectionName: 'categories';
   info: {
-    displayName: 'Category';
+    description: 'Term\u00E9kkateg\u00F3ri\u00E1k kezel\u00E9se';
+    displayName: 'Kateg\u00F3ria';
     pluralName: 'categories';
     singularName: 'category';
   };
@@ -455,6 +456,7 @@ export interface ApiCategoryCategory extends Struct.CollectionTypeSchema {
       Schema.Attribute.Private;
     name: Schema.Attribute.String & Schema.Attribute.Required;
     parent: Schema.Attribute.Relation<'manyToOne', 'api::category.category'>;
+    productCount: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
     products: Schema.Attribute.Relation<'manyToMany', 'api::product.product'>;
     publishedAt: Schema.Attribute.DateTime;
     slug: Schema.Attribute.UID<'name'> & Schema.Attribute.Required;
@@ -572,6 +574,51 @@ export interface ApiFaqFaq extends Struct.CollectionTypeSchema {
       Schema.Attribute.SetMinMaxLength<{
         maxLength: 500;
       }>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiHomepageHomepage extends Struct.SingleTypeSchema {
+  collectionName: 'homepages';
+  info: {
+    description: 'A webshop f\u0151oldal\u00E1nak tartalma \u00E9s be\u00E1ll\u00EDt\u00E1sai';
+    displayName: 'F\u0151oldal';
+    pluralName: 'homepages';
+    singularName: 'homepage';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    akciokSzekcio: Schema.Attribute.Component<'homepage.termek-szekcio', false>;
+    bizalmiJelvenyek: Schema.Attribute.Component<
+      'homepage.bizalmi-jelvenyek',
+      false
+    >;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    gyikSzekcio: Schema.Attribute.Component<'homepage.gyik-szekcio', false>;
+    heroSzekcio: Schema.Attribute.Component<'homepage.hero', false>;
+    kategoriakSzekcio: Schema.Attribute.Component<
+      'homepage.kategoriak-szekcio',
+      false
+    >;
+    kiemeltTermekek: Schema.Attribute.Component<
+      'homepage.termek-szekcio',
+      false
+    >;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::homepage.homepage'
+    > &
+      Schema.Attribute.Private;
+    promoBannerek: Schema.Attribute.Component<'homepage.banner', true>;
+    publishedAt: Schema.Attribute.DateTime;
+    seoBeallitasok: Schema.Attribute.Component<'shared.seo', false>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -794,7 +841,8 @@ export interface ApiProductVariantProductVariant
 export interface ApiProductProduct extends Struct.CollectionTypeSchema {
   collectionName: 'products';
   info: {
-    displayName: 'Product';
+    description: 'Webshop term\u00E9kek kezel\u00E9se - \u00E1rak, k\u00E9szlet, le\u00EDr\u00E1sok, k\u00E9pek';
+    displayName: 'Term\u00E9k';
     pluralName: 'products';
     singularName: 'product';
   };
@@ -838,6 +886,11 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
       Schema.Attribute.Private;
     name: Schema.Attribute.String &
       Schema.Attribute.Required &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }> &
       Schema.Attribute.SetMinMaxLength<{
         maxLength: 255;
       }>;
@@ -1540,6 +1593,7 @@ declare module '@strapi/strapi' {
       'api::category.category': ApiCategoryCategory;
       'api::coupon.coupon': ApiCouponCoupon;
       'api::faq.faq': ApiFaqFaq;
+      'api::homepage.homepage': ApiHomepageHomepage;
       'api::order.order': ApiOrderOrder;
       'api::page.page': ApiPagePage;
       'api::product-variant.product-variant': ApiProductVariantProductVariant;

@@ -45,6 +45,10 @@
       "relation": "manyToMany",
       "target": "api::product.product",
       "mappedBy": "categories"
+    },
+    "productCount": {
+      "type": "integer",
+      "default": 0
     }
   }
 }

@@ -159,6 +159,46 @@ async function configureStoreManagerPermissions(strapi: Core.Strapi) {
   strapi.log.info('Store Manager admin permissions configured for product catalog');
 }
 
+/**
+ * Update product counts for all categories
+ * This recalculates productCount for categories that have null values
+ */
+async function updateCategoryProductCounts(strapi: Core.Strapi) {
+  // Get categories with null product count
+  const categories = await strapi.db.query('api::category.category').findMany({
+    where: {
+      productCount: null,
+    },
+  });
+
+  if (categories.length === 0) {
+    strapi.log.debug('All category product counts are already set');
+    return;
+  }
+
+  strapi.log.info(`Updating product counts for ${categories.length} categories...`);
+
+  for (const category of categories) {
+    const count = await strapi.db.query('api::product.product').count({
+      where: {
+        categories: {
+          id: category.id,
+        },
+        publishedAt: { $notNull: true },
+      },
+    });
+
+    await strapi.db.query('api::category.category').update({
+      where: { id: category.id },
+      data: { productCount: count },
+    });
+
+    strapi.log.debug(`Category "${category.name}" (${category.id}): ${count} products`);
+  }
+
+  strapi.log.info('Category product counts updated');
+}
+
 export default {
   /**
    * An asynchronous register function that runs before
@@ -179,5 +219,6 @@ export default {
     await configurePublicPermissions(strapi);
     await configureAuthenticatedPermissions(strapi);
     await configureStoreManagerPermissions(strapi);
+    await updateCategoryProductCounts(strapi);
   },
 };
