@@ -48,6 +48,9 @@ export function CategoryCards({ categories }: CategoryCardsProps) {
   let tomloImage: string | null = null;
 
   categories.forEach((cat) => {
+    // Skip categories with null name or slug
+    if (!cat.name || !cat.slug) return;
+
     // Check main category
     if (cat.name.toLowerCase().includes('tömlő') || cat.slug.includes('tomlo')) {
       tomloChildren.push({
@@ -60,6 +63,7 @@ export function CategoryCards({ categories }: CategoryCardsProps) {
     }
     // Check children
     cat.children?.forEach((child) => {
+      if (!child.name || !child.slug) return;
       if (child.name.toLowerCase().includes('tömlő') || child.slug.includes('tomlo')) {
         tomloChildren.push({
           name: child.name,
@@ -90,7 +94,7 @@ export function CategoryCards({ categories }: CategoryCardsProps) {
 
       // Find matching category
       const matchedCat = categories.find((cat) =>
-        layout.slugs.some((slug) => cat.slug.includes(slug) || slug.includes(cat.slug))
+        cat.slug && layout.slugs.some((slug) => cat.slug.includes(slug) || slug.includes(cat.slug))
       );
 
       if (!matchedCat) return null;
