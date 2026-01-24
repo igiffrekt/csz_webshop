@@ -15,6 +15,7 @@ interface ProductCardEnhancedProps {
   showRating?: boolean;
   showQuickActions?: boolean;
   showCountdown?: boolean;
+  variant?: 'default' | 'collection';
 }
 
 // Mini countdown timer component
@@ -70,7 +71,9 @@ export function ProductCardEnhanced({
   showRating = true,
   showQuickActions = true,
   showCountdown = false,
+  variant = 'default',
 }: ProductCardEnhancedProps) {
+  const isCollection = variant === 'collection';
   const addItem = useCartStore((state) => state.addItem);
 
   const imageUrl = product.images?.[0]
@@ -84,6 +87,11 @@ export function ProductCardEnhanced({
 
   // Get primary category
   const category = product.categories?.[0];
+
+  // Build product URL - use category slug if available
+  const productUrl = category
+    ? `/${category.slug}/${product.slug}`
+    : `/termekek/${product.slug}`;
 
   // Calculate a random end date for the countdown (for demo purposes)
   const endDate = new Date();
@@ -100,27 +108,35 @@ export function ProductCardEnhanced({
   };
 
   return (
-    <div className="group relative bg-white rounded-xl border border-gray-200 overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+    <div className={cn(
+      "group relative bg-transparent overflow-visible transition-all duration-300",
+      isCollection && "h-[500px] flex flex-col"
+    )}>
       {/* Image container */}
-      <Link href={`/termekek/${product.slug}`} className="block relative aspect-square overflow-hidden bg-gray-50">
-        {imageUrl ? (
-          <Image
-            src={imageUrl}
-            alt={product.name}
-            fill
-            className="object-cover transition-transform duration-500 group-hover:scale-110"
-            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-          />
-        ) : (
-          <div className="w-full h-full flex items-center justify-center">
-            <span className="text-5xl">🧯</span>
-          </div>
-        )}
+      <div className={cn(
+        "relative overflow-hidden bg-[#f6f6f6] rounded-[30px]",
+        isCollection ? "h-[385px] flex-shrink-0" : "aspect-square"
+      )}>
+        <Link href={productUrl} className="block w-full h-full">
+          {imageUrl ? (
+            <Image
+              src={imageUrl}
+              alt={product.name}
+              fill
+              className="object-contain p-4 transition-transform duration-500 group-hover:scale-110"
+              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+            />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center">
+              <span className="text-5xl">🧯</span>
+            </div>
+          )}
+        </Link>
 
         {/* Discount badge - yellow like reference */}
         {isOnSale && (
-          <div className="absolute top-3 left-3">
-            <span className="bg-amber-400 text-gray-900 text-xs font-bold px-2.5 py-1 rounded">
+          <div className="absolute top-3 left-3 pointer-events-none">
+            <span className="bg-[#FFBB36] text-gray-900 text-xs font-bold px-2.5 py-1 rounded">
               {discountPercent}% off
             </span>
           </div>
@@ -128,7 +144,7 @@ export function ProductCardEnhanced({
 
         {/* Featured badge */}
         {product.isFeatured && !isOnSale && (
-          <div className="absolute top-3 left-3">
+          <div className="absolute top-3 left-3 pointer-events-none">
             <span className="bg-green-500 text-white text-xs font-bold px-2.5 py-1 rounded">
               Kiemelt
             </span>
@@ -137,7 +153,7 @@ export function ProductCardEnhanced({
 
         {/* Out of stock badge */}
         {product.stock <= 0 && (
-          <div className="absolute top-3 left-3">
+          <div className="absolute top-3 left-3 pointer-events-none">
             <span className="bg-gray-600 text-white text-xs font-medium px-2.5 py-1 rounded">
               Elfogyott
             </span>
@@ -148,7 +164,7 @@ export function ProductCardEnhanced({
         {showQuickActions && (
           <div className="absolute top-3 right-3 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-x-2 group-hover:translate-x-0">
             <button
-              className="w-9 h-9 bg-white rounded-full shadow-md flex items-center justify-center hover:bg-amber-400 hover:text-gray-900 transition-colors"
+              className="w-9 h-9 bg-white rounded-full shadow-md flex items-center justify-center hover:bg-[#FFBB36] hover:text-gray-900 transition-colors"
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
@@ -159,52 +175,71 @@ export function ProductCardEnhanced({
               <Heart className="h-4 w-4" />
             </button>
             <Link
-              href={`/termekek/${product.slug}`}
-              className="w-9 h-9 bg-white rounded-full shadow-md flex items-center justify-center hover:bg-amber-400 hover:text-gray-900 transition-colors"
+              href={productUrl}
+              className="w-9 h-9 bg-white rounded-full shadow-md flex items-center justify-center hover:bg-[#FFBB36] hover:text-gray-900 transition-colors"
               title="Megtekintés"
             >
               <Eye className="h-4 w-4" />
             </Link>
+            <button
+              className={cn(
+                'w-9 h-9 bg-white rounded-full shadow-md flex items-center justify-center transition-colors',
+                product.stock <= 0
+                  ? 'text-gray-300 cursor-not-allowed'
+                  : 'hover:bg-[#FFBB36] hover:text-gray-900'
+              )}
+              onClick={handleAddToCart}
+              disabled={product.stock <= 0}
+              title="Kosárba"
+            >
+              <ShoppingCart className="h-4 w-4" />
+            </button>
           </div>
         )}
 
         {/* Countdown timer - shown for sale items */}
         {(showCountdown || isOnSale) && (
-          <div className="absolute bottom-3 left-3 right-3">
+          <div className="absolute bottom-3 left-3 right-3 pointer-events-none">
             <MiniCountdown endDate={endDate} />
           </div>
         )}
-      </Link>
+      </div>
 
       {/* Content */}
-      <div className="p-4">
-        {/* Category */}
-        {category && (
-          <Link
-            href={`/kategoriak/${category.slug}`}
-            className="text-xs text-gray-500 hover:text-amber-600 transition-colors"
-          >
-            {category.name}
-          </Link>
-        )}
-
-        {/* Rating */}
-        {showRating && (
-          <div className="flex items-center gap-1.5 mt-2">
-            <Star className="h-4 w-4 text-amber-400 fill-amber-400" />
-            <span className="text-sm font-medium text-gray-900">4.{Math.floor(Math.random() * 10)}</span>
-          </div>
-        )}
+      <div className={cn(
+        "bg-transparent",
+        isCollection && "pt-3"
+      )}>
+        {/* Category and Rating in one line */}
+        <div className={cn(
+          "flex items-center justify-between",
+          !isCollection && "mt-3"
+        )}>
+          {category && (
+            <Link
+              href={`/kategoriak/${category.slug}`}
+              className="text-[14px] text-[#6f6f6f] hover:text-[#FFBB36] transition-colors"
+            >
+              {category.name}
+            </Link>
+          )}
+          {showRating && (
+            <div className="flex items-center gap-1.5">
+              <Star className="h-4 w-4 text-[#FFBB36] fill-[#FFBB36]" />
+              <span className="text-sm font-medium text-gray-900">4.{(product.id % 5) + 5}</span>
+            </div>
+          )}
+        </div>
 
         {/* Title */}
-        <Link href={`/termekek/${product.slug}`}>
-          <h3 className="font-medium text-gray-900 mt-2 line-clamp-2 group-hover:text-amber-600 transition-colors min-h-[2.5rem] text-sm">
+        <Link href={productUrl}>
+          <h3 className="font-medium text-gray-900 mt-2 line-clamp-2 group-hover:text-[#FFBB36] transition-colors text-[16px]">
             {product.name}
           </h3>
         </Link>
 
         {/* Price */}
-        <div className="flex items-center gap-2 mt-3">
+        <div className="flex items-center gap-2 mt-2">
           <span className="font-bold text-lg text-gray-900">
             {formatPrice(product.basePrice)}
           </span>
@@ -214,21 +249,6 @@ export function ProductCardEnhanced({
             </span>
           )}
         </div>
-
-        {/* Add to cart button - full width yellow */}
-        <button
-          onClick={handleAddToCart}
-          disabled={product.stock <= 0}
-          className={cn(
-            'w-full mt-3 py-2 rounded-md font-medium text-sm flex items-center justify-center gap-2 transition-colors',
-            product.stock <= 0
-              ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-              : 'bg-amber-400 text-gray-900 hover:bg-amber-500'
-          )}
-        >
-          <ShoppingCart className="h-4 w-4" />
-          {product.stock <= 0 ? 'Elfogyott' : 'Kosárba'}
-        </button>
       </div>
     </div>
   );

@@ -1,17 +1,30 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { ChevronDown, Grid3X3, Flame } from 'lucide-react';
+import Image from 'next/image';
+import { ChevronDown, Grid3X3, Flame, Home, Package, Users, Phone } from 'lucide-react';
 import { Link } from '@/i18n/navigation';
 import { cn } from '@/lib/utils';
 import type { Category, StrapiListResponse } from '@csz/types';
+
+// Main navigation links
+const mainNavLinks = [
+  { href: '/', label: 'Címlap', icon: Home },
+  { href: '/termekek', label: 'Termékek', icon: Package },
+  { href: '/rolunk', label: 'Rólunk', icon: Users },
+  { href: '/kapcsolat', label: 'Kapcsolat', icon: Phone },
+];
 
 // Category icons mapping
 const categoryIcons: Record<string, React.ReactNode> = {
   'tuzolto-keszulekek': <Flame className="h-4 w-4" />,
 };
 
-export function MegaMenu() {
+interface MegaMenuProps {
+  variant?: 'default' | 'icon';
+}
+
+export function MegaMenu({ variant = 'default' }: MegaMenuProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [categories, setCategories] = useState<Category[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -19,12 +32,16 @@ export function MegaMenu() {
   useEffect(() => {
     async function fetchCategories() {
       try {
-        const res = await fetch('/api/categories');
+        // Use absolute path to bypass locale routing
+        const res = await fetch(`${window.location.origin}/api/categories`);
         if (res.ok) {
-          const data: StrapiListResponse<Category> = await res.json();
-          // Only get top-level categories (those without a parent)
-          const topLevel = data.data.filter((cat) => !cat.parent);
-          setCategories(topLevel);
+          const text = await res.text();
+          if (text && text.trim()) {
+            const data: StrapiListResponse<Category> = JSON.parse(text);
+            // Only get top-level categories (those without a parent)
+            const topLevel = data.data?.filter((cat) => !cat.parent) || [];
+            setCategories(topLevel);
+          }
         }
       } catch (error) {
         console.error('Failed to fetch categories:', error);
@@ -80,23 +97,32 @@ export function MegaMenu() {
       onMouseEnter={() => setIsOpen(true)}
       onMouseLeave={() => setIsOpen(false)}
     >
-      {/* Trigger button - prominent yellow style matching reference */}
-      <button
-        className={cn(
-          'flex items-center gap-2 px-5 py-2.5 rounded-md font-semibold transition-colors',
-          'bg-amber-400 text-gray-900 hover:bg-amber-500',
-          isOpen && 'bg-amber-500'
-        )}
-      >
-        <Grid3X3 className="h-5 w-5" />
-        <span>Összes kategória</span>
-        <ChevronDown
+      {/* Trigger button */}
+      {variant === 'icon' ? (
+        <button
+          className="flex items-center justify-center w-[37px] h-[39px] hover:opacity-70 transition-opacity"
+          aria-label="Kategóriák"
+        >
+          <Image src="/icons/nav-icon.svg" alt="Menü" width={29} height={29} />
+        </button>
+      ) : (
+        <button
           className={cn(
-            'h-4 w-4 transition-transform',
-            isOpen && 'rotate-180'
+            'flex items-center gap-2 px-5 py-2.5 rounded-md font-semibold transition-colors',
+            'bg-amber-400 text-gray-900 hover:bg-amber-500',
+            isOpen && 'bg-amber-500'
           )}
-        />
-      </button>
+        >
+          <Grid3X3 className="h-5 w-5" />
+          <span>Összes kategória</span>
+          <ChevronDown
+            className={cn(
+              'h-4 w-4 transition-transform',
+              isOpen && 'rotate-180'
+            )}
+          />
+        </button>
+      )}
 
       {/* Dropdown menu */}
       <div
@@ -106,6 +132,23 @@ export function MegaMenu() {
         )}
       >
         <div className="bg-white rounded-lg shadow-xl border p-6 min-w-[500px] lg:min-w-[700px]">
+          {/* Main navigation links */}
+          <div className="flex items-center gap-6 pb-4 mb-4 border-b border-gray-200">
+            {mainNavLinks.map((link) => {
+              const Icon = link.icon;
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="flex items-center gap-2 text-gray-700 hover:text-[#FFBB36] font-medium transition-colors"
+                >
+                  <Icon className="h-4 w-4" />
+                  {link.label}
+                </Link>
+              );
+            })}
+          </div>
+
           {isLoading ? (
             <div className="flex items-center justify-center py-8">
               <div className="animate-spin h-8 w-8 border-4 border-primary-500 border-t-transparent rounded-full" />

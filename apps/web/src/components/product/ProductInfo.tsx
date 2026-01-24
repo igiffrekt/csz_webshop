@@ -1,6 +1,4 @@
 import { formatPrice } from '@/lib/formatters';
-import { Badge } from '@/components/ui/badge';
-import { Check, X } from 'lucide-react';
 import { getTranslations } from 'next-intl/server';
 import type { Product } from '@csz/types';
 
@@ -19,28 +17,32 @@ export async function ProductInfo({ product }: ProductInfoProps) {
       {/* Badges */}
       <div className="flex gap-2">
         {product.isOnSale && (
-          <Badge variant="destructive">{t('onSale')}</Badge>
+          <span className="bg-[#FFBB36] text-gray-900 text-xs font-bold px-3 py-1 rounded-full">
+            {t('onSale')}
+          </span>
         )}
         {product.isFeatured && (
-          <Badge variant="secondary">{t('featured')}</Badge>
+          <span className="bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full">
+            {t('featured')}
+          </span>
         )}
       </div>
 
       {/* Product name */}
-      <h1 className="text-3xl font-bold">{product.name}</h1>
+      <h1 className="text-2xl lg:text-3xl font-bold text-gray-900">{product.name}</h1>
 
       {/* SKU */}
-      <p className="text-sm text-muted-foreground">
+      <p className="text-sm text-gray-500">
         {t('sku')}: {product.sku}
       </p>
 
       {/* Price */}
       <div className="flex items-baseline gap-3">
-        <span className="text-3xl font-bold">
+        <span className="text-3xl font-bold text-gray-900">
           {formatPrice(product.basePrice)}
         </span>
         {hasDiscount && (
-          <span className="text-lg text-muted-foreground line-through">
+          <span className="text-lg text-gray-400 line-through">
             {formatPrice(product.compareAtPrice!)}
           </span>
         )}
@@ -50,20 +52,23 @@ export async function ProductInfo({ product }: ProductInfoProps) {
       <div className="flex items-center gap-2">
         {inStock ? (
           <>
-            <Check className="h-4 w-4 text-green-600" />
-            <span className="text-green-600">{t('inStock')}</span>
+            <div className="w-2 h-2 bg-green-500 rounded-full" />
+            <span className="text-green-600 font-medium">{t('inStock')}</span>
           </>
         ) : (
           <>
-            <X className="h-4 w-4 text-red-600" />
-            <span className="text-red-600">{t('outOfStock')}</span>
+            <div className="w-2 h-2 bg-red-500 rounded-full" />
+            <span className="text-red-600 font-medium">{t('outOfStock')}</span>
           </>
         )}
       </div>
 
       {/* Short description */}
       {product.shortDescription && (
-        <p className="text-muted-foreground">{product.shortDescription}</p>
+        <div
+          className="text-gray-600 prose prose-sm max-w-none"
+          dangerouslySetInnerHTML={{ __html: product.shortDescription }}
+        />
       )}
     </div>
   );

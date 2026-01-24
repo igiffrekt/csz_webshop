@@ -1,26 +1,25 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { Link } from '@/i18n/navigation';
-import { getStrapiProduct, getStrapiProducts, transformStrapiProduct } from '@/lib/strapi';
+import { getStrapiProduct, getStrapiProducts, getStrapiCategory, transformStrapiProduct } from '@/lib/strapi';
 import { ProductInfo } from '@/components/product/ProductInfo';
 import { ProductDetails } from '@/components/product/ProductDetails';
 import { CertBadges } from '@/components/product/CertBadges';
 import { SpecsTable } from '@/components/product/SpecsTable';
 import { DocumentList } from '@/components/product/DocumentList';
 import { ProductCardEnhanced } from '@/components/product/ProductCardEnhanced';
-import { getStrapiMediaUrl } from '@/lib/formatters';
 import { getTranslations } from 'next-intl/server';
 import { Home, ChevronRight, Truck, Shield, Headphones, Award } from 'lucide-react';
 
 interface Props {
-  params: Promise<{ slug: string; locale: string }>;
+  params: Promise<{ categorySlug: string; productSlug: string; locale: string }>;
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params;
+  const { productSlug } = await params;
 
   try {
-    const strapiProduct = await getStrapiProduct(slug);
+    const strapiProduct = await getStrapiProduct(productSlug);
     if (!strapiProduct) {
       return { title: 'Termék nem található' };
     }
@@ -43,16 +42,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function ProductPage({ params }: Props) {
-  const { slug } = await params;
+  const { categorySlug, productSlug } = await params;
   const t = await getTranslations('product');
 
   let product: ReturnType<typeof transformStrapiProduct> | null = null;
   let relatedProducts: ReturnType<typeof transformStrapiProduct>[] = [];
+  let category: Awaited<ReturnType<typeof getStrapiCategory>> = null;
 
   try {
-    const [strapiProduct, strapiRelated] = await Promise.all([
-      getStrapiProduct(slug),
-      getStrapiProducts({ pageSize: 5 }),
+    const [strapiProduct, strapiCategory, strapiRelated] = await Promise.all([
+      getStrapiProduct(productSlug),
+      getStrapiCategory(categorySlug),
+      getStrapiProducts({ category: categorySlug, pageSize: 5 }),
     ]);
 
     if (!strapiProduct) {
@@ -60,8 +61,9 @@ export default async function ProductPage({ params }: Props) {
     }
 
     product = transformStrapiProduct(strapiProduct);
+    category = strapiCategory;
     relatedProducts = strapiRelated.products
-      .filter((p) => p.slug !== slug)
+      .filter((p) => p.slug !== productSlug)
       .slice(0, 4)
       .map(transformStrapiProduct);
   } catch (error) {
@@ -90,7 +92,8 @@ export default async function ProductPage({ params }: Props) {
     },
   };
 
-  const category = product.categories?.[0];
+  // Use category from URL or fallback to product's first category
+  const displayCategory = category || product.categories?.[0];
 
   return (
     <>
@@ -117,14 +120,14 @@ export default async function ProductPage({ params }: Props) {
               >
                 Termékek
               </Link>
-              {category && (
+              {displayCategory && (
                 <>
                   <ChevronRight className="h-4 w-4 text-gray-300" />
                   <Link
-                    href={`/kategoriak/${category.slug}`}
+                    href={`/kategoriak/${displayCategory.slug}`}
                     className="text-gray-500 hover:text-[#FFBB36] transition-colors"
                   >
-                    {category.name}
+                    {displayCategory.name}
                   </Link>
                 </>
               )}
