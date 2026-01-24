@@ -3,25 +3,38 @@ import type { Core } from '@strapi/strapi';
 
 type CategoryId = number | string;
 
-async function updateCategoryCount(strapi: Core.Strapi, categoryId: CategoryId) {
+/**
+ * Update product count for a category (all versions: draft + published)
+ * In Strapi 5, we need to update all document versions
+ */
+async function updateCategoryCountByDocumentId(strapi: Core.Strapi, documentId: string) {
+  // Count products linked to this category document
   const count = await strapi.db.query('api::product.product').count({
     where: {
       categories: {
-        id: categoryId,
+        documentId: documentId,
       },
-      publishedAt: { $notNull: true },
     },
   });
 
-  await strapi.db.query('api::category.category').update({
-    where: { id: categoryId },
+  // Update ALL versions of this category (draft and published)
+  await strapi.db.query('api::category.category').updateMany({
+    where: { documentId: documentId },
     data: { productCount: count },
   });
 }
 
-async function updateMultipleCategoryCounts(strapi: Core.Strapi, categoryIds: CategoryId[]) {
-  for (const categoryId of categoryIds) {
-    await updateCategoryCount(strapi, categoryId);
+async function updateCategoryCounts(strapi: Core.Strapi, categoryIds: CategoryId[]) {
+  // Get unique document IDs for these categories
+  const categories = await strapi.db.query('api::category.category').findMany({
+    where: { id: { $in: categoryIds } },
+    select: ['documentId'],
+  });
+
+  const uniqueDocIds = [...new Set(categories.map((c: any) => c.documentId))];
+
+  for (const docId of uniqueDocIds) {
+    await updateCategoryCountByDocumentId(strapi, docId);
   }
 }
 
@@ -41,10 +54,11 @@ export default {
     const { result } = event;
     const strapi = (global as any).strapi as Core.Strapi;
 
-    // Get categories from the created product
     if (result.categories) {
       const categoryIds = getCategoryIds(result.categories);
-      await updateMultipleCategoryCounts(strapi, categoryIds);
+      if (categoryIds.length > 0) {
+        await updateCategoryCounts(strapi, categoryIds);
+      }
     }
   },
 
@@ -52,7 +66,6 @@ export default {
     const { result, params } = event;
     const strapi = (global as any).strapi as Core.Strapi;
 
-    // Get all categories that might be affected
     const categoryIds = new Set<CategoryId>();
 
     // Categories from the update data
@@ -60,7 +73,6 @@ export default {
       const ids = getCategoryIds(params.data.categories);
       ids.forEach(id => categoryIds.add(id));
 
-      // Also handle disconnect
       if (params.data.categories.disconnect) {
         params.data.categories.disconnect.forEach((c: any) => {
           categoryIds.add(c.id || c);
@@ -75,7 +87,7 @@ export default {
     }
 
     if (categoryIds.size > 0) {
-      await updateMultipleCategoryCounts(strapi, Array.from(categoryIds));
+      await updateCategoryCounts(strapi, Array.from(categoryIds));
     }
   },
 
@@ -83,14 +95,12 @@ export default {
     const { params } = event;
     const strapi = (global as any).strapi as Core.Strapi;
 
-    // Get the product's categories before deletion
     const product = await strapi.db.query('api::product.product').findOne({
       where: params.where,
       populate: { categories: true },
     });
 
     if (product?.categories) {
-      // Store category IDs for afterDelete
       event.state = { categoryIds: getCategoryIds(product.categories) };
     }
   },
@@ -100,8 +110,7 @@ export default {
     const categoryIds = event.state?.categoryIds || [];
 
     if (categoryIds.length > 0) {
-      await updateMultipleCategoryCounts(strapi, categoryIds);
+      await updateCategoryCounts(strapi, categoryIds);
     }
   },
-
 };
