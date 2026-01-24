@@ -161,42 +161,131 @@ async function configureStoreManagerPermissions(strapi: Core.Strapi) {
 
 /**
  * Update product counts for all categories
- * This recalculates productCount for categories that have null values
+ * This recalculates productCount for all categories on startup
  */
 async function updateCategoryProductCounts(strapi: Core.Strapi) {
-  // Get categories with null product count
-  const categories = await strapi.db.query('api::category.category').findMany({
-    where: {
-      productCount: null,
-    },
-  });
+  // Get all categories
+  const categories = await strapi.db.query('api::category.category').findMany({});
 
   if (categories.length === 0) {
-    strapi.log.debug('All category product counts are already set');
+    strapi.log.debug('No categories found');
     return;
   }
 
-  strapi.log.info(`Updating product counts for ${categories.length} categories...`);
+  strapi.log.info(`Recalculating product counts for ${categories.length} categories...`);
 
+  let updatedCount = 0;
   for (const category of categories) {
+    // Count products in this category (any publish state for admin view)
     const count = await strapi.db.query('api::product.product').count({
       where: {
         categories: {
           id: category.id,
         },
-        publishedAt: { $notNull: true },
       },
     });
 
-    await strapi.db.query('api::category.category').update({
-      where: { id: category.id },
-      data: { productCount: count },
-    });
-
-    strapi.log.debug(`Category "${category.name}" (${category.id}): ${count} products`);
+    // Only update if count changed
+    if (category.productCount !== count) {
+      await strapi.db.query('api::category.category').update({
+        where: { id: category.id },
+        data: { productCount: count },
+      });
+      updatedCount++;
+      strapi.log.debug(`Category "${category.name}": ${count} products`);
+    }
   }
 
-  strapi.log.info('Category product counts updated');
+  strapi.log.info(`Category product counts updated (${updatedCount} changed)`);
+}
+
+/**
+ * Configure Content Manager list view settings
+ * Sets up default columns and filters for content types
+ */
+async function configureContentManagerSettings(strapi: Core.Strapi) {
+  // Category list view configuration - show productCount column
+  const categoryConfigKey = 'plugin_content_manager_configuration_content_types::api::category.category';
+  const existingCategoryConfig = await strapi.db.query('strapi::core-store').findOne({
+    where: { key: categoryConfigKey },
+  });
+
+  const categoryListConfig = {
+    settings: {
+      bulkable: true,
+      filterable: true,
+      searchable: true,
+      pageSize: 25,
+      mainField: 'name',
+      defaultSortBy: 'name',
+      defaultSortOrder: 'ASC',
+    },
+    metadatas: {
+      id: { edit: {}, list: { label: 'ID', sortable: true } },
+      name: { edit: { label: 'Név', description: '', placeholder: '', visible: true, editable: true }, list: { label: 'Név', sortable: true } },
+      slug: { edit: { label: 'URL cím', description: '', placeholder: '', visible: true, editable: true }, list: { label: 'URL cím', sortable: true } },
+      productCount: { edit: { label: 'Termékek száma', description: '', placeholder: '', visible: true, editable: false }, list: { label: 'Termékek száma', sortable: true } },
+      description: { edit: { label: 'Leírás', description: '', placeholder: '', visible: true, editable: true }, list: { label: 'Leírás', sortable: false } },
+      image: { edit: { label: 'Kép', description: '', placeholder: '', visible: true, editable: true }, list: { label: 'Kép', sortable: false } },
+      parent: { edit: { label: 'Szülő kategória', description: '', placeholder: '', visible: true, editable: true, mainField: 'name' }, list: { label: 'Szülő', sortable: false } },
+      children: { edit: { label: 'Alkategóriák', description: '', placeholder: '', visible: true, editable: true, mainField: 'name' }, list: { label: 'Alkategóriák', sortable: false } },
+      products: { edit: { label: 'Termékek', description: '', placeholder: '', visible: true, editable: true, mainField: 'name' }, list: { label: 'Termékek', sortable: false } },
+      createdAt: { edit: { label: 'Létrehozva', description: '', placeholder: '', visible: false, editable: true }, list: { label: 'Létrehozva', sortable: true } },
+      updatedAt: { edit: { label: 'Módosítva', description: '', placeholder: '', visible: false, editable: true }, list: { label: 'Módosítva', sortable: true } },
+    },
+    layouts: {
+      list: ['id', 'name', 'slug', 'productCount', 'parent'],
+      edit: [
+        [{ name: 'name', size: 6 }, { name: 'slug', size: 6 }],
+        [{ name: 'description', size: 12 }],
+        [{ name: 'image', size: 6 }, { name: 'productCount', size: 6 }],
+        [{ name: 'parent', size: 6 }],
+      ],
+    },
+  };
+
+  if (existingCategoryConfig) {
+    await strapi.db.query('strapi::core-store').update({
+      where: { key: categoryConfigKey },
+      data: { value: JSON.stringify(categoryListConfig) },
+    });
+  } else {
+    await strapi.db.query('strapi::core-store').create({
+      data: { key: categoryConfigKey, value: JSON.stringify(categoryListConfig) },
+    });
+  }
+  strapi.log.info('Category Content Manager configuration updated');
+
+  // Product list view configuration - ensure categories filter is available
+  const productConfigKey = 'plugin_content_manager_configuration_content_types::api::product.product';
+  const existingProductConfig = await strapi.db.query('strapi::core-store').findOne({
+    where: { key: productConfigKey },
+  });
+
+  if (existingProductConfig) {
+    try {
+      const productConfig = JSON.parse(existingProductConfig.value);
+      // Ensure categories is filterable
+      if (productConfig.metadatas && productConfig.metadatas.categories) {
+        productConfig.metadatas.categories.list = {
+          ...productConfig.metadatas.categories.list,
+          label: 'Kategóriák',
+          sortable: false,
+        };
+      }
+      // Ensure settings allow filtering
+      if (productConfig.settings) {
+        productConfig.settings.filterable = true;
+      }
+      await strapi.db.query('strapi::core-store').update({
+        where: { key: productConfigKey },
+        data: { value: JSON.stringify(productConfig) },
+      });
+      strapi.log.info('Product Content Manager configuration updated');
+    } catch (e) {
+      strapi.log.warn('Could not update product configuration');
+    }
+  }
 }
 
 export default {
@@ -220,5 +309,6 @@ export default {
     await configureAuthenticatedPermissions(strapi);
     await configureStoreManagerPermissions(strapi);
     await updateCategoryProductCounts(strapi);
+    await configureContentManagerSettings(strapi);
   },
 };
