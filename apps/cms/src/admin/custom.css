@@ -1,0 +1,27 @@
+/* Custom Strapi Admin Styles for CSZ Tűzvédelem */
+
+/* Make relation dropdowns taller */
+[class*="RelationInput"] [class*="OptionsList"],
+[class*="RelationInput"] [class*="Menu"],
+[class*="ComboboxList"],
+[role="listbox"] {
+  max-height: 400px !important;
+}
+
+/* Make the relation input container taller when open */
+[class*="RelationInput"] [class*="Popover"],
+[class*="ComboboxPopover"] {
+  max-height: 450px !important;
+}
+
+/* Improve scrollable areas in relation selectors */
+[class*="RelationInput"] [class*="ScrollArea"],
+[class*="ScrollArea"] {
+  max-height: 380px !important;
+}
+
+/* Style the relation items for better readability */
+[class*="RelationInput"] [class*="Option"],
+[role="option"] {
+  padding: 10px 12px !important;
+}

@@ -199,7 +199,7 @@ export default async function ProductPage({ params }: Props) {
             <section className="bg-[#f6f6f6] rounded-[30px] p-6 lg:p-10 mt-8">
               <h2 className="text-xl font-bold text-gray-900 mb-6">{t('description')}</h2>
               <div
-                className="text-gray-600 leading-relaxed prose prose-gray max-w-none [&_p]:mb-4 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:mb-2 [&_h3]:text-lg [&_h3]:font-semibold [&_h3]:text-gray-900 [&_h3]:mt-6 [&_h3]:mb-2 [&_h4]:font-semibold [&_h4]:text-gray-800 [&_h4]:mt-4 [&_h4]:mb-2 [&_strong]:font-semibold [&_strong]:text-gray-800 [&_a]:text-[#FFBB36] [&_a]:underline"
+                className="text-gray-600 leading-relaxed prose prose-gray max-w-none [&_p]:mb-4 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:mb-2 [&_li]:marker:text-gray-500 [&_h3]:text-lg [&_h3]:font-semibold [&_h3]:text-gray-900 [&_h3]:mt-6 [&_h3]:mb-2 [&_h4]:font-semibold [&_h4]:text-gray-800 [&_h4]:mt-4 [&_h4]:mb-2 [&_strong]:font-semibold [&_strong]:text-gray-800 [&_a]:text-inherit [&_a]:no-underline"
                 dangerouslySetInnerHTML={{ __html: product.description }}
               />
             </section>

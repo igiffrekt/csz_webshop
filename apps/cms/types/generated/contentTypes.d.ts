@@ -625,6 +625,48 @@ export interface ApiHomepageHomepage extends Struct.SingleTypeSchema {
   };
 }
 
+export interface ApiMenuItemMenuItem extends Struct.CollectionTypeSchema {
+  collectionName: 'menu_items';
+  info: {
+    description: 'Navig\u00E1ci\u00F3s men\u00FC elemek rendez\u00E9ssel';
+    displayName: 'Men\u00FCpont';
+    pluralName: 'menu-items';
+    singularName: 'menu-item';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    children: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::menu-item.menu-item'
+    >;
+    cim: Schema.Attribute.String & Schema.Attribute.Required;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    ikon: Schema.Attribute.String;
+    kategoria: Schema.Attribute.Relation<'oneToOne', 'api::category.category'>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::menu-item.menu-item'
+    > &
+      Schema.Attribute.Private;
+    nyitasUjTabon: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    parent: Schema.Attribute.Relation<'manyToOne', 'api::menu-item.menu-item'>;
+    publishedAt: Schema.Attribute.DateTime;
+    sorrend: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
+    tipus: Schema.Attribute.Enumeration<['url', 'kategoria']> &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<'url'>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    url: Schema.Attribute.String;
+  };
+}
+
 export interface ApiOrderOrder extends Struct.CollectionTypeSchema {
   collectionName: 'orders';
   info: {
@@ -863,6 +905,10 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
       'api::category.category'
     >;
     certifications: Schema.Attribute.Component<'product.certification', true>;
+    cloudinaryImageUrl: Schema.Attribute.String &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 500;
+      }>;
     compareAtPrice: Schema.Attribute.Integer &
       Schema.Attribute.SetMinMax<
         {
@@ -1594,6 +1640,7 @@ declare module '@strapi/strapi' {
       'api::coupon.coupon': ApiCouponCoupon;
       'api::faq.faq': ApiFaqFaq;
       'api::homepage.homepage': ApiHomepageHomepage;
+      'api::menu-item.menu-item': ApiMenuItemMenuItem;
       'api::order.order': ApiOrderOrder;
       'api::page.page': ApiPagePage;
       'api::product-variant.product-variant': ApiProductVariantProductVariant;

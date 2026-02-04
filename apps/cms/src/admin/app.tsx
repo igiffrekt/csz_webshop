@@ -1,5 +1,8 @@
 import type { StrapiApp } from '@strapi/strapi/admin';
 import hu from './translations/hu.json';
+import CategoryFilterDropdown from './extensions/CategoryFilterDropdown';
+import ProductCountEnhancer from './extensions/ProductCountEnhancer';
+import './custom.css';
 
 // Field label mappings for Hungarian
 const fieldLabels: Record<string, string> = {
@@ -143,6 +146,14 @@ const fieldLabels: Record<string, string> = {
   ikon: 'Ikon',
   szoveg: 'Szöveg',
 
+  // Menu item fields
+  cim: 'Cím',
+  tipus: 'Típus',
+  url: 'URL',
+  kategoria: 'Kategória',
+  sorrend: 'Sorrend',
+  nyitasUjTabon: 'Megnyitás új ablakban',
+
   // System fields
   createdAt: 'Létrehozva',
   updatedAt: 'Módosítva',
@@ -165,6 +176,7 @@ const contentTypeLabels: Record<string, { singular: string; plural: string }> = 
   'api::page.page': { singular: 'Oldal', plural: 'Oldalak' },
   'api::product-variant.product-variant': { singular: 'Termék változat', plural: 'Termék változatok' },
   'api::homepage.homepage': { singular: 'Főoldal', plural: 'Főoldal' },
+  'api::menu-item.menu-item': { singular: 'Menüpont', plural: 'Menüpontok' },
 };
 
 export default {
@@ -230,8 +242,17 @@ export default {
   bootstrap(app: StrapiApp) {
     console.log('CSZ Tűzvédelem CMS initialized');
   },
-  async register(app: StrapiApp) {
-    // Register custom field labels through the app's customFields if available
-    // This runs before the app is mounted
+  register(app: StrapiApp) {
+    // Inject category filter into product list view
+    app.getPlugin('content-manager').injectComponent('listView', 'actions', {
+      name: 'CategoryFilter',
+      Component: CategoryFilterDropdown,
+    });
+
+    // Inject product count enhancer to make numbers clickable in category list view
+    app.getPlugin('content-manager').injectComponent('listView', 'actions', {
+      name: 'ProductCountEnhancer',
+      Component: ProductCountEnhancer,
+    });
   },
 };

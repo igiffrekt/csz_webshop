@@ -13,12 +13,12 @@ export const metadata: Metadata = {
 };
 
 export default async function OrderHistoryPage() {
-  await requireAuth();
+  await requireAuth("/hu/fiok/rendelesek");
 
   const { data: orders, error } = await getOrders();
 
   return (
-    <main className="container mx-auto px-4 py-8 max-w-4xl">
+    <main className="site-container py-8 max-w-4xl">
       {/* Header */}
       <div className="flex items-center gap-4 mb-8">
         <Button variant="ghost" size="icon" asChild>

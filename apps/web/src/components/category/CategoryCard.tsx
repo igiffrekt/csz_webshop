@@ -2,10 +2,10 @@ import Image from 'next/image';
 import { Link } from '@/i18n/navigation';
 import { getStrapiMediaUrl } from '@/lib/formatters';
 import { ArrowRight, Folder } from 'lucide-react';
-import type { Category } from '@csz/types';
+import type { DisplayCategory } from '@/lib/strapi';
 
 interface CategoryCardProps {
-  category: Category;
+  category: DisplayCategory;
 }
 
 export function CategoryCard({ category }: CategoryCardProps) {

@@ -1,0 +1,37 @@
+{
+  "collectionName": "components_homepage_termek_szekciok",
+  "info": {
+    "displayName": "Termék szekció",
+    "description": "Termékek megjelenítése sliderben vagy rácsban"
+  },
+  "attributes": {
+    "cim": {
+      "type": "string",
+      "required": true
+    },
+    "alcim": {
+      "type": "string"
+    },
+    "tipus": {
+      "type": "enumeration",
+      "enum": ["slider", "racs"],
+      "default": "slider"
+    },
+    "termekForras": {
+      "type": "enumeration",
+      "enum": ["kiemelt", "akcios", "uj", "egyedi"],
+      "default": "kiemelt"
+    },
+    "egyediTermekek": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::product.product"
+    },
+    "maxTermekszam": {
+      "type": "integer",
+      "default": 8,
+      "min": 1,
+      "max": 20
+    }
+  }
+}

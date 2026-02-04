@@ -2,15 +2,14 @@
 
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { ChevronDown, Grid3X3, Flame, Home, Package, Users, Phone } from 'lucide-react';
+import { ChevronDown, Grid3X3, Flame, Home, Package, Users, Phone, ExternalLink } from 'lucide-react';
 import { Link } from '@/i18n/navigation';
 import { cn } from '@/lib/utils';
-import type { Category, StrapiListResponse } from '@csz/types';
+import type { Category, MenuItem, StrapiListResponse } from '@csz/types';
 
-// Main navigation links
-const mainNavLinks = [
+// Static info links (always shown in dropdown)
+const infoLinks = [
   { href: '/', label: 'Címlap', icon: Home },
-  { href: '/termekek', label: 'Termékek', icon: Package },
   { href: '/rolunk', label: 'Rólunk', icon: Users },
   { href: '/kapcsolat', label: 'Kapcsolat', icon: Phone },
 ];
@@ -27,70 +26,155 @@ interface MegaMenuProps {
 export function MegaMenu({ variant = 'default' }: MegaMenuProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [categories, setCategories] = useState<Category[]>([]);
+  const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    async function fetchCategories() {
+    async function fetchData() {
       try {
-        // Use absolute path to bypass locale routing
-        const res = await fetch(`${window.location.origin}/api/categories`);
-        if (res.ok) {
-          const text = await res.text();
-          if (text && text.trim()) {
-            const data: StrapiListResponse<Category> = JSON.parse(text);
-            // Only get top-level categories (those without a parent)
-            const topLevel = data.data?.filter((cat) => !cat.parent) || [];
-            setCategories(topLevel);
+        // Fetch menu items from Strapi
+        const menuRes = await fetch(`${window.location.origin}/api/menu`);
+        if (menuRes.ok) {
+          const menuData = await menuRes.json();
+          setMenuItems(menuData.data || []);
+        }
+
+        // Only fetch categories for default variant
+        if (variant === 'default') {
+          const res = await fetch(`${window.location.origin}/api/categories`);
+          if (res.ok) {
+            const text = await res.text();
+            if (text && text.trim()) {
+              const data: StrapiListResponse<Category> = JSON.parse(text);
+              const topLevel = data.data?.filter((cat) => !cat.parent) || [];
+              setCategories(topLevel);
+            }
           }
         }
       } catch (error) {
-        console.error('Failed to fetch categories:', error);
+        console.error('Failed to fetch menu data:', error);
       } finally {
         setIsLoading(false);
       }
     }
 
-    fetchCategories();
-  }, []);
+    fetchData();
+  }, [variant]);
 
-  // Fallback categories for when API is unavailable
-  const fallbackCategories = [
-    {
-      name: 'Tűzoltó készülékek',
-      slug: 'tuzolto-keszulekek',
-      children: [
-        { name: 'Poroltó készülékek', slug: 'porolto' },
-        { name: 'CO2 oltók', slug: 'co2-olto' },
-        { name: 'Haboltó készülékek', slug: 'habolto' },
-      ],
-    },
-    {
-      name: 'Tűzjelző rendszerek',
-      slug: 'tuzjelzo-rendszerek',
-      children: [
-        { name: 'Füstérzékelők', slug: 'fusterzekelok' },
-        { name: 'Hőérzékelők', slug: 'hoerzekelok' },
-      ],
-    },
-    {
-      name: 'Védőfelszerelések',
-      slug: 'vedofelszerelesek',
-      children: [
-        { name: 'Tűzálló szekrények', slug: 'tuzallo-szekrenyek' },
-      ],
-    },
-    {
-      name: 'Kiegészítők',
-      slug: 'kiegeszitok',
-      children: [
-        { name: 'Tartók és állványok', slug: 'tartok' },
-        { name: 'Jelzőtáblák', slug: 'jelzotablak' },
-      ],
-    },
-  ];
+  // Render menu item link
+  const renderMenuItem = (item: MenuItem) => {
+    const href = item.tipus === 'kategoria' && item.kategoria
+      ? `/kategoriak/${item.kategoria.slug}`
+      : item.url || '#';
 
-  const displayCategories = categories.length > 0 ? categories : fallbackCategories;
+    const isExternal = item.url?.startsWith('http');
 
+    if (isExternal) {
+      return (
+        <a
+          key={item.documentId}
+          href={item.url}
+          target={item.nyitasUjTabon ? '_blank' : undefined}
+          rel={item.nyitasUjTabon ? 'noopener noreferrer' : undefined}
+          className="flex items-center gap-2 text-gray-700 hover:text-[#FFBB36] font-medium transition-colors py-1"
+        >
+          {item.cim}
+          {item.nyitasUjTabon && <ExternalLink className="h-3 w-3" />}
+        </a>
+      );
+    }
+
+    return (
+      <Link
+        key={item.documentId}
+        href={href}
+        className="flex items-center gap-2 text-gray-700 hover:text-[#FFBB36] font-medium transition-colors py-1"
+      >
+        {item.cim}
+      </Link>
+    );
+  };
+
+  // Render menu tree recursively
+  const renderMenuTree = (items: MenuItem[], depth = 0) => {
+    return items.map((item) => (
+      <div key={item.documentId} className={depth > 0 ? 'ml-4' : ''}>
+        {renderMenuItem(item)}
+        {item.children && item.children.length > 0 && (
+          <div className="mt-1">
+            {renderMenuTree(item.children, depth + 1)}
+          </div>
+        )}
+      </div>
+    ));
+  };
+
+  // Icon variant - opens dropdown with info links and menu items (no categories)
+  if (variant === 'icon') {
+    return (
+      <div
+        className="relative"
+        onMouseEnter={() => setIsOpen(true)}
+        onMouseLeave={() => setIsOpen(false)}
+      >
+        <button
+          className="flex items-center justify-center w-[37px] h-[39px] hover:opacity-70 transition-opacity"
+          aria-label="Menü"
+          aria-expanded={isOpen}
+        >
+          <Image src="/icons/nav-icon.svg" alt="Menü" width={29} height={29} />
+        </button>
+
+        {/* Dropdown */}
+        <div
+          className={cn(
+            'absolute right-0 top-full pt-2 z-50 transition-all duration-200',
+            isOpen ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'
+          )}
+        >
+          <div className="bg-white rounded-lg shadow-xl border p-6 min-w-[280px]">
+            {/* Info links */}
+            <div className="space-y-1 pb-4 mb-4 border-b border-gray-200">
+              {infoLinks.map((link) => {
+                const Icon = link.icon;
+                return (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className="flex items-center gap-2 text-gray-700 hover:text-[#FFBB36] font-medium transition-colors py-1"
+                  >
+                    <Icon className="h-4 w-4" />
+                    {link.label}
+                  </Link>
+                );
+              })}
+            </div>
+
+            {/* Strapi menu items */}
+            {isLoading ? (
+              <div className="flex items-center justify-center py-4">
+                <div className="animate-spin h-5 w-5 border-2 border-primary-500 border-t-transparent rounded-full" />
+              </div>
+            ) : menuItems.length > 0 ? (
+              <div className="space-y-1">
+                {renderMenuTree(menuItems)}
+              </div>
+            ) : (
+              <Link
+                href="/termekek"
+                className="flex items-center gap-2 text-gray-700 hover:text-[#FFBB36] font-medium transition-colors"
+              >
+                <Package className="h-4 w-4" />
+                Termékek
+              </Link>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Default variant - full mega menu with categories
   return (
     <div
       className="relative"
@@ -98,31 +182,22 @@ export function MegaMenu({ variant = 'default' }: MegaMenuProps) {
       onMouseLeave={() => setIsOpen(false)}
     >
       {/* Trigger button */}
-      {variant === 'icon' ? (
-        <button
-          className="flex items-center justify-center w-[37px] h-[39px] hover:opacity-70 transition-opacity"
-          aria-label="Kategóriák"
-        >
-          <Image src="/icons/nav-icon.svg" alt="Menü" width={29} height={29} />
-        </button>
-      ) : (
-        <button
+      <button
+        className={cn(
+          'flex items-center gap-2 px-5 py-2.5 rounded-md font-semibold transition-colors',
+          'bg-amber-400 text-gray-900 hover:bg-amber-500',
+          isOpen && 'bg-amber-500'
+        )}
+      >
+        <Grid3X3 className="h-5 w-5" />
+        <span>Összes kategória</span>
+        <ChevronDown
           className={cn(
-            'flex items-center gap-2 px-5 py-2.5 rounded-md font-semibold transition-colors',
-            'bg-amber-400 text-gray-900 hover:bg-amber-500',
-            isOpen && 'bg-amber-500'
+            'h-4 w-4 transition-transform',
+            isOpen && 'rotate-180'
           )}
-        >
-          <Grid3X3 className="h-5 w-5" />
-          <span>Összes kategória</span>
-          <ChevronDown
-            className={cn(
-              'h-4 w-4 transition-transform',
-              isOpen && 'rotate-180'
-            )}
-          />
-        </button>
-      )}
+        />
+      </button>
 
       {/* Dropdown menu */}
       <div
@@ -134,7 +209,7 @@ export function MegaMenu({ variant = 'default' }: MegaMenuProps) {
         <div className="bg-white rounded-lg shadow-xl border p-6 min-w-[500px] lg:min-w-[700px]">
           {/* Main navigation links */}
           <div className="flex items-center gap-6 pb-4 mb-4 border-b border-gray-200">
-            {mainNavLinks.map((link) => {
+            {infoLinks.map((link) => {
               const Icon = link.icon;
               return (
                 <Link
@@ -156,7 +231,7 @@ export function MegaMenu({ variant = 'default' }: MegaMenuProps) {
           ) : (
             <>
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-                {displayCategories.map((category) => (
+                {categories.map((category) => (
                   <div key={category.slug}>
                     <Link
                       href={`/kategoriak/${category.slug}`}

@@ -106,6 +106,7 @@ export interface Product {
   isFeatured: boolean;
   isOnSale: boolean;
   images?: StrapiMedia[];
+  cloudinaryImageUrl?: string;
   documents?: StrapiMedia[];
   specifications?: Specification[];
   certifications?: Certification[];
@@ -291,6 +292,29 @@ export interface Order {
   // Timestamps
   createdAt: string;
   updatedAt: string;
+}
+
+// Menu item content type
+export interface MenuItem {
+  id: number;
+  documentId: string;
+  cim: string;
+  tipus: 'url' | 'kategoria';
+  url?: string;
+  kategoria?: {
+    id: number;
+    documentId: string;
+    name: string;
+    slug: string;
+  };
+  parent?: MenuItem;
+  children?: MenuItem[];
+  sorrend: number;
+  nyitasUjTabon: boolean;
+  ikon?: string;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string;
 }
 
 // Quote types

@@ -13,14 +13,14 @@ export const metadata: Metadata = {
 
 export default async function ProfilePage() {
   // Ensure user is authenticated
-  await requireAuth();
+  await requireAuth("/hu/fiok/profil");
 
   // Get full user profile from Strapi
   const { user, error } = await getCurrentUserProfile();
 
   if (error || !user) {
     return (
-      <div className="container py-8">
+      <div className="site-container py-8">
         <div className="text-center">
           <p className="text-destructive">{error || "Profil betöltése sikertelen"}</p>
           <Link href="/fiok">
@@ -34,7 +34,7 @@ export default async function ProfilePage() {
   }
 
   return (
-    <div className="container max-w-2xl py-8">
+    <div className="site-container py-8 max-w-2xl mx-auto">
       <div className="mb-6">
         <Link
           href="/fiok"

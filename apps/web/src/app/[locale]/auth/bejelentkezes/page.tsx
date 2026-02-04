@@ -14,7 +14,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
   const { redirect, reset } = await searchParams;
 
   return (
-    <div className="container max-w-md py-16">
+    <div className="container max-w-md mx-auto py-16">
       <div className="text-center mb-8">
         <h1 className="text-2xl font-bold">Bejelentkezés</h1>
         <p className="text-muted-foreground mt-2">

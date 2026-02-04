@@ -25,11 +25,25 @@ export function ProductDetails({ product, children }: ProductDetailsProps) {
 
   // Build the full list of images: product images + variant images
   const allImages = useMemo(() => {
-    const images: Array<StrapiMedia & { variantId?: number }> = [];
+    const images: Array<(StrapiMedia | { url: string; id: number; documentId: string; alternativeText: string | null; name: string }) & { variantId?: number; isCloudinary?: boolean }> = [];
 
-    // Add product images first
+    // If cloudinaryImageUrl exists, use it as the primary image (background removed, WebP)
+    if (product.cloudinaryImageUrl) {
+      images.push({
+        id: -1,
+        documentId: 'cloudinary',
+        url: product.cloudinaryImageUrl,
+        alternativeText: product.name,
+        name: 'cloudinary-primary',
+        isCloudinary: true,
+      });
+    }
+
+    // Add product images (skip first if we have cloudinary version)
     if (product.images && product.images.length > 0) {
-      product.images.forEach(img => {
+      product.images.forEach((img, index) => {
+        // If we have cloudinary, skip the first strapi image to avoid duplicate
+        if (product.cloudinaryImageUrl && index === 0) return;
         images.push({ ...img });
       });
     }
@@ -77,7 +91,7 @@ export function ProductDetails({ product, children }: ProductDetailsProps) {
         {/* Main image */}
         <div className="relative aspect-square w-full overflow-hidden rounded-[30px] bg-white">
           <Image
-            src={getStrapiMediaUrl(selectedImage.url)}
+            src={'isCloudinary' in selectedImage && selectedImage.isCloudinary ? selectedImage.url : getStrapiMediaUrl(selectedImage.url)}
             alt={selectedImage.alternativeText || product.name}
             fill
             sizes="(max-width: 768px) 100vw, 50vw"
@@ -99,7 +113,7 @@ export function ProductDetails({ product, children }: ProductDetailsProps) {
                 )}
               >
                 <Image
-                  src={getStrapiMediaUrl(image.url)}
+                  src={'isCloudinary' in image && image.isCloudinary ? image.url : getStrapiMediaUrl(image.url)}
                   alt={image.alternativeText || `${product.name} ${index + 1}`}
                   fill
                   sizes="80px"

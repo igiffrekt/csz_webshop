@@ -40,6 +40,24 @@ export function formatDate(dateString: string): string {
 }
 
 /**
+ * Strip HTML tags from a string
+ * @param html - String containing HTML
+ * @returns Plain text without HTML tags
+ */
+export function stripHtml(html: string | undefined | null): string {
+  if (!html) return '';
+  return html
+    .replace(/<[^>]*>/g, '') // Remove HTML tags
+    .replace(/&nbsp;/g, ' ') // Replace non-breaking spaces
+    .replace(/&amp;/g, '&')  // Replace ampersands
+    .replace(/&lt;/g, '<')   // Replace less than
+    .replace(/&gt;/g, '>')   // Replace greater than
+    .replace(/&quot;/g, '"') // Replace quotes
+    .replace(/\s+/g, ' ')    // Normalize whitespace
+    .trim();
+}
+
+/**
  * Format order status in Hungarian
  * @param status - Order status string
  * @returns Object with Hungarian label and Badge variant

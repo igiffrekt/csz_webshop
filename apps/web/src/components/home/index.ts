@@ -1,6 +1,7 @@
 export { HeroSection } from './HeroSection';
 export { TrustBadges } from './TrustBadges';
 export { CategoryGrid } from './CategoryGrid';
+export { CategoryCards } from './CategoryCards';
 export { FeaturedProducts } from './FeaturedProducts';
 export { ProductCollections } from './ProductCollections';
 export { DealsSection } from './DealsSection';

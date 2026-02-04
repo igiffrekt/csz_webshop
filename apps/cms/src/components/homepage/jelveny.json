@@ -1,0 +1,25 @@
+{
+  "collectionName": "components_homepage_jelvenyek",
+  "info": {
+    "displayName": "Jelvény",
+    "description": "Egyedi bizalmi jelvény ikon és szöveggel"
+  },
+  "attributes": {
+    "cim": {
+      "type": "string",
+      "required": true
+    },
+    "leiras": {
+      "type": "string"
+    },
+    "ikon": {
+      "type": "enumeration",
+      "enum": ["szallitas", "biztonsag", "tamogatas", "garancia", "mintet", "visszakuldes"],
+      "default": "szallitas"
+    },
+    "ikonSzin": {
+      "type": "string",
+      "default": "#FFBB36"
+    }
+  }
+}

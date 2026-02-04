@@ -1,0 +1,22 @@
+{
+  "collectionName": "components_homepage_kategoriak_szekciok",
+  "info": {
+    "displayName": "Kategóriák szekció",
+    "description": "Kategória kártyák megjelenítése a főoldalon"
+  },
+  "attributes": {
+    "cim": {
+      "type": "string",
+      "default": "Kategóriák"
+    },
+    "megjelenitesLathato": {
+      "type": "boolean",
+      "default": true
+    },
+    "kiemeltKategoriak": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::category.category"
+    }
+  }
+}

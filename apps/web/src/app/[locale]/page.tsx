@@ -1,8 +1,13 @@
-import { getCategories, getFeaturedProducts, getProducts } from '@/lib/api';
+import {
+  getStrapiProducts,
+  getStrapiCategoryTree,
+  transformStrapiProduct,
+  transformStrapiCategory,
+} from '@/lib/strapi';
 import {
   HeroSection,
   TrustBadges,
-  CategoryGrid,
+  CategoryCards,
   ProductCollections,
   DealsSection,
   PromoBanners,
@@ -12,31 +17,39 @@ import {
 } from '@/components/home';
 
 export default async function HomePage() {
-  // Fetch data in parallel with error handling
-  const [categoriesResult, featuredResult, productsResult] = await Promise.allSettled([
-    getCategories(),
-    getFeaturedProducts(),
-    getProducts({ pageSize: 12 }),
+  // Fetch data from Strapi in parallel with error handling
+  const [categoryTreeResult, productsResult] = await Promise.allSettled([
+    getStrapiCategoryTree(),
+    getStrapiProducts({ pageSize: 12 }),
   ]);
 
-  // Extract data with fallbacks for failed requests
-  const categories =
-    categoriesResult.status === 'fulfilled' ? categoriesResult.value.data : [];
-  const featuredProducts =
-    featuredResult.status === 'fulfilled' ? featuredResult.value.data : [];
+  // Transform Strapi data to match existing component interfaces
+  const categoryTree =
+    categoryTreeResult.status === 'fulfilled'
+      ? categoryTreeResult.value.map(transformStrapiCategory)
+      : [];
+
+  // Categories with children for CategoryGrid
+  const categoriesWithChildren = categoryTree;
+
   const allProducts =
-    productsResult.status === 'fulfilled' ? productsResult.value.data : [];
+    productsResult.status === 'fulfilled'
+      ? productsResult.value.products.map(transformStrapiProduct)
+      : [];
+
+  // Use first 5 products as featured for hero
+  const featuredProducts = allProducts.slice(0, 5);
 
   return (
     <>
       {/* Hero Section */}
-      <HeroSection />
+      <HeroSection products={featuredProducts} categories={categoryTree} />
 
       {/* Trust Badges */}
       <TrustBadges />
 
-      {/* Category Grid */}
-      <CategoryGrid categories={categories} />
+      {/* Category Cards - Figma design */}
+      <CategoryCards categories={categoriesWithChildren} products={allProducts} />
 
       {/* Product Collections (Tabbed) */}
       <ProductCollections products={allProducts} featuredProducts={featuredProducts} />

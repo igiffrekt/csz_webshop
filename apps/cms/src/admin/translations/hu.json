@@ -1,6 +1,15 @@
 {
   "app.components.LeftMenu.navbrand.title": "CSZ Tűzvédelem",
   "app.components.LeftMenu.navbrand.workplace": "Tartalomkezelő",
+  "category-filter.plugin.name": "Kategória szűrő",
+
+  "productCount": "Termékek száma",
+  "content-manager.containers.ListPage.table.header.productCount": "Termékek száma",
+  "content-manager.listView.table.header.productCount": "Termékek száma",
+
+  "preview-button.plugin.name": "Előnézet",
+  "ckeditor.plugin.name": "CKEditor",
+  "color-picker.plugin.name": "Színválasztó",
 
   "content-manager.apiError.This attribute must be unique": "Ennek az értéknek egyedinek kell lennie",
   "content-manager.components.FiltersPickers.Picker.label": "Szűrés",
@@ -52,11 +61,25 @@
   "content-manager.listview.settings.defaultSort": "Alapértelmezett rendezés",
   "content-manager.listview.settings.pageSize": "Elemek oldalanként",
 
-  "content-manager.components.RelationInput.addRelation": "Kapcsolat hozzáadása",
+  "content-manager.components.RelationInput.addRelation": "Kategória kiválasztása",
+  "content-manager.components.RelationInput.add-relation": "Kategória kiválasztása",
+  "content-manager.relation.add": "Kategória kiválasztása",
+  "content-manager.relation.notFound": "Nincs találat",
+  "content-manager.relation.create": "Új létrehozása",
+  "No relations available": "Nincs elérhető kapcsolat",
+  "Create a relation": "Új létrehozása",
   "content-manager.components.RelationInput.removeRelation": "Kapcsolat eltávolítása",
   "content-manager.components.RelationInput.loadMore": "Továbbiak betöltése",
   "content-manager.components.RelationInput.searchPlaceholder": "Keresés...",
   "content-manager.components.RelationInput.noRelations": "Nincs kapcsolat",
+  "Add relation": "Kategória kiválasztása",
+  "Add {target}": "{target} kiválasztása",
+  "content-manager.components.RelationInputDataManager.label-add-relation": "{target} kiválasztása",
+  "content-manager.relation.publicationState.published": "Közzétett",
+  "content-manager.relation.publicationState.draft": "Vázlat",
+  "content-manager.components.RelationInput.placeholder": "Kategória kiválasztása",
+  "content-manager.RelationInputDataManager.add-relation": "Kategória kiválasztása",
+  "content-manager.containers.EditViewDataManagerProvider.add-relation": "Kategória kiválasztása",
 
   "content-manager.components.MediaAssets.title": "Média",
   "content-manager.components.MediaAssets.addAssets": "Média hozzáadása",
@@ -201,10 +224,15 @@
   "content-manager.actions.delete": "Törlés",
   "content-manager.actions.duplicate": "Másolás",
 
-  "content-manager.relation.add": "Kapcsolat hozzáadása",
+  "content-manager.relation.add": "Kiválasztás",
   "content-manager.relation.disconnect": "Kapcsolat megszüntetése",
   "content-manager.relation.loadMore": "Továbbiak betöltése",
   "content-manager.relation.notFound": "Nem található",
+
+  "content-manager.components.RelationInput.label": "{target} kiválasztása",
+  "content-manager.components.RelationInputDataManager.connect-relation": "{target} kiválasztása",
+  "Kapcsolat hozzáadása": "Kategória kiválasztása",
+  "relation.add": "Kiválasztás",
 
   "content-type-builder.plugin.name": "Tartalom típus készítő",
 
@@ -477,5 +505,45 @@
   "Publish": "Közzététel",
   "Unpublish": "Visszavonás",
   "Draft": "Vázlat",
-  "Published": "Közzétéve"
+  "Published": "Közzétéve",
+
+  "type": "Típus",
+  "url": "Webcím (URL)",
+  "openInNewTab": "Megnyitás új ablakban",
+  "icon": "Ikon",
+  "menu-item": "Menüpont",
+  "menu-items": "Menüpontok",
+
+  "Menüpont": "Menüpont",
+  "Menüpontok": "Menüpontok",
+
+  "content-manager.collectionType.api::menu-item.menu-item": "Menüpont",
+  "content-manager.containers.Edit.pluginHeader.title.new": "Menü",
+  "content-manager.containers.Edit.header.title": "Menü",
+  "Create an entry": "Menü",
+
+  "api::menu-item.menu-item.cim": "Cím",
+  "api::menu-item.menu-item.tipus": "Típus",
+  "api::menu-item.menu-item.url": "URL",
+  "api::menu-item.menu-item.kategoria": "Kategória",
+  "api::menu-item.menu-item.parent": "Parent",
+  "api::menu-item.menu-item.children": "Children",
+  "api::menu-item.menu-item.sorrend": "Sorrend",
+  "api::menu-item.menu-item.nyitasUjTabon": "Megnyitás új ablakban",
+  "api::menu-item.menu-item.ikon": "Ikon",
+
+  "cim": "Cím",
+  "tipus": "Típus",
+  "kategoria": "Kategória",
+  "sorrend": "Sorrend",
+  "nyitasUjTabon": "Megnyitás új ablakban",
+
+  "content-manager.form.Input.label.cim": "Cím",
+  "content-manager.form.Input.label.tipus": "Típus",
+  "content-manager.form.Input.label.kategoria": "Kategória",
+  "content-manager.form.Input.label.parent": "Parent",
+  "content-manager.form.Input.label.children": "Children",
+  "content-manager.form.Input.label.sorrend": "Sorrend",
+  "content-manager.form.Input.label.nyitasUjTabon": "Megnyitás új ablakban",
+  "content-manager.form.Input.label.ikon": "Ikon"
 }

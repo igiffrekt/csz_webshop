@@ -1,6 +1,6 @@
 "use client";
 
-import { useQueryState, parseAsString, parseAsArrayOf } from "nuqs";
+import { useQueryState, parseAsString } from "nuqs";
 import {
   Select,
   SelectContent,
@@ -8,22 +8,29 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
 import { useTranslations } from "next-intl";
-import type { Category } from "@csz/types";
+import { cn } from "@/lib/utils";
+
+interface Category {
+  name: string;
+  slug: string;
+  id?: number;
+}
 
 interface ProductFiltersProps {
   categories: Category[];
+  className?: string;
 }
 
-// Fire class options for fire safety equipment
-const FIRE_CLASSES = ["A", "B", "C"] as const;
+// Sort options matching Strapi format
+const SORT_OPTIONS = [
+  { value: "createdAt:desc", label: "Legújabb" },
+  { value: "basePrice:asc", label: "Ár szerint növekvő" },
+  { value: "basePrice:desc", label: "Ár szerint csökkenő" },
+  { value: "name:asc", label: "Név szerint" },
+] as const;
 
-// Common certifications for fire safety equipment
-const CERTIFICATIONS = ["CE", "EN3"] as const;
-
-export function ProductFilters({ categories }: ProductFiltersProps) {
+export function ProductFilters({ categories, className }: ProductFiltersProps) {
   const t = useTranslations("products");
 
   // Category filter
@@ -34,90 +41,50 @@ export function ProductFilters({ categories }: ProductFiltersProps) {
     })
   );
 
-  // Fire class filter (single select dropdown)
-  const [fireClass, setFireClass] = useQueryState(
-    "fireClass",
+  // Sort filter - use 'sort' to match page.tsx
+  const [sort, setSort] = useQueryState(
+    "sort",
     parseAsString.withOptions({
       shallow: false,
     })
   );
 
-  // Certification filter (multi-select checkboxes)
-  const [certifications, setCertifications] = useQueryState(
-    "cert",
-    parseAsArrayOf(parseAsString, ",").withOptions({
-      shallow: false,
-    })
-  );
-
-  const handleCertificationChange = (cert: string, checked: boolean) => {
-    const current = certifications ?? [];
-    if (checked) {
-      setCertifications([...current, cert]);
-    } else {
-      const updated = current.filter((c) => c !== cert);
-      setCertifications(updated.length > 0 ? updated : null);
-    }
-  };
-
   return (
-    <div className="flex flex-wrap gap-4 items-start">
+    <div className={cn("flex flex-wrap gap-3 items-center", className)}>
       {/* Category dropdown */}
       <Select
         value={category ?? "all"}
         onValueChange={(v) => setCategory(v === "all" ? null : v)}
       >
-        <SelectTrigger className="w-[200px]">
+        <SelectTrigger className="w-auto min-w-[180px] border-gray-200 rounded-full bg-white">
           <SelectValue placeholder={t("allCategories")} />
         </SelectTrigger>
         <SelectContent>
           <SelectItem value="all">{t("allCategories")}</SelectItem>
           {categories.map((cat) => (
-            <SelectItem key={cat.documentId} value={cat.slug}>
+            <SelectItem key={cat.slug} value={cat.slug}>
               {cat.name}
             </SelectItem>
           ))}
         </SelectContent>
       </Select>
 
-      {/* Fire class dropdown */}
+      {/* Sort dropdown */}
       <Select
-        value={fireClass ?? "all"}
-        onValueChange={(v) => setFireClass(v === "all" ? null : v)}
+        value={sort ?? "createdAt:desc"}
+        onValueChange={(v) => setSort(v === "createdAt:desc" ? null : v)}
       >
-        <SelectTrigger className="w-[180px]">
-          <SelectValue placeholder={t("allFireClasses")} />
+        <SelectTrigger className="w-auto min-w-[160px] border-gray-200 rounded-full bg-white">
+          <SelectValue placeholder="Rendezés" />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="all">{t("allFireClasses")}</SelectItem>
-          {FIRE_CLASSES.map((fc) => (
-            <SelectItem key={fc} value={fc}>
-              {t("fireClass")} {fc}
+          {SORT_OPTIONS.map((option) => (
+            <SelectItem key={option.value} value={option.value}>
+              {option.label}
             </SelectItem>
           ))}
         </SelectContent>
       </Select>
-
-      {/* Certification checkboxes */}
-      <div className="flex flex-col gap-2">
-        <span className="text-sm font-medium">{t("certifications")}</span>
-        <div className="flex gap-4">
-          {CERTIFICATIONS.map((cert) => (
-            <div key={cert} className="flex items-center space-x-2">
-              <Checkbox
-                id={`cert-${cert}`}
-                checked={(certifications ?? []).includes(cert)}
-                onCheckedChange={(checked) =>
-                  handleCertificationChange(cert, checked === true)
-                }
-              />
-              <Label htmlFor={`cert-${cert}`} className="text-sm cursor-pointer">
-                {cert}
-              </Label>
-            </div>
-          ))}
-        </div>
-      </div>
     </div>
   );
 }

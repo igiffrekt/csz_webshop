@@ -30,12 +30,10 @@ import { cn } from '@/lib/utils';
 import type { Category, StrapiListResponse } from '@csz/types';
 
 const mainLinks = [
-  { href: '/', labelKey: 'home', icon: Home },
-  { href: '/termekek', labelKey: 'products', icon: Grid3X3 },
-  { href: '/termekek?onSale=true', label: 'Akciók', icon: Tag },
-  { href: '/ajanlatkeres', label: 'Árajánlat', icon: FileText },
-  { href: '/kapcsolat', labelKey: 'contact', icon: Phone },
-  { href: '/gyik', labelKey: 'faq', icon: HelpCircle },
+  { href: '/', label: 'Címlap', icon: Home },
+  { href: '/termekek', label: 'Termékek', icon: Grid3X3 },
+  { href: '/rolunk', label: 'Rólunk', icon: FileText },
+  { href: '/kapcsolat', label: 'Kapcsolat', icon: Phone },
 ] as const;
 
 export function MobileNav() {
@@ -95,7 +93,7 @@ export function MobileNav() {
                   >
                     <Icon className="h-5 w-5 text-secondary-500" />
                     <span className="font-medium">
-                      {'labelKey' in link ? t(link.labelKey) : link.label}
+                      {link.label}
                     </span>
                   </Link>
                 </SheetClose>

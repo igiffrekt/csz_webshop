@@ -1,5 +1,10 @@
+'use client';
+
+import { useMemo } from 'react';
 import Image from 'next/image';
 import { Link } from '@/i18n/navigation';
+import type { Product } from '@csz/types';
+import { getStrapiMediaUrl } from '@/lib/formatters';
 
 interface CategoryChild {
   name: string;
@@ -14,7 +19,7 @@ interface CategoryCardData {
   productCount: number;
   image?: string | null;
   children?: CategoryChild[];
-  size: 'big' | 'small';
+  peekDirection: 'right' | 'bottom';
 }
 
 interface CategoryCardsProps {
@@ -26,32 +31,61 @@ interface CategoryCardsProps {
     image?: { url: string } | null;
     children?: { name: string; slug: string; count?: number }[];
   }[];
+  products?: Product[];
 }
 
-// Category layout config from Figma - defines order and sizes
-const categoryLayout: {
-  slugs: string[]; // possible slugs to match
-  size: 'big' | 'small';
-}[] = [
-  { slugs: ['tuzcsapszekrenyek', 'tuzcsap-szekrenyek'], size: 'big' },
-  { slugs: ['tuzolto-szerelvenyek'], size: 'small' },
-  { slugs: ['tuzcsapok'], size: 'small' },
-  { slugs: ['tuzolto-keszulekek'], size: 'small' },
-  { slugs: ['passziv-tuzvedelme', 'passziv-tuzvedelmi-termekek'], size: 'small' },
-  { slugs: ['tomlok', 'tomlo', 'tuztomlo', 'tuz-tomlo', 'tuzolto-tomlo'], size: 'big' },
+// Category layout config - defines which categories to show
+const categoryConfig: string[][] = [
+  ['tuzcsapszekrenyek', 'tuzcsap-szekrenyek'],
+  ['tuzolto-szerelvenyek'],
+  ['tuzcsapok'],
+  ['tuzolto-keszulekek'],
+  ['tomlok', 'tomlo', 'tuztomlo', 'tuz-tomlo', 'tuzolto-tomlo'],
+  ['passziv-tuzvedelme', 'passziv-tuzvedelmi-termekek'],
 ];
 
-export function CategoryCards({ categories }: CategoryCardsProps) {
+// Helper to find a product image for a category
+function findProductImageForCategory(
+  categorySlug: string,
+  products: Product[]
+): string | null {
+  const product = products.find((p) =>
+    p.categories?.some((cat) => cat.slug === categorySlug || cat.slug.includes(categorySlug) || categorySlug.includes(cat.slug))
+  );
+
+  if (!product) return null;
+
+  if (product.cloudinaryImageUrl) {
+    return product.cloudinaryImageUrl;
+  }
+
+  if (product.images?.[0]?.url) {
+    return getStrapiMediaUrl(product.images[0].url);
+  }
+
+  return null;
+}
+
+// Seeded random for consistent peek directions
+function seededRandom(seed: string): number {
+  let hash = 0;
+  for (let i = 0; i < seed.length; i++) {
+    const char = seed.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash = hash & hash;
+  }
+  return Math.abs(hash) % 2;
+}
+
+export function CategoryCards({ categories, products = [] }: CategoryCardsProps) {
   // Collect all categories/subcategories with "tömlő" in their name for the Tömlők card
   const tomloChildren: CategoryChild[] = [];
   let tomloProductCount = 0;
   let tomloImage: string | null = null;
 
   categories.forEach((cat) => {
-    // Skip categories with null name or slug
     if (!cat.name || !cat.slug) return;
 
-    // Check main category
     if (cat.name.toLowerCase().includes('tömlő') || cat.slug.includes('tomlo')) {
       tomloChildren.push({
         name: cat.name,
@@ -61,7 +95,7 @@ export function CategoryCards({ categories }: CategoryCardsProps) {
       tomloProductCount += cat.count || 0;
       if (!tomloImage && cat.image?.url) tomloImage = cat.image.url;
     }
-    // Check children
+
     cat.children?.forEach((child) => {
       if (!child.name || !child.slug) return;
       if (child.name.toLowerCase().includes('tömlő') || child.slug.includes('tomlo')) {
@@ -75,79 +109,112 @@ export function CategoryCards({ categories }: CategoryCardsProps) {
     });
   });
 
-  // Map layout config to categories from API
-  const displayCategories = categoryLayout
-    .map((layout): CategoryCardData | null => {
-      // Special handling for Tömlők - use collected subcategories
-      if (layout.slugs.includes('tomlok')) {
-        if (tomloChildren.length === 0) return null;
+  // Map config to categories from API
+  const displayCategories = useMemo(() => {
+    return categoryConfig
+      .map((slugs, index): CategoryCardData | null => {
+        // Determine peek direction based on index for consistent but varied layout
+        const peekDirection = index % 2 === 0 ? 'right' : 'bottom';
+
+        // Special handling for Tömlők
+        if (slugs.includes('tomlok')) {
+          if (tomloChildren.length === 0) return null;
+
+          let image = tomloImage;
+          if (!image) {
+            for (const child of tomloChildren) {
+              const productImage = findProductImageForCategory(child.slug, products);
+              if (productImage) {
+                image = productImage;
+                break;
+              }
+            }
+          }
+
+          return {
+            id: 'tomlok',
+            name: 'Tömlők',
+            slug: 'tomlok',
+            productCount: tomloProductCount,
+            image,
+            children: tomloChildren.slice(0, 10),
+            peekDirection,
+          };
+        }
+
+        const matchedCat = categories.find((cat) =>
+          cat.slug && slugs.some((slug) => cat.slug.includes(slug) || slug.includes(cat.slug))
+        );
+
+        if (!matchedCat) return null;
+
+        const children = matchedCat.children?.map(child => ({
+          name: child.name,
+          slug: child.slug,
+          count: child.count || 0,
+        })) || [];
+
+        const totalProductCount = (matchedCat.count || 0) +
+          children.reduce((sum, child) => sum + (child.count || 0), 0);
+
+        let image = matchedCat.image?.url || null;
+        if (!image) {
+          image = findProductImageForCategory(matchedCat.slug, products);
+          if (!image && children.length > 0) {
+            for (const child of children) {
+              const productImage = findProductImageForCategory(child.slug, products);
+              if (productImage) {
+                image = productImage;
+                break;
+              }
+            }
+          }
+        }
+
         return {
-          id: 'tomlok',
-          name: 'Tömlők',
-          slug: 'tomlok',
-          productCount: tomloProductCount,
-          image: tomloImage,
-          children: tomloChildren.slice(0, 10),
-          size: layout.size,
+          id: matchedCat.documentId || matchedCat.slug,
+          name: matchedCat.name,
+          slug: matchedCat.slug,
+          productCount: totalProductCount,
+          image,
+          children: children.slice(0, 10),
+          peekDirection,
         };
-      }
+      })
+      .filter((cat): cat is CategoryCardData => cat !== null);
+  }, [categories, products, tomloChildren, tomloProductCount, tomloImage]);
 
-      // Find matching category
-      const matchedCat = categories.find((cat) =>
-        cat.slug && layout.slugs.some((slug) => cat.slug.includes(slug) || slug.includes(cat.slug))
-      );
-
-      if (!matchedCat) return null;
-
-      // Get children with counts
-      const children = matchedCat.children?.map(child => ({
-        name: child.name,
-        slug: child.slug,
-        count: child.count || 0,
-      })) || [];
-
-      // Calculate total product count (parent + all children)
-      const totalProductCount = (matchedCat.count || 0) +
-        children.reduce((sum, child) => sum + (child.count || 0), 0);
-
-      return {
-        id: matchedCat.documentId || matchedCat.slug,
-        name: matchedCat.name,
-        slug: matchedCat.slug,
-        productCount: totalProductCount,
-        image: matchedCat.image?.url || null,
-        children: children.slice(0, 10),
-        size: layout.size,
-      };
-    })
-    .filter((cat): cat is CategoryCardData => cat !== null);
-
-  // Organize into grid layout:
-  // Row 1-2: Big card left (spans 2 rows), 2 small cards right (stacked)
-  // Row 3-4: 2 small cards left (stacked), Big card right (spans 2 rows)
-  const bigCards = displayCategories.filter(c => c.size === 'big');
-  const smallCards = displayCategories.filter(c => c.size === 'small');
+  // Organize into masonry columns
+  const leftColumn = displayCategories.filter((_, i) => [0, 3, 5].includes(i));
+  const rightColumn = displayCategories.filter((_, i) => [1, 2, 4].includes(i));
 
   return (
-    <section className="py-12 lg:py-16 bg-white">
+    <section className="py-12 lg:py-20 bg-white">
       <div className="site-container">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Row 1-2: Big card left + 2 small cards right */}
-          <div className="flex flex-col">
-            {bigCards[0] && <BigCard category={bigCards[0]} />}
-          </div>
-          <div className="flex flex-col gap-6">
-            {smallCards[0] && <SmallCard category={smallCards[0]} />}
-            {smallCards[1] && <SmallCard category={smallCards[1]} />}
+        {/* Section header */}
+        <div className="text-center mb-10 lg:mb-14">
+          <span className="text-gray-500 text-sm uppercase tracking-wider">
+            Kategóriák
+          </span>
+          <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mt-2">
+            Termékkategóriák
+          </h2>
+        </div>
+
+        {/* Masonry Grid - 2 columns */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 lg:gap-6">
+          {/* Left Column */}
+          <div className="flex flex-col gap-5 lg:gap-6">
+            {leftColumn.map((category) => (
+              <MasonryCard key={category.id} category={category} />
+            ))}
           </div>
 
-          {/* Row 3-4: 2 small cards left + Big card right */}
-          <div className="flex flex-col gap-6">
-            {smallCards[2] && <SmallCard category={smallCards[2]} />}
-            {smallCards[3] && <SmallCard category={smallCards[3]} />}
-          </div>
-          <div className="flex flex-col">
-            {bigCards[1] && <BigCard category={bigCards[1]} />}
+          {/* Right Column */}
+          <div className="flex flex-col gap-5 lg:gap-6">
+            {rightColumn.map((category) => (
+              <MasonryCard key={category.id} category={category} />
+            ))}
           </div>
         </div>
       </div>
@@ -155,131 +222,108 @@ export function CategoryCards({ categories }: CategoryCardsProps) {
   );
 }
 
-function BigCard({ category }: { category: CategoryCardData }) {
+function MasonryCard({ category }: { category: CategoryCardData }) {
+  const hasChildren = category.children && category.children.length > 0;
+  const isBottomPeek = category.peekDirection === 'bottom';
+
   return (
-    <div className="group bg-[#f6f6f6] rounded-[20px] p-6 lg:p-8 flex items-start h-full overflow-hidden hover:shadow-lg transition-shadow">
-      <div className="flex items-center w-full h-full">
-        {/* Left content */}
-        <div className="flex flex-col gap-4 flex-shrink-0 w-[55%] lg:w-[50%]">
-          {/* Product count badge */}
-          <div className="bg-white rounded-full px-4 py-2.5 w-fit">
-            <span className="text-lg lg:text-xl">
-              <span className="font-medium text-[#FFBB36]">{category.productCount}+</span>
-              <span className="text-black"> Termék</span>
-            </span>
-          </div>
-
-          {/* Category title */}
-          <Link href={`/kategoriak/${category.slug}`}>
-            <h3 className="text-[34px] font-medium text-black leading-[1.15] hover:text-[#FFBB36] transition-colors">
-              {category.name}
-            </h3>
-          </Link>
-
-          {/* Subcategory list */}
-          <div className="flex flex-col gap-2 lg:gap-3">
-            {category.children && category.children.length > 0 ? (
-              category.children.slice(0, 10).map((child, idx) => (
-                <Link
-                  key={idx}
-                  href={`/kategoriak/${child.slug}`}
-                  className="text-base lg:text-xl text-black/60 hover:text-[#FFBB36] transition-colors"
-                >
-                  {child.name}
-                </Link>
-              ))
-            ) : (
-              // Placeholder items if no children
-              Array.from({ length: 6 }).map((_, idx) => (
-                <span key={idx} className="text-base lg:text-xl text-black/60">
-                  Alkategória {idx + 1}
+    <div className="group relative">
+      {/* Card container - allows image overflow */}
+      <div className="relative bg-[#f8f8f8] rounded-[24px] overflow-visible">
+        {/* Inner container with hover effects */}
+        <div className="relative rounded-[24px] overflow-hidden hover:shadow-xl transition-all duration-300">
+          <div className={`flex ${isBottomPeek ? 'flex-col' : ''}`}>
+            {/* Content section */}
+            <div className={`flex flex-col p-6 lg:p-8 relative z-10 ${isBottomPeek ? 'w-full' : 'w-[55%] lg:w-[50%]'}`}>
+              {/* Product count badge */}
+              <div className="inline-flex items-center gap-1.5 bg-white rounded-full px-4 py-2 w-fit shadow-sm mb-4">
+                <span className="text-[#FFBB36] font-semibold text-base lg:text-lg">
+                  {category.productCount}+
                 </span>
-              ))
+                <span className="text-gray-700 text-base lg:text-lg">Termék</span>
+              </div>
+
+              {/* Category title */}
+              <Link href={`/kategoriak/${category.slug}`}>
+                <h3 className="text-2xl lg:text-[32px] font-bold text-gray-900 leading-tight mb-4 hover:text-[#FFBB36] transition-colors">
+                  {category.name}
+                </h3>
+              </Link>
+
+              {/* Subcategory list - only show if there are children */}
+              {hasChildren && (
+                <div className="flex flex-col gap-2 pb-2">
+                  {category.children!.map((child, idx) => (
+                    <Link
+                      key={idx}
+                      href={`/kategoriak/${child.slug}`}
+                      className="text-sm lg:text-base text-gray-500 hover:text-[#FFBB36] transition-colors leading-relaxed"
+                    >
+                      {child.name}
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Image section - PEEK EFFECT */}
+            {isBottomPeek ? (
+              /* Bottom peek - image at bottom, overflows downward */
+              <Link
+                href={`/kategoriak/${category.slug}`}
+                className="relative w-full h-[200px] lg:h-[280px] flex items-center justify-center"
+              >
+                {category.image ? (
+                  <div className="absolute inset-0 overflow-visible">
+                    <div className="relative w-full h-[150%] -translate-y-[10%]">
+                      <Image
+                        src={category.image}
+                        alt={category.name}
+                        fill
+                        className="object-contain object-center transition-transform duration-500 group-hover:scale-110 drop-shadow-xl"
+                        sizes="(max-width: 1024px) 80vw, 40vw"
+                      />
+                    </div>
+                  </div>
+                ) : (
+                  <div className="absolute inset-0 flex items-center justify-center opacity-10">
+                    <span className="text-[140px]">🧯</span>
+                  </div>
+                )}
+              </Link>
+            ) : (
+              /* Right peek - image on right side, overflows rightward */
+              <Link
+                href={`/kategoriak/${category.slug}`}
+                className="absolute right-0 top-0 bottom-0 w-[50%] lg:w-[55%] overflow-visible"
+              >
+                {category.image ? (
+                  <div className="absolute inset-0 overflow-visible">
+                    {/* Image container extends beyond card boundary */}
+                    <div className="relative w-[130%] h-full min-h-[280px]">
+                      <Image
+                        src={category.image}
+                        alt={category.name}
+                        fill
+                        className="object-contain object-right transition-transform duration-500 group-hover:scale-110 drop-shadow-xl"
+                        sizes="(max-width: 1024px) 50vw, 30vw"
+                      />
+                    </div>
+                  </div>
+                ) : (
+                  <div className="absolute inset-0 flex items-center justify-center opacity-10">
+                    <span className="text-[140px]">🧯</span>
+                  </div>
+                )}
+              </Link>
             )}
           </div>
-        </div>
 
-        {/* Right image */}
-        <Link href={`/kategoriak/${category.slug}`} className="relative flex-1 h-full min-h-[300px]">
-          {category.image ? (
-            <Image
-              src={category.image}
-              alt={category.name}
-              fill
-              className="object-contain object-right transition-transform duration-500 group-hover:scale-105"
-              sizes="(max-width: 1024px) 45vw, 25vw"
-            />
-          ) : (
-            <div className="w-full h-full flex items-center justify-center">
-              <span className="text-8xl opacity-30">🧯</span>
-            </div>
+          {/* Gradient overlay for text readability */}
+          {!isBottomPeek && (
+            <div className="absolute inset-y-0 left-0 w-[60%] bg-gradient-to-r from-[#f8f8f8] via-[#f8f8f8]/70 to-transparent pointer-events-none z-[5]" />
           )}
-        </Link>
-      </div>
-    </div>
-  );
-}
-
-function SmallCard({ category }: { category: CategoryCardData }) {
-  return (
-    <div className="group bg-[#f6f6f6] rounded-[20px] p-6 lg:p-8 flex items-start overflow-hidden hover:shadow-lg transition-shadow">
-      <div className="flex items-center w-full">
-        {/* Left content */}
-        <div className="flex flex-col gap-4 flex-shrink-0 w-[55%] lg:w-[50%]">
-          {/* Product count badge */}
-          <div className="bg-white rounded-full px-4 py-2.5 w-fit">
-            <span className="text-lg lg:text-xl">
-              <span className="font-medium text-[#FFBB36]">{category.productCount}+</span>
-              <span className="text-black"> Termék</span>
-            </span>
-          </div>
-
-          {/* Category title */}
-          <Link href={`/kategoriak/${category.slug}`}>
-            <h3 className="text-[34px] font-medium text-black leading-[1.15] hover:text-[#FFBB36] transition-colors">
-              {category.name}
-            </h3>
-          </Link>
-
-          {/* Subcategory list */}
-          <div className="flex flex-col gap-2 lg:gap-3">
-            {category.children && category.children.length > 0 ? (
-              category.children.slice(0, 4).map((child, idx) => (
-                <Link
-                  key={idx}
-                  href={`/kategoriak/${child.slug}`}
-                  className="text-base lg:text-xl text-black/60 hover:text-[#FFBB36] transition-colors"
-                >
-                  {child.name}
-                </Link>
-              ))
-            ) : (
-              // Placeholder items if no children
-              Array.from({ length: 4 }).map((_, idx) => (
-                <span key={idx} className="text-base lg:text-xl text-black/60">
-                  Alkategória {idx + 1}
-                </span>
-              ))
-            )}
-          </div>
         </div>
-
-        {/* Right image */}
-        <Link href={`/kategoriak/${category.slug}`} className="relative flex-1 h-[180px] lg:h-[240px]">
-          {category.image ? (
-            <Image
-              src={category.image}
-              alt={category.name}
-              fill
-              className="object-contain object-right transition-transform duration-500 group-hover:scale-105"
-              sizes="(max-width: 1024px) 45vw, 25vw"
-            />
-          ) : (
-            <div className="w-full h-full flex items-center justify-center">
-              <span className="text-6xl opacity-30">🧯</span>
-            </div>
-          )}
-        </Link>
       </div>
     </div>
   );

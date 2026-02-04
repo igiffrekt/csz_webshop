@@ -2,11 +2,27 @@ import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import { ArrowRight } from 'lucide-react';
-import type { Category } from '@csz/types';
-import { getStrapiMediaUrl } from '@/lib/formatters';
+
+interface CategoryChild {
+  documentId?: string;
+  name: string;
+  slug: string;
+  count?: number;
+}
+
+interface CategoryItem {
+  documentId?: string;
+  name: string;
+  slug: string;
+  description?: string | null;
+  image?: { url: string } | null;
+  count?: number;
+  children?: CategoryChild[];
+  parent?: unknown;
+}
 
 interface CategoryGridProps {
-  categories: Category[];
+  categories: CategoryItem[];
 }
 
 export function CategoryGrid({ categories }: CategoryGridProps) {
@@ -22,7 +38,7 @@ export function CategoryGrid({ categories }: CategoryGridProps) {
 
   return (
     <section className="py-16 lg:py-20 bg-white">
-      <div className="container mx-auto px-4">
+      <div className="site-container">
         {/* Category grid - 2 columns on large, 1 on small */}
         <div className="grid md:grid-cols-2 gap-6">
           {displayCategories.map((category, index) => (
@@ -39,22 +55,19 @@ export function CategoryGrid({ categories }: CategoryGridProps) {
 }
 
 interface CategoryCardProps {
-  category: Category;
+  category: CategoryItem;
   imagePosition?: 'left' | 'right';
 }
 
 function CategoryCard({ category, imagePosition = 'left' }: CategoryCardProps) {
-  const imageUrl = category.image
-    ? getStrapiMediaUrl(category.image.url)
-    : null;
-  const imageAlt = category.image?.alternativeText || category.name;
+  const imageUrl = category.image?.url || null;
+  const imageAlt = category.name;
 
-  // Subcategories - either from API or fallback
   const subcategories = category.children && category.children.length > 0
     ? category.children.slice(0, 6)
     : getDefaultSubcategories(category.slug);
 
-  const productCount = Math.floor(Math.random() * 500) + 100; // Simulated count
+  const productCount = category.count || 0;
 
   return (
     <div className="group bg-gray-50 rounded-2xl overflow-hidden hover:shadow-lg transition-shadow duration-300">
@@ -81,9 +94,11 @@ function CategoryCard({ category, imagePosition = 'left' }: CategoryCardProps) {
         {/* Content section */}
         <div className="flex-1 p-6 sm:p-8 flex flex-col justify-center">
           {/* Item count badge */}
-          <span className="inline-flex items-center px-3 py-1 bg-amber-400 text-gray-900 text-xs font-semibold rounded-full w-fit mb-3">
-            {productCount}+ termék
-          </span>
+          {productCount > 0 && (
+            <span className="inline-flex items-center px-3 py-1 bg-amber-400 text-gray-900 text-xs font-semibold rounded-full w-fit mb-3">
+              {productCount} termék
+            </span>
+          )}
 
           {/* Category name */}
           <Link href={`/kategoriak/${category.slug}`}>
@@ -153,11 +168,11 @@ function getDefaultSubcategories(slug: string): string[] {
 }
 
 // Default categories if none from API
-const defaultCategories = [
-  { documentId: '1', name: 'Tűzoltó készülékek', slug: 'tuzolto-keszulekek', children: [] },
-  { documentId: '2', name: 'Tűzjelző rendszerek', slug: 'tuzjelzo-rendszerek', children: [] },
-  { documentId: '3', name: 'Poroltó készülékek', slug: 'porolto', children: [] },
-  { documentId: '4', name: 'CO2 oltók', slug: 'co2-olto', children: [] },
-  { documentId: '5', name: 'Védőfelszerelések', slug: 'vedofelszerelesek', children: [] },
-  { documentId: '6', name: 'Kiegészítők', slug: 'kiegeszitok', children: [] },
-] as unknown as Category[];
+const defaultCategories: CategoryItem[] = [
+  { documentId: '1', name: 'Tűzoltó készülékek', slug: 'tuzolto-keszulekek', children: [], count: 0 },
+  { documentId: '2', name: 'Tűzjelző rendszerek', slug: 'tuzjelzo-rendszerek', children: [], count: 0 },
+  { documentId: '3', name: 'Poroltó készülékek', slug: 'porolto', children: [], count: 0 },
+  { documentId: '4', name: 'CO2 oltók', slug: 'co2-olto', children: [], count: 0 },
+  { documentId: '5', name: 'Védőfelszerelések', slug: 'vedofelszerelesek', children: [], count: 0 },
+  { documentId: '6', name: 'Kiegészítők', slug: 'kiegeszitok', children: [], count: 0 },
+];

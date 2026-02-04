@@ -41,7 +41,7 @@ export function FAQSection() {
 
   return (
     <section className="py-16 lg:py-20 bg-white">
-      <div className="container mx-auto px-4">
+      <div className="site-container">
         <div className="max-w-3xl mx-auto">
           {/* Section header */}
           <div className="text-center mb-10">

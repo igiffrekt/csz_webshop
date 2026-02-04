@@ -1,4 +1,39 @@
 export default ({ env }) => ({
+  // Preview button for content preview
+  'preview-button': {
+    enabled: true,
+    config: {
+      contentTypes: [
+        {
+          uid: 'api::product.product',
+          draft: {
+            url: env('FRONTEND_URL', 'http://localhost:3000') + '/hu/termekek/{slug}?preview=true',
+          },
+          published: {
+            url: env('FRONTEND_URL', 'http://localhost:3000') + '/hu/termekek/{slug}',
+          },
+        },
+        {
+          uid: 'api::category.category',
+          draft: {
+            url: env('FRONTEND_URL', 'http://localhost:3000') + '/hu/kategoriak/{slug}?preview=true',
+          },
+          published: {
+            url: env('FRONTEND_URL', 'http://localhost:3000') + '/hu/kategoriak/{slug}',
+          },
+        },
+        {
+          uid: 'api::page.page',
+          draft: {
+            url: env('FRONTEND_URL', 'http://localhost:3000') + '/hu/{slug}?preview=true',
+          },
+          published: {
+            url: env('FRONTEND_URL', 'http://localhost:3000') + '/hu/{slug}',
+          },
+        },
+      ],
+    },
+  },
   upload: {
     config: {
       provider: 'local',

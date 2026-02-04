@@ -1,15 +1,12 @@
-import { Suspense } from 'react';
-import { User, Heart, Truck } from 'lucide-react';
+import Image from 'next/image';
 import { getTranslations } from 'next-intl/server';
 import { Link } from '@/i18n/navigation';
-import { Button } from '@/components/ui/button';
-import { TopBar } from './TopBar';
-import { MegaMenu } from './MegaMenu';
 import { SearchBar } from './SearchBar';
 import { Logo } from './Logo';
 import { HeaderCart } from './HeaderCart';
 import { UserMenu } from './UserMenu';
 import { MobileNav } from './MobileNav';
+import { MegaMenu } from './MegaMenu';
 import { verifySession } from '@/lib/auth/dal';
 
 export async function Header() {
@@ -17,107 +14,64 @@ export async function Header() {
   const { isAuth, session } = await verifySession();
 
   return (
-    <header className="sticky top-0 z-50 bg-white shadow-sm">
-      {/* Top bar with contact and utility links */}
-      <TopBar />
+    <header className="sticky top-0 z-50 bg-white">
+      {/* Main header - matching Figma design */}
+      <div className="site-container">
+        <div className="flex items-center h-[92px]">
+          {/* Logo */}
+          <Link href="/" className="flex-shrink-0">
+            <Logo />
+          </Link>
 
-      {/* Main header */}
-      <div className="border-b">
-        <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between h-16 gap-4 lg:gap-8">
-            {/* Logo */}
-            <Link href="/" className="flex-shrink-0">
-              <Logo />
+          {/* Spacer to align hamburger with vertical nav left edge (340px nav - 90px logo) */}
+          <div className="hidden lg:block w-[250px] flex-shrink-0" />
+
+          {/* Center section: Menu + Search */}
+          <div className="hidden lg:flex items-center gap-6 flex-1">
+            {/* Hamburger menu / Categories */}
+            <MegaMenu variant="icon" />
+
+            {/* Search bar - dynamic width with right margin for spacing from icons */}
+            <SearchBar variant="hero" className="flex-1 mr-[50px]" />
+          </div>
+
+          {/* Right section: Store icons - small gaps between them */}
+          <div className="flex items-center gap-6">
+            {/* Wishlist */}
+            <Link
+              href="/kedvencek"
+              className="hidden md:flex items-center justify-center hover:opacity-70 transition-opacity"
+              title="Kedvencek"
+            >
+              <Image src="/icons/shop-favorite-icon.svg" alt="Kedvencek" width={24} height={24} />
             </Link>
 
-            {/* Search - desktop only */}
-            <div className="hidden lg:flex flex-1 justify-center max-w-2xl">
-              <SearchBar />
-            </div>
-
-            {/* Actions */}
-            <div className="flex items-center gap-2 lg:gap-4">
-              {/* Wishlist - desktop only */}
+            {/* User */}
+            {isAuth && session ? (
+              <UserMenu username={session.username} email={session.email} />
+            ) : (
               <Link
-                href="/kedvencek"
-                className="hidden md:flex items-center justify-center w-10 h-10 rounded-full hover:bg-secondary-100 transition-colors"
-                title="Kedvencek"
+                href="/auth/bejelentkezes"
+                className="hidden md:flex items-center justify-center hover:opacity-70 transition-opacity"
+                title={t('login')}
               >
-                <Heart className="h-5 w-5 text-secondary-600" />
+                <Image src="/icons/shop-profile-icon.svg" alt="Profil" width={24} height={24} />
               </Link>
+            )}
 
-              {/* User menu */}
-              {isAuth && session ? (
-                <UserMenu username={session.username} email={session.email} />
-              ) : (
-                <Link href="/auth/bejelentkezes">
-                  <Button variant="ghost" size="icon" className="rounded-full">
-                    <User className="h-5 w-5" />
-                    <span className="sr-only">{t('login')}</span>
-                  </Button>
-                </Link>
-              )}
+            {/* Cart */}
+            <HeaderCart />
 
-              {/* Cart */}
-              <HeaderCart />
-
-              {/* Mobile menu button */}
-              <div className="lg:hidden">
-                <MobileNav />
-              </div>
+            {/* Mobile menu button */}
+            <div className="lg:hidden">
+              <MobileNav />
             </div>
           </div>
         </div>
       </div>
 
-      {/* Navigation bar - desktop only */}
-      <nav className="hidden lg:block border-b bg-white">
-        <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between h-14">
-            <div className="flex items-center gap-8">
-              {/* Mega menu */}
-              <MegaMenu />
-
-              {/* Main nav links */}
-              <div className="flex items-center gap-6">
-                <Link
-                  href="/termekek"
-                  className="text-sm font-medium text-secondary-700 hover:text-primary-500 transition-colors"
-                >
-                  Összes ajánlat
-                </Link>
-                <Link
-                  href="/termekek?featured=true"
-                  className="text-sm font-medium text-secondary-700 hover:text-primary-500 transition-colors"
-                >
-                  Kiemelt márkák
-                </Link>
-                <Link
-                  href="/termekek?onSale=true"
-                  className="text-sm font-medium text-danger hover:text-danger/80 transition-colors"
-                >
-                  Akciók
-                </Link>
-                <Link
-                  href="/ajanlatkeres"
-                  className="text-sm font-medium text-secondary-700 hover:text-primary-500 transition-colors"
-                >
-                  Árajánlat
-                </Link>
-              </div>
-            </div>
-
-            {/* Free shipping message */}
-            <div className="flex items-center gap-2 text-sm text-secondary-600">
-              <Truck className="h-4 w-4 text-amber-500" />
-              <span>Ingyenes szállítás <strong className="text-secondary-900">50.000 Ft</strong> felett</span>
-            </div>
-          </div>
-        </div>
-      </nav>
-
-      {/* Search - mobile only */}
-      <div className="lg:hidden border-b p-3">
+      {/* Mobile search */}
+      <div className="lg:hidden border-t border-black/10 px-4 py-3 bg-[#fef9f3]">
         <SearchBar />
       </div>
     </header>

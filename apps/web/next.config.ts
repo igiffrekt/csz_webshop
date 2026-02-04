@@ -4,10 +4,18 @@ import createNextIntlPlugin from 'next-intl/plugin';
 const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts');
 
 const nextConfig: NextConfig = {
+  // Enable gzip compression
+  compress: true,
+
+  // Optimize production builds
+  productionBrowserSourceMaps: false,
+
   images: {
-    // Disable optimization in dev - Strapi localhost images cause 400 errors
-    // Production will use proper CDN/domain configuration
-    unoptimized: true,
+    // Enable optimization in production, disable in dev for faster rebuilds
+    unoptimized: process.env.NODE_ENV === 'development',
+    formats: ['image/avif', 'image/webp'],
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     remotePatterns: [
       {
         protocol: 'http',
@@ -21,10 +29,25 @@ const nextConfig: NextConfig = {
         port: '1337',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'csz.wedopixels.hu',
+        pathname: '/**',
+      },
+      {
+        protocol: 'http',
+        hostname: 'csz.wedopixels.hu',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'res.cloudinary.com',
+        pathname: '/pixelkripta/**',
+      },
     ],
   },
 
-  // SEO Redirects: WooCommerce URLs to new URLs
+  // SEO Redirects: Legacy URLs to new URLs
   async redirects() {
     return [
       // Product URL patterns

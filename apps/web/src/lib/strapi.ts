@@ -45,6 +45,7 @@ interface StrapiCategory {
   slug: string;
   description: string | null;
   image: StrapiImage | null;
+  productCount?: number;
   parent: { id: number; documentId: string; name: string; slug: string } | null;
   children: {
     id: number;
@@ -53,6 +54,7 @@ interface StrapiCategory {
     slug: string;
     description?: string | null;
     image?: StrapiImage | null;
+    productCount?: number;
   }[];
   products?: { id: number }[]; // Strapi returns array of products
 }
@@ -92,6 +94,7 @@ interface StrapiProduct {
   isFeatured: boolean;
   isOnSale: boolean;
   images: StrapiImage[];
+  cloudinaryImageUrl: string | null;
   categories: { id: number; documentId: string; name: string; slug: string }[];
   specifications?: StrapiSpecification[];
   certifications?: StrapiCertification[];
@@ -252,10 +255,38 @@ export async function getStrapiCategory(slug: string): Promise<StrapiCategory | 
     'filters[slug][$eq]': slug,
     'populate[image]': 'true',
     'populate[children][populate][image]': 'true',
+    'populate[children][fields][0]': 'id',
+    'populate[children][fields][1]': 'documentId',
+    'populate[children][fields][2]': 'name',
+    'populate[children][fields][3]': 'slug',
+    'populate[children][fields][4]': 'description',
+    'populate[children][fields][5]': 'productCount',
     'populate[parent]': 'true',
+    'fields[0]': 'id',
+    'fields[1]': 'documentId',
+    'fields[2]': 'name',
+    'fields[3]': 'slug',
+    'fields[4]': 'description',
+    'fields[5]': 'productCount',
   });
 
   return response.data[0] || null;
+}
+
+// Helper function to process description text with proper line breaks
+function processDescription(text: string | null | undefined): string {
+  if (!text) return '';
+  return text
+    // Replace literal \n\n (double newline as text) with paragraph breaks
+    .replace(/\\n\\n/g, '</p><p>')
+    // Replace literal \n (single newline as text) with line breaks
+    .replace(/\\n/g, '<br />')
+    // Also handle actual newline characters
+    .replace(/\n\n/g, '</p><p>')
+    .replace(/\n/g, '<br />')
+    // Wrap in paragraph tags if content doesn't start with HTML tag
+    .replace(/^(?!<[a-z])/, '<p>')
+    .replace(/(?<![>])$/, '</p>');
 }
 
 // Transform Strapi product to match existing component interfaces
@@ -268,12 +299,13 @@ export function transformStrapiProduct(product: StrapiProduct): Product {
     sku: product.sku,
     basePrice: product.basePrice, // Stored as whole HUF: 4940 = 4 940 Ft
     compareAtPrice: product.compareAtPrice || undefined,
-    description: product.description || product.shortDescription || '',
-    shortDescription: product.shortDescription || undefined,
+    description: processDescription(product.description || product.shortDescription),
+    shortDescription: processDescription(product.shortDescription),
     stock: product.stock,
     weight: product.weight || undefined,
     isFeatured: product.isFeatured,
     isOnSale: product.isOnSale,
+    cloudinaryImageUrl: product.cloudinaryImageUrl || undefined,
     images: (product.images || []).map((img) => ({
       id: img.id,
       documentId: img.documentId,

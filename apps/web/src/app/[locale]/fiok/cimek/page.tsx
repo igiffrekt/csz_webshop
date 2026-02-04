@@ -14,12 +14,12 @@ export const metadata: Metadata = {
 };
 
 export default async function AddressesPage() {
-  await requireAuth();
+  await requireAuth("/hu/fiok/cimek");
 
   const { data: addresses, error } = await getAddresses();
 
   return (
-    <div className="container py-8">
+    <div className="site-container py-8">
       <div className="mb-6">
         <Link
           href="/fiok"

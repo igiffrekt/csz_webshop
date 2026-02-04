@@ -79,7 +79,7 @@ export function LoginForm({ redirectTo }: LoginFormProps) {
       <p className="text-center text-sm text-muted-foreground">
         Még nincs fiókod?{" "}
         <Link
-          href="/auth/regisztracio"
+          href={redirectTo ? `/auth/regisztracio?redirect=${encodeURIComponent(redirectTo)}` : "/auth/regisztracio"}
           className="font-medium text-foreground hover:underline"
         >
           Regisztráció

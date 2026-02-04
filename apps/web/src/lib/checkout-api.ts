@@ -1,5 +1,3 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
-
 interface LineItem {
   productId: string;
   variantId?: string;
@@ -32,7 +30,7 @@ export async function calculateTotals(
   request: CalculateTotalsRequest
 ): Promise<{ data: CalculateTotalsResponse | null; error?: string }> {
   try {
-    const response = await fetch(`${API_URL}/checkout/calculate`, {
+    const response = await fetch(`/api/checkout/calculate`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -104,7 +102,7 @@ export async function createBankTransferOrder(
   request: BankTransferRequest
 ): Promise<{ data: BankTransferResponse | null; error?: string }> {
   try {
-    const response = await fetch(`${API_URL}/checkout/bank-transfer`, {
+    const response = await fetch(`/api/checkout/bank-transfer`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

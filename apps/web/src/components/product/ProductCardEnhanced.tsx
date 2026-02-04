@@ -76,9 +76,9 @@ export function ProductCardEnhanced({
   const isCollection = variant === 'collection';
   const addItem = useCartStore((state) => state.addItem);
 
-  const imageUrl = product.images?.[0]
-    ? getStrapiMediaUrl(product.images[0].url)
-    : null;
+  // Prefer Cloudinary URL (WebP with background removed)
+  const imageUrl = product.cloudinaryImageUrl
+    || (product.images?.[0] ? getStrapiMediaUrl(product.images[0].url) : null);
 
   const isOnSale = product.compareAtPrice && product.compareAtPrice > product.basePrice;
   const discountPercent = isOnSale

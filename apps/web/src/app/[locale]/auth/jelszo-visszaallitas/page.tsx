@@ -19,7 +19,7 @@ export default async function ResetPasswordPage({
 
   if (!code) {
     return (
-      <div className="container max-w-md py-16">
+      <div className="container max-w-md mx-auto py-16">
         <div className="text-center space-y-4">
           <h1 className="text-2xl font-bold">Érvénytelen link</h1>
           <p className="text-muted-foreground">
@@ -34,7 +34,7 @@ export default async function ResetPasswordPage({
   }
 
   return (
-    <div className="container max-w-md py-16">
+    <div className="container max-w-md mx-auto py-16">
       <div className="text-center mb-8">
         <h1 className="text-2xl font-bold">Új jelszó beállítása</h1>
         <p className="text-muted-foreground mt-2">

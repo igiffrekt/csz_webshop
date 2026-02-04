@@ -35,16 +35,22 @@ export const verifySession = cache(
 /**
  * Require authentication, redirect to login if not authenticated.
  * Use in pages/layouts that require login.
+ *
+ * @param redirectTo - Optional URL to redirect back to after login
  */
-export const requireAuth = cache(async (): Promise<SessionPayload> => {
+export async function requireAuth(redirectTo?: string): Promise<SessionPayload> {
   const { isAuth, session } = await verifySession();
 
   if (!isAuth) {
-    redirect("/hu/auth/bejelentkezes");
+    if (redirectTo) {
+      redirect(`/hu/auth/bejelentkezes?redirect=${encodeURIComponent(redirectTo)}`);
+    } else {
+      redirect("/hu/auth/bejelentkezes");
+    }
   }
 
   return session;
-});
+}
 
 /**
  * Get current user ID if authenticated, null otherwise.

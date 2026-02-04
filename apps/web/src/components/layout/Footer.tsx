@@ -38,7 +38,7 @@ export function Footer() {
   return (
     <footer className="bg-gray-900 text-white">
       {/* Main footer */}
-      <div className="container mx-auto px-4 py-12 lg:py-16">
+      <div className="site-container py-12 lg:py-16">
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 lg:gap-12">
           {/* Brand column */}
           <div className="col-span-2 md:col-span-4 lg:col-span-2 lg:pr-8">
@@ -132,7 +132,7 @@ export function Footer() {
 
       {/* Bottom bar */}
       <div className="border-t border-gray-800">
-        <div className="container mx-auto px-4 py-5">
+        <div className="site-container py-5">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-gray-500">
             <p>
               © {currentYear} CSZ Tűzvédelmi Kft. Minden jog fenntartva.

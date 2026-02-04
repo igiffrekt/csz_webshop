@@ -35,7 +35,7 @@ export default async function BankTransferPage({ searchParams }: Props) {
   const paymentReference = `CSZ-${order.orderNumber}`;
 
   return (
-    <main className="container mx-auto px-4 py-8 max-w-2xl">
+    <main className="site-container py-8 max-w-2xl">
       <div className="text-center mb-8">
         <div className="w-16 h-16 mx-auto mb-6 bg-blue-100 rounded-full flex items-center justify-center">
           <Banknote className="w-8 h-8 text-blue-600" />

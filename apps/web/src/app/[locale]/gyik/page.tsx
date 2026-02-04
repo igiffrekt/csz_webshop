@@ -70,7 +70,7 @@ export default async function FAQPage() {
   );
 
   return (
-    <main className="container mx-auto px-4 py-8 max-w-4xl">
+    <main className="site-container py-8 max-w-4xl">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{

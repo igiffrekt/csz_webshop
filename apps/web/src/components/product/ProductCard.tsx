@@ -14,18 +14,23 @@ interface ProductCardProps {
 export function ProductCard({ product, className }: ProductCardProps) {
   const t = useTranslations("products");
 
-  // Get primary image or placeholder
-  const imageUrl = product.images?.[0]
-    ? getStrapiMediaUrl(product.images[0].url)
-    : "/placeholder.jpg";
+  // Get primary image - prefer Cloudinary URL (WebP with background removed)
+  const imageUrl = product.cloudinaryImageUrl
+    || (product.images?.[0] ? getStrapiMediaUrl(product.images[0].url) : "/placeholder.jpg");
   const imageAlt = product.images?.[0]?.alternativeText || product.name;
 
   // Check if has certifications (CE marking)
   const hasCertifications = product.certifications && product.certifications.length > 0;
 
+  // Get primary category for URL
+  const category = product.categories?.[0];
+  const productUrl = category
+    ? `/${category.slug}/${product.slug}`
+    : `/termekek/${product.slug}`;
+
   return (
     <Link
-      href={`/termekek/${product.slug}`}
+      href={productUrl}
       className={cn(
         "group block rounded-lg border border-border bg-card overflow-hidden card-hover",
         className

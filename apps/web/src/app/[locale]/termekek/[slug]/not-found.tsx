@@ -6,7 +6,7 @@ export default async function ProductNotFound() {
   const t = await getTranslations('product');
 
   return (
-    <main className="container mx-auto px-4 py-16 text-center">
+    <main className="site-container py-16 text-center">
       <h1 className="text-2xl font-bold mb-4">{t('notFound')}</h1>
       <p className="text-muted-foreground mb-8">
         {t('notFoundDescription')}

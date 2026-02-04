@@ -37,7 +37,7 @@ export default async function TermsPage() {
   `;
 
   return (
-    <main className="container mx-auto px-4 py-8 max-w-4xl">
+    <main className="site-container py-8 max-w-4xl">
       <h1 className="text-3xl font-bold mb-8">{page?.title || 'Általános Szerződési Feltételek'}</h1>
       <div
         className="prose prose-lg max-w-none [&>h2]:text-2xl [&>h2]:font-semibold [&>h2]:mt-8 [&>h2]:mb-4 [&>h3]:text-xl [&>h3]:font-semibold [&>h3]:mt-6 [&>h3]:mb-3 [&>p]:mb-4 [&>ul]:mb-4 [&>ul]:list-disc [&>ul]:pl-6"

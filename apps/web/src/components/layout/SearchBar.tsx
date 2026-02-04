@@ -7,9 +7,10 @@ import { cn } from '@/lib/utils';
 
 interface SearchBarProps {
   className?: string;
+  variant?: 'default' | 'hero';
 }
 
-export function SearchBar({ className }: SearchBarProps) {
+export function SearchBar({ className, variant = 'default' }: SearchBarProps) {
   const [query, setQuery] = useState('');
   const [isFocused, setIsFocused] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
@@ -21,7 +22,6 @@ export function SearchBar({ className }: SearchBarProps) {
     if (query.trim()) {
       setIsSearching(true);
       router.push(`/termekek?search=${encodeURIComponent(query.trim())}`);
-      // Small delay to show loading state
       setTimeout(() => {
         setIsSearching(false);
         setQuery('');
@@ -35,12 +35,59 @@ export function SearchBar({ className }: SearchBarProps) {
     inputRef.current?.focus();
   };
 
+  if (variant === 'hero') {
+    return (
+      <form onSubmit={handleSubmit} className={cn('relative w-full', className)}>
+        <div
+          className={cn(
+            'flex items-center justify-between h-[45px] px-[30px] py-[10px] border-2 border-[#030712] rounded-[100px] bg-transparent transition-all',
+            isFocused && 'border-black shadow-sm'
+          )}
+        >
+          <input
+            ref={inputRef}
+            type="text"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            onFocus={() => setIsFocused(true)}
+            onBlur={() => setIsFocused(false)}
+            placeholder="Termékkereső"
+            className="flex-1 bg-transparent outline-none text-[16px] text-black placeholder:text-black leading-[1.15]"
+          />
+
+          {query && (
+            <button
+              type="button"
+              onClick={handleClear}
+              className="p-1 hover:text-gray-600 transition-colors mr-2"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          )}
+
+          <button
+            type="submit"
+            disabled={isSearching}
+            className="flex items-center justify-center"
+          >
+            {isSearching ? (
+              <Loader2 className="h-6 w-6 animate-spin text-black" />
+            ) : (
+              <Search className="h-6 w-6 text-black" />
+            )}
+          </button>
+        </div>
+      </form>
+    );
+  }
+
+  // Default variant for mobile
   return (
-    <form onSubmit={handleSubmit} className={cn('relative flex-1 max-w-xl', className)}>
+    <form onSubmit={handleSubmit} className={cn('relative flex-1', className)}>
       <div
         className={cn(
-          'flex items-center bg-secondary-100 rounded-full overflow-hidden transition-all',
-          isFocused && 'ring-2 ring-primary-500 bg-white'
+          'flex items-center justify-between h-[45px] px-[20px] border-2 border-[#030712] rounded-[100px] bg-transparent transition-all',
+          isFocused && 'border-black shadow-sm'
         )}
       >
         <input
@@ -50,15 +97,15 @@ export function SearchBar({ className }: SearchBarProps) {
           onChange={(e) => setQuery(e.target.value)}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
-          placeholder="Keresés termékek között..."
-          className="flex-1 bg-transparent px-4 py-2.5 outline-none text-sm placeholder:text-secondary-500"
+          placeholder="Termékkereső"
+          className="flex-1 bg-transparent outline-none text-[14px] text-black placeholder:text-black leading-[1.15]"
         />
 
         {query && (
           <button
             type="button"
             onClick={handleClear}
-            className="p-2 hover:text-primary-500 transition-colors"
+            className="p-1 hover:text-gray-600 transition-colors mr-2"
           >
             <X className="h-4 w-4" />
           </button>
@@ -66,16 +113,13 @@ export function SearchBar({ className }: SearchBarProps) {
 
         <button
           type="submit"
-          disabled={isSearching || !query.trim()}
-          className={cn(
-            'bg-primary-500 text-white p-2.5 hover:bg-primary-600 transition-colors',
-            'disabled:opacity-50 disabled:cursor-not-allowed'
-          )}
+          disabled={isSearching}
+          className="flex items-center justify-center"
         >
           {isSearching ? (
-            <Loader2 className="h-5 w-5 animate-spin" />
+            <Loader2 className="h-5 w-5 animate-spin text-black" />
           ) : (
-            <Search className="h-5 w-5" />
+            <Search className="h-5 w-5 text-black" />
           )}
         </button>
       </div>

@@ -28,6 +28,10 @@ async function configurePublicPermissions(strapi: Core.Strapi) {
     { action: 'api::category.category.findOne' },
     // Coupon (find only - for validation by code)
     { action: 'api::coupon.coupon.find' },
+    // Menu items (public read access for navigation)
+    { action: 'api::menu-item.menu-item.find' },
+    { action: 'api::menu-item.menu-item.findOne' },
+    { action: 'api::menu-item.menu-item.tree' },
   ];
 
   for (const permission of publicPermissions) {

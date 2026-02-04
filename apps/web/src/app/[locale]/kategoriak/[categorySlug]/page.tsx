@@ -1,8 +1,9 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { Link } from '@/i18n/navigation';
-import { getStrapiCategory, getStrapiProducts, transformStrapiProduct } from '@/lib/strapi';
+import { getStrapiCategory, getStrapiCategoryTree, getStrapiProducts, transformStrapiProduct } from '@/lib/strapi';
 import { CategoryCard } from '@/components/category/CategoryCard';
+import { CategoryFilters } from '@/components/category/CategoryFilters';
 import { ProductGrid } from '@/components/product/ProductGrid';
 import { Pagination } from '@/components/product/Pagination';
 import { EmptyState } from '@/components/product/EmptyState';
@@ -10,7 +11,7 @@ import { Home, ChevronRight, Folder } from 'lucide-react';
 
 interface Props {
   params: Promise<{ categorySlug: string; locale: string }>;
-  searchParams: Promise<{ page?: string }>;
+  searchParams: Promise<{ page?: string; alkategoria?: string; rendezes?: string }>;
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -30,18 +31,31 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function CategoryPage({ params, searchParams }: Props) {
   const { categorySlug } = await params;
   const search = await searchParams;
-  const category = await getStrapiCategory(categorySlug);
+
+  // Fetch category and category tree in parallel
+  const [category, categoryTree] = await Promise.all([
+    getStrapiCategory(categorySlug),
+    getStrapiCategoryTree(),
+  ]);
 
   if (!category) {
     notFound();
   }
 
-  // Fetch products in this category
+  // Parse filter params
   const currentPage = search.page ? parseInt(search.page, 10) : 1;
+  const subcategoryFilter = search.alkategoria;
+  const sortParam = search.rendezes || 'createdAt:desc';
+
+  // Determine which category slug to filter by
+  const filterCategorySlug = subcategoryFilter || categorySlug;
+
+  // Fetch products in this category (or subcategory if filtered)
   const productsResponse = await getStrapiProducts({
-    category: categorySlug,
+    category: filterCategorySlug,
     page: currentPage,
     pageSize: 12,
+    sort: sortParam,
   });
 
   const products = productsResponse.products.map(transformStrapiProduct);
@@ -59,6 +73,7 @@ export default async function CategoryPage({ params, searchParams }: Props) {
     name: child.name,
     slug: child.slug,
     description: child.description,
+    productCount: child.productCount,
     image: child.image
       ? {
           url: child.image.url.startsWith('http')
@@ -67,6 +82,25 @@ export default async function CategoryPage({ params, searchParams }: Props) {
           alternativeText: child.image.alternativeText,
         }
       : undefined,
+  }));
+
+  // Transform subcategories for filter dropdown
+  const filterSubcategories = (category.children || []).map((child) => ({
+    name: child.name,
+    slug: child.slug,
+    productCount: child.productCount,
+  }));
+
+  // Transform category tree for category filter dropdown
+  const filterCategories = categoryTree.map((cat) => ({
+    name: cat.name,
+    slug: cat.slug,
+    productCount: cat.count,
+    children: cat.children.map((child) => ({
+      name: child.name,
+      slug: child.slug,
+      productCount: child.count,
+    })),
   }));
 
   return (
@@ -135,7 +169,15 @@ export default async function CategoryPage({ params, searchParams }: Props) {
 
         {/* Products */}
         <section>
-          <h2 className="text-xl font-bold text-secondary-900 mb-6">Termekek</h2>
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+            <h2 className="text-xl font-bold text-secondary-900">Termékek</h2>
+            <CategoryFilters
+              categories={filterCategories}
+              subcategories={filterSubcategories}
+              categorySlug={categorySlug}
+              categoryName={category.name}
+            />
+          </div>
 
           {products.length > 0 ? (
             <>

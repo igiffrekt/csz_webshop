@@ -93,9 +93,9 @@ export async function loginAction(
     };
   }
 
-  // Get redirect URL from form or default to account page
+  // Get redirect URL from form or default to homepage
   const redirectTo = formData.get("redirectTo") as string;
-  redirect(redirectTo || "/hu/fiok");
+  redirect(redirectTo || "/hu");
 }
 
 /**
@@ -156,7 +156,9 @@ export async function registerAction(
     };
   }
 
-  redirect("/hu/fiok");
+  // Get redirect URL from form or default to homepage
+  const redirectTo = formData.get("redirectTo") as string;
+  redirect(redirectTo || "/hu");
 }
 
 /**

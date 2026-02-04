@@ -25,7 +25,7 @@ export default async function QuoteHistoryPage({ params }: PageProps) {
   const { data: quotes, error } = await getQuoteRequests(session.jwt);
 
   return (
-    <div className="space-y-6">
+    <div className="site-container py-8 space-y-6">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold">Árajánlat kérések</h1>

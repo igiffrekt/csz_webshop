@@ -4,16 +4,23 @@
   "info": {
     "singularName": "product",
     "pluralName": "products",
-    "displayName": "Product"
+    "displayName": "Termék",
+    "description": "Webshop termékek kezelése - árak, készlet, leírások, képek"
   },
   "options": {
     "draftAndPublish": true
   },
+  "pluginOptions": {},
   "attributes": {
     "name": {
       "type": "string",
       "required": true,
-      "maxLength": 255
+      "maxLength": 255,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
     },
     "slug": {
       "type": "uid",
@@ -88,6 +95,10 @@
       "relation": "oneToMany",
       "target": "api::product-variant.product-variant",
       "mappedBy": "product"
+    },
+    "cloudinaryImageUrl": {
+      "type": "string",
+      "maxLength": 500
     }
   }
 }

@@ -43,7 +43,7 @@ interface PromoBannersProps {
 export function PromoBanners({ banners = defaultBanners }: PromoBannersProps) {
   return (
     <section className="py-10 lg:py-12 bg-white">
-      <div className="container mx-auto px-4">
+      <div className="site-container">
         <div className="grid md:grid-cols-2 gap-6">
           {banners.map((banner, index) => (
             <Link

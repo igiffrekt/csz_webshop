@@ -17,9 +17,8 @@ interface Props {
 }
 
 export default async function OrderDetailPage({ params }: Props) {
-  await requireAuth();
-
   const { id } = await params;
+  await requireAuth(`/hu/fiok/rendelesek/${id}`);
   const { data: order, error } = await getOrder(id);
 
   if (error || !order) {
@@ -36,7 +35,7 @@ export default async function OrderDetailPage({ params }: Props) {
   });
 
   return (
-    <main className="container mx-auto px-4 py-8 max-w-4xl">
+    <main className="site-container py-8 max-w-4xl">
       {/* Header */}
       <div className="flex items-center gap-4 mb-8">
         <Button variant="ghost" size="icon" asChild>

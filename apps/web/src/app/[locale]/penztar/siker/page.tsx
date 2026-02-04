@@ -29,7 +29,7 @@ export default async function CheckoutSuccessPage({ searchParams }: Props) {
   if (error || !order) {
     // Order not found - might be processing, show generic success
     return (
-      <main className="container mx-auto px-4 py-8 max-w-2xl text-center">
+      <main className="site-container py-8 max-w-2xl text-center">
         <div className="py-12">
           <div className="w-16 h-16 mx-auto mb-6 bg-green-100 rounded-full flex items-center justify-center">
             <svg
@@ -62,7 +62,7 @@ export default async function CheckoutSuccessPage({ searchParams }: Props) {
   }
 
   return (
-    <main className="container mx-auto px-4 py-8 max-w-2xl">
+    <main className="site-container py-8 max-w-2xl">
       <OrderConfirmation order={order} />
     </main>
   );

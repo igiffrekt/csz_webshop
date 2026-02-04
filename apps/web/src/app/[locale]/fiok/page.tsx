@@ -11,10 +11,10 @@ export const metadata: Metadata = {
 };
 
 export default async function AccountPage() {
-  const session = await requireAuth();
+  const session = await requireAuth("/hu/fiok");
 
   return (
-    <div className="container py-8">
+    <div className="site-container py-8">
       <div className="mb-8">
         <h1 className="text-2xl font-bold">Fiókom</h1>
         <p className="text-muted-foreground mt-1">

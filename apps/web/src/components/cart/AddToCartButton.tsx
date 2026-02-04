@@ -102,14 +102,22 @@ export function AddToCartButton({
   };
 
   return (
-    <Button
+    <button
       onClick={handleAddToCart}
       disabled={disabled || isOutOfStock || status !== 'idle'}
-      className="min-w-[160px] transition-all"
-      size="lg"
-      variant={status === 'added' ? 'default' : 'default'}
+      className={`
+        min-w-[180px] h-[48px] px-8 rounded-full font-medium text-sm
+        transition-all duration-200 flex items-center justify-center gap-2
+        ${status === 'added'
+          ? 'bg-green-500 text-white'
+          : isOutOfStock || needsVariant
+            ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
+            : 'bg-black text-white hover:bg-gray-800'
+        }
+        disabled:opacity-50 disabled:cursor-not-allowed
+      `}
     >
       {getButtonContent()}
-    </Button>
+    </button>
   );
 }

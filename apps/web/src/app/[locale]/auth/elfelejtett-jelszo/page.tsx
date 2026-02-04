@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 export default function ForgotPasswordPage() {
   return (
-    <div className="container max-w-md py-16">
+    <div className="container max-w-md mx-auto py-16">
       <div className="text-center mb-8">
         <h1 className="text-2xl font-bold">Elfelejtett jelszó</h1>
         <p className="text-muted-foreground mt-2">

@@ -10,11 +10,11 @@ export const metadata: Metadata = {
 };
 
 export default async function QuoteRequestPage() {
-  await requireAuth();
+  await requireAuth("/hu/ajanlatkeres");
   const { user: profile } = await getCurrentUserProfile();
 
   return (
-    <main className="container mx-auto px-4 py-8 max-w-3xl">
+    <main className="site-container py-8 max-w-3xl">
       <div className="text-center mb-8">
         <div className="w-16 h-16 mx-auto mb-4 bg-primary/10 rounded-full flex items-center justify-center">
           <FileText className="w-8 h-8 text-primary" />

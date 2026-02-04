@@ -1,6 +1,7 @@
 "use client";
 
-import { User, LogOut, Package, MapPin, Settings } from "lucide-react";
+import Image from "next/image";
+import { LogOut, Package, MapPin, Settings } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import {
@@ -22,8 +23,8 @@ export function UserMenu({ username, email }: UserMenuProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon" className="relative">
-          <User className="h-5 w-5" />
+        <Button variant="ghost" size="icon" className="relative hover:opacity-70 transition-opacity">
+          <Image src="/icons/shop-profile-icon.svg" alt="Profil" width={24} height={24} />
           <span className="sr-only">Felhasználói menü</span>
         </Button>
       </DropdownMenuTrigger>

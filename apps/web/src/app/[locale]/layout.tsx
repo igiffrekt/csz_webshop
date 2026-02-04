@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { routing } from "@/i18n/routing";
 import { QueryProvider } from "@/components/providers/QueryProvider";
+import { TopBar } from "@/components/layout/TopBar";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { Toaster } from "@/components/ui/sonner";
@@ -39,6 +40,7 @@ export default async function LocaleLayout({
             }}
           />
           <div className="flex min-h-screen flex-col">
+            <TopBar />
             <Header />
             <main className="flex-1">{children}</main>
             <Footer />

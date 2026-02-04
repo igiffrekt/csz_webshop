@@ -9,7 +9,11 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { registerAction, type AuthState } from "@/lib/auth/actions";
 
-export function RegisterForm() {
+interface RegisterFormProps {
+  redirectTo?: string;
+}
+
+export function RegisterForm({ redirectTo }: RegisterFormProps) {
   const [state, formAction, isPending] = useActionState<AuthState, FormData>(
     registerAction,
     {}
@@ -18,6 +22,10 @@ export function RegisterForm() {
 
   return (
     <form action={formAction} className="space-y-4">
+      {redirectTo && (
+        <input type="hidden" name="redirectTo" value={redirectTo} />
+      )}
+
       {state.error && (
         <div className="bg-destructive/15 text-destructive px-4 py-3 rounded-md text-sm">
           {state.error}
@@ -198,7 +206,7 @@ export function RegisterForm() {
       <p className="text-center text-sm text-muted-foreground">
         Már van fiókod?{" "}
         <Link
-          href="/auth/bejelentkezes"
+          href={redirectTo ? `/auth/bejelentkezes?redirect=${encodeURIComponent(redirectTo)}` : "/auth/bejelentkezes"}
           className="font-medium text-foreground hover:underline"
         >
           Bejelentkezés
