@@ -1,5 +1,5 @@
 import { redirect } from 'next/navigation';
-import { requireAuth } from '@/lib/auth/dal';
+import { auth } from '@/lib/auth';
 import { getOrderByStripeSession } from '@/lib/order-api';
 import { OrderConfirmation } from './OrderConfirmation';
 import type { Metadata } from 'next';
@@ -14,8 +14,10 @@ interface Props {
 }
 
 export default async function CheckoutSuccessPage({ searchParams }: Props) {
-  // Require authentication
-  await requireAuth();
+  const session = await auth();
+  if (!session?.user) {
+    redirect('/hu/auth/bejelentkezes');
+  }
 
   const { session_id } = await searchParams;
 

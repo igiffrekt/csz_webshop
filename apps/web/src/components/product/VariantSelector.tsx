@@ -41,12 +41,12 @@ export function VariantSelector({
       </label>
       <div className="flex flex-wrap gap-2">
         {variants.map((variant) => {
-          const isSelected = selectedVariant?.id === variant.id;
+          const isSelected = selectedVariant?._id === variant._id;
           const isOutOfStock = variant.stock === 0;
 
           return (
             <button
-              key={variant.id}
+              key={variant._id}
               type="button"
               onClick={() => !isOutOfStock && handleSelect(variant)}
               disabled={isOutOfStock}

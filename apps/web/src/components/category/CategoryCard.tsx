@@ -1,11 +1,15 @@
 import Image from 'next/image';
 import { Link } from '@/i18n/navigation';
-import { getStrapiMediaUrl } from '@/lib/formatters';
+import { getImageUrl } from '@/lib/formatters';
 import { ArrowRight, Folder } from 'lucide-react';
-import type { DisplayCategory } from '@/lib/strapi';
 
 interface CategoryCardProps {
-  category: DisplayCategory;
+  category: {
+    name: string;
+    slug: string;
+    description?: string;
+    image?: { url: string; alt?: string | null };
+  };
 }
 
 export function CategoryCard({ category }: CategoryCardProps) {
@@ -17,8 +21,8 @@ export function CategoryCard({ category }: CategoryCardProps) {
       <div className="relative aspect-[4/3] overflow-hidden bg-secondary-100">
         {category.image ? (
           <Image
-            src={getStrapiMediaUrl(category.image.url)}
-            alt={category.image.alternativeText || category.name}
+            src={getImageUrl(category.image.url)}
+            alt={category.image.alt || category.name}
             fill
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
             className="object-cover transition-transform duration-500 group-hover:scale-110"

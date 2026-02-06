@@ -1,9 +1,7 @@
 import {
-  getStrapiProducts,
-  getStrapiCategoryTree,
-  transformStrapiProduct,
-  transformStrapiCategory,
-} from '@/lib/strapi';
+  getCategoryTree,
+  getProducts,
+} from '@/lib/sanity-queries'
 import {
   HeroSection,
   TrustBadges,
@@ -14,60 +12,74 @@ import {
   BlogSection,
   FAQSection,
   InstagramSection,
-} from '@/components/home';
+} from '@/components/home'
 
 export default async function HomePage() {
-  // Fetch data from Strapi in parallel with error handling
-  const [categoryTreeResult, productsResult] = await Promise.allSettled([
-    getStrapiCategoryTree(),
-    getStrapiProducts({ pageSize: 12 }),
-  ]);
+  const [categoryTree, productsResult] = await Promise.allSettled([
+    getCategoryTree(),
+    getProducts({ pageSize: 12 }),
+  ])
 
-  // Transform Strapi data to match existing component interfaces
-  const categoryTree =
-    categoryTreeResult.status === 'fulfilled'
-      ? categoryTreeResult.value.map(transformStrapiCategory)
-      : [];
-
-  // Categories with children for CategoryGrid
-  const categoriesWithChildren = categoryTree;
+  const categories =
+    categoryTree.status === 'fulfilled'
+      ? (categoryTree.value || []).map((cat: any) => ({
+          _id: cat._id,
+          name: cat.name,
+          slug: typeof cat.slug === 'string' ? cat.slug : cat.slug?.current,
+          description: cat.description,
+          image: cat.image ? { url: cat.image.url } : null,
+          count: cat.productCount || 0,
+          children: (cat.children || []).map((child: any) => ({
+            _id: child._id,
+            name: child.name,
+            slug: typeof child.slug === 'string' ? child.slug : child.slug?.current,
+            count: child.productCount || 0,
+          })),
+        }))
+      : []
 
   const allProducts =
     productsResult.status === 'fulfilled'
-      ? productsResult.value.products.map(transformStrapiProduct)
-      : [];
+      ? (productsResult.value.data || []).map((p: any) => ({
+          ...p,
+          _id: p._id,
+          slug: typeof p.slug === 'string' ? p.slug : p.slug?.current,
+          images: (p.images || []).map((img: any) => ({
+            ...img,
+            id: 0,
+            _id: '',
+            name: '',
+            alt: img.alt || null,
+          })),
+          categories: (p.categories || []).map((cat: any) => ({
+            ...cat,
+            id: 0,
+            _id: cat._id,
+            slug: typeof cat.slug === 'string' ? cat.slug : cat.slug?.current,
+            createdAt: '',
+            updatedAt: '',
+            publishedAt: '',
+          })),
+          id: 0,
+          createdAt: '',
+          updatedAt: '',
+          publishedAt: '',
+        }))
+      : []
 
-  // Use first 5 products as featured for hero
-  const featuredProducts = allProducts.slice(0, 5);
+  const featuredProducts = allProducts.slice(0, 5)
 
   return (
     <>
-      {/* Hero Section */}
-      <HeroSection products={featuredProducts} categories={categoryTree} />
-
-      {/* Trust Badges */}
+      <HeroSection products={featuredProducts} categories={categories} />
       <TrustBadges />
-
-      {/* Category Cards - Figma design */}
-      <CategoryCards categories={categoriesWithChildren} products={allProducts} />
-
-      {/* Product Collections (Tabbed) */}
+      <CategoryCards categories={categories} products={allProducts} />
       <ProductCollections products={allProducts} featuredProducts={featuredProducts} />
-
-      {/* Daily Deals */}
       <DealsSection products={allProducts} />
-
-      {/* Promotional Banners */}
       <PromoBanners />
-
-      {/* Blog Section */}
       <BlogSection />
-
-      {/* FAQ Section */}
       <FAQSection />
-
-      {/* Instagram Section */}
       <InstagramSection />
     </>
-  );
+  )
 }

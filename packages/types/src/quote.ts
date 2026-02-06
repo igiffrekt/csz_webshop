@@ -1,39 +1,38 @@
-export type QuoteStatus = 'pending' | 'quoted' | 'converted' | 'declined' | 'expired';
+export type QuoteStatus = 'pending' | 'quoted' | 'converted' | 'declined' | 'expired'
 
 export interface QuoteItem {
-  productId: string;
-  productName: string;
-  variantId?: string;
-  variantName?: string;
-  sku: string;
-  quantity: number;
-  unitPrice?: number;
-  totalPrice?: number;
+  productId: string
+  productName: string
+  variantId?: string
+  variantName?: string
+  sku: string
+  quantity: number
+  unitPrice?: number
+  totalPrice?: number
 }
 
 export interface QuoteRequest {
-  id: number;
-  documentId: string;
-  requestNumber: string;
-  status: QuoteStatus;
-  items: QuoteItem[];
-  deliveryNotes?: string;
-  companyName?: string;
-  contactEmail: string;
-  contactPhone?: string;
-  adminNotes?: string;
-  adminResponse?: string;
-  quotedAmount?: number;
-  quotedAt?: string;
-  validUntil?: string;
-  createdAt: string;
-  updatedAt: string;
+  id: string
+  requestNumber: string
+  status: QuoteStatus
+  items: QuoteItem[]
+  deliveryNotes?: string | null
+  companyName?: string | null
+  contactEmail: string
+  contactPhone?: string | null
+  adminNotes?: string | null
+  adminResponse?: string | null
+  quotedAmount?: number | null
+  quotedAt?: string | null
+  validUntil?: string | null
+  createdAt: string
+  updatedAt: string
 }
 
 export interface CreateQuoteRequestInput {
-  items: QuoteItem[];
-  deliveryNotes?: string;
-  companyName?: string;
-  contactEmail?: string;
-  contactPhone?: string;
+  items: QuoteItem[]
+  deliveryNotes?: string
+  companyName?: string
+  contactEmail?: string
+  contactPhone?: string
 }

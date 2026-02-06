@@ -1,80 +1,74 @@
-const hufFormatter = new Intl.NumberFormat("hu-HU", {
-  style: "currency",
-  currency: "HUF",
+const hufFormatter = new Intl.NumberFormat('hu-HU', {
+  style: 'currency',
+  currency: 'HUF',
   maximumFractionDigits: 0,
-});
+})
 
-/**
- * Format a price in Hungarian Forints (HUF)
- * @param amount - Price in HUF (integer, no decimals)
- * @returns Formatted price string, e.g. "15 900 Ft"
- */
 export function formatPrice(amount: number): string {
-  return hufFormatter.format(amount);
+  return hufFormatter.format(amount)
 }
 
 /**
- * Get full URL for Strapi media files
- * @param url - Relative or absolute URL from Strapi
- * @returns Full URL with Strapi base URL prepended if needed
+ * Get image URL - handles Sanity URLs, Cloudinary URLs, and fallbacks
  */
-export function getStrapiMediaUrl(url: string | undefined): string {
-  if (!url) return "/placeholder.svg";
-  if (url.startsWith("http")) return url;
-  const baseUrl =
-    process.env.NEXT_PUBLIC_STRAPI_URL || "http://localhost:1337";
-  return `${baseUrl}${url}`;
+export function getImageUrl(url: string | undefined): string {
+  if (!url) return '/placeholder.svg'
+  if (url.startsWith('http')) return url
+  return url
+}
+
+/**
+ * Extract slug string from Sanity slug object or plain string
+ */
+export function getSlugString(slug: { current: string } | string | undefined | null): string {
+  if (!slug) return ''
+  if (typeof slug === 'string') return slug
+  return slug.current
 }
 
 /**
  * Format a date in Hungarian locale
- * @param dateString - ISO date string
- * @returns Formatted date string, e.g. "2026. januar 20."
  */
 export function formatDate(dateString: string): string {
-  return new Date(dateString).toLocaleDateString("hu-HU", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
+  return new Date(dateString).toLocaleDateString('hu-HU', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  })
 }
 
 /**
  * Strip HTML tags from a string
- * @param html - String containing HTML
- * @returns Plain text without HTML tags
  */
 export function stripHtml(html: string | undefined | null): string {
-  if (!html) return '';
+  if (!html) return ''
   return html
-    .replace(/<[^>]*>/g, '') // Remove HTML tags
-    .replace(/&nbsp;/g, ' ') // Replace non-breaking spaces
-    .replace(/&amp;/g, '&')  // Replace ampersands
-    .replace(/&lt;/g, '<')   // Replace less than
-    .replace(/&gt;/g, '>')   // Replace greater than
-    .replace(/&quot;/g, '"') // Replace quotes
-    .replace(/\s+/g, ' ')    // Normalize whitespace
-    .trim();
+    .replace(/<[^>]*>/g, '')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/\s+/g, ' ')
+    .trim()
 }
 
 /**
  * Format order status in Hungarian
- * @param status - Order status string
- * @returns Object with Hungarian label and Badge variant
  */
 export function formatOrderStatus(status: string): {
-  label: string;
-  variant: 'default' | 'secondary' | 'destructive' | 'outline';
+  label: string
+  variant: 'default' | 'secondary' | 'destructive' | 'outline'
 } {
   const statuses: Record<string, { label: string; variant: 'default' | 'secondary' | 'destructive' | 'outline' }> = {
-    pending: { label: 'Fizetesre var', variant: 'outline' },
+    pending: { label: 'Fizetésre vár', variant: 'outline' },
     paid: { label: 'Fizetve', variant: 'secondary' },
-    processing: { label: 'Feldolgozas alatt', variant: 'secondary' },
-    shipped: { label: 'Szallitas alatt', variant: 'default' },
-    delivered: { label: 'Kiszallitva', variant: 'default' },
+    processing: { label: 'Feldolgozás alatt', variant: 'secondary' },
+    shipped: { label: 'Szállítás alatt', variant: 'default' },
+    delivered: { label: 'Kiszállítva', variant: 'default' },
     cancelled: { label: 'Lemondva', variant: 'destructive' },
     refunded: { label: 'Visszafizetve', variant: 'destructive' },
-  };
+  }
 
-  return statuses[status] || { label: status, variant: 'outline' };
+  return statuses[status] || { label: status, variant: 'outline' }
 }

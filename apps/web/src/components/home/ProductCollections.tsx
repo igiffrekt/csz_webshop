@@ -88,7 +88,7 @@ export function ProductCollections({
       case 'latest':
         return [...products].sort(
           (a, b) =>
-            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+            new Date(b._createdAt || 0).getTime() - new Date(a._createdAt || 0).getTime()
         );
       case 'bestsellers':
         return [...products].sort((a, b) => (b.stock || 0) - (a.stock || 0));
@@ -186,7 +186,7 @@ export function ProductCollections({
         >
           {displayProducts.map((product) => (
             <div
-              key={product.documentId}
+              key={product._id}
               className={cn(
                 'flex-shrink-0 w-[280px] md:w-[290px]',
                 !isDragging && 'snap-start'

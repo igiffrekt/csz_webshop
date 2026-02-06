@@ -2,8 +2,16 @@
 
 import { useState, useMemo, useEffect } from 'react';
 import Image from 'next/image';
-import type { Product, ProductVariant, StrapiMedia } from '@csz/types';
-import { getStrapiMediaUrl } from '@/lib/formatters';
+import type { Product, ProductVariant } from '@csz/types';
+
+interface ImageItem {
+  _key?: string;
+  url: string;
+  alt?: string | null;
+  width?: number;
+  height?: number;
+}
+import { getImageUrl } from '@/lib/formatters';
 import { cn } from '@/lib/utils';
 import { AddToCartButton } from '@/components/cart/AddToCartButton';
 import { VariantSelector } from '@/components/product/VariantSelector';
@@ -25,16 +33,14 @@ export function ProductDetails({ product, children }: ProductDetailsProps) {
 
   // Build the full list of images: product images + variant images
   const allImages = useMemo(() => {
-    const images: Array<(StrapiMedia | { url: string; id: number; documentId: string; alternativeText: string | null; name: string }) & { variantId?: number; isCloudinary?: boolean }> = [];
+    const images: Array<ImageItem & { variantId?: string; isCloudinary?: boolean }> = [];
 
     // If cloudinaryImageUrl exists, use it as the primary image (background removed, WebP)
     if (product.cloudinaryImageUrl) {
       images.push({
-        id: -1,
-        documentId: 'cloudinary',
+        _key: 'cloudinary',
         url: product.cloudinaryImageUrl,
-        alternativeText: product.name,
-        name: 'cloudinary-primary',
+        alt: product.name,
         isCloudinary: true,
       });
     }
@@ -42,7 +48,7 @@ export function ProductDetails({ product, children }: ProductDetailsProps) {
     // Add product images (skip first if we have cloudinary version)
     if (product.images && product.images.length > 0) {
       product.images.forEach((img, index) => {
-        // If we have cloudinary, skip the first strapi image to avoid duplicate
+        // If we have cloudinary, skip the first image to avoid duplicate
         if (product.cloudinaryImageUrl && index === 0) return;
         images.push({ ...img });
       });
@@ -55,7 +61,7 @@ export function ProductDetails({ product, children }: ProductDetailsProps) {
           // Check if this image URL is already in the list
           const alreadyExists = images.some(img => img.url === variant.image!.url);
           if (!alreadyExists) {
-            images.push({ ...variant.image, variantId: variant.id });
+            images.push({ ...variant.image, variantId: variant._id });
           }
         }
       });
@@ -66,7 +72,7 @@ export function ProductDetails({ product, children }: ProductDetailsProps) {
 
   // Placeholder if no images
   const displayImages = allImages.length > 0 ? allImages : [
-    { id: 0, documentId: 'placeholder', url: '/placeholder.svg', alternativeText: product.name, name: 'placeholder' } as StrapiMedia
+    { _key: 'placeholder', url: '/placeholder.svg', alt: product.name } as ImageItem
   ];
 
   // When variant selection changes, switch to that variant's image
@@ -91,8 +97,8 @@ export function ProductDetails({ product, children }: ProductDetailsProps) {
         {/* Main image */}
         <div className="relative aspect-square w-full overflow-hidden rounded-[30px] bg-white">
           <Image
-            src={'isCloudinary' in selectedImage && selectedImage.isCloudinary ? selectedImage.url : getStrapiMediaUrl(selectedImage.url)}
-            alt={selectedImage.alternativeText || product.name}
+            src={'isCloudinary' in selectedImage && selectedImage.isCloudinary ? selectedImage.url : getImageUrl(selectedImage.url)}
+            alt={selectedImage.alt || product.name}
             fill
             sizes="(max-width: 768px) 100vw, 50vw"
             className="object-contain p-8"
@@ -105,7 +111,7 @@ export function ProductDetails({ product, children }: ProductDetailsProps) {
           <div className="flex gap-3 overflow-x-auto pb-2">
             {displayImages.map((image, index) => (
               <button
-                key={`${image.id}-${index}`}
+                key={`${image._key || index}`}
                 onClick={() => setSelectedImageIndex(index)}
                 className={cn(
                   'relative h-20 w-20 flex-shrink-0 rounded-xl overflow-hidden border-2 transition-all bg-white',
@@ -113,8 +119,8 @@ export function ProductDetails({ product, children }: ProductDetailsProps) {
                 )}
               >
                 <Image
-                  src={'isCloudinary' in image && image.isCloudinary ? image.url : getStrapiMediaUrl(image.url)}
-                  alt={image.alternativeText || `${product.name} ${index + 1}`}
+                  src={'isCloudinary' in image && image.isCloudinary ? image.url : getImageUrl(image.url)}
+                  alt={image.alt || `${product.name} ${index + 1}`}
                   fill
                   sizes="80px"
                   className="object-contain p-2"

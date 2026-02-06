@@ -53,7 +53,7 @@ export function QuoteRequestForm({ userEmail, companyName, phone }: QuoteRequest
     }
 
     // Redirect to success page
-    router.push(`/hu/ajanlatkeres/sikeres?id=${data.documentId}`);
+    router.push(`/hu/ajanlatkeres/sikeres?id=${data.id}`);
   };
 
   return (

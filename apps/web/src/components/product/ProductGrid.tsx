@@ -22,7 +22,7 @@ export function ProductGrid({ products, columns = 4 }: ProductGridProps) {
       }`}
     >
       {products.map((product) => (
-        <ProductCardEnhanced key={product.documentId} product={product} />
+        <ProductCardEnhanced key={product._id} product={product} />
       ))}
     </div>
   );

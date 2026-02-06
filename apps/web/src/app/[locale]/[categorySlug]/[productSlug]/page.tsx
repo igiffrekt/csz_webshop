@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { Link } from '@/i18n/navigation';
-import { getStrapiProduct, getStrapiProducts, getStrapiCategory, transformStrapiProduct } from '@/lib/strapi';
+import { getProduct, getProducts, getCategory } from '@/lib/sanity-queries';
 import { ProductInfo } from '@/components/product/ProductInfo';
 import { ProductDetails } from '@/components/product/ProductDetails';
 import { CertBadges } from '@/components/product/CertBadges';
@@ -15,23 +15,111 @@ interface Props {
   params: Promise<{ categorySlug: string; productSlug: string; locale: string }>;
 }
 
+function getSlugString(slug: any): string {
+  if (typeof slug === 'string') return slug;
+  return slug?.current || '';
+}
+
+function adaptProduct(p: any) {
+  return {
+    ...p,
+    id: 0,
+    _id: p._id,
+    slug: getSlugString(p.slug),
+    images: (p.images || []).map((img: any) => ({
+      id: 0,
+      _id: '',
+      url: img.url,
+      alt: img.alt || null,
+      name: '',
+      width: img.width,
+      height: img.height,
+    })),
+    categories: (p.categories || []).map((cat: any) => ({
+      id: 0,
+      _id: cat._id,
+      name: cat.name,
+      slug: getSlugString(cat.slug),
+      createdAt: '',
+      updatedAt: '',
+      publishedAt: '',
+    })),
+    specifications: (p.specifications || []).map((spec: any, i: number) => ({
+      id: i,
+      name: spec.name,
+      value: spec.value,
+      unit: spec.unit,
+    })),
+    certifications: (p.certifications || []).map((cert: any, i: number) => ({
+      id: i,
+      name: cert.name,
+      standard: cert.standard,
+      expiryDate: cert.expiryDate,
+      certificate: cert.certificate ? {
+        id: 0,
+        _id: '',
+        url: cert.certificate,
+        alt: null,
+        name: cert.name,
+      } : undefined,
+    })),
+    documents: (p.documents || []).map((doc: any) => ({
+      id: 0,
+      _id: '',
+      url: doc.url,
+      alt: null,
+      name: doc.name,
+    })),
+    variants: p.variants || [],
+    description: p.description ? convertPortableTextToHtml(p.description) : undefined,
+    shortDescription: p.shortDescription,
+    createdAt: '',
+    updatedAt: '',
+    publishedAt: '',
+  };
+}
+
+function convertPortableTextToHtml(blocks: any[]): string {
+  if (!blocks || !Array.isArray(blocks)) return '';
+  return blocks
+    .map((block: any) => {
+      if (block._type !== 'block') return '';
+      const text = (block.children || [])
+        .map((child: any) => {
+          let t = child.text || '';
+          if (child.marks?.includes('strong')) t = `<strong>${t}</strong>`;
+          if (child.marks?.includes('em')) t = `<em>${t}</em>`;
+          return t;
+        })
+        .join('');
+      if (block.style === 'h2') return `<h2>${text}</h2>`;
+      if (block.style === 'h3') return `<h3>${text}</h3>`;
+      if (block.style === 'h4') return `<h4>${text}</h4>`;
+      if (block.listItem === 'bullet') return `<li>${text}</li>`;
+      if (block.listItem === 'number') return `<li>${text}</li>`;
+      return `<p>${text}</p>`;
+    })
+    .join('\n');
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { productSlug } = await params;
 
   try {
-    const strapiProduct = await getStrapiProduct(productSlug);
-    if (!strapiProduct) {
+    const product = await getProduct(productSlug);
+    if (!product) {
       return { title: 'Termék nem található' };
     }
-    const product = transformStrapiProduct(strapiProduct);
+
+    const description = product.shortDescription || product.name;
 
     return {
       title: product.name,
-      description: product.description?.slice(0, 160) || `${product.name} - Tűzvédelmi eszköz`,
+      description: typeof description === 'string' ? description.slice(0, 160) : `${product.name} - Tűzvédelmi eszköz`,
       openGraph: {
         title: product.name,
-        description: product.description?.slice(0, 160) || undefined,
-        images: product.images?.[0] ? [product.images[0].url] : undefined,
+        description: typeof description === 'string' ? description.slice(0, 160) : undefined,
+        images: product.images?.[0]?.url ? [product.images[0].url] : undefined,
       },
     };
   } catch {
@@ -45,27 +133,30 @@ export default async function ProductPage({ params }: Props) {
   const { categorySlug, productSlug } = await params;
   const t = await getTranslations('product');
 
-  let product: ReturnType<typeof transformStrapiProduct> | null = null;
-  let relatedProducts: ReturnType<typeof transformStrapiProduct>[] = [];
-  let category: Awaited<ReturnType<typeof getStrapiCategory>> = null;
+  let product: any = null;
+  let relatedProducts: any[] = [];
+  let category: any = null;
 
   try {
-    const [strapiProduct, strapiCategory, strapiRelated] = await Promise.all([
-      getStrapiProduct(productSlug),
-      getStrapiCategory(categorySlug),
-      getStrapiProducts({ category: categorySlug, pageSize: 5 }),
+    const [sanityProduct, sanityCategory, sanityRelated] = await Promise.all([
+      getProduct(productSlug),
+      getCategory(categorySlug),
+      getProducts({ category: categorySlug, pageSize: 5 }),
     ]);
 
-    if (!strapiProduct) {
+    if (!sanityProduct) {
       notFound();
     }
 
-    product = transformStrapiProduct(strapiProduct);
-    category = strapiCategory;
-    relatedProducts = strapiRelated.products
-      .filter((p) => p.slug !== productSlug)
+    product = adaptProduct(sanityProduct);
+    category = sanityCategory ? {
+      name: sanityCategory.name,
+      slug: getSlugString(sanityCategory.slug),
+    } : null;
+    relatedProducts = sanityRelated.data
+      .filter((p: any) => getSlugString(p.slug) !== productSlug)
       .slice(0, 4)
-      .map(transformStrapiProduct);
+      .map(adaptProduct);
   } catch (error) {
     console.error('Failed to fetch product:', error);
     notFound();
@@ -80,7 +171,7 @@ export default async function ProductPage({ params }: Props) {
     '@context': 'https://schema.org',
     '@type': 'Product',
     name: product.name,
-    description: product.description,
+    description: product.shortDescription || product.description,
     image: product.images?.[0]?.url,
     sku: product.sku,
     offers: {
@@ -231,8 +322,8 @@ export default async function ProductPage({ params }: Props) {
                 </h2>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                {relatedProducts.map((relatedProduct) => (
-                  <ProductCardEnhanced key={relatedProduct.documentId} product={relatedProduct} />
+                {relatedProducts.map((relatedProduct: any) => (
+                  <ProductCardEnhanced key={relatedProduct._id} product={relatedProduct} />
                 ))}
               </div>
             </section>

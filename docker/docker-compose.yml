@@ -4,15 +4,15 @@ services:
     container_name: csz-postgres
     restart: unless-stopped
     environment:
-      POSTGRES_USER: strapi
-      POSTGRES_PASSWORD: strapi
-      POSTGRES_DB: csz_strapi
+      POSTGRES_USER: csz
+      POSTGRES_PASSWORD: csz_secure_pass
+      POSTGRES_DB: csz_sanity
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U strapi -d csz_strapi"]
+      test: ["CMD-SHELL", "pg_isready -U csz -d csz_sanity"]
       interval: 10s
       timeout: 5s
       retries: 5

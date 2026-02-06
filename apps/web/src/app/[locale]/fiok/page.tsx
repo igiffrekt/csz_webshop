@@ -1,8 +1,9 @@
 import { Metadata } from "next";
+import { redirect } from "next/navigation";
 import { Link } from "@/i18n/navigation";
-import { requireAuth } from "@/lib/auth/dal";
+import { auth } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
-import { logoutAction } from "@/lib/auth/actions";
+import { logoutAction } from "@/lib/auth-actions";
 import { User, Package, MapPin, Building2, FileText } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -11,14 +12,17 @@ export const metadata: Metadata = {
 };
 
 export default async function AccountPage() {
-  const session = await requireAuth("/hu/fiok");
+  const session = await auth();
+  if (!session?.user) {
+    redirect("/hu/auth/bejelentkezes?redirect=/hu/fiok");
+  }
 
   return (
     <div className="site-container py-8">
       <div className="mb-8">
         <h1 className="text-2xl font-bold">Fiókom</h1>
         <p className="text-muted-foreground mt-1">
-          Üdvözöllek, {session.username}!
+          Üdvözöllek, {session.user.username || session.user.name}!
         </p>
       </div>
 
@@ -100,11 +104,11 @@ export default async function AccountPage() {
         <dl className="grid gap-2 text-sm">
           <div className="flex gap-2">
             <dt className="text-muted-foreground">E-mail:</dt>
-            <dd>{session.email}</dd>
+            <dd>{session.user.email}</dd>
           </div>
           <div className="flex gap-2">
             <dt className="text-muted-foreground">Felhasználónév:</dt>
-            <dd>{session.username}</dd>
+            <dd>{session.user.username}</dd>
           </div>
         </dl>
       </div>

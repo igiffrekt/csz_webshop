@@ -4,14 +4,14 @@ import { Link } from '@/i18n/navigation';
 import { ArrowRight } from 'lucide-react';
 
 interface CategoryChild {
-  documentId?: string;
+  _id?: string;
   name: string;
   slug: string;
   count?: number;
 }
 
 interface CategoryItem {
-  documentId?: string;
+  _id?: string;
   name: string;
   slug: string;
   description?: string | null;
@@ -43,7 +43,7 @@ export function CategoryGrid({ categories }: CategoryGridProps) {
         <div className="grid md:grid-cols-2 gap-6">
           {displayCategories.map((category, index) => (
             <CategoryCard
-              key={category.documentId || category.slug}
+              key={category._id || category.slug}
               category={category}
               imagePosition={index % 2 === 0 ? 'left' : 'right'}
             />
@@ -169,10 +169,10 @@ function getDefaultSubcategories(slug: string): string[] {
 
 // Default categories if none from API
 const defaultCategories: CategoryItem[] = [
-  { documentId: '1', name: 'Tűzoltó készülékek', slug: 'tuzolto-keszulekek', children: [], count: 0 },
-  { documentId: '2', name: 'Tűzjelző rendszerek', slug: 'tuzjelzo-rendszerek', children: [], count: 0 },
-  { documentId: '3', name: 'Poroltó készülékek', slug: 'porolto', children: [], count: 0 },
-  { documentId: '4', name: 'CO2 oltók', slug: 'co2-olto', children: [], count: 0 },
-  { documentId: '5', name: 'Védőfelszerelések', slug: 'vedofelszerelesek', children: [], count: 0 },
-  { documentId: '6', name: 'Kiegészítők', slug: 'kiegeszitok', children: [], count: 0 },
+  { _id: '1', name: 'Tűzoltó készülékek', slug: 'tuzolto-keszulekek', children: [], count: 0 },
+  { _id: '2', name: 'Tűzjelző rendszerek', slug: 'tuzjelzo-rendszerek', children: [], count: 0 },
+  { _id: '3', name: 'Poroltó készülékek', slug: 'porolto', children: [], count: 0 },
+  { _id: '4', name: 'CO2 oltók', slug: 'co2-olto', children: [], count: 0 },
+  { _id: '5', name: 'Védőfelszerelések', slug: 'vedofelszerelesek', children: [], count: 0 },
+  { _id: '6', name: 'Kiegészítők', slug: 'kiegeszitok', children: [], count: 0 },
 ];

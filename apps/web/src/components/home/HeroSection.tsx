@@ -6,11 +6,11 @@ import { Link } from '@/i18n/navigation';
 import { MoveRight, PhoneCall, ChevronRight, Flame, Bell, Shield, Wrench, Package, Tag, Star, Percent } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { getStrapiMediaUrl } from '@/lib/formatters';
-import type { Category, StrapiListResponse } from '@csz/types';
+import { getImageUrl } from '@/lib/formatters';
+import type { Category } from '@csz/types';
 
 interface HeroProduct {
-  documentId: string;
+  _id: string;
   name: string;
   slug: string;
   basePrice: number;
@@ -57,7 +57,7 @@ export function HeroSection({ products = [] }: HeroSectionProps) {
         if (res.ok) {
           const text = await res.text();
           if (text && text.trim()) {
-            const data: StrapiListResponse<Category> = JSON.parse(text);
+            const data: { data: Category[] } = JSON.parse(text);
             const topLevel = data.data?.filter((cat) => !cat.parent) || [];
             setCategories(topLevel);
           }
@@ -147,7 +147,7 @@ export function HeroSection({ products = [] }: HeroSectionProps) {
                   {(gridProducts[0]?.cloudinaryImageUrl || gridProducts[0]?.images?.[0]) ? (
                     <div className="relative w-full h-full">
                       <Image
-                        src={gridProducts[0].cloudinaryImageUrl || getStrapiMediaUrl(gridProducts[0].images![0].url)}
+                        src={gridProducts[0].cloudinaryImageUrl || getImageUrl(gridProducts[0].images![0].url)}
                         alt={gridProducts[0].name}
                         fill
                         className="object-contain p-4"
@@ -165,7 +165,7 @@ export function HeroSection({ products = [] }: HeroSectionProps) {
                   {(gridProducts[1]?.cloudinaryImageUrl || gridProducts[1]?.images?.[0]) ? (
                     <div className="relative w-full h-full">
                       <Image
-                        src={gridProducts[1].cloudinaryImageUrl || getStrapiMediaUrl(gridProducts[1].images![0].url)}
+                        src={gridProducts[1].cloudinaryImageUrl || getImageUrl(gridProducts[1].images![0].url)}
                         alt={gridProducts[1].name}
                         fill
                         className="object-contain p-4"
@@ -183,7 +183,7 @@ export function HeroSection({ products = [] }: HeroSectionProps) {
                   {(gridProducts[2]?.cloudinaryImageUrl || gridProducts[2]?.images?.[0]) ? (
                     <div className="relative w-full h-full">
                       <Image
-                        src={gridProducts[2].cloudinaryImageUrl || getStrapiMediaUrl(gridProducts[2].images![0].url)}
+                        src={gridProducts[2].cloudinaryImageUrl || getImageUrl(gridProducts[2].images![0].url)}
                         alt={gridProducts[2].name}
                         fill
                         className="object-contain p-4"

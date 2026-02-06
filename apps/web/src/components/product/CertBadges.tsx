@@ -21,7 +21,7 @@ export async function CertBadges({ certifications }: CertBadgesProps) {
       <div className="flex flex-wrap gap-3">
         {certifications.map((cert) => (
           <div
-            key={cert.id}
+            key={cert._key || cert.name}
             className="flex items-center gap-2 px-3 py-2 bg-green-50 border border-green-200 rounded-md text-green-800"
             title={cert.standard || cert.name}
           >

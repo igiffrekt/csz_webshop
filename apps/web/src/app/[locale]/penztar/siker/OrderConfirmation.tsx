@@ -48,7 +48,7 @@ export function OrderConfirmation({ order }: OrderConfirmationProps) {
 
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
           <Mail className="h-4 w-4" />
-          <span>Email értesítést küldtünk a {order.user?.email || 'megadott'} címre</span>
+          <span>Email értesítést küldtünk a megadott email címre</span>
         </div>
       </div>
 

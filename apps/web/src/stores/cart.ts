@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import type { Product, ProductVariant, CartItem, AppliedCoupon } from '@csz/types';
-import { getStrapiMediaUrl } from '@/lib/formatters';
+import { getImageUrl } from '@/lib/formatters';
 
 interface CartState {
   items: CartItem[];
@@ -29,9 +29,11 @@ export const useCartStore = create<CartState>()(
       coupon: null,
 
       addItem: (product, variant, quantity = 1) => {
-        const itemId = variant
-          ? `${product.documentId}-${variant.documentId}`
-          : product.documentId;
+        const productKey = product._id;
+        const variantKey = variant ? variant._id : undefined;
+        const itemId = variantKey
+          ? `${productKey}-${variantKey}`
+          : productKey;
 
         set((state) => {
           const existingItem = state.items.find(item => item.id === itemId);
@@ -51,15 +53,13 @@ export const useCartStore = create<CartState>()(
           // Use variant image if available, otherwise fall back to product image
           const imageSource = variant?.image?.url ?? product.images?.[0]?.url;
           const imageUrl = imageSource
-            ? getStrapiMediaUrl(imageSource)
+            ? getImageUrl(imageSource)
             : undefined;
 
           const newItem: CartItem = {
             id: itemId,
-            productId: product.id,
-            productDocumentId: product.documentId,
-            variantId: variant?.id,
-            variantDocumentId: variant?.documentId,
+            productId: productKey,
+            variantId: variantKey,
             name: product.name,
             variantName: variant?.name,
             sku: variant?.sku ?? product.sku,

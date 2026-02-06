@@ -2,12 +2,19 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import { getStrapiMediaUrl } from '@/lib/formatters';
-import type { StrapiMedia } from '@csz/types';
+import { getImageUrl } from '@/lib/formatters';
 import { cn } from '@/lib/utils';
 
+interface ImageAsset {
+  _key?: string;
+  url: string;
+  alt?: string | null;
+  width?: number;
+  height?: number;
+}
+
 interface ProductGalleryProps {
-  images: StrapiMedia[];
+  images: ImageAsset[];
   productName: string;
 }
 
@@ -16,7 +23,7 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
 
   // Use placeholder if no images
   const displayImages = images.length > 0 ? images : [
-    { id: 0, documentId: 'placeholder', url: '/placeholder.svg', alternativeText: productName, name: 'placeholder' } as StrapiMedia
+    { _key: 'placeholder', url: '/placeholder.svg', alt: productName } as ImageAsset
   ];
 
   const selectedImage = displayImages[selectedIndex];
@@ -26,8 +33,8 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
       {/* Main image */}
       <div className="relative aspect-square w-full overflow-hidden rounded-lg bg-gray-100">
         <Image
-          src={getStrapiMediaUrl(selectedImage.url)}
-          alt={selectedImage.alternativeText || productName}
+          src={getImageUrl(selectedImage.url)}
+          alt={selectedImage.alt || productName}
           fill
           sizes="(max-width: 768px) 100vw, 50vw"
           className="object-contain"
@@ -40,7 +47,7 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
         <div className="flex gap-2 overflow-x-auto pb-2">
           {displayImages.map((image, index) => (
             <button
-              key={image.id}
+              key={image._key || index}
               onClick={() => setSelectedIndex(index)}
               className={cn(
                 'relative h-20 w-20 flex-shrink-0 rounded-md overflow-hidden border-2 transition-colors',
@@ -48,8 +55,8 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
               )}
             >
               <Image
-                src={getStrapiMediaUrl(image.url)}
-                alt={image.alternativeText || `${productName} ${index + 1}`}
+                src={getImageUrl(image.url)}
+                alt={image.alt || `${productName} ${index + 1}`}
                 fill
                 sizes="80px"
                 className="object-cover"

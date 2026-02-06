@@ -6,10 +6,8 @@ import { Button } from '@/components/ui/button';
 import { Search, Plus, Minus, X } from 'lucide-react';
 import type { QuoteItem } from '@csz/types';
 
-const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337';
-
 interface Product {
-  documentId: string;
+  _id: string;
   name: string;
   sku: string;
   basePrice: number;
@@ -30,18 +28,15 @@ export function ProductSelector({ items, onItemsChange }: ProductSelectorProps) 
 
     setIsSearching(true);
     try {
-      const params = new URLSearchParams({
-        'filters[name][$containsi]': searchQuery,
-        'fields[0]': 'name',
-        'fields[1]': 'sku',
-        'fields[2]': 'basePrice',
-        'pagination[limit]': '10',
-      });
-
-      const response = await fetch(`${STRAPI_URL}/api/products?${params}`);
+      const response = await fetch(`/api/products/search?q=${encodeURIComponent(searchQuery)}`);
       if (response.ok) {
         const json = await response.json();
-        setSearchResults(json.data || []);
+        setSearchResults((json.data || []).map((p: any) => ({
+          _id: p._id,
+          name: p.name,
+          sku: p.sku,
+          basePrice: p.basePrice,
+        })));
       }
     } catch (error) {
       console.error('Search failed:', error);
@@ -51,7 +46,8 @@ export function ProductSelector({ items, onItemsChange }: ProductSelectorProps) 
   };
 
   const addProduct = (product: Product) => {
-    const existingIndex = items.findIndex(item => item.productId === product.documentId);
+    const productId = product._id;
+    const existingIndex = items.findIndex(item => item.productId === productId);
 
     if (existingIndex >= 0) {
       // Increase quantity if already in list
@@ -61,7 +57,7 @@ export function ProductSelector({ items, onItemsChange }: ProductSelectorProps) 
     } else {
       // Add new item
       const newItem: QuoteItem = {
-        productId: product.documentId,
+        productId,
         productName: product.name,
         sku: product.sku,
         quantity: 1,
@@ -115,7 +111,7 @@ export function ProductSelector({ items, onItemsChange }: ProductSelectorProps) 
         <div className="border rounded-lg divide-y">
           {searchResults.map((product) => (
             <div
-              key={product.documentId}
+              key={product._id}
               className="p-3 flex justify-between items-center hover:bg-muted/50"
             >
               <div>

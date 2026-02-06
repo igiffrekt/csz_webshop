@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { getCategories } from '@/lib/api';
+import { getCategories } from '@/lib/sanity-queries';
 
 // Handle locale-prefixed API route for categories
 // This is needed because next-intl routes all paths through [locale]

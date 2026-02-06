@@ -6,7 +6,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
-import type { FAQ } from '@/lib/content-api';
+import type { FAQ } from '@csz/types';
 
 interface FAQAccordionProps {
   faqs: FAQ[];
@@ -18,7 +18,7 @@ export function FAQAccordion({ faqs, groupByCategory = false }: FAQAccordionProp
     return (
       <Accordion type="single" collapsible className="w-full">
         {faqs.map((faq) => (
-          <AccordionItem key={faq.documentId} value={faq.documentId}>
+          <AccordionItem key={faq._id} value={faq._id}>
             <AccordionTrigger className="text-left">
               {faq.question}
             </AccordionTrigger>
@@ -51,7 +51,7 @@ export function FAQAccordion({ faqs, groupByCategory = false }: FAQAccordionProp
           <h2 className="text-xl font-semibold mb-4">{category}</h2>
           <Accordion type="single" collapsible className="w-full">
             {categoryFaqs.map((faq) => (
-              <AccordionItem key={faq.documentId} value={faq.documentId}>
+              <AccordionItem key={faq._id} value={faq._id}>
                 <AccordionTrigger className="text-left">
                   {faq.question}
                 </AccordionTrigger>

@@ -1,18 +1,29 @@
-import { NextRequest, NextResponse } from "next/server";
-import { updateAddress } from "@/lib/address-api";
+import { NextRequest, NextResponse } from 'next/server'
+import { auth } from '@/lib/auth'
+import { prisma } from '@/lib/prisma'
 
 export async function POST(request: NextRequest) {
-  const { documentId } = await request.json();
-
-  if (!documentId) {
-    return NextResponse.json({ message: "documentId required" }, { status: 400 });
+  const session = await auth()
+  if (!session?.user?.id) {
+    return NextResponse.json({ error: 'Nincs bejelentkezve' }, { status: 401 })
   }
 
-  const result = await updateAddress(documentId, { isDefault: true });
-
-  if (result.error) {
-    return NextResponse.json({ message: result.error }, { status: 400 });
+  const { id } = await request.json()
+  if (!id) {
+    return NextResponse.json({ error: 'id szükséges' }, { status: 400 })
   }
 
-  return NextResponse.json(result.data);
+  // Clear all defaults
+  await prisma.shippingAddress.updateMany({
+    where: { userId: session.user.id, isDefault: true },
+    data: { isDefault: false },
+  })
+
+  // Set new default
+  await prisma.shippingAddress.update({
+    where: { id },
+    data: { isDefault: true },
+  })
+
+  return NextResponse.json({ success: true })
 }

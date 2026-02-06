@@ -35,7 +35,7 @@ export function SummaryStep({ addresses }: SummaryStepProps) {
   // Get shipping address details
   const shippingAddress = useNewShippingAddress
     ? newShippingAddress
-    : addresses.find(a => a.documentId === shippingAddressId);
+    : addresses.find(a => a.id === shippingAddressId);
 
   // Get billing address details
   const billingAddress = useSameAsBilling ? shippingAddress : newBillingAddress;
@@ -47,8 +47,8 @@ export function SummaryStep({ addresses }: SummaryStepProps) {
       setError(null);
 
       const lineItems = items.map(item => ({
-        productId: item.productDocumentId,
-        variantId: item.variantDocumentId,
+        productId: item.productId,
+        variantId: item.variantId,
         quantity: item.quantity,
       }));
 

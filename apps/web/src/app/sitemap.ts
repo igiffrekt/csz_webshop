@@ -1,7 +1,12 @@
 import type { MetadataRoute } from 'next';
-import { getStrapiProducts, getStrapiCategories } from '@/lib/strapi';
+import { getProducts, getCategories } from '@/lib/sanity-queries';
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://csz-tuzvedelmi.hu';
+
+function getSlugString(slug: any): string {
+  if (typeof slug === 'string') return slug;
+  return slug?.current || '';
+}
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticPages: MetadataRoute.Sitemap = [
@@ -64,10 +69,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Fetch products for sitemap
   let productPages: MetadataRoute.Sitemap = [];
   try {
-    const { products } = await getStrapiProducts({ pageSize: 1000 });
-    productPages = products.map((product) => ({
-      url: `${SITE_URL}/termekek/${product.slug}`,
-      lastModified: new Date(product.updatedAt),
+    const { data: products } = await getProducts({ pageSize: 1000 });
+    productPages = products.map((product: any) => ({
+      url: `${SITE_URL}/termekek/${getSlugString(product.slug)}`,
+      lastModified: new Date(),
       changeFrequency: 'weekly' as const,
       priority: 0.7,
     }));
@@ -78,9 +83,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Fetch categories for sitemap
   let categoryPages: MetadataRoute.Sitemap = [];
   try {
-    const categories = await getStrapiCategories();
-    categoryPages = categories.map((category) => ({
-      url: `${SITE_URL}/kategoriak/${category.slug}`,
+    const { data: categories } = await getCategories();
+    categoryPages = categories.map((category: any) => ({
+      url: `${SITE_URL}/kategoriak/${getSlugString(category.slug)}`,
       lastModified: new Date(),
       changeFrequency: 'weekly' as const,
       priority: 0.6,

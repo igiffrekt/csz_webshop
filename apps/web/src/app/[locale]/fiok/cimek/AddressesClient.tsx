@@ -48,7 +48,7 @@ export function AddressesClient({ initialAddresses }: AddressesClientProps) {
 
   const handleSubmit = async (data: AddressFormData) => {
     const result = editingAddress
-      ? await updateAddressAction(editingAddress.documentId, data)
+      ? await updateAddressAction(editingAddress.id, data)
       : await createAddressAction(data);
 
     if (!result.success) {
@@ -61,19 +61,19 @@ export function AddressesClient({ initialAddresses }: AddressesClientProps) {
     });
   };
 
-  const handleDelete = async (documentId: string) => {
-    const result = await deleteAddressAction(documentId);
+  const handleDelete = async (id: string) => {
+    const result = await deleteAddressAction(id);
 
     if (!result.success) {
       throw new Error(result.error || "Törlés sikertelen");
     }
 
     // Optimistic update
-    setAddresses(addresses.filter((a) => a.documentId !== documentId));
+    setAddresses(addresses.filter((a) => a.id !== id));
   };
 
-  const handleSetDefault = async (documentId: string) => {
-    const result = await setDefaultAddressAction(documentId);
+  const handleSetDefault = async (id: string) => {
+    const result = await setDefaultAddressAction(id);
 
     if (!result.success) {
       throw new Error(result.error || "Beállítás sikertelen");
@@ -109,7 +109,7 @@ export function AddressesClient({ initialAddresses }: AddressesClientProps) {
         <div className="grid gap-4 md:grid-cols-2">
           {addresses.map((address) => (
             <AddressCard
-              key={address.documentId}
+              key={address.id}
               address={address}
               onEdit={handleEdit}
               onDelete={handleDelete}

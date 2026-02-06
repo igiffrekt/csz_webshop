@@ -4,7 +4,7 @@ import { useMemo } from 'react';
 import Image from 'next/image';
 import { Link } from '@/i18n/navigation';
 import type { Product } from '@csz/types';
-import { getStrapiMediaUrl } from '@/lib/formatters';
+import { getImageUrl, getSlugString } from '@/lib/formatters';
 
 interface CategoryChild {
   name: string;
@@ -24,7 +24,7 @@ interface CategoryCardData {
 
 interface CategoryCardsProps {
   categories: {
-    documentId?: string;
+    _id?: string;
     name: string;
     slug: string;
     count?: number;
@@ -50,7 +50,7 @@ function findProductImageForCategory(
   products: Product[]
 ): string | null {
   const product = products.find((p) =>
-    p.categories?.some((cat) => cat.slug === categorySlug || cat.slug.includes(categorySlug) || categorySlug.includes(cat.slug))
+    p.categories?.some((cat) => { const s = getSlugString(cat.slug); return s === categorySlug || s.includes(categorySlug) || categorySlug.includes(s); })
   );
 
   if (!product) return null;
@@ -60,7 +60,7 @@ function findProductImageForCategory(
   }
 
   if (product.images?.[0]?.url) {
-    return getStrapiMediaUrl(product.images[0].url);
+    return getImageUrl(product.images[0].url);
   }
 
   return null;
@@ -172,7 +172,7 @@ export function CategoryCards({ categories, products = [] }: CategoryCardsProps)
         }
 
         return {
-          id: matchedCat.documentId || matchedCat.slug,
+          id: matchedCat._id || matchedCat.slug,
           name: matchedCat.name,
           slug: matchedCat.slug,
           productCount: totalProductCount,

@@ -1,5 +1,5 @@
 import { redirect } from 'next/navigation';
-import { requireAuth } from '@/lib/auth/dal';
+import { auth } from '@/lib/auth';
 import { getOrder } from '@/lib/order-api';
 import { formatHUF } from '@/lib/checkout-api';
 import { Button } from '@/components/ui/button';
@@ -18,7 +18,10 @@ interface Props {
 }
 
 export default async function BankTransferPage({ searchParams }: Props) {
-  await requireAuth();
+  const session = await auth();
+  if (!session?.user) {
+    redirect('/hu/auth/bejelentkezes');
+  }
 
   const { order_id } = await searchParams;
 

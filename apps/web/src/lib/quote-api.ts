@@ -1,111 +1,85 @@
-'use server';
+'use server'
 
-import { getSession } from '@/lib/auth/session';
-import type { QuoteRequest, CreateQuoteRequestInput } from '@csz/types';
+import { auth } from '@/lib/auth'
+import { prisma } from '@/lib/prisma'
+import type { QuoteRequest, CreateQuoteRequestInput } from '@csz/types'
 
-const STRAPI_URL = process.env.STRAPI_URL || 'http://localhost:1337';
-
-async function getAuthHeaders(): Promise<HeadersInit> {
-  const session = await getSession();
-  if (!session?.jwt) {
-    throw new Error('Bejelentkezés szükséges');
-  }
-  return {
-    'Content-Type': 'application/json',
-    Authorization: `Bearer ${session.jwt}`,
-  };
+function generateRequestNumber(): string {
+  const date = new Date()
+  const year = date.getFullYear()
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const random = Math.random().toString(36).substring(2, 8).toUpperCase()
+  return `AK-${year}${month}-${random}`
 }
 
 export async function createQuoteRequest(
   input: CreateQuoteRequestInput
 ): Promise<{ data: QuoteRequest | null; error?: string }> {
   try {
-    const headers = await getAuthHeaders();
-
-    const response = await fetch(`${STRAPI_URL}/api/quote-requests`, {
-      method: 'POST',
-      headers,
-      body: JSON.stringify({ data: input }),
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      return { data: null, error: errorData.error?.message || 'Hiba történt az árajánlat kérés küldésekor' };
+    const session = await auth()
+    if (!session?.user?.id) {
+      return { data: null, error: 'Bejelentkezés szükséges' }
     }
 
-    const json = await response.json();
-    return { data: json.data };
+    const quote = await prisma.quoteRequest.create({
+      data: {
+        requestNumber: generateRequestNumber(),
+        status: 'pending',
+        userId: session.user.id,
+        items: input.items as any,
+        deliveryNotes: input.deliveryNotes,
+        companyName: input.companyName,
+        contactEmail: input.contactEmail || session.user.email!,
+        contactPhone: input.contactPhone,
+      },
+    })
+
+    return { data: quote as any }
   } catch (error) {
     if (error instanceof Error && error.message === 'Bejelentkezés szükséges') {
-      return { data: null, error: error.message };
+      return { data: null, error: error.message }
     }
-    return { data: null, error: 'Kapcsolódási hiba' };
+    return { data: null, error: 'Kapcsolódási hiba' }
   }
 }
 
-export async function getQuoteRequests(
-  jwt?: string
-): Promise<{ data: QuoteRequest[]; error?: string }> {
+export async function getQuoteRequests(): Promise<{ data: QuoteRequest[]; error?: string }> {
   try {
-    let headers: HeadersInit;
-    if (jwt) {
-      headers = {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${jwt}`,
-      };
-    } else {
-      headers = await getAuthHeaders();
+    const session = await auth()
+    if (!session?.user?.id) {
+      return { data: [], error: 'Bejelentkezés szükséges' }
     }
 
-    const response = await fetch(`${STRAPI_URL}/api/quote-requests`, {
-      headers,
-      cache: 'no-store',
-    });
+    const quotes = await prisma.quoteRequest.findMany({
+      where: { userId: session.user.id },
+      orderBy: { createdAt: 'desc' },
+    })
 
-    if (!response.ok) {
-      return { data: [], error: 'Hiba történt az árajánlat kérések lekérésekor' };
-    }
-
-    const json = await response.json();
-    return { data: json.data || [] };
-  } catch (error) {
-    if (error instanceof Error && error.message === 'Bejelentkezés szükséges') {
-      return { data: [], error: error.message };
-    }
-    return { data: [], error: 'Kapcsolódási hiba' };
+    return { data: quotes as any }
+  } catch {
+    return { data: [], error: 'Kapcsolódási hiba' }
   }
 }
 
 export async function getQuoteRequest(
-  documentId: string,
-  jwt?: string
+  id: string
 ): Promise<{ data: QuoteRequest | null; error?: string }> {
   try {
-    let headers: HeadersInit;
-    if (jwt) {
-      headers = {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${jwt}`,
-      };
-    } else {
-      headers = await getAuthHeaders();
+    const session = await auth()
+    if (!session?.user?.id) {
+      return { data: null, error: 'Bejelentkezés szükséges' }
     }
 
-    const response = await fetch(`${STRAPI_URL}/api/quote-requests/${documentId}`, {
-      headers,
-      cache: 'no-store',
-    });
+    const quote = await prisma.quoteRequest.findFirst({
+      where: { id, userId: session.user.id },
+    })
 
-    if (!response.ok) {
-      return { data: null, error: 'Árajánlat kérés nem található' };
+    if (!quote) {
+      return { data: null, error: 'Árajánlat kérés nem található' }
     }
 
-    const json = await response.json();
-    return { data: json.data };
-  } catch (error) {
-    if (error instanceof Error && error.message === 'Bejelentkezés szükséges') {
-      return { data: null, error: error.message };
-    }
-    return { data: null, error: 'Kapcsolódási hiba' };
+    return { data: quote as any }
+  } catch {
+    return { data: null, error: 'Kapcsolódási hiba' }
   }
 }

@@ -1,4 +1,5 @@
-import { requireAuth } from '@/lib/auth/dal';
+import { redirect } from 'next/navigation';
+import { auth } from '@/lib/auth';
 import { getOrder } from '@/lib/order-api';
 import { formatOrderStatus, formatPrice } from '@/lib/formatters';
 import { notFound } from 'next/navigation';
@@ -18,7 +19,11 @@ interface Props {
 
 export default async function OrderDetailPage({ params }: Props) {
   const { id } = await params;
-  await requireAuth(`/hu/fiok/rendelesek/${id}`);
+  const session = await auth();
+  if (!session?.user) {
+    redirect(`/hu/auth/bejelentkezes?redirect=/hu/fiok/rendelesek/${id}`);
+  }
+
   const { data: order, error } = await getOrder(id);
 
   if (error || !order) {
@@ -34,9 +39,12 @@ export default async function OrderDetailPage({ params }: Props) {
     minute: '2-digit',
   });
 
+  const lineItems = typeof order.lineItems === 'string' ? JSON.parse(order.lineItems) : (order.lineItems || []);
+  const shippingAddress = typeof order.shippingAddress === 'string' ? JSON.parse(order.shippingAddress) : (order.shippingAddress || {});
+  const billingAddress = typeof order.billingAddress === 'string' ? JSON.parse(order.billingAddress) : order.billingAddress;
+
   return (
     <main className="site-container py-8 max-w-4xl">
-      {/* Header */}
       <div className="flex items-center gap-4 mb-8">
         <Button variant="ghost" size="icon" asChild>
           <Link href="/fiok/rendelesek">
@@ -53,16 +61,14 @@ export default async function OrderDetailPage({ params }: Props) {
       </div>
 
       <div className="grid lg:grid-cols-3 gap-8">
-        {/* Order details */}
         <div className="lg:col-span-2 space-y-6">
-          {/* Line items */}
           <div className="border rounded-lg p-6">
             <h2 className="font-semibold mb-4 flex items-center gap-2">
               <Package className="h-5 w-5" />
               Termekek
             </h2>
             <div className="space-y-4">
-              {order.lineItems.map((item, index) => (
+              {lineItems.map((item: any, index: number) => (
                 <div key={index} className="flex justify-between items-center">
                   <div>
                     <p className="font-medium">{item.name}</p>
@@ -79,36 +85,34 @@ export default async function OrderDetailPage({ params }: Props) {
             </div>
           </div>
 
-          {/* Addresses */}
           <div className="grid sm:grid-cols-2 gap-4">
             <div className="border rounded-lg p-6">
               <h2 className="font-semibold mb-2">Szallitasi cim</h2>
               <div className="text-sm text-muted-foreground">
-                <p>{order.shippingAddress.recipientName}</p>
-                <p>{order.shippingAddress.street}</p>
-                <p>{order.shippingAddress.postalCode} {order.shippingAddress.city}</p>
+                <p>{shippingAddress.recipientName}</p>
+                <p>{shippingAddress.street}</p>
+                <p>{shippingAddress.postalCode} {shippingAddress.city}</p>
               </div>
             </div>
 
-            {order.billingAddress && (
+            {billingAddress && (
               <div className="border rounded-lg p-6">
                 <h2 className="font-semibold mb-2">Szamlazasi cim</h2>
                 <div className="text-sm text-muted-foreground">
-                  {order.billingAddress.companyName && (
-                    <p className="font-medium">{order.billingAddress.companyName}</p>
+                  {billingAddress.companyName && (
+                    <p className="font-medium">{billingAddress.companyName}</p>
                   )}
-                  {order.billingAddress.vatNumber && (
-                    <p>Adoszam: {order.billingAddress.vatNumber}</p>
+                  {billingAddress.vatNumber && (
+                    <p>Adoszam: {billingAddress.vatNumber}</p>
                   )}
-                  <p>{order.billingAddress.recipientName}</p>
-                  <p>{order.billingAddress.street}</p>
-                  <p>{order.billingAddress.postalCode} {order.billingAddress.city}</p>
+                  <p>{billingAddress.recipientName}</p>
+                  <p>{billingAddress.street}</p>
+                  <p>{billingAddress.postalCode} {billingAddress.city}</p>
                 </div>
               </div>
             )}
           </div>
 
-          {/* PO Reference */}
           {order.poReference && (
             <div className="border rounded-lg p-6">
               <h2 className="font-semibold mb-2 flex items-center gap-2">
@@ -120,11 +124,9 @@ export default async function OrderDetailPage({ params }: Props) {
           )}
         </div>
 
-        {/* Order summary */}
         <div className="lg:col-span-1">
           <div className="border rounded-lg p-6 sticky top-4">
             <h2 className="font-semibold mb-4">Osszegzes</h2>
-
             <div className="space-y-2 text-sm">
               <div className="flex justify-between">
                 <span>Reszosszeg</span>
@@ -149,7 +151,6 @@ export default async function OrderDetailPage({ params }: Props) {
                 <span>{formatPrice(order.total)}</span>
               </div>
             </div>
-
             {order.paidAt && (
               <p className="text-xs text-muted-foreground mt-4">
                 Fizetve: {new Date(order.paidAt).toLocaleDateString('hu-HU')}

@@ -1,321 +1,271 @@
 // Shared TypeScript types for CSZ Webshop
-// Types matching Strapi 5 content type schemas
+// Types compatible with Sanity CMS + Prisma ORM
 
-// Media type from Strapi
-export interface StrapiMedia {
-  id: number;
-  documentId: string;
-  url: string;
-  alternativeText: string | null;
-  name: string;
-  width?: number;
-  height?: number;
-  formats?: {
-    thumbnail?: { url: string; width: number; height: number };
-    small?: { url: string; width: number; height: number };
-    medium?: { url: string; width: number; height: number };
-    large?: { url: string; width: number; height: number };
-  };
+// Sanity image asset
+export interface SanityImageAsset {
+  _key?: string
+  url: string
+  alt?: string | null
+  width?: number
+  height?: number
 }
 
-// Specification component (product.specification)
+// Specification (Sanity object)
 export interface Specification {
-  id: number;
-  name: string;
-  value: string;
-  unit?: string;
+  _key?: string
+  name: string
+  value: string
+  unit?: string
 }
 
-// Certification component (product.certification)
+// Certification (Sanity object)
 export interface Certification {
-  id: number;
-  name: string;
-  standard?: string;
-  issuedDate?: string;
-  expiryDate?: string;
-  certificate?: StrapiMedia;
+  _key?: string
+  name: string
+  standard?: string
+  issuedDate?: string
+  expiryDate?: string
+  certificate?: string // URL to certificate file
 }
 
-// Category content type
+// Category from Sanity
 export interface Category {
-  id: number;
-  documentId: string;
-  name: string;
-  slug: string;
-  description?: string;
-  image?: StrapiMedia;
-  parent?: Category;
-  children?: Category[];
-  products?: Product[];
-  createdAt: string;
-  updatedAt: string;
-  publishedAt: string;
+  _id: string
+  name: string
+  slug: string
+  description?: string
+  image?: SanityImageAsset | null
+  parent?: {
+    _id: string
+    name: string
+    slug: string
+  } | null
+  children?: Category[]
+  productCount?: number
 }
 
-// Product Variant content type
-export interface ProductVariant {
-  id: number;
-  documentId: string;
-  name: string;
-  sku: string;
-  price: number;
-  compareAtPrice?: number;
-  stock: number;
-  weight?: number;
-  attributeLabel?: string;
-  attributeValue?: string;
-  image?: StrapiMedia;
-  createdAt: string;
-  updatedAt: string;
-  publishedAt: string;
-}
-
-// Coupon content type
-export interface Coupon {
-  id: number;
-  documentId: string;
-  code: string;
-  description?: string;
-  discountType: 'percentage' | 'fixed';
-  discountValue: number;
-  minimumOrderAmount: number;
-  maximumDiscount?: number;
-  usageLimit?: number;
-  usedCount: number;
-  validFrom?: string;
-  validUntil?: string;
-  isActive: boolean;
-  createdAt: string;
-  updatedAt: string;
-  publishedAt: string;
-}
-
-// Product content type
+// Product from Sanity
 export interface Product {
-  id: number;
-  documentId: string;
-  name: string;
-  slug: string;
-  sku: string;
-  description?: string;
-  shortDescription?: string;
-  basePrice: number;
-  compareAtPrice?: number;
-  stock: number;
-  weight?: number;
-  isFeatured: boolean;
-  isOnSale: boolean;
-  images?: StrapiMedia[];
-  cloudinaryImageUrl?: string;
-  documents?: StrapiMedia[];
-  specifications?: Specification[];
-  certifications?: Certification[];
-  categories?: Category[];
-  variants?: ProductVariant[];
-  createdAt: string;
-  updatedAt: string;
-  publishedAt: string;
+  _id: string
+  _createdAt?: string
+  name: string
+  slug: string
+  sku: string
+  description?: any // Portable Text blocks
+  shortDescription?: string
+  basePrice: number
+  compareAtPrice?: number
+  stock: number
+  weight?: number
+  isFeatured: boolean
+  isOnSale: boolean
+  images?: SanityImageAsset[]
+  cloudinaryImageUrl?: string
+  documents?: { _key?: string; url: string; name: string }[]
+  specifications?: Specification[]
+  certifications?: Certification[]
+  categories?: { _id: string; name: string; slug: string }[]
+  variants?: ProductVariant[]
 }
 
-// Strapi response wrappers
-export interface StrapiResponse<T> {
-  data: T;
-  meta: {
-    pagination?: {
-      page: number;
-      pageSize: number;
-      pageCount: number;
-      total: number;
-    };
-  };
-}
-
-export interface StrapiListResponse<T> {
-  data: T[];
-  meta: {
-    pagination: {
-      page: number;
-      pageSize: number;
-      pageCount: number;
-      total: number;
-    };
-  };
+// Product Variant from Sanity
+export interface ProductVariant {
+  _id: string
+  name: string
+  sku: string
+  price: number
+  compareAtPrice?: number
+  stock: number
+  weight?: number
+  attributeLabel?: string
+  attributeValue?: string
+  image?: SanityImageAsset | null
 }
 
 // Cart item for client-side cart state
 export interface CartItem {
-  id: string;                    // Unique cart line item ID (productDocId-variantDocId or just productDocId)
-  productId: number;             // Strapi product ID
-  productDocumentId: string;     // Strapi documentId for API calls
-  variantId?: number;            // Optional variant ID
-  variantDocumentId?: string;    // Variant documentId
-  name: string;                  // Product name for display
-  variantName?: string;          // Variant name (e.g., "6kg")
-  sku: string;                   // SKU for the specific item
-  price: number;                 // Price at time of adding (in HUF)
-  quantity: number;              // Quantity in cart
-  image?: string;                // Product image URL (full URL)
-  maxStock: number;              // Max available for quantity validation
+  id: string                    // Unique cart line item ID
+  productId: string             // Sanity product _id
+  variantId?: string            // Sanity variant _id
+  name: string
+  variantName?: string
+  sku: string
+  price: number                 // Price in HUF
+  quantity: number
+  image?: string                // Image URL
+  maxStock: number
 }
 
 // Applied coupon in cart
 export interface AppliedCoupon {
-  code: string;
-  discountType: 'percentage' | 'fixed';
-  discountValue: number;
-  discountAmount: number;        // Calculated discount in HUF
+  code: string
+  discountType: 'percentage' | 'fixed'
+  discountValue: number
+  discountAmount: number
 }
 
-// User profile from Strapi users-permissions
-export interface User {
-  id: number;
-  documentId: string;
-  username: string;
-  email: string;
-  provider: string;
-  confirmed: boolean;
-  blocked: boolean;
-  firstName?: string;
-  lastName?: string;
-  phone?: string;
-  companyName?: string;
-  vatNumber?: string;
-  shippingAddresses?: ShippingAddress[];
-  createdAt: string;
-  updatedAt: string;
+// Session user (from NextAuth)
+export interface SessionUser {
+  id: string
+  email: string
+  name?: string | null
+  image?: string | null
+  firstName?: string | null
+  lastName?: string | null
+  phone?: string | null
+  companyName?: string | null
+  vatNumber?: string | null
+  username?: string | null
 }
 
-// Shipping address for user account
+// User profile (from Prisma)
+export interface UserProfile {
+  id: string
+  email: string
+  username?: string | null
+  firstName?: string | null
+  lastName?: string | null
+  phone?: string | null
+  companyName?: string | null
+  vatNumber?: string | null
+  createdAt: string | Date
+  updatedAt: string | Date
+}
+
+// Shipping address (from Prisma)
 export interface ShippingAddress {
-  id: number;
-  documentId: string;
-  label: string;
-  recipientName: string;
-  street: string;
-  city: string;
-  postalCode: string;
-  country: string;
-  phone?: string;
-  isDefault: boolean;
-  user?: User;
-  createdAt: string;
-  updatedAt: string;
+  id: string
+  label: string
+  recipientName: string
+  street: string
+  city: string
+  postalCode: string
+  country: string
+  phone?: string | null
+  isDefault: boolean
+  userId: string
+  createdAt: string
+  updatedAt: string
 }
 
-// Auth response from Strapi login/register
-export interface AuthResponse {
-  jwt: string;
-  user: User;
-}
-
-// Session payload for encrypted cookie
-export interface SessionPayload {
-  jwt: string;
-  userId: number;
-  userDocumentId: string;
-  email: string;
-  username: string;
-  expiresAt: Date;
-}
-
-// Order line item (product in an order)
+// Order line item
 export interface OrderLineItem {
-  id: number;
-  productId: number;
-  productDocumentId: string;
-  variantId?: number;
-  variantDocumentId?: string;
-  name: string;
-  variantName?: string;
-  sku: string;
-  price: number;
-  quantity: number;
-  total: number;
+  productId: string
+  variantId?: string
+  name: string
+  variantName?: string
+  sku: string
+  price: number
+  quantity: number
+  total: number
 }
 
-// Order status enum
+// Order status
 export type OrderStatus =
-  | "pending"           // Awaiting payment
-  | "paid"              // Payment confirmed
-  | "processing"        // Being prepared
-  | "shipped"           // Shipped to customer
-  | "delivered"         // Delivered
-  | "cancelled"         // Cancelled
-  | "refunded";         // Refunded
+  | 'pending'
+  | 'paid'
+  | 'processing'
+  | 'shipped'
+  | 'delivered'
+  | 'cancelled'
+  | 'refunded'
 
-// Address snapshot stored in orders (immutable copy at order time)
+// Address snapshot in orders
 export interface OrderAddressSnapshot {
-  recipientName: string;
-  street: string;
-  city: string;
-  postalCode: string;
-  country: string;
-  phone?: string;
+  recipientName: string
+  street: string
+  city: string
+  postalCode: string
+  country: string
+  phone?: string
 }
 
-// Billing address snapshot with B2B fields
 export interface BillingAddressSnapshot extends OrderAddressSnapshot {
-  companyName?: string;
-  vatNumber?: string;
+  companyName?: string
+  vatNumber?: string
 }
 
-// Order content type - matches Strapi schema
+// Order (from Prisma)
 export interface Order {
-  id: number;
-  documentId: string;
-  orderNumber: string;
-  status: OrderStatus;
-  user?: User;
-  // Pricing (all integers in HUF)
-  subtotal: number;
-  discount: number;
-  shipping: number;
-  vatAmount: number;
-  total: number;
-  // Address snapshots (JSON - copied at order time)
-  shippingAddress: OrderAddressSnapshot;
-  billingAddress?: BillingAddressSnapshot;
-  // Line items (JSON array)
-  lineItems: OrderLineItem[];
-  // Coupon info if applied
-  couponCode?: string;
-  couponDiscount?: number;
-  // B2B
-  poReference?: string;
-  // Payment info
-  paymentMethod?: string;
-  paymentId?: string;
-  stripeSessionId?: string;
-  paidAt?: string;
-  // Internal notes
-  notes?: string;
-  // Timestamps
-  createdAt: string;
-  updatedAt: string;
+  id: string
+  orderNumber: string
+  status: OrderStatus
+  userId: string
+  subtotal: number
+  discount: number
+  shipping: number
+  vatAmount: number
+  total: number
+  shippingAddress: OrderAddressSnapshot
+  billingAddress?: BillingAddressSnapshot
+  lineItems: OrderLineItem[]
+  couponCode?: string | null
+  couponDiscount?: number | null
+  poReference?: string | null
+  paymentMethod?: string | null
+  paymentId?: string | null
+  stripeSessionId?: string | null
+  paidAt?: string | null
+  notes?: string | null
+  createdAt: string
+  updatedAt: string
 }
 
-// Menu item content type
+// Coupon (from Prisma)
+export interface Coupon {
+  id: string
+  code: string
+  description?: string | null
+  discountType: 'percentage' | 'fixed'
+  discountValue: number
+  minimumOrderAmount: number
+  maximumDiscount?: number | null
+  usageLimit?: number | null
+  usedCount: number
+  validFrom?: string | null
+  validUntil?: string | null
+  isActive: boolean
+}
+
+// Menu item (from Sanity)
 export interface MenuItem {
-  id: number;
-  documentId: string;
-  cim: string;
-  tipus: 'url' | 'kategoria';
-  url?: string;
+  _id: string
+  cim: string
+  tipus: 'url' | 'kategoria'
+  url?: string
   kategoria?: {
-    id: number;
-    documentId: string;
-    name: string;
-    slug: string;
-  };
-  parent?: MenuItem;
-  children?: MenuItem[];
-  sorrend: number;
-  nyitasUjTabon: boolean;
-  ikon?: string;
-  createdAt: string;
-  updatedAt: string;
-  publishedAt: string;
+    _id: string
+    name: string
+    slug: string
+  } | null
+  children?: MenuItem[]
+  sorrend: number
+  nyitasUjTabon: boolean
+  ikon?: string
+}
+
+// Sanity Page
+export interface Page {
+  _id: string
+  title: string
+  slug: string
+  content?: any // Portable Text
+  seo?: {
+    metaTitle?: string
+    metaDescription?: string
+    metaImage?: SanityImageAsset
+    keywords?: string
+  }
+}
+
+// FAQ from Sanity
+export interface FAQ {
+  _id: string
+  question: string
+  answer: any // Portable Text
+  order: number
+  category?: string
 }
 
 // Quote types
-export * from './quote.js';
+export * from './quote.js'

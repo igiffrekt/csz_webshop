@@ -1,6 +1,6 @@
 import { redirect, notFound } from 'next/navigation';
-import Link from 'next/link';
-import { getSession } from '@/lib/auth/session';
+import { Link } from '@/i18n/navigation';
+import { auth } from '@/lib/auth';
 import { getQuoteRequest } from '@/lib/quote-api';
 import { QuoteStatusBadge } from '@/components/quotes';
 import { Button } from '@/components/ui/button';
@@ -13,18 +13,17 @@ export const metadata = {
 };
 
 interface PageProps {
-  params: Promise<{ locale: string; id: string }>;
+  params: Promise<{ id: string }>;
 }
 
 export default async function QuoteDetailPage({ params }: PageProps) {
-  const { locale, id } = await params;
-  const session = await getSession();
-
-  if (!session?.jwt) {
-    redirect(`/${locale}/auth/bejelentkezes?redirect=/fiok/ajanlatkeres/${id}`);
+  const { id } = await params;
+  const session = await auth();
+  if (!session?.user) {
+    redirect(`/hu/auth/bejelentkezes?redirect=/hu/fiok/ajanlatkeres/${id}`);
   }
 
-  const { data: quote, error } = await getQuoteRequest(id, session.jwt);
+  const { data: quote, error } = await getQuoteRequest(id);
 
   if (error || !quote) {
     notFound();
@@ -46,11 +45,13 @@ export default async function QuoteDetailPage({ params }: PageProps) {
       })
     : null;
 
+  const items = typeof quote.items === 'string' ? JSON.parse(quote.items) : (quote.items || []);
+
   return (
     <div className="site-container py-8 space-y-6">
       <div className="flex items-center gap-4">
         <Button variant="ghost" size="icon" asChild>
-          <Link href={`/${locale}/fiok/ajanlatkeres`}>
+          <Link href="/fiok/ajanlatkeres">
             <ArrowLeft className="h-4 w-4" />
           </Link>
         </Button>
@@ -64,7 +65,6 @@ export default async function QuoteDetailPage({ params }: PageProps) {
       </div>
 
       <div className="grid gap-6 md:grid-cols-2">
-        {/* Contact Information */}
         <Card>
           <CardHeader>
             <CardTitle>Kapcsolattartási adatok</CardTitle>
@@ -89,7 +89,6 @@ export default async function QuoteDetailPage({ params }: PageProps) {
           </CardContent>
         </Card>
 
-        {/* Quote Status */}
         {quote.quotedAmount && (
           <Card>
             <CardHeader>
@@ -115,14 +114,13 @@ export default async function QuoteDetailPage({ params }: PageProps) {
         )}
       </div>
 
-      {/* Items */}
       <Card>
         <CardHeader>
           <CardTitle>Kért termékek</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            {quote.items.map((item, index) => (
+            {items.map((item: any, index: number) => (
               <div key={index}>
                 {index > 0 && <Separator className="my-4" />}
                 <div className="flex justify-between">
@@ -157,7 +155,6 @@ export default async function QuoteDetailPage({ params }: PageProps) {
         </CardContent>
       </Card>
 
-      {/* Delivery Notes */}
       {quote.deliveryNotes && (
         <Card>
           <CardHeader>
@@ -169,7 +166,6 @@ export default async function QuoteDetailPage({ params }: PageProps) {
         </Card>
       )}
 
-      {/* Admin Response */}
       {quote.adminResponse && (
         <Card>
           <CardHeader>

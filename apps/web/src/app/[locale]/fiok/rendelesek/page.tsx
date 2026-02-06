@@ -1,4 +1,5 @@
-import { requireAuth } from '@/lib/auth/dal';
+import { redirect } from 'next/navigation';
+import { auth } from '@/lib/auth';
 import { getOrders } from '@/lib/order-api';
 import { formatOrderStatus, formatPrice } from '@/lib/formatters';
 import { Badge } from '@/components/ui/badge';
@@ -13,13 +14,15 @@ export const metadata: Metadata = {
 };
 
 export default async function OrderHistoryPage() {
-  await requireAuth("/hu/fiok/rendelesek");
+  const session = await auth();
+  if (!session?.user) {
+    redirect("/hu/auth/bejelentkezes?redirect=/hu/fiok/rendelesek");
+  }
 
   const { data: orders, error } = await getOrders();
 
   return (
     <main className="site-container py-8 max-w-4xl">
-      {/* Header */}
       <div className="flex items-center gap-4 mb-8">
         <Button variant="ghost" size="icon" asChild>
           <Link href="/fiok">
@@ -48,9 +51,10 @@ export default async function OrderHistoryPage() {
         </div>
       ) : (
         <div className="space-y-4">
-          {orders?.map((order) => {
+          {orders?.map((order: any) => {
             const status = formatOrderStatus(order.status);
-            const itemCount = order.lineItems.reduce((sum, item) => sum + item.quantity, 0);
+            const lineItems = typeof order.lineItems === 'string' ? JSON.parse(order.lineItems) : (order.lineItems || []);
+            const itemCount = lineItems.reduce((sum: number, item: any) => sum + item.quantity, 0);
             const orderDate = new Date(order.createdAt).toLocaleDateString('hu-HU', {
               year: 'numeric',
               month: 'long',
@@ -59,8 +63,8 @@ export default async function OrderHistoryPage() {
 
             return (
               <Link
-                key={order.documentId}
-                href={`/fiok/rendelesek/${order.documentId}`}
+                key={order.id}
+                href={`/fiok/rendelesek/${order.id}`}
                 className="block border rounded-lg p-6 hover:border-primary/50 transition-colors"
               >
                 <div className="flex items-start justify-between">

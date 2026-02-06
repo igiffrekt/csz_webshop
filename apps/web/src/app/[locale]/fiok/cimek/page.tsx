@@ -1,11 +1,11 @@
 import { Metadata } from "next";
+import { redirect } from "next/navigation";
 import { Link } from "@/i18n/navigation";
-import { requireAuth } from "@/lib/auth/dal";
+import { auth } from "@/lib/auth";
 import { getAddresses } from "@/lib/address-api";
 import { AddressesClient } from "./AddressesClient";
 import { ArrowLeft } from "lucide-react";
 
-// Force dynamic rendering to always fetch fresh data
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
@@ -14,7 +14,10 @@ export const metadata: Metadata = {
 };
 
 export default async function AddressesPage() {
-  await requireAuth("/hu/fiok/cimek");
+  const session = await auth();
+  if (!session?.user) {
+    redirect("/hu/auth/bejelentkezes?redirect=/hu/fiok/cimek");
+  }
 
   const { data: addresses, error } = await getAddresses();
 

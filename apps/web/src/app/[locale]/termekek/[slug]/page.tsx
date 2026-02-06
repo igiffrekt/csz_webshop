@@ -1,84 +1,173 @@
-import { Metadata } from 'next';
-import { notFound } from 'next/navigation';
-import { Link } from '@/i18n/navigation';
-import { getStrapiProduct, getStrapiProducts, transformStrapiProduct } from '@/lib/strapi';
-import { ProductInfo } from '@/components/product/ProductInfo';
-import { ProductDetails } from '@/components/product/ProductDetails';
-import { CertBadges } from '@/components/product/CertBadges';
-import { SpecsTable } from '@/components/product/SpecsTable';
-import { DocumentList } from '@/components/product/DocumentList';
-import { ProductCardEnhanced } from '@/components/product/ProductCardEnhanced';
-import { getStrapiMediaUrl } from '@/lib/formatters';
-import { getTranslations } from 'next-intl/server';
-import { Home, ChevronRight, Truck, Shield, Headphones, Award } from 'lucide-react';
+import { Metadata } from 'next'
+import { notFound } from 'next/navigation'
+import { Link } from '@/i18n/navigation'
+import { getProduct, getProducts } from '@/lib/sanity-queries'
+import { ProductInfo } from '@/components/product/ProductInfo'
+import { ProductDetails } from '@/components/product/ProductDetails'
+import { CertBadges } from '@/components/product/CertBadges'
+import { SpecsTable } from '@/components/product/SpecsTable'
+import { DocumentList } from '@/components/product/DocumentList'
+import { ProductCardEnhanced } from '@/components/product/ProductCardEnhanced'
+import { getTranslations } from 'next-intl/server'
+import { Home, ChevronRight, Truck, Shield, Headphones, Award } from 'lucide-react'
 
 interface Props {
-  params: Promise<{ slug: string; locale: string }>;
+  params: Promise<{ slug: string; locale: string }>
+}
+
+// Helper to get slug string
+function getSlugString(slug: any): string {
+  if (typeof slug === 'string') return slug
+  return slug?.current || ''
+}
+
+// Helper to adapt Sanity product to component-compatible shape
+function adaptProduct(p: any) {
+  return {
+    ...p,
+    id: 0,
+    _id: p._id,
+    slug: getSlugString(p.slug),
+    images: (p.images || []).map((img: any) => ({
+      id: 0,
+      _id: '',
+      url: img.url,
+      alt: img.alt || null,
+      name: '',
+      width: img.width,
+      height: img.height,
+    })),
+    categories: (p.categories || []).map((cat: any) => ({
+      id: 0,
+      _id: cat._id,
+      name: cat.name,
+      slug: getSlugString(cat.slug),
+      createdAt: '',
+      updatedAt: '',
+      publishedAt: '',
+    })),
+    specifications: (p.specifications || []).map((spec: any, i: number) => ({
+      id: i,
+      name: spec.name,
+      value: spec.value,
+      unit: spec.unit,
+    })),
+    certifications: (p.certifications || []).map((cert: any, i: number) => ({
+      id: i,
+      name: cert.name,
+      standard: cert.standard,
+      expiryDate: cert.expiryDate,
+      certificate: cert.certificate ? {
+        id: 0,
+        _id: '',
+        url: cert.certificate,
+        alt: null,
+        name: cert.name,
+      } : undefined,
+    })),
+    documents: (p.documents || []).map((doc: any) => ({
+      id: 0,
+      _id: '',
+      url: doc.url,
+      alt: null,
+      name: doc.name,
+    })),
+    variants: p.variants || [],
+    // Description: Convert Portable Text to simple HTML for existing components
+    description: p.description ? convertPortableTextToHtml(p.description) : undefined,
+    shortDescription: p.shortDescription,
+    createdAt: '',
+    updatedAt: '',
+    publishedAt: '',
+  }
+}
+
+// Simple Portable Text to HTML converter for backward compatibility
+function convertPortableTextToHtml(blocks: any[]): string {
+  if (!blocks || !Array.isArray(blocks)) return ''
+  return blocks
+    .map((block: any) => {
+      if (block._type !== 'block') return ''
+      const text = (block.children || [])
+        .map((child: any) => {
+          let t = child.text || ''
+          if (child.marks?.includes('strong')) t = `<strong>${t}</strong>`
+          if (child.marks?.includes('em')) t = `<em>${t}</em>`
+          return t
+        })
+        .join('')
+      if (block.style === 'h2') return `<h2>${text}</h2>`
+      if (block.style === 'h3') return `<h3>${text}</h3>`
+      if (block.style === 'h4') return `<h4>${text}</h4>`
+      if (block.listItem === 'bullet') return `<li>${text}</li>`
+      if (block.listItem === 'number') return `<li>${text}</li>`
+      return `<p>${text}</p>`
+    })
+    .join('\n')
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params;
+  const { slug } = await params
 
   try {
-    const strapiProduct = await getStrapiProduct(slug);
-    if (!strapiProduct) {
-      return { title: 'Termék nem található' };
+    const product = await getProduct(slug)
+    if (!product) {
+      return { title: 'Termék nem található' }
     }
-    const product = transformStrapiProduct(strapiProduct);
+
+    const description = product.shortDescription || product.name
+    const image = product.images?.[0]?.url
 
     return {
       title: product.name,
-      description: product.description?.slice(0, 160) || `${product.name} - Tűzvédelmi eszköz`,
+      description: typeof description === 'string' ? description.slice(0, 160) : `${product.name} - Tűzvédelmi eszköz`,
       openGraph: {
         title: product.name,
-        description: product.description?.slice(0, 160) || undefined,
-        images: product.images?.[0] ? [product.images[0].url] : undefined,
+        description: typeof description === 'string' ? description.slice(0, 160) : undefined,
+        images: image ? [image] : undefined,
       },
-    };
+    }
   } catch {
-    return {
-      title: 'Termék nem található',
-    };
+    return { title: 'Termék nem található' }
   }
 }
 
 export default async function ProductPage({ params }: Props) {
-  const { slug } = await params;
-  const t = await getTranslations('product');
+  const { slug } = await params
+  const t = await getTranslations('product')
 
-  let product: ReturnType<typeof transformStrapiProduct> | null = null;
-  let relatedProducts: ReturnType<typeof transformStrapiProduct>[] = [];
+  let product: any = null
+  let relatedProducts: any[] = []
 
   try {
-    const [strapiProduct, strapiRelated] = await Promise.all([
-      getStrapiProduct(slug),
-      getStrapiProducts({ pageSize: 5 }),
-    ]);
+    const [sanityProduct, sanityRelated] = await Promise.all([
+      getProduct(slug),
+      getProducts({ pageSize: 5 }),
+    ])
 
-    if (!strapiProduct) {
-      notFound();
+    if (!sanityProduct) {
+      notFound()
     }
 
-    product = transformStrapiProduct(strapiProduct);
-    relatedProducts = strapiRelated.products
-      .filter((p) => p.slug !== slug)
+    product = adaptProduct(sanityProduct)
+    relatedProducts = sanityRelated.data
+      .filter((p: any) => getSlugString(p.slug) !== slug)
       .slice(0, 4)
-      .map(transformStrapiProduct);
+      .map(adaptProduct)
   } catch (error) {
-    console.error('Failed to fetch product:', error);
-    notFound();
+    console.error('Failed to fetch product:', error)
+    notFound()
   }
 
   if (!product) {
-    notFound();
+    notFound()
   }
 
-  // JSON-LD structured data for SEO
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Product',
     name: product.name,
-    description: product.description,
+    description: product.shortDescription || product.description,
     image: product.images?.[0]?.url,
     sku: product.sku,
     offers: {
@@ -88,9 +177,9 @@ export default async function ProductPage({ params }: Props) {
       availability:
         product.stock > 0 ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
     },
-  };
+  }
 
-  const category = product.categories?.[0];
+  const category = product.categories?.[0]
 
   return (
     <>
@@ -100,21 +189,14 @@ export default async function ProductPage({ params }: Props) {
       />
 
       <div className="bg-white min-h-screen">
-        {/* Breadcrumb */}
         <div className="border-b border-gray-100">
           <div className="site-container py-4">
             <nav className="flex items-center gap-2 text-sm">
-              <Link
-                href="/"
-                className="text-gray-500 hover:text-[#FFBB36] transition-colors"
-              >
+              <Link href="/" className="text-gray-500 hover:text-[#FFBB36] transition-colors">
                 <Home className="h-4 w-4" />
               </Link>
               <ChevronRight className="h-4 w-4 text-gray-300" />
-              <Link
-                href="/termekek"
-                className="text-gray-500 hover:text-[#FFBB36] transition-colors"
-              >
+              <Link href="/termekek" className="text-gray-500 hover:text-[#FFBB36] transition-colors">
                 Termékek
               </Link>
               {category && (
@@ -137,18 +219,14 @@ export default async function ProductPage({ params }: Props) {
         </div>
 
         <main className="site-container py-8 lg:py-12">
-          {/* Main product section */}
           <div className="bg-[#f6f6f6] rounded-[30px] p-6 lg:p-10">
             <ProductDetails product={product}>
               <ProductInfo product={product} />
-
-              {/* Certification badges */}
               {product.certifications && product.certifications.length > 0 && (
                 <CertBadges certifications={product.certifications} />
               )}
             </ProductDetails>
 
-            {/* Trust badges */}
             <div className="mt-10 pt-8 border-t border-gray-200">
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div className="flex items-center gap-3 p-4 bg-white rounded-2xl">
@@ -191,7 +269,6 @@ export default async function ProductPage({ params }: Props) {
             </div>
           </div>
 
-          {/* Full description */}
           {product.description && (
             <section className="bg-[#f6f6f6] rounded-[30px] p-6 lg:p-10 mt-8">
               <h2 className="text-xl font-bold text-gray-900 mb-6">{t('description')}</h2>
@@ -202,34 +279,27 @@ export default async function ProductPage({ params }: Props) {
             </section>
           )}
 
-          {/* Specifications table */}
           {product.specifications && product.specifications.length > 0 && (
             <section className="bg-[#f6f6f6] rounded-[30px] p-6 lg:p-10 mt-8">
               <SpecsTable specifications={product.specifications} />
             </section>
           )}
 
-          {/* Downloadable documents */}
           {product.documents && product.documents.length > 0 && (
             <section className="bg-[#f6f6f6] rounded-[30px] p-6 lg:p-10 mt-8">
               <DocumentList documents={product.documents} />
             </section>
           )}
 
-          {/* Related products */}
           {relatedProducts.length > 0 && (
             <section className="mt-16">
               <div className="text-center mb-8">
-                <span className="text-gray-500 text-sm uppercase tracking-wider">
-                  Ajánljuk még
-                </span>
-                <h2 className="text-2xl lg:text-3xl font-bold text-gray-900 mt-2">
-                  Kapcsolódó termékek
-                </h2>
+                <span className="text-gray-500 text-sm uppercase tracking-wider">Ajánljuk még</span>
+                <h2 className="text-2xl lg:text-3xl font-bold text-gray-900 mt-2">Kapcsolódó termékek</h2>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                {relatedProducts.map((relatedProduct) => (
-                  <ProductCardEnhanced key={relatedProduct.documentId} product={relatedProduct} />
+                {relatedProducts.map((relatedProduct: any) => (
+                  <ProductCardEnhanced key={relatedProduct._id} product={relatedProduct} />
                 ))}
               </div>
             </section>
@@ -237,5 +307,5 @@ export default async function ProductPage({ params }: Props) {
         </main>
       </div>
     </>
-  );
+  )
 }

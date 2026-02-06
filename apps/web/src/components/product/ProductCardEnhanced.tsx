@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { Link } from '@/i18n/navigation';
 import { Star, Heart, ShoppingCart, Eye } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { formatPrice, getStrapiMediaUrl } from '@/lib/formatters';
+import { formatPrice, getImageUrl } from '@/lib/formatters';
 import { useCartStore } from '@/stores/cart';
 import type { Product } from '@csz/types';
 import { toast } from 'sonner';
@@ -78,7 +78,7 @@ export function ProductCardEnhanced({
 
   // Prefer Cloudinary URL (WebP with background removed)
   const imageUrl = product.cloudinaryImageUrl
-    || (product.images?.[0] ? getStrapiMediaUrl(product.images[0].url) : null);
+    || (product.images?.[0] ? getImageUrl(product.images[0].url) : null);
 
   const isOnSale = product.compareAtPrice && product.compareAtPrice > product.basePrice;
   const discountPercent = isOnSale
@@ -226,7 +226,7 @@ export function ProductCardEnhanced({
           {showRating && (
             <div className="flex items-center gap-1.5">
               <Star className="h-4 w-4 text-[#FFBB36] fill-[#FFBB36]" />
-              <span className="text-sm font-medium text-gray-900">4.{(product.id % 5) + 5}</span>
+              <span className="text-sm font-medium text-gray-900">4.{(product._id.charCodeAt(0) % 5) + 5}</span>
             </div>
           )}
         </div>
