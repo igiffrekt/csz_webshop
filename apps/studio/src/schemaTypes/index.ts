@@ -2,6 +2,8 @@
 import {seo} from './objects/seo'
 import {specification} from './objects/specification'
 import {certification} from './objects/certification'
+import {orderLineItem} from './objects/orderLineItem'
+import {orderAddress} from './objects/orderAddress'
 
 // Document types
 import {product} from './documents/product'
@@ -11,12 +13,15 @@ import {page} from './documents/page'
 import {faq} from './documents/faq'
 import {homepage} from './documents/homepage'
 import {menuItem} from './documents/menuItem'
+import {order} from './documents/order'
 
 export const schemaTypes = [
   // Objects
   seo,
   specification,
   certification,
+  orderLineItem,
+  orderAddress,
   // Documents
   product,
   productVariant,
@@ -25,4 +30,5 @@ export const schemaTypes = [
   faq,
   homepage,
   menuItem,
+  order,
 ]
