@@ -68,7 +68,7 @@ export async function POST(request: NextRequest) {
     if (couponCode) {
       const coupon = await prisma.coupon.findFirst({
         where: {
-          code: { equals: couponCode, mode: 'insensitive' },
+          code: { equals: couponCode },
           isActive: true,
         },
       })
