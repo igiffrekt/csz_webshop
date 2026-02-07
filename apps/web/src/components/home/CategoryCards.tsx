@@ -234,7 +234,7 @@ function MasonryCard({ category }: { category: CategoryCardData }) {
         <div className="relative rounded-[24px] overflow-hidden hover:shadow-xl transition-all duration-300">
           <div className={`flex ${isBottomPeek ? 'flex-col' : ''}`}>
             {/* Content section */}
-            <div className={`flex flex-col p-6 lg:p-8 relative z-10 ${isBottomPeek ? 'w-full' : 'w-[55%] lg:w-[50%]'}`}>
+            <div className={`flex flex-col p-6 lg:p-8 relative z-10 ${isBottomPeek ? 'w-full' : 'w-[70%]'}`}>
               {/* Product count badge */}
               <div className="inline-flex items-center gap-1.5 bg-white rounded-full px-4 py-2 w-fit shadow-sm mb-4">
                 <span className="text-[#FFBB36] font-semibold text-base lg:text-lg">
@@ -295,12 +295,12 @@ function MasonryCard({ category }: { category: CategoryCardData }) {
               /* Right peek - image on right side, overflows rightward */
               <Link
                 href={`/kategoriak/${category.slug}`}
-                className="absolute right-0 top-0 bottom-0 w-[50%] lg:w-[55%] overflow-visible"
+                className="absolute right-0 top-0 bottom-0 w-[35%] overflow-visible"
               >
                 {category.image ? (
                   <div className="absolute inset-0 overflow-visible">
                     {/* Image container extends beyond card boundary */}
-                    <div className="relative w-[130%] h-full min-h-[280px]">
+                    <div className="relative w-[180%] h-full min-h-[280px]">
                       <Image
                         src={category.image}
                         alt={category.name}
@@ -321,7 +321,7 @@ function MasonryCard({ category }: { category: CategoryCardData }) {
 
           {/* Gradient overlay for text readability */}
           {!isBottomPeek && (
-            <div className="absolute inset-y-0 left-0 w-[60%] bg-gradient-to-r from-[#f8f8f8] via-[#f8f8f8]/70 to-transparent pointer-events-none z-[5]" />
+            <div className="absolute inset-y-0 left-0 w-[75%] bg-gradient-to-r from-[#f8f8f8] via-[#f8f8f8]/80 to-transparent pointer-events-none z-[5]" />
           )}
         </div>
       </div>

@@ -91,6 +91,8 @@ function convertPortableTextToHtml(blocks: any[]): string {
       const text = (block.children || [])
         .map((child: any) => {
           let t = child.text || ''
+          // Clean migration artifacts (%%P%%, %%/P%%, %%H1%%, etc.)
+          t = t.replace(/%%\/?P%%/g, '').replace(/%%\/?H\d?%%/g, '').replace(/%%\/?LI%%/g, '')
           if (child.marks?.includes('strong')) t = `<strong>${t}</strong>`
           if (child.marks?.includes('em')) t = `<em>${t}</em>`
           return t

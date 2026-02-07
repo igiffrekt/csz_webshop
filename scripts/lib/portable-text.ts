@@ -129,16 +129,16 @@ export function htmlToPortableText(html: string): PortableTextBlock[] {
   // Split by block-level elements
   // Replace block elements with markers
   const blockSplit = normalized
-    // Handle headings
-    .replace(/<h([1-6])[^>]*>(.*?)<\/h\1>/gis, '\n%%H$1%%$2%%/H%%\n')
+    // Handle headings (replace newlines inside content so markers stay on one line)
+    .replace(/<h([1-6])[^>]*>(.*?)<\/h\1>/gis, (_, n, c) => `\n%%H${n}%%${c.replace(/\n/g, ' ')}%%/H%%\n`)
     // Handle list items
-    .replace(/<li[^>]*>(.*?)<\/li>/gis, '\n%%LI%%$1%%/LI%%\n')
+    .replace(/<li[^>]*>(.*?)<\/li>/gis, (_, c) => `\n%%LI%%${c.replace(/\n/g, ' ')}%%/LI%%\n`)
     // Remove list wrappers
     .replace(/<\/?[ou]l[^>]*>/gi, '')
-    // Handle paragraphs
-    .replace(/<p[^>]*>(.*?)<\/p>/gis, '\n%%P%%$1%%/P%%\n')
+    // Handle paragraphs (replace newlines inside content so markers stay on one line)
+    .replace(/<p[^>]*>(.*?)<\/p>/gis, (_, c) => `\n%%P%%${c.replace(/\n/g, ' ')}%%/P%%\n`)
     // Handle divs as paragraphs
-    .replace(/<div[^>]*>(.*?)<\/div>/gis, '\n%%P%%$1%%/P%%\n')
+    .replace(/<div[^>]*>(.*?)<\/div>/gis, (_, c) => `\n%%P%%${c.replace(/\n/g, ' ')}%%/P%%\n`)
     // Handle <br> as line splits
     .replace(/<br\s*\/?>/gi, '\n')
 
