@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getStripe } from '@/lib/server/stripe'
 import { prisma } from '@/lib/prisma'
+import { updateOrderStatusInSanity } from '@/lib/sanity-order-sync'
 import type Stripe from 'stripe'
 
 export async function POST(request: NextRequest) {
@@ -29,14 +30,17 @@ export async function POST(request: NextRequest) {
       const orderId = session.metadata?.order_id
 
       if (orderId && session.payment_status === 'paid') {
+        const paidAt = new Date()
+        const paymentIntent = session.payment_intent as string
         await prisma.order.update({
           where: { id: orderId },
           data: {
             status: 'paid',
-            paymentId: session.payment_intent as string,
-            paidAt: new Date(),
+            paymentId: paymentIntent,
+            paidAt,
           },
         })
+        updateOrderStatusInSanity(orderId, 'paid', paidAt, paymentIntent)
       }
       break
     }
@@ -46,14 +50,17 @@ export async function POST(request: NextRequest) {
       const orderId = session.metadata?.order_id
 
       if (orderId) {
+        const paidAt = new Date()
+        const paymentIntent = session.payment_intent as string
         await prisma.order.update({
           where: { id: orderId },
           data: {
             status: 'paid',
-            paymentId: session.payment_intent as string,
-            paidAt: new Date(),
+            paymentId: paymentIntent,
+            paidAt,
           },
         })
+        updateOrderStatusInSanity(orderId, 'paid', paidAt, paymentIntent)
       }
       break
     }
@@ -67,6 +74,7 @@ export async function POST(request: NextRequest) {
           where: { id: orderId },
           data: { status: 'cancelled' },
         })
+        updateOrderStatusInSanity(orderId, 'cancelled')
       }
       break
     }
