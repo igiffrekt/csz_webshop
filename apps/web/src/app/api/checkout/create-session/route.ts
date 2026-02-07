@@ -4,6 +4,7 @@ import { client } from '@/lib/sanity'
 import { getStripe } from '@/lib/server/stripe'
 import { calculateVatFromGross } from '@/lib/server/vat'
 import { calculateShipping } from '@/lib/server/shipping'
+import { syncOrderToSanity } from '@/lib/sanity-order-sync'
 
 const FRONTEND_URL = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
 
@@ -94,7 +95,7 @@ export async function POST(request: NextRequest) {
     let discount = 0
     if (couponCode) {
       const coupon = await prisma.coupon.findFirst({
-        where: { code: { equals: couponCode, mode: 'insensitive' }, isActive: true },
+        where: { code: { equals: couponCode }, isActive: true },
       })
       if (coupon) {
         const now = new Date()
@@ -139,6 +140,8 @@ export async function POST(request: NextRequest) {
         poReference,
       },
     })
+
+    syncOrderToSanity(order.id)
 
     // Create Stripe line items (HUF * 100)
     const HUF_MULTIPLIER = 100

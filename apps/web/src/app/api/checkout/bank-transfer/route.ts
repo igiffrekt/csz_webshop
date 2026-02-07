@@ -4,6 +4,7 @@ import { prisma } from '@/lib/prisma'
 import { client } from '@/lib/sanity'
 import { calculateVatFromGross } from '@/lib/server/vat'
 import { calculateShipping } from '@/lib/server/shipping'
+import { syncOrderToSanity } from '@/lib/sanity-order-sync'
 
 const BANK_ACCOUNT = {
   accountHolder: 'CSZ Tűzvédelem Kft.',
@@ -76,7 +77,7 @@ export async function POST(request: NextRequest) {
     let discount = 0
     if (couponCode) {
       const coupon = await prisma.coupon.findFirst({
-        where: { code: { equals: couponCode, mode: 'insensitive' }, isActive: true },
+        where: { code: { equals: couponCode }, isActive: true },
       })
       if (coupon) {
         const now = new Date()
@@ -131,6 +132,8 @@ export async function POST(request: NextRequest) {
         poReference,
       },
     })
+
+    syncOrderToSanity(order.id)
 
     return NextResponse.json({
       orderId: order.id,
