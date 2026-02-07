@@ -28,8 +28,8 @@ export function CategoryCard({ category }: CategoryCardProps) {
             className="object-cover transition-transform duration-500 group-hover:scale-110"
           />
         ) : (
-          <div className="flex items-center justify-center h-full bg-gradient-to-br from-primary-100 via-primary-200 to-primary-300">
-            <Folder className="h-12 w-12 text-primary-400" />
+          <div className="flex items-center justify-center h-full bg-gradient-to-br from-secondary-700 via-secondary-800 to-secondary-900">
+            <Folder className="h-12 w-12 text-secondary-400" />
           </div>
         )}
 
@@ -44,6 +44,7 @@ export function CategoryCard({ category }: CategoryCardProps) {
 
       {/* Content */}
       <div className="p-4">
+        <h3 className="font-bold text-secondary-900 mb-1">{category.name}</h3>
         {category.description && (
           <p className="text-secondary-600 text-sm line-clamp-2 mb-3">{category.description}</p>
         )}

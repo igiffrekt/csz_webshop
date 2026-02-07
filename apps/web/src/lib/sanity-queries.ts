@@ -5,7 +5,7 @@ import { client } from './sanity'
 
 const PRODUCTS_QUERY = defineQuery(`
   *[_type == "product"
-    && ($category == "" || $category in categories[]->slug.current)
+    && ($category == "" || $category in categories[]->slug.current || $category in categories[]->parent->slug.current)
     && ($search == "" || name match $search + "*")
     && ($featured == false || isFeatured == true)
     && ($onSale == false || isOnSale == true)
@@ -51,7 +51,7 @@ const PRODUCTS_QUERY = defineQuery(`
 
 const PRODUCTS_COUNT_QUERY = defineQuery(`
   count(*[_type == "product"
-    && ($category == "" || $category in categories[]->slug.current)
+    && ($category == "" || $category in categories[]->slug.current || $category in categories[]->parent->slug.current)
     && ($search == "" || name match $search + "*")
     && ($featured == false || isFeatured == true)
     && ($onSale == false || isOnSale == true)
