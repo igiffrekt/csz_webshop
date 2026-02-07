@@ -1,21 +1,22 @@
 services:
-  postgres:
-    image: postgres:16-alpine
-    container_name: csz-postgres
+  mariadb:
+    image: mariadb:11
+    container_name: csz-mariadb
     restart: unless-stopped
     environment:
-      POSTGRES_USER: csz
-      POSTGRES_PASSWORD: csz_secure_pass
-      POSTGRES_DB: csz_sanity
+      MYSQL_ROOT_PASSWORD: csz_root_pass
+      MYSQL_DATABASE: csz_sanity
+      MYSQL_USER: csz
+      MYSQL_PASSWORD: csz_secure_pass
     ports:
-      - "5432:5432"
+      - "3306:3306"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - mariadb_data:/var/lib/mysql
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U csz -d csz_sanity"]
+      test: ["CMD", "mariadb-admin", "ping", "-h", "localhost", "-u", "csz", "-pcsz_secure_pass"]
       interval: 10s
       timeout: 5s
       retries: 5
 
 volumes:
-  postgres_data:
+  mariadb_data:
