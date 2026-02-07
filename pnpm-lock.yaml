@@ -7,6 +7,13 @@ settings:
 importers:
 
   .:
+    dependencies:
+      '@sanity/client':
+        specifier: ^7.14.1
+        version: 7.14.1(debug@4.4.3)
+      dotenv:
+        specifier: ^17.2.4
+        version: 17.2.4
     devDependencies:
       '@imgly/background-removal-node':
         specifier: ^1.4.5
@@ -7176,6 +7183,10 @@ packages:
 
   dotenv@16.6.1:
     resolution: {integrity: sha512-uBq4egWHTcTt33a72vpSG0z3HnPuIl6NqYcTrKEg2azoEyl2hpW0zqlxysq2pK9HlDIHyHyakeYaYnSAwd8bow==}
+    engines: {node: '>=12'}
+
+  dotenv@17.2.4:
+    resolution: {integrity: sha512-mudtfb4zRB4bVvdj0xRo+e6duH1csJRM8IukBqfTRvHotn9+LBXB8ynAidP9zHqoRC/fsllXgk4kCKlR21fIhw==}
     engines: {node: '>=12'}
 
   dunder-proto@1.0.1:
@@ -16171,7 +16182,7 @@ snapshots:
       get-random-values-esm: 1.0.2
       lodash: 4.17.21
 
-  '@portabletext/editor@1.58.1(@sanity/schema@3.99.0(@types/react@19.2.8)(debug@4.4.3))(@sanity/types@3.99.0(@types/react@19.2.8)(debug@4.4.3))(@types/react@19.2.8)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(rxjs@7.8.2)':
+  '@portabletext/editor@1.58.1(@sanity/schema@3.99.0(@types/react@19.2.8)(debug@4.4.3))(@sanity/types@3.99.0(@types/react@19.2.8))(@types/react@19.2.8)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(rxjs@7.8.2)':
     dependencies:
       '@portabletext/block-tools': 1.1.38(@sanity/types@3.99.0(@types/react@19.2.8)(debug@4.4.3))(@types/react@19.2.8)
       '@portabletext/keyboard-shortcuts': 1.1.0
@@ -21745,6 +21756,8 @@ snapshots:
 
   dotenv@16.6.1: {}
 
+  dotenv@17.2.4: {}
+
   dunder-proto@1.0.1:
     dependencies:
       call-bind-apply-helpers: 1.0.2
@@ -22127,7 +22140,7 @@ snapshots:
       '@next/eslint-plugin-next': 16.1.4
       eslint: 9.39.2(jiti@2.6.1)
       eslint-import-resolver-node: 0.3.9
-      eslint-import-resolver-typescript: 3.10.1(eslint-plugin-import@2.32.0)(eslint@9.39.2(jiti@2.6.1))
+      eslint-import-resolver-typescript: 3.10.1(eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.53.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.2(jiti@2.6.1)))(eslint@9.39.2(jiti@2.6.1))
       eslint-plugin-import: 2.32.0(@typescript-eslint/parser@8.53.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3))(eslint-import-resolver-typescript@3.10.1)(eslint@9.39.2(jiti@2.6.1))
       eslint-plugin-jsx-a11y: 6.10.2(eslint@9.39.2(jiti@2.6.1))
       eslint-plugin-react: 7.37.5(eslint@9.39.2(jiti@2.6.1))
@@ -22150,7 +22163,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-import-resolver-typescript@3.10.1(eslint-plugin-import@2.32.0)(eslint@9.39.2(jiti@2.6.1)):
+  eslint-import-resolver-typescript@3.10.1(eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.53.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.2(jiti@2.6.1)))(eslint@9.39.2(jiti@2.6.1)):
     dependencies:
       '@nolyfill/is-core-module': 1.0.39
       debug: 4.4.3(supports-color@8.1.1)
@@ -22165,14 +22178,14 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-module-utils@2.12.1(@typescript-eslint/parser@8.53.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.10.1)(eslint@9.39.2(jiti@2.6.1)):
+  eslint-module-utils@2.12.1(@typescript-eslint/parser@8.53.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.10.1(eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.53.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.2(jiti@2.6.1)))(eslint@9.39.2(jiti@2.6.1)))(eslint@9.39.2(jiti@2.6.1)):
     dependencies:
       debug: 3.2.7
     optionalDependencies:
       '@typescript-eslint/parser': 8.53.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
       eslint: 9.39.2(jiti@2.6.1)
       eslint-import-resolver-node: 0.3.9
-      eslint-import-resolver-typescript: 3.10.1(eslint-plugin-import@2.32.0)(eslint@9.39.2(jiti@2.6.1))
+      eslint-import-resolver-typescript: 3.10.1(eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.53.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.2(jiti@2.6.1)))(eslint@9.39.2(jiti@2.6.1))
     transitivePeerDependencies:
       - supports-color
 
@@ -22187,7 +22200,7 @@ snapshots:
       doctrine: 2.1.0
       eslint: 9.39.2(jiti@2.6.1)
       eslint-import-resolver-node: 0.3.9
-      eslint-module-utils: 2.12.1(@typescript-eslint/parser@8.53.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.10.1)(eslint@9.39.2(jiti@2.6.1))
+      eslint-module-utils: 2.12.1(@typescript-eslint/parser@8.53.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.10.1(eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.53.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.2(jiti@2.6.1)))(eslint@9.39.2(jiti@2.6.1)))(eslint@9.39.2(jiti@2.6.1))
       hasown: 2.0.2
       is-core-module: 2.16.1
       is-glob: 4.0.3
@@ -26678,7 +26691,7 @@ snapshots:
       '@juggle/resize-observer': 3.4.0
       '@mux/mux-player-react': 3.10.2(@types/react-dom@19.2.3(@types/react@19.2.8))(@types/react@19.2.8)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@portabletext/block-tools': 1.1.38(@sanity/types@3.99.0(@types/react@19.2.8)(debug@4.4.3))(@types/react@19.2.8)
-      '@portabletext/editor': 1.58.1(@sanity/schema@3.99.0(@types/react@19.2.8)(debug@4.4.3))(@sanity/types@3.99.0(@types/react@19.2.8)(debug@4.4.3))(@types/react@19.2.8)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(rxjs@7.8.2)
+      '@portabletext/editor': 1.58.1(@sanity/schema@3.99.0(@types/react@19.2.8)(debug@4.4.3))(@sanity/types@3.99.0(@types/react@19.2.8))(@types/react@19.2.8)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(rxjs@7.8.2)
       '@portabletext/react': 3.2.4(react@19.2.3)
       '@portabletext/toolkit': 2.0.18
       '@rexxars/react-json-inspector': 9.0.1(react@19.2.3)
@@ -26849,7 +26862,7 @@ snapshots:
       '@juggle/resize-observer': 3.4.0
       '@mux/mux-player-react': 3.10.2(@types/react-dom@19.2.3(@types/react@19.2.8))(@types/react@19.2.8)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@portabletext/block-tools': 1.1.38(@sanity/types@3.99.0(@types/react@19.2.8)(debug@4.4.3))(@types/react@19.2.8)
-      '@portabletext/editor': 1.58.1(@sanity/schema@3.99.0(@types/react@19.2.8)(debug@4.4.3))(@sanity/types@3.99.0(@types/react@19.2.8)(debug@4.4.3))(@types/react@19.2.8)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(rxjs@7.8.2)
+      '@portabletext/editor': 1.58.1(@sanity/schema@3.99.0(@types/react@19.2.8)(debug@4.4.3))(@sanity/types@3.99.0(@types/react@19.2.8))(@types/react@19.2.8)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(rxjs@7.8.2)
       '@portabletext/react': 3.2.4(react@19.2.3)
       '@portabletext/toolkit': 2.0.18
       '@rexxars/react-json-inspector': 9.0.1(react@19.2.3)
