@@ -4,7 +4,7 @@ import { useState, useRef, useCallback, useEffect } from 'react';
 import Image from 'next/image';
 import { Link } from '@/i18n/navigation';
 import { Star, ShoppingCart, ChevronLeft, ChevronRight } from 'lucide-react';
-import { formatPrice, getStrapiMediaUrl, stripHtml } from '@/lib/formatters';
+import { formatPrice, getImageUrl, stripHtml } from '@/lib/formatters';
 import { cn } from '@/lib/utils';
 import { useCartStore } from '@/stores/cart';
 import { toast } from 'sonner';
@@ -86,7 +86,7 @@ export function DealsSection({ products }: DealsSectionProps) {
 
   if (dealProducts.length < 5) {
     const remaining = products
-      .filter((p) => !dealProducts.find((d) => d.documentId === p.documentId))
+      .filter((p) => !dealProducts.find((d) => d._id === p._id))
       .slice(0, 5 - dealProducts.length);
     dealProducts = [...dealProducts, ...remaining];
   }
@@ -156,7 +156,7 @@ export function DealsSection({ products }: DealsSectionProps) {
         >
           {dealProducts.map((product) => (
             <div
-              key={product.documentId}
+              key={product._id}
               className={cn(
                 'flex-shrink-0 w-[85%] sm:w-[calc(50%-15px)] lg:w-[600px] h-[450px]',
                 !isDragging && 'snap-start'
@@ -180,7 +180,7 @@ function DealCard({ product }: DealCardProps) {
 
   // Prefer Cloudinary URL (WebP with background removed)
   const imageUrl = product.cloudinaryImageUrl
-    || (product.images?.[0] ? getStrapiMediaUrl(product.images[0].url) : null);
+    || (product.images?.[0] ? getImageUrl(product.images[0].url) : null);
 
   const isOnSale = product.compareAtPrice && product.compareAtPrice > product.basePrice;
   const discountPercent = isOnSale
@@ -259,7 +259,7 @@ function DealCard({ product }: DealCardProps) {
           {/* Rating */}
           <div className="flex items-center gap-1.5 mt-2">
             <Star className="h-4 w-4 text-[#FFBB36] fill-[#FFBB36]" />
-            <span className="text-sm font-medium text-gray-900">4.{(product.id % 5) + 5}</span>
+            <span className="text-sm font-medium text-gray-900">4.{(product._id.charCodeAt(0) % 5) + 5}</span>
           </div>
 
           {/* Description */}

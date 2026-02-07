@@ -1,10 +1,15 @@
 import { getTranslations } from 'next-intl/server';
 import { FileText, Download } from 'lucide-react';
-import { getStrapiMediaUrl } from '@/lib/formatters';
-import type { StrapiMedia } from '@csz/types';
+import { getImageUrl } from '@/lib/formatters';
+
+interface DocumentAsset {
+  _key?: string;
+  url: string;
+  name: string;
+}
 
 interface DocumentListProps {
-  documents: StrapiMedia[];
+  documents: DocumentAsset[];
 }
 
 export async function DocumentList({ documents }: DocumentListProps) {
@@ -19,9 +24,9 @@ export async function DocumentList({ documents }: DocumentListProps) {
       <h2 className="text-xl font-semibold mb-4">{t('documents')}</h2>
       <ul className="space-y-2">
         {documents.map((doc) => (
-          <li key={doc.id}>
+          <li key={doc._key || doc.name}>
             <a
-              href={getStrapiMediaUrl(doc.url)}
+              href={getImageUrl(doc.url)}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-3 p-3 border rounded-lg hover:bg-muted/50 transition-colors"

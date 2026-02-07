@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation';
-import Link from 'next/link';
-import { getSession } from '@/lib/auth/session';
+import { Link } from '@/i18n/navigation';
+import { auth } from '@/lib/auth';
 import { getQuoteRequests } from '@/lib/quote-api';
 import { QuoteCard } from '@/components/quotes';
 import { Button } from '@/components/ui/button';
@@ -10,19 +10,13 @@ export const metadata = {
   title: 'Árajánlat kérések - CSZ Tűzvédelem',
 };
 
-interface PageProps {
-  params: Promise<{ locale: string }>;
-}
-
-export default async function QuoteHistoryPage({ params }: PageProps) {
-  const { locale } = await params;
-  const session = await getSession();
-
-  if (!session?.jwt) {
-    redirect(`/${locale}/auth/bejelentkezes?redirect=/fiok/ajanlatkeres`);
+export default async function QuoteHistoryPage() {
+  const session = await auth();
+  if (!session?.user) {
+    redirect('/hu/auth/bejelentkezes?redirect=/hu/fiok/ajanlatkeres');
   }
 
-  const { data: quotes, error } = await getQuoteRequests(session.jwt);
+  const { data: quotes, error } = await getQuoteRequests();
 
   return (
     <div className="site-container py-8 space-y-6">
@@ -34,7 +28,7 @@ export default async function QuoteHistoryPage({ params }: PageProps) {
           </p>
         </div>
         <Button asChild>
-          <Link href={`/${locale}/ajanlatkeres`}>
+          <Link href="/ajanlatkeres">
             <Plus className="mr-2 h-4 w-4" />
             Új árajánlat kérés
           </Link>
@@ -55,7 +49,7 @@ export default async function QuoteHistoryPage({ params }: PageProps) {
             Még nem küldött be árajánlat kérést.
           </p>
           <Button asChild className="mt-4">
-            <Link href={`/${locale}/ajanlatkeres`}>
+            <Link href="/ajanlatkeres">
               Árajánlat kérés indítása
             </Link>
           </Button>
@@ -64,8 +58,8 @@ export default async function QuoteHistoryPage({ params }: PageProps) {
 
       {quotes && quotes.length > 0 && (
         <div className="grid gap-4 md:grid-cols-2">
-          {quotes.map((quote) => (
-            <QuoteCard key={quote.documentId} quote={quote} locale={locale} />
+          {quotes.map((quote: any) => (
+            <QuoteCard key={quote.id} quote={quote} />
           ))}
         </div>
       )}

@@ -1,178 +1,107 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server'
+import { prisma } from '@/lib/prisma'
+import { client } from '@/lib/sanity'
+import { calculateVatFromGross } from '@/lib/server/vat'
+import { calculateShipping, getFreeShippingThreshold } from '@/lib/server/shipping'
 
-const STRAPI_URL = process.env.STRAPI_URL || 'http://localhost:1337';
-const STRAPI_TOKEN = process.env.STRAPI_API_TOKEN;
-
-// Shipping configuration
-const FREE_SHIPPING_THRESHOLD = 50000; // Free shipping above 50,000 Ft
-const STANDARD_SHIPPING_FEE = 1990; // Standard shipping fee
-const VAT_RATE = 0.27; // Hungarian VAT rate (27%)
+const PRODUCT_PRICES_QUERY = `*[_type == "product" && _id in $ids] {
+  _id,
+  basePrice,
+  weight,
+  "variants": variants[]->{
+    _id,
+    price,
+    weight
+  }
+}`
 
 interface LineItem {
-  productId: string;
-  variantId?: string;
-  quantity: number;
-}
-
-interface CalculateRequest {
-  lineItems: LineItem[];
-  couponCode?: string;
-  shippingCountry: string;
+  productId: string
+  variantId?: string
+  quantity: number
 }
 
 export async function POST(request: NextRequest) {
   try {
-    const body: CalculateRequest = await request.json();
-    const { lineItems, couponCode, shippingCountry } = body;
+    const { lineItems, couponCode, shippingCountry } = await request.json()
 
     if (!lineItems || lineItems.length === 0) {
-      return NextResponse.json(
-        { error: 'Nincsenek termékek a kosárban' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Nincsenek termékek a kosárban' }, { status: 400 })
     }
 
-    // Fetch product prices from Strapi to ensure accuracy
-    let subtotal = 0;
-    const productIds = lineItems.map(item => item.productId);
+    // Fetch product prices from Sanity
+    const productIds = [...new Set(lineItems.map((item: LineItem) => item.productId))]
+    const products = await client.fetch(PRODUCT_PRICES_QUERY, { ids: productIds })
 
-    // Fetch products
-    const productsResponse = await fetch(
-      `${STRAPI_URL}/api/products?filters[documentId][$in]=${productIds.join(',')}&populate=variants`,
-      {
-        headers: {
-          Authorization: `Bearer ${STRAPI_TOKEN}`,
-        },
-      }
-    );
-
-    if (!productsResponse.ok) {
-      console.error('Failed to fetch products:', productsResponse.status);
-      return NextResponse.json(
-        { error: 'Termékek lekérése sikertelen' },
-        { status: 500 }
-      );
+    const productMap = new Map<string, any>()
+    for (const product of products || []) {
+      productMap.set(product._id, product)
     }
 
-    const productsData = await productsResponse.json();
-    const products = productsData.data || [];
+    let subtotal = 0
+    let totalWeight = 0
 
-    // Create a map of products by documentId
-    const productMap = new Map();
-    for (const product of products) {
-      productMap.set(product.documentId, product);
-    }
-
-    // Calculate subtotal from actual product prices
     for (const item of lineItems) {
-      const product = productMap.get(item.productId);
+      const product = productMap.get(item.productId)
+      if (!product) continue
 
-      if (!product) {
-        // Try fetching individual product if not in batch
-        const singleResponse = await fetch(
-          `${STRAPI_URL}/api/products/${item.productId}?populate=variants`,
-          {
-            headers: {
-              Authorization: `Bearer ${STRAPI_TOKEN}`,
-            },
-          }
-        );
+      let price = product.basePrice || 0
+      let weight = product.weight || 0
 
-        if (singleResponse.ok) {
-          const singleData = await singleResponse.json();
-          if (singleData.data) {
-            productMap.set(item.productId, singleData.data);
-          }
+      if (item.variantId && product.variants) {
+        const variant = product.variants.find((v: any) => v._id === item.variantId)
+        if (variant) {
+          price = variant.price || price
+          weight = variant.weight || weight
         }
       }
 
-      const foundProduct = productMap.get(item.productId);
-      if (!foundProduct) {
-        console.warn(`Product not found: ${item.productId}`);
-        continue;
-      }
-
-      let price = foundProduct.basePrice || 0;
-
-      // Check for variant price
-      if (item.variantId && foundProduct.variants) {
-        const variant = foundProduct.variants.find(
-          (v: { documentId: string }) => v.documentId === item.variantId
-        );
-        if (variant && variant.price) {
-          price = variant.price;
-        }
-      }
-
-      subtotal += price * item.quantity;
+      subtotal += price * item.quantity
+      totalWeight += weight * item.quantity
     }
 
-    // Calculate discount (coupon)
-    let discount = 0;
-    let couponApplied = false;
-    let couponError: string | undefined;
+    // Validate and apply coupon from Prisma
+    let discount = 0
+    let couponApplied = false
+    let couponError: string | undefined
 
     if (couponCode) {
-      // Fetch coupon from Strapi
-      const couponResponse = await fetch(
-        `${STRAPI_URL}/api/coupons?filters[code][$eq]=${encodeURIComponent(couponCode)}&filters[isActive][$eq]=true`,
-        {
-          headers: {
-            Authorization: `Bearer ${STRAPI_TOKEN}`,
-          },
-        }
-      );
+      const coupon = await prisma.coupon.findFirst({
+        where: {
+          code: { equals: couponCode, mode: 'insensitive' },
+          isActive: true,
+        },
+      })
 
-      if (couponResponse.ok) {
-        const couponData = await couponResponse.json();
-        const coupon = couponData.data?.[0];
-
-        if (coupon) {
-          // Check validity dates
-          const now = new Date();
-          const validFrom = coupon.validFrom ? new Date(coupon.validFrom) : null;
-          const validUntil = coupon.validUntil ? new Date(coupon.validUntil) : null;
-
-          if (validFrom && now < validFrom) {
-            couponError = 'A kupon még nem érvényes';
-          } else if (validUntil && now > validUntil) {
-            couponError = 'A kupon már lejárt';
-          } else if (coupon.minimumOrderValue && subtotal < coupon.minimumOrderValue) {
-            couponError = `Minimum rendelési érték: ${coupon.minimumOrderValue.toLocaleString('hu-HU')} Ft`;
-          } else {
-            // Apply discount
-            if (coupon.discountType === 'percentage') {
-              discount = Math.round(subtotal * (coupon.discountValue / 100));
-              // Apply max discount if set
-              if (coupon.maxDiscountAmount && discount > coupon.maxDiscountAmount) {
-                discount = coupon.maxDiscountAmount;
-              }
-            } else {
-              discount = coupon.discountValue;
-            }
-            couponApplied = true;
-          }
+      if (coupon) {
+        const now = new Date()
+        if (coupon.validFrom && now < coupon.validFrom) {
+          couponError = 'A kupon még nem érvényes'
+        } else if (coupon.validUntil && now > coupon.validUntil) {
+          couponError = 'A kupon már lejárt'
+        } else if (coupon.minimumOrderAmount && subtotal < coupon.minimumOrderAmount) {
+          couponError = `Minimum rendelési érték: ${coupon.minimumOrderAmount.toLocaleString('hu-HU')} Ft`
         } else {
-          couponError = 'Érvénytelen kuponkód';
+          if (coupon.discountType === 'percentage') {
+            discount = Math.round(subtotal * (coupon.discountValue / 100))
+            if (coupon.maximumDiscount && discount > coupon.maximumDiscount) {
+              discount = coupon.maximumDiscount
+            }
+          } else {
+            discount = coupon.discountValue
+          }
+          discount = Math.min(discount, subtotal)
+          couponApplied = true
         }
+      } else {
+        couponError = 'Érvénytelen kuponkód'
       }
     }
 
-    // Calculate shipping
-    const afterDiscount = subtotal - discount;
-    let shipping = afterDiscount >= FREE_SHIPPING_THRESHOLD ? 0 : STANDARD_SHIPPING_FEE;
-
-    // For non-Hungarian shipping, apply higher fee (if needed in future)
-    if (shippingCountry && !['Magyarország', 'Magyarorszag', 'Hungary', 'HU'].includes(shippingCountry)) {
-      shipping = Math.max(shipping, 4990); // International shipping fee
-    }
-
-    // Calculate VAT
-    // In Hungary, prices are typically displayed including VAT
-    // So we calculate the VAT portion from the total
-    const netTotal = Math.round((afterDiscount + shipping) / (1 + VAT_RATE));
-    const vatAmount = (afterDiscount + shipping) - netTotal;
-    const total = afterDiscount + shipping;
+    const afterDiscount = subtotal - discount
+    const shipping = calculateShipping(totalWeight, afterDiscount)
+    const total = afterDiscount + shipping
+    const { vatAmount, netPrice: netTotal } = calculateVatFromGross(total)
 
     return NextResponse.json({
       subtotal,
@@ -181,15 +110,12 @@ export async function POST(request: NextRequest) {
       netTotal,
       vatAmount,
       total,
-      freeShippingThreshold: FREE_SHIPPING_THRESHOLD,
+      freeShippingThreshold: getFreeShippingThreshold(),
       couponApplied,
       couponError,
-    });
+    })
   } catch (error) {
-    console.error('Calculate totals error:', error);
-    return NextResponse.json(
-      { error: 'Hiba történt a számítás során' },
-      { status: 500 }
-    );
+    console.error('Calculate totals error:', error)
+    return NextResponse.json({ error: 'Hiba történt a számítás során' }, { status: 500 })
   }
 }

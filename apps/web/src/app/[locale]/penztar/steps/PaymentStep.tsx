@@ -20,11 +20,10 @@ const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
 );
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
 
 interface PaymentStepProps {
   addresses: ShippingAddress[];
-  userId: number;
+  userId: string;
 }
 
 type PaymentMethod = 'card' | 'bank_transfer';
@@ -57,7 +56,7 @@ export function PaymentStep({ addresses, userId }: PaymentStepProps) {
   // Get shipping address details
   const shippingAddress = useNewShippingAddress
     ? newShippingAddress
-    : addresses.find(a => a.documentId === shippingAddressId);
+    : addresses.find(a => a.id === shippingAddressId);
 
   // Get billing address details
   const billingAddress = useSameAsBilling ? undefined : newBillingAddress;
@@ -80,8 +79,8 @@ export function PaymentStep({ addresses, userId }: PaymentStepProps) {
       }
 
       const lineItems = items.map(item => ({
-        productId: item.productDocumentId,
-        variantId: item.variantDocumentId,
+        productId: item.productId,
+        variantId: item.variantId,
         quantity: item.quantity,
         name: item.name,
         variantName: item.variantName,
@@ -89,7 +88,7 @@ export function PaymentStep({ addresses, userId }: PaymentStepProps) {
         price: item.price,
       }));
 
-      const response = await fetch(`${API_URL}/checkout/create-session`, {
+      const response = await fetch(`/api/checkout/create-session`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -145,8 +144,8 @@ export function PaymentStep({ addresses, userId }: PaymentStepProps) {
     setError(null);
 
     const lineItems = items.map(item => ({
-      productId: item.productDocumentId,
-      variantId: item.variantDocumentId,
+      productId: item.productId,
+      variantId: item.variantId,
       quantity: item.quantity,
       name: item.name,
       variantName: item.variantName,
@@ -162,7 +161,7 @@ export function PaymentStep({ addresses, userId }: PaymentStepProps) {
         city: shippingAddress.city,
         postalCode: shippingAddress.postalCode,
         country: shippingAddress.country || 'Magyarország',
-        phone: shippingAddress.phone,
+        phone: shippingAddress.phone ?? undefined,
       },
       billingAddress: billingAddress ? {
         recipientName: billingAddress.recipientName,
@@ -170,8 +169,8 @@ export function PaymentStep({ addresses, userId }: PaymentStepProps) {
         city: billingAddress.city,
         postalCode: billingAddress.postalCode,
         country: billingAddress.country || 'Magyarország',
-        companyName: billingAddress.companyName,
-        vatNumber: billingAddress.vatNumber,
+        companyName: billingAddress.companyName ?? undefined,
+        vatNumber: billingAddress.vatNumber ?? undefined,
       } : undefined,
       couponCode: coupon?.code,
       poReference,

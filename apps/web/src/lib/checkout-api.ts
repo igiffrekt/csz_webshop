@@ -82,7 +82,7 @@ export interface BankTransferRequest {
   };
   couponCode?: string;
   poReference?: string;
-  userId: number;
+  userId: string;
 }
 
 export interface BankTransferResponse {

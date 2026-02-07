@@ -18,15 +18,8 @@ const nextConfig: NextConfig = {
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     remotePatterns: [
       {
-        protocol: 'http',
-        hostname: 'localhost',
-        port: '1337',
-        pathname: '/**',
-      },
-      {
         protocol: 'https',
-        hostname: 'localhost',
-        port: '1337',
+        hostname: 'cdn.sanity.io',
         pathname: '/**',
       },
       {

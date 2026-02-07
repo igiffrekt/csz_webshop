@@ -1,5 +1,6 @@
-import { requireAuth } from '@/lib/auth/dal';
-import { getCurrentUserProfile } from '@/lib/auth/actions';
+import { redirect } from 'next/navigation';
+import { auth } from '@/lib/auth';
+import { getCurrentUserProfile } from '@/lib/auth-actions';
 import { QuoteRequestForm } from './QuoteRequestForm';
 import { FileText } from 'lucide-react';
 import type { Metadata } from 'next';
@@ -10,7 +11,10 @@ export const metadata: Metadata = {
 };
 
 export default async function QuoteRequestPage() {
-  await requireAuth("/hu/ajanlatkeres");
+  const session = await auth();
+  if (!session?.user) {
+    redirect("/hu/auth/bejelentkezes?redirect=/hu/ajanlatkeres");
+  }
   const { user: profile } = await getCurrentUserProfile();
 
   return (
@@ -29,8 +33,8 @@ export default async function QuoteRequestPage() {
       <div className="border rounded-lg p-6">
         <QuoteRequestForm
           userEmail={profile?.email || ''}
-          companyName={profile?.companyName}
-          phone={profile?.phone}
+          companyName={profile?.companyName ?? undefined}
+          phone={profile?.phone ?? undefined}
         />
       </div>
     </main>

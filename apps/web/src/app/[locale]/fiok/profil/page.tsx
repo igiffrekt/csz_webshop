@@ -1,7 +1,8 @@
 import { Metadata } from "next";
+import { redirect } from "next/navigation";
 import { Link } from "@/i18n/navigation";
-import { requireAuth } from "@/lib/auth/dal";
-import { getCurrentUserProfile } from "@/lib/auth/actions";
+import { auth } from "@/lib/auth";
+import { getCurrentUserProfile } from "@/lib/auth-actions";
 import { ProfileForm } from "@/components/account/ProfileForm";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
@@ -12,10 +13,11 @@ export const metadata: Metadata = {
 };
 
 export default async function ProfilePage() {
-  // Ensure user is authenticated
-  await requireAuth("/hu/fiok/profil");
+  const session = await auth();
+  if (!session?.user) {
+    redirect("/hu/auth/bejelentkezes?redirect=/hu/fiok/profil");
+  }
 
-  // Get full user profile from Strapi
   const { user, error } = await getCurrentUserProfile();
 
   if (error || !user) {

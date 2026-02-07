@@ -27,7 +27,7 @@ import {
 } from '@/components/ui/sheet';
 import { Logo } from './Logo';
 import { cn } from '@/lib/utils';
-import type { Category, StrapiListResponse } from '@csz/types';
+import type { Category } from '@csz/types';
 
 const mainLinks = [
   { href: '/', label: 'Címlap', icon: Home },
@@ -47,7 +47,7 @@ export function MobileNav() {
       try {
         const res = await fetch('/api/categories');
         if (res.ok) {
-          const data: StrapiListResponse<Category> = await res.json();
+          const data: { data: Category[] } = await res.json();
           const topLevel = data.data.filter((cat) => !cat.parent);
           setCategories(topLevel);
         }

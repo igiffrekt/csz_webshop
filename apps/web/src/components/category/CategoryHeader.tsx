@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { ChevronRight } from "lucide-react";
 import { Link } from "@/i18n/navigation";
-import { getStrapiMediaUrl } from "@/lib/formatters";
+import { getImageUrl } from "@/lib/formatters";
 import type { Category } from "@csz/types";
 
 interface CategoryHeaderProps {
@@ -36,7 +36,7 @@ export function CategoryHeader({ category }: CategoryHeaderProps) {
         {category.image && (
           <div className="relative h-24 w-24 flex-shrink-0 overflow-hidden rounded-lg">
             <Image
-              src={getStrapiMediaUrl(category.image.url)}
+              src={getImageUrl(category.image.url)}
               alt={category.name}
               fill
               className="object-cover"

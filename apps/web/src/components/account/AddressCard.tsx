@@ -34,14 +34,14 @@ export function AddressCard({
 
   const handleDelete = async () => {
     setIsDeleting(true);
-    await onDelete(address.documentId);
+    await onDelete(address.id);
     setIsDeleting(false);
   };
 
   const handleSetDefault = async () => {
     if (address.isDefault) return;
     setIsSettingDefault(true);
-    await onSetDefault(address.documentId);
+    await onSetDefault(address.id);
     setIsSettingDefault(false);
   };
 

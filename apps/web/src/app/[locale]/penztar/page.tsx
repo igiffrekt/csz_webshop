@@ -1,4 +1,5 @@
-import { requireAuth } from '@/lib/auth/dal';
+import { redirect } from 'next/navigation';
+import { auth } from '@/lib/auth';
 import { getAddresses } from '@/lib/address-api';
 import { CheckoutClient } from './CheckoutClient';
 import type { Metadata } from 'next';
@@ -9,14 +10,14 @@ export const metadata: Metadata = {
 };
 
 export default async function CheckoutPage() {
-  // Require authentication - redirects to login if not authenticated
-  const session = await requireAuth("/hu/penztar");
+  const session = await auth();
+  if (!session?.user) {
+    redirect("/hu/auth/bejelentkezes?redirect=/hu/penztar");
+  }
 
-  // Fetch saved addresses
   const { data: addresses, error } = await getAddresses();
 
   if (error) {
-    // Handle error - could redirect or show message
     console.error('Failed to fetch addresses:', error);
   }
 
@@ -25,7 +26,7 @@ export default async function CheckoutPage() {
       <h1 className="text-2xl font-bold mb-8">Pénztár</h1>
       <CheckoutClient
         initialAddresses={addresses || []}
-        userId={session.userId}
+        userId={session.user.id}
       />
     </main>
   );

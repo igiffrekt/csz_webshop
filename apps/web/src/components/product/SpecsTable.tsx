@@ -19,7 +19,7 @@ export async function SpecsTable({ specifications }: SpecsTableProps) {
         <table className="w-full">
           <tbody className="divide-y">
             {specifications.map((spec) => (
-              <tr key={spec.id} className="hover:bg-muted/50">
+              <tr key={spec._key || spec.name} className="hover:bg-muted/50">
                 <td className="px-4 py-3 font-medium bg-muted/30 w-1/3">
                   {spec.name}
                 </td>

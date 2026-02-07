@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import createIntlMiddleware from "next-intl/middleware";
 import { routing } from "./src/i18n/routing";
-import { decrypt } from "./src/lib/auth/session-edge";
+import { auth } from "./src/lib/auth";
 import { PROTECTED_ROUTES, AUTH_ROUTES, ROUTES } from "./src/lib/routes";
 
 // Create the intl middleware
@@ -49,10 +49,9 @@ export async function middleware(request: NextRequest) {
     return intlResponse;
   }
 
-  // Get session from cookie
-  const sessionCookie = request.cookies.get("csz-session")?.value;
-  const session = await decrypt(sessionCookie);
-  const isAuthenticated = session && session.expiresAt > new Date();
+  // Get session from NextAuth
+  const session = await auth();
+  const isAuthenticated = !!session?.user;
 
   // Redirect unauthenticated users from protected routes to login
   if (isProtectedRoute && !isAuthenticated) {

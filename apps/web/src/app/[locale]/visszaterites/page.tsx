@@ -1,5 +1,30 @@
-import { getPageBySlug } from '@/lib/content-api';
+import { getPageBySlug } from '@/lib/sanity-queries';
 import type { Metadata } from 'next';
+
+function convertPortableTextToHtml(blocks: any): string {
+  if (!blocks) return '';
+  if (typeof blocks === 'string') return blocks;
+  if (!Array.isArray(blocks)) return '';
+  return blocks.map((block: any) => {
+    if (block._type !== 'block') return '';
+    const children = (block.children || [])
+      .map((child: any) => {
+        let text = child.text || '';
+        if (child.marks?.includes('strong')) text = `<strong>${text}</strong>`;
+        if (child.marks?.includes('em')) text = `<em>${text}</em>`;
+        return text;
+      })
+      .join('');
+    switch (block.style) {
+      case 'h1': return `<h1>${children}</h1>`;
+      case 'h2': return `<h2>${children}</h2>`;
+      case 'h3': return `<h3>${children}</h3>`;
+      case 'h4': return `<h4>${children}</h4>`;
+      case 'blockquote': return `<blockquote>${children}</blockquote>`;
+      default: return `<p>${children}</p>`;
+    }
+  }).join('\n');
+}
 
 export async function generateMetadata(): Promise<Metadata> {
   const page = await getPageBySlug('visszaterites');
@@ -13,7 +38,7 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function RefundPage() {
   const page = await getPageBySlug('visszaterites');
 
-  const content = page?.content || `
+  const content = page?.content ? convertPortableTextToHtml(page.content) : `
     <h2>Visszatérítési szabályzat</h2>
 
     <h3>Elállási jog</h3>

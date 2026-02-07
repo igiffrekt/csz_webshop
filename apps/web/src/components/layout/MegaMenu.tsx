@@ -5,7 +5,8 @@ import Image from 'next/image';
 import { ChevronDown, Grid3X3, Flame, Home, Package, Users, Phone, ExternalLink } from 'lucide-react';
 import { Link } from '@/i18n/navigation';
 import { cn } from '@/lib/utils';
-import type { Category, MenuItem, StrapiListResponse } from '@csz/types';
+import { getSlugString } from '@/lib/formatters';
+import type { Category, MenuItem } from '@csz/types';
 
 // Static info links (always shown in dropdown)
 const infoLinks = [
@@ -32,7 +33,7 @@ export function MegaMenu({ variant = 'default' }: MegaMenuProps) {
   useEffect(() => {
     async function fetchData() {
       try {
-        // Fetch menu items from Strapi
+        // Fetch menu items
         const menuRes = await fetch(`${window.location.origin}/api/menu`);
         if (menuRes.ok) {
           const menuData = await menuRes.json();
@@ -45,7 +46,7 @@ export function MegaMenu({ variant = 'default' }: MegaMenuProps) {
           if (res.ok) {
             const text = await res.text();
             if (text && text.trim()) {
-              const data: StrapiListResponse<Category> = JSON.parse(text);
+              const data: { data: Category[] } = JSON.parse(text);
               const topLevel = data.data?.filter((cat) => !cat.parent) || [];
               setCategories(topLevel);
             }
@@ -64,7 +65,7 @@ export function MegaMenu({ variant = 'default' }: MegaMenuProps) {
   // Render menu item link
   const renderMenuItem = (item: MenuItem) => {
     const href = item.tipus === 'kategoria' && item.kategoria
-      ? `/kategoriak/${item.kategoria.slug}`
+      ? `/kategoriak/${getSlugString(item.kategoria.slug)}`
       : item.url || '#';
 
     const isExternal = item.url?.startsWith('http');
@@ -72,7 +73,7 @@ export function MegaMenu({ variant = 'default' }: MegaMenuProps) {
     if (isExternal) {
       return (
         <a
-          key={item.documentId}
+          key={item._id}
           href={item.url}
           target={item.nyitasUjTabon ? '_blank' : undefined}
           rel={item.nyitasUjTabon ? 'noopener noreferrer' : undefined}
@@ -86,7 +87,7 @@ export function MegaMenu({ variant = 'default' }: MegaMenuProps) {
 
     return (
       <Link
-        key={item.documentId}
+        key={item._id}
         href={href}
         className="flex items-center gap-2 text-gray-700 hover:text-[#FFBB36] font-medium transition-colors py-1"
       >
@@ -98,7 +99,7 @@ export function MegaMenu({ variant = 'default' }: MegaMenuProps) {
   // Render menu tree recursively
   const renderMenuTree = (items: MenuItem[], depth = 0) => {
     return items.map((item) => (
-      <div key={item.documentId} className={depth > 0 ? 'ml-4' : ''}>
+      <div key={item._id} className={depth > 0 ? 'ml-4' : ''}>
         {renderMenuItem(item)}
         {item.children && item.children.length > 0 && (
           <div className="mt-1">
@@ -150,7 +151,7 @@ export function MegaMenu({ variant = 'default' }: MegaMenuProps) {
               })}
             </div>
 
-            {/* Strapi menu items */}
+            {/* Menu items */}
             {isLoading ? (
               <div className="flex items-center justify-center py-4">
                 <div className="animate-spin h-5 w-5 border-2 border-primary-500 border-t-transparent rounded-full" />
@@ -232,20 +233,20 @@ export function MegaMenu({ variant = 'default' }: MegaMenuProps) {
             <>
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
                 {categories.map((category) => (
-                  <div key={category.slug}>
+                  <div key={getSlugString(category.slug)}>
                     <Link
-                      href={`/kategoriak/${category.slug}`}
+                      href={`/kategoriak/${getSlugString(category.slug)}`}
                       className="flex items-center gap-2 font-semibold text-secondary-900 hover:text-primary-500 transition-colors"
                     >
-                      {categoryIcons[category.slug]}
+                      {categoryIcons[getSlugString(category.slug)]}
                       {category.name}
                     </Link>
                     {category.children && category.children.length > 0 && (
                       <ul className="mt-2 space-y-1">
                         {category.children.slice(0, 5).map((sub) => (
-                          <li key={sub.slug}>
+                          <li key={getSlugString(sub.slug)}>
                             <Link
-                              href={`/kategoriak/${sub.slug}`}
+                              href={`/kategoriak/${getSlugString(sub.slug)}`}
                               className="text-sm text-secondary-600 hover:text-primary-500 transition-colors block py-0.5"
                             >
                               {sub.name}
@@ -255,7 +256,7 @@ export function MegaMenu({ variant = 'default' }: MegaMenuProps) {
                         {category.children.length > 5 && (
                           <li>
                             <Link
-                              href={`/kategoriak/${category.slug}`}
+                              href={`/kategoriak/${getSlugString(category.slug)}`}
                               className="text-sm text-primary-500 hover:text-primary-600 font-medium"
                             >
                               + {category.children.length - 5} további

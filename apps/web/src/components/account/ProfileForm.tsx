@@ -4,11 +4,11 @@ import { useActionState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { updateProfileAction, type AuthState } from "@/lib/auth/actions";
-import type { User } from "@csz/types";
+import { updateProfileAction, type AuthState } from "@/lib/auth-actions";
+import type { UserProfile } from "@csz/types";
 
 interface ProfileFormProps {
-  user: User;
+  user: UserProfile;
 }
 
 export function ProfileForm({ user }: ProfileFormProps) {

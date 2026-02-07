@@ -2,7 +2,7 @@ import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import type { Product } from "@csz/types";
-import { formatPrice, getStrapiMediaUrl } from "@/lib/formatters";
+import { formatPrice, getImageUrl } from "@/lib/formatters";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 
@@ -16,8 +16,8 @@ export function ProductCard({ product, className }: ProductCardProps) {
 
   // Get primary image - prefer Cloudinary URL (WebP with background removed)
   const imageUrl = product.cloudinaryImageUrl
-    || (product.images?.[0] ? getStrapiMediaUrl(product.images[0].url) : "/placeholder.jpg");
-  const imageAlt = product.images?.[0]?.alternativeText || product.name;
+    || (product.images?.[0] ? getImageUrl(product.images[0].url) : "/placeholder.jpg");
+  const imageAlt = product.images?.[0]?.alt || product.name;
 
   // Check if has certifications (CE marking)
   const hasCertifications = product.certifications && product.certifications.length > 0;

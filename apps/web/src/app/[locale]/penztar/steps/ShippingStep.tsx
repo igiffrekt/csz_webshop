@@ -41,7 +41,7 @@ export function ShippingStep({ addresses }: ShippingStepProps) {
   // Set default address on first load if nothing selected
   useEffect(() => {
     if (!shippingAddressId && !useNewShippingAddress && defaultAddress) {
-      setShippingAddressId(defaultAddress.documentId);
+      setShippingAddressId(defaultAddress.id);
     }
   }, [defaultAddress, shippingAddressId, useNewShippingAddress, setShippingAddressId]);
 
@@ -109,14 +109,14 @@ export function ShippingStep({ addresses }: ShippingStepProps) {
           {/* Saved addresses */}
           {addresses.map((address) => (
             <div
-              key={address.documentId}
+              key={address.id}
               className={`
                 flex items-start space-x-3 p-4 border rounded-lg cursor-pointer
-                ${selectedValue === address.documentId ? 'border-primary bg-primary/5' : 'hover:border-primary/50'}
+                ${selectedValue === address.id ? 'border-primary bg-primary/5' : 'hover:border-primary/50'}
               `}
             >
-              <RadioGroupItem value={address.documentId} id={address.documentId} />
-              <Label htmlFor={address.documentId} className="flex-1 cursor-pointer">
+              <RadioGroupItem value={address.id} id={address.id} />
+              <Label htmlFor={address.id} className="flex-1 cursor-pointer">
                 <div className="flex items-center gap-2">
                   <span className="font-medium">{address.label}</span>
                   {address.isDefault && (

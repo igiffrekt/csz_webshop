@@ -7,11 +7,12 @@ import { HeaderCart } from './HeaderCart';
 import { UserMenu } from './UserMenu';
 import { MobileNav } from './MobileNav';
 import { MegaMenu } from './MegaMenu';
-import { verifySession } from '@/lib/auth/dal';
+import { auth } from '@/lib/auth';
 
 export async function Header() {
   const t = await getTranslations('nav');
-  const { isAuth, session } = await verifySession();
+  const session = await auth();
+  const isAuth = !!session?.user;
 
   return (
     <header className="sticky top-0 z-50 bg-white">
@@ -47,8 +48,8 @@ export async function Header() {
             </Link>
 
             {/* User */}
-            {isAuth && session ? (
-              <UserMenu username={session.username} email={session.email} />
+            {isAuth && session?.user ? (
+              <UserMenu username={session.user.username || session.user.name || ''} email={session.user.email || ''} />
             ) : (
               <Link
                 href="/auth/bejelentkezes"

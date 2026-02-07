@@ -1,13 +1,18 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { Link } from '@/i18n/navigation';
-import { getStrapiCategory, getStrapiCategoryTree, getStrapiProducts, transformStrapiProduct } from '@/lib/strapi';
+import { getCategory, getCategoryTree, getProducts } from '@/lib/sanity-queries';
 import { CategoryCard } from '@/components/category/CategoryCard';
 import { CategoryFilters } from '@/components/category/CategoryFilters';
 import { ProductGrid } from '@/components/product/ProductGrid';
 import { Pagination } from '@/components/product/Pagination';
 import { EmptyState } from '@/components/product/EmptyState';
 import { Home, ChevronRight, Folder } from 'lucide-react';
+
+function getSlugString(slug: any): string {
+  if (typeof slug === 'string') return slug;
+  return slug?.current || '';
+}
 
 interface Props {
   params: Promise<{ categorySlug: string; locale: string }>;
@@ -16,12 +21,10 @@ interface Props {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { categorySlug } = await params;
-  const category = await getStrapiCategory(categorySlug);
-
+  const category = await getCategory(categorySlug);
   if (!category) {
     return { title: 'Kategoria nem talalhato' };
   }
-
   return {
     title: category.name,
     description: category.description || `${category.name} - Tűzvédelmi eszközök`,
@@ -32,80 +35,75 @@ export default async function CategoryPage({ params, searchParams }: Props) {
   const { categorySlug } = await params;
   const search = await searchParams;
 
-  // Fetch category and category tree in parallel
   const [category, categoryTree] = await Promise.all([
-    getStrapiCategory(categorySlug),
-    getStrapiCategoryTree(),
+    getCategory(categorySlug),
+    getCategoryTree(),
   ]);
 
   if (!category) {
     notFound();
   }
 
-  // Parse filter params
   const currentPage = search.page ? parseInt(search.page, 10) : 1;
   const subcategoryFilter = search.alkategoria;
-  const sortParam = search.rendezes || 'createdAt:desc';
-
-  // Determine which category slug to filter by
   const filterCategorySlug = subcategoryFilter || categorySlug;
 
-  // Fetch products in this category (or subcategory if filtered)
-  const productsResponse = await getStrapiProducts({
+  const productsResponse = await getProducts({
     category: filterCategorySlug,
     page: currentPage,
     pageSize: 12,
-    sort: sortParam,
   });
 
-  const products = productsResponse.products.map(transformStrapiProduct);
-  const pagination = {
-    page: currentPage,
-    pageCount: productsResponse.totalPages,
-    total: productsResponse.total,
-  };
+  const products = productsResponse.data.map((p: any) => ({
+    id: 0,
+    _id: p._id,
+    name: p.name,
+    slug: getSlugString(p.slug),
+    basePrice: p.basePrice,
+    compareAtPrice: p.compareAtPrice,
+    stock: p.stock,
+    cloudinaryImageUrl: p.cloudinaryImageUrl,
+    images: p.images,
+    categories: (p.categories || []).map((c: any) => ({
+      id: 0,
+      _id: c._id,
+      name: c.name,
+      slug: getSlugString(c.slug),
+    })),
+  }));
+
+  const pagination = productsResponse.meta.pagination;
   const hasSubcategories = category.children && category.children.length > 0;
 
-  // Transform children for CategoryCard component
-  const transformedChildren = (category.children || []).map((child) => ({
-    id: child.id,
-    documentId: child.documentId,
+  const transformedChildren = (category.children || []).map((child: any) => ({
+    id: child._id,
+    _id: child._id,
     name: child.name,
-    slug: child.slug,
+    slug: getSlugString(child.slug),
     description: child.description,
     productCount: child.productCount,
-    image: child.image
-      ? {
-          url: child.image.url.startsWith('http')
-            ? child.image.url
-            : `${process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337'}${child.image.url}`,
-          alternativeText: child.image.alternativeText,
-        }
-      : undefined,
+    image: child.image ? { url: child.image.url, alt: child.image.alt } : undefined,
   }));
 
-  // Transform subcategories for filter dropdown
-  const filterSubcategories = (category.children || []).map((child) => ({
+  const filterSubcategories = (category.children || []).map((child: any) => ({
     name: child.name,
-    slug: child.slug,
+    slug: getSlugString(child.slug),
     productCount: child.productCount,
   }));
 
-  // Transform category tree for category filter dropdown
-  const filterCategories = categoryTree.map((cat) => ({
+  const filterCategories = (categoryTree || []).map((cat: any) => ({
     name: cat.name,
-    slug: cat.slug,
-    productCount: cat.count,
-    children: cat.children.map((child) => ({
+    slug: getSlugString(cat.slug),
+    productCount: cat.productCount,
+    children: (cat.children || []).map((child: any) => ({
       name: child.name,
-      slug: child.slug,
-      productCount: child.count,
+      slug: getSlugString(child.slug),
+      productCount: child.productCount,
     })),
   }));
 
   return (
     <div className="bg-secondary-50 min-h-screen">
-      {/* Breadcrumb */}
       <div className="bg-white border-b border-secondary-200">
         <div className="site-container py-4">
           <nav className="flex items-center gap-2 text-sm">
@@ -113,17 +111,14 @@ export default async function CategoryPage({ params, searchParams }: Props) {
               <Home className="h-4 w-4" />
             </Link>
             <ChevronRight className="h-4 w-4 text-secondary-400" />
-            <Link
-              href="/kategoriak"
-              className="text-secondary-500 hover:text-primary-500 transition-colors"
-            >
+            <Link href="/kategoriak" className="text-secondary-500 hover:text-primary-500 transition-colors">
               Kategoriak
             </Link>
             {category.parent && (
               <>
                 <ChevronRight className="h-4 w-4 text-secondary-400" />
                 <Link
-                  href={`/kategoriak/${category.parent.slug}`}
+                  href={`/kategoriak/${getSlugString(category.parent.slug)}`}
                   className="text-secondary-500 hover:text-primary-500 transition-colors"
                 >
                   {category.parent.name}
@@ -136,7 +131,6 @@ export default async function CategoryPage({ params, searchParams }: Props) {
         </div>
       </div>
 
-      {/* Category header */}
       <div className="bg-white border-b border-secondary-200">
         <div className="site-container py-8 lg:py-12">
           <div className="flex items-center gap-4">
@@ -155,19 +149,17 @@ export default async function CategoryPage({ params, searchParams }: Props) {
       </div>
 
       <div className="site-container py-8">
-        {/* Subcategories */}
         {hasSubcategories && (
           <section className="mb-10">
             <h2 className="text-xl font-bold text-secondary-900 mb-4">Alkategoriak</h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-              {transformedChildren.map((child) => (
-                <CategoryCard key={child.documentId} category={child} />
+              {transformedChildren.map((child: any) => (
+                <CategoryCard key={child._id} category={child} />
               ))}
             </div>
           </section>
         )}
 
-        {/* Products */}
         <section>
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
             <h2 className="text-xl font-bold text-secondary-900">Termékek</h2>

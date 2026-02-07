@@ -5,7 +5,7 @@ import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { loginAction, type AuthState } from "@/lib/auth/actions";
+import { loginAction, type AuthState } from "@/lib/auth-actions";
 
 interface LoginFormProps {
   redirectTo?: string;
@@ -40,9 +40,9 @@ export function LoginForm({ redirectTo }: LoginFormProps) {
           autoComplete="email"
           disabled={isPending}
         />
-        {state.fieldErrors?.identifier && (
+        {state.fieldErrors?.email && (
           <p className="text-sm text-destructive">
-            {state.fieldErrors.identifier[0]}
+            {state.fieldErrors.email[0]}
           </p>
         )}
       </div>

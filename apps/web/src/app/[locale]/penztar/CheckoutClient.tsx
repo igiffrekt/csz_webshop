@@ -56,7 +56,7 @@ function StepIndicator({ currentStep }: { currentStep: string }) {
 
 interface CheckoutClientProps {
   initialAddresses: ShippingAddress[];
-  userId: number;
+  userId: string;
 }
 
 export function CheckoutClient({ initialAddresses, userId }: CheckoutClientProps) {

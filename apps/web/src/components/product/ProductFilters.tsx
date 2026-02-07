@@ -22,7 +22,7 @@ interface ProductFiltersProps {
   className?: string;
 }
 
-// Sort options matching Strapi format
+// Sort options
 const SORT_OPTIONS = [
   { value: "createdAt:desc", label: "Legújabb" },
   { value: "basePrice:asc", label: "Ár szerint növekvő" },
