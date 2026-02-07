@@ -12,7 +12,7 @@ export async function POST(request: NextRequest) {
     // Case-insensitive lookup
     const coupon = await prisma.coupon.findFirst({
       where: {
-        code: { equals: code, mode: 'insensitive' },
+        code: { equals: code },
         isActive: true,
       },
     })
