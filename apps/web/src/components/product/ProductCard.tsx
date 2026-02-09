@@ -14,9 +14,7 @@ interface ProductCardProps {
 export function ProductCard({ product, className }: ProductCardProps) {
   const t = useTranslations("products");
 
-  // Get primary image - prefer Cloudinary URL (WebP with background removed)
-  const imageUrl = product.cloudinaryImageUrl
-    || (product.images?.[0] ? getImageUrl(product.images[0].url) : "/placeholder.jpg");
+  const imageUrl = product.images?.[0] ? getImageUrl(product.images[0].url) : "/placeholder.jpg";
   const imageAlt = product.images?.[0]?.alt || product.name;
 
   // Check if has certifications (CE marking)

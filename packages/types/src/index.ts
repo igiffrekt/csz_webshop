@@ -60,7 +60,6 @@ export interface Product {
   isFeatured: boolean
   isOnSale: boolean
   images?: SanityImageAsset[]
-  cloudinaryImageUrl?: string
   documents?: { _key?: string; url: string; name: string }[]
   specifications?: Specification[]
   certifications?: Certification[]

@@ -21,7 +21,6 @@ const PRODUCTS_QUERY = defineQuery(`
     weight,
     isFeatured,
     isOnSale,
-    cloudinaryImageUrl,
     shortDescription,
     "images": images[]{
       _key,
@@ -73,7 +72,6 @@ const PRODUCT_BY_SLUG_QUERY = defineQuery(`
     weight,
     isFeatured,
     isOnSale,
-    cloudinaryImageUrl,
     "images": images[]{
       _key,
       "url": asset->url,
@@ -226,7 +224,6 @@ const HOMEPAGE_QUERY = defineQuery(`
       stock,
       isFeatured,
       isOnSale,
-      cloudinaryImageUrl,
       "images": images[0]{
         "url": asset->url,
         "alt": asset->altText
@@ -243,7 +240,6 @@ const HOMEPAGE_QUERY = defineQuery(`
         compareAtPrice,
         stock,
         isOnSale,
-        cloudinaryImageUrl,
         "images": images[0]{
           "url": asset->url,
           "alt": asset->altText

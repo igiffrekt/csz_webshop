@@ -33,23 +33,11 @@ export function ProductDetails({ product, children }: ProductDetailsProps) {
 
   // Build the full list of images: product images + variant images
   const allImages = useMemo(() => {
-    const images: Array<ImageItem & { variantId?: string; isCloudinary?: boolean }> = [];
+    const images: Array<ImageItem & { variantId?: string }> = [];
 
-    // If cloudinaryImageUrl exists, use it as the primary image (background removed, WebP)
-    if (product.cloudinaryImageUrl) {
-      images.push({
-        _key: 'cloudinary',
-        url: product.cloudinaryImageUrl,
-        alt: product.name,
-        isCloudinary: true,
-      });
-    }
-
-    // Add product images (skip first if we have cloudinary version)
+    // Add product images
     if (product.images && product.images.length > 0) {
-      product.images.forEach((img, index) => {
-        // If we have cloudinary, skip the first image to avoid duplicate
-        if (product.cloudinaryImageUrl && index === 0) return;
+      product.images.forEach((img) => {
         images.push({ ...img });
       });
     }
@@ -58,7 +46,6 @@ export function ProductDetails({ product, children }: ProductDetailsProps) {
     if (product.variants) {
       product.variants.forEach(variant => {
         if (variant.image) {
-          // Check if this image URL is already in the list
           const alreadyExists = images.some(img => img.url === variant.image!.url);
           if (!alreadyExists) {
             images.push({ ...variant.image, variantId: variant._id });
@@ -97,7 +84,7 @@ export function ProductDetails({ product, children }: ProductDetailsProps) {
         {/* Main image */}
         <div className="relative aspect-square w-full overflow-hidden rounded-[30px] bg-white">
           <Image
-            src={'isCloudinary' in selectedImage && selectedImage.isCloudinary ? selectedImage.url : getImageUrl(selectedImage.url)}
+            src={getImageUrl(selectedImage.url)}
             alt={selectedImage.alt || product.name}
             fill
             sizes="(max-width: 768px) 100vw, 50vw"
@@ -119,7 +106,7 @@ export function ProductDetails({ product, children }: ProductDetailsProps) {
                 )}
               >
                 <Image
-                  src={'isCloudinary' in image && image.isCloudinary ? image.url : getImageUrl(image.url)}
+                  src={getImageUrl(image.url)}
                   alt={image.alt || `${product.name} ${index + 1}`}
                   fill
                   sizes="80px"

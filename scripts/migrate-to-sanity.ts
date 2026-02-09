@@ -13,7 +13,6 @@
 
 import { config } from 'dotenv'
 import { resolve } from 'path'
-import { readFileSync } from 'fs'
 import { htmlToPortableText, textToPortableText, resetKeyCounter } from './lib/portable-text'
 
 // Load env
@@ -109,52 +108,6 @@ async function fetchAllWooProducts(): Promise<WooProduct[]> {
     console.log(`  Fetched ${all.length} products...`)
   }
   return all
-}
-
-// ---------------------------------------------------------------------------
-// Cloudinary URL lookup
-// ---------------------------------------------------------------------------
-
-interface CloudinaryEntry {
-  product_id: string
-  product_name: string
-  original_url: string
-  cloudinary_url: string
-}
-
-let cloudinaryMap: Map<string, string> | null = null
-
-function loadCloudinaryUrls(): Map<string, string> {
-  if (cloudinaryMap) return cloudinaryMap
-
-  const raw = readFileSync(resolve(__dirname, 'cloudinary-urls.json'), 'utf-8')
-  const entries: CloudinaryEntry[] = JSON.parse(raw)
-
-  // Build a map keyed by normalized product name for fuzzy matching
-  cloudinaryMap = new Map<string, string>()
-  for (const entry of entries) {
-    // Store by normalized name (lowercase, trimmed)
-    const key = entry.product_name.toLowerCase().trim()
-    cloudinaryMap.set(key, entry.cloudinary_url)
-  }
-  return cloudinaryMap
-}
-
-function findCloudinaryUrl(productName: string): string | undefined {
-  const map = loadCloudinaryUrls()
-
-  // Exact match by lowercased name
-  const key = productName.toLowerCase().trim()
-  if (map.has(key)) return map.get(key)
-
-  // Try matching by prefix (Cloudinary entries have truncated names)
-  for (const [mapKey, url] of map) {
-    if (key.startsWith(mapKey) || mapKey.startsWith(key)) {
-      return url
-    }
-  }
-
-  return undefined
 }
 
 // ---------------------------------------------------------------------------
@@ -276,9 +229,6 @@ async function migrateProducts(
       ? stripHtmlTags(prod.short_description).substring(0, 300)
       : undefined
 
-    // Cloudinary URL
-    const cloudinaryImageUrl = findCloudinaryUrl(prod.name)
-
     productDocs.push({
       _id: sanityId,
       _type: 'product',
@@ -293,7 +243,6 @@ async function migrateProducts(
       weight: prod.weight ? parseFloat(prod.weight) : undefined,
       isFeatured: prod.featured || false,
       isOnSale,
-      cloudinaryImageUrl,
       categories: categories.length > 0 ? categories : undefined,
     })
   }
