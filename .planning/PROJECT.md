@@ -76,7 +76,7 @@ A full-featured e-commerce platform for selling fire safety equipment, parts, an
 - Multi-language support — Hungarian only
 - International shipping — Hungary only
 - Subscription/recurring payments — one-time purchases only
-- Real-time inventory sync with external ERP — manual management via Strapi
+- Real-time inventory sync with external ERP — manual management via Sanity
 - Automatic quantity discounts — using quote request system instead
 
 ## Context
@@ -91,7 +91,7 @@ A full-featured e-commerce platform for selling fire safety equipment, parts, an
 - Fresh, modern design with premium feel
 - Expressive animations that convey quality
 - Faster performance (Next.js vs WordPress)
-- Better admin experience (Strapi vs WooCommerce)
+- Better admin experience (Sanity Studio vs WooCommerce)
 - Clean architecture for future expansion
 
 **Product Domain:**
@@ -119,11 +119,13 @@ A full-featured e-commerce platform for selling fire safety equipment, parts, an
 
 | Decision | Rationale | Outcome |
 |----------|-----------|---------|
-| Strapi for CMS | Headless, flexible, self-hosted, good admin UX | — Pending |
-| Separate API backend | All business logic (VAT, shipping, coupons) server-side, frontend never source of truth | — Pending |
-| Quote requests over auto-discounts | Bulk pricing is negotiated, not formulaic | — Pending |
-| Motion.dev + GSAP split | Motion for component state, GSAP for scroll/timeline | — Pending |
-| Full migration before launch | Preserve customer relationships and order history | — Pending |
+| Sanity for CMS | Hosted infrastructure, GROQ queries, excellent content modeling | Replaced Strapi (Phase 10) |
+| Next.js API routes for backend | Co-located with frontend, no separate API service needed | Replaced Fastify (Phase 10) |
+| NextAuth + Prisma for auth | Standard auth library with database adapter, simpler than custom JWT | Replaced Strapi auth (Phase 10) |
+| MariaDB for database | Simpler hosting, compatible with target infrastructure | Replaced PostgreSQL (Phase 10) |
+| Quote requests over auto-discounts | Bulk pricing is negotiated, not formulaic | Implemented (Phase 8) |
+| Motion.dev + GSAP split | Motion for component state, GSAP for scroll/timeline | Implemented (Phase 9) |
+| Full migration before launch | Preserve customer relationships and order history | In progress |
 
 ---
-*Last updated: 2025-01-19 after initialization*
+*Last updated: 2026-02-09 — updated for Sanity/NextAuth/Prisma/MariaDB architecture*

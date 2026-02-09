@@ -1,7 +1,7 @@
 # Project State: CSZ Webshop
 
 **Initialized:** 2026-01-19
-**Last Session:** 2026-02-04
+**Last Session:** 2026-02-09
 
 ## Project Reference
 
@@ -14,7 +14,7 @@
 **Phase:** 10 of 10 (Design, Migration & Launch) - IMPLEMENTATION COMPLETE
 **Plan:** 14 of 14 implemented
 **Status:** Awaiting manual verification, migration, and deployment
-**Last activity:** 2026-01-29 - Verified Phase 10 implementation complete
+**Last activity:** 2026-02-09 - Updated project docs for architecture migration
 
 **Progress:**
 ```
@@ -157,22 +157,39 @@ Overall: 10/10 phases implemented (70/70 total plans) - AWAITING LAUNCH
 | formatOrderStatus in formatters.ts | Client components need formatters; moved from server-only order-api.ts | 2026-01-21 |
 | Generic success fallback | Show success message even if order lookup fails (webhook processing) | 2026-01-21 |
 | Cart clear on success | useEffect clears cart and checkout state when OrderConfirmation mounts | 2026-01-21 |
+| Sanity CMS replacing Strapi | Better content modeling, hosted infrastructure, GROQ queries | 2026-02 |
+| NextAuth replacing Strapi auth | Standard auth library, Prisma adapter, simpler session management | 2026-02 |
+| Prisma ORM | Type-safe database access, migration support, NextAuth adapter | 2026-02 |
+| MariaDB replacing PostgreSQL | Simpler hosting, compatible with existing infrastructure | 2026-02 |
+| Next.js API routes replacing Fastify | Eliminate separate API service, co-locate with frontend | 2026-02 |
+| Orders in Prisma synced to Sanity | Prisma as source of truth, fire-and-forget sync for admin visibility | 2026-02 |
+| Default collation for case-insensitive queries | MySQL/MariaDB doesn't support Prisma mode: 'insensitive' | 2026-02 |
 
 ### Architecture Notes
 
-From research:
-- Frontend (Next.js) never calculates VAT, shipping, or discounts - all server-side
-- Strapi for CMS, Fastify for API backend, PostgreSQL for data
-- Stripe for payments with webhook-based order fulfillment
-- Motion.dev for component animations, GSAP for scroll effects
+**Current architecture (post-migration):**
+- Frontend: Next.js (apps/web) with Server Components, Tailwind CSS v4, shadcn/ui
+- CMS: Sanity (apps/studio) — hosted on sanity.io, GROQ queries
+- Database: MariaDB 11 via Docker — Prisma ORM
+- Auth: NextAuth with Prisma adapter (replaced Strapi auth + jose sessions)
+- API: Next.js API routes (replaced separate Fastify backend)
+- Payments: Stripe with webhook-based order fulfillment
+- Orders: Prisma (source of truth) → synced to Sanity for admin visibility
+- Animations: Motion.dev for components, GSAP for scroll effects
+
+**Architecture migration history:**
+- Original: Strapi CMS + Fastify API + PostgreSQL (Phases 1-9)
+- Attempted: Vendure (abandoned)
+- Final: Sanity + NextAuth/Prisma + MariaDB (Phase 10)
 
 ### Critical Pitfalls to Avoid
 
-1. **Strapi Schema Data Loss** - Never modify content types in production without backup
-2. **Stripe Webhook Signature Failures** - Use request.text() for raw body, exclude from auth
-3. **WooCommerce Migration SEO Destruction** - Complete URL inventory before migration
+1. **Sanity Schema Changes** - Deploy schema changes carefully, test with existing content
+2. **Stripe Webhook Signature Failures** - Use raw body for signature verification
+3. **WooCommerce Migration SEO Destruction** - Complete URL inventory before go-live
 4. **Animation SSR Hydration Breaks** - Push 'use client' down, test production builds
 5. **Hungarian VAT Complexity** - 27% VAT non-negotiable, validate EU VAT numbers
+6. **Prisma/MariaDB Collation** - No `mode: 'insensitive'` in MySQL; use default collation
 
 ### Technical Todos
 
@@ -299,43 +316,44 @@ From research:
 
 ### Blockers
 
-- **Docker Desktop must be running** - Required before Strapi can connect to PostgreSQL
+- **Docker Desktop must be running** - Required for MariaDB database container
+- **Production infrastructure not provisioned** - Hosting environment needed
+- **Stripe live keys not available** - Production payment credentials needed
 
 ## Session Continuity
 
 ### Last Session Summary
 
-- **WooCommerce Product Migration COMPLETE** - 2026-02-04
-- 146 products imported from WooCommerce CSV export
-- 60 categories imported with hierarchical structure
-- **Image Migration COMPLETE** - All 143 products with images migrated
-  - 47 products from first run
-  - 96 products from second run (after fixing WebP upload issue)
-  - Total: 143 products with images
-- Strapi's sharp library on Windows couldn't process WebP uploads - solved by uploading JPEG/PNG instead
-- Dev servers running: Strapi (localhost:1337), Next.js (localhost:3000)
+- **Project docs updated** - 2026-02-09
+- STATE.md and PROJECT.md updated to reflect Sanity/NextAuth/Prisma/MariaDB architecture
+- All code committed on branch `csz-webshop-sanity` (clean working tree)
+- Previous sessions completed:
+  - Architecture migration: Strapi/Fastify/PostgreSQL → Sanity/NextAuth/Prisma/MariaDB
+  - WooCommerce product migration: 146 products, 60 categories, 143 product images
+  - All 10 phases / 70 plans implemented
 
 ### Next Actions
 
 **Manual steps requiring user action:**
 
 1. **Visual Testing** - Review design at http://localhost:3000
-2. ~~WooCommerce Migration~~ - COMPLETE (146 products, 60 categories, 143 product images)
+   - Start MariaDB: `docker compose -f docker/docker-compose.yml up -d`
+   - Start Next.js: `pnpm dev` in apps/web
+   - Start Sanity Studio: `pnpm dev` in apps/studio
+2. **Production Deployment** - Set up infrastructure, deploy, launch
 3. **Background Removal** - Not implemented (rembg incompatible with Python 3.14 - consider remove.bg API)
-4. **Production Deployment** - Set up infrastructure, deploy, launch
 
 ### Open Questions
 
 From research that need resolution:
-1. ~~WooCommerce CSV export~~ - COMPLETE (2026-02-04)
-2. Production infrastructure - hosting environment needed
-3. Stripe live keys - production payment credentials needed
-4. Domain/SSL setup - DNS configuration required
-5. Background removal for product images - rembg not compatible with Python 3.14, consider remove.bg API
+1. Production infrastructure - hosting environment needed
+2. Stripe live keys - production payment credentials needed
+3. Domain/SSL setup - DNS configuration required
+4. Background removal for product images - rembg not compatible with Python 3.14, consider remove.bg API
 
 ---
 *State initialized: 2026-01-19*
-*Last updated: 2026-01-21*
+*Last updated: 2026-02-09 — updated for Sanity/NextAuth/Prisma/MariaDB architecture*
 *Phase 1 completed: 2026-01-20*
 *Phase 2 completed: 2026-01-20*
 *Phase 3 completed: 2026-01-20*
