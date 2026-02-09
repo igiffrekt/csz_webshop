@@ -32,11 +32,6 @@ const nextConfig: NextConfig = {
         hostname: 'csz.wedopixels.hu',
         pathname: '/**',
       },
-      {
-        protocol: 'https',
-        hostname: 'res.cloudinary.com',
-        pathname: '/pixelkripta/**',
-      },
     ],
   },
 

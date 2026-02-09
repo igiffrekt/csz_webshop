@@ -112,12 +112,6 @@ export const product = defineType({
       ],
     }),
     defineField({
-      name: 'cloudinaryImageUrl',
-      title: 'Cloudinary kep URL',
-      type: 'url',
-      description: 'Kulso kep URL Cloudinary CDN-rol',
-    }),
-    defineField({
       name: 'specifications',
       title: 'Muszaki adatok',
       type: 'array',

@@ -55,10 +55,6 @@ function findProductImageForCategory(
 
   if (!product) return null;
 
-  if (product.cloudinaryImageUrl) {
-    return product.cloudinaryImageUrl;
-  }
-
   if (product.images?.[0]?.url) {
     return getImageUrl(product.images[0].url);
   }

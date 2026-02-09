@@ -50,8 +50,7 @@ export const useCartStore = create<CartState>()(
             };
           }
 
-          // Use variant image if available, otherwise fall back to product image or cloudinary
-          const imageSource = variant?.image?.url ?? product.cloudinaryImageUrl ?? product.images?.[0]?.url;
+          const imageSource = variant?.image?.url ?? product.images?.[0]?.url;
           const imageUrl = imageSource
             ? getImageUrl(imageSource)
             : undefined;

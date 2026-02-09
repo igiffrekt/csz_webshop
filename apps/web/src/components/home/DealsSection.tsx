@@ -178,9 +178,7 @@ interface DealCardProps {
 function DealCard({ product }: DealCardProps) {
   const addItem = useCartStore((state) => state.addItem);
 
-  // Prefer Cloudinary URL (WebP with background removed)
-  const imageUrl = product.cloudinaryImageUrl
-    || (product.images?.[0] ? getImageUrl(product.images[0].url) : null);
+  const imageUrl = product.images?.[0] ? getImageUrl(product.images[0].url) : null;
 
   const isOnSale = product.compareAtPrice && product.compareAtPrice > product.basePrice;
   const discountPercent = isOnSale

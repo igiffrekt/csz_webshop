@@ -15,7 +15,6 @@ interface HeroProduct {
   slug: string;
   basePrice: number;
   images?: { url: string }[];
-  cloudinaryImageUrl?: string;
   categories?: { name: string; slug: string }[];
 }
 
@@ -144,10 +143,10 @@ export function HeroSection({ products = [] }: HeroSectionProps) {
               <div className="grid grid-cols-2 gap-4 lg:gap-6">
                 {/* Top left - square */}
                 <div className="bg-muted rounded-[20px] aspect-square overflow-hidden">
-                  {(gridProducts[0]?.cloudinaryImageUrl || gridProducts[0]?.images?.[0]) ? (
+                  {gridProducts[0]?.images?.[0] ? (
                     <div className="relative w-full h-full">
                       <Image
-                        src={gridProducts[0].cloudinaryImageUrl || getImageUrl(gridProducts[0].images![0].url)}
+                        src={getImageUrl(gridProducts[0].images[0].url)}
                         alt={gridProducts[0].name}
                         fill
                         className="object-contain p-4"
@@ -162,10 +161,10 @@ export function HeroSection({ products = [] }: HeroSectionProps) {
 
                 {/* Right - tall, spans 2 rows */}
                 <div className="bg-muted rounded-[20px] row-span-2 overflow-hidden">
-                  {(gridProducts[1]?.cloudinaryImageUrl || gridProducts[1]?.images?.[0]) ? (
+                  {gridProducts[1]?.images?.[0] ? (
                     <div className="relative w-full h-full">
                       <Image
-                        src={gridProducts[1].cloudinaryImageUrl || getImageUrl(gridProducts[1].images![0].url)}
+                        src={getImageUrl(gridProducts[1].images[0].url)}
                         alt={gridProducts[1].name}
                         fill
                         className="object-contain p-4"
@@ -180,10 +179,10 @@ export function HeroSection({ products = [] }: HeroSectionProps) {
 
                 {/* Bottom left - square */}
                 <div className="bg-muted rounded-[20px] aspect-square overflow-hidden">
-                  {(gridProducts[2]?.cloudinaryImageUrl || gridProducts[2]?.images?.[0]) ? (
+                  {gridProducts[2]?.images?.[0] ? (
                     <div className="relative w-full h-full">
                       <Image
-                        src={gridProducts[2].cloudinaryImageUrl || getImageUrl(gridProducts[2].images![0].url)}
+                        src={getImageUrl(gridProducts[2].images[0].url)}
                         alt={gridProducts[2].name}
                         fill
                         className="object-contain p-4"

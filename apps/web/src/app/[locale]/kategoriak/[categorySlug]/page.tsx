@@ -62,7 +62,6 @@ export default async function CategoryPage({ params, searchParams }: Props) {
     basePrice: p.basePrice,
     compareAtPrice: p.compareAtPrice,
     stock: p.stock,
-    cloudinaryImageUrl: p.cloudinaryImageUrl,
     images: p.images,
     categories: (p.categories || []).map((c: any) => ({
       id: 0,

@@ -9,7 +9,7 @@ export function formatPrice(amount: number): string {
 }
 
 /**
- * Get image URL - handles Sanity URLs, Cloudinary URLs, and fallbacks
+ * Get image URL - handles Sanity image URLs and fallbacks
  */
 export function getImageUrl(url: string | undefined): string {
   if (!url) return '/placeholder.svg'
