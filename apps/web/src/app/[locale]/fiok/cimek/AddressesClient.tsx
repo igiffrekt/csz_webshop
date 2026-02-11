@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
@@ -125,6 +126,9 @@ export function AddressesClient({ initialAddresses }: AddressesClientProps) {
             <DialogTitle>
               {editingAddress ? "Cím szerkesztése" : "Új cím hozzáadása"}
             </DialogTitle>
+            <DialogDescription>
+              {editingAddress ? "Szerkeszd a szállítási cím adatait." : "Add meg az új szállítási cím adatait."}
+            </DialogDescription>
           </DialogHeader>
           <AddressForm
             address={editingAddress}
