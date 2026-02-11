@@ -6,7 +6,7 @@ import { calculateVatFromGross } from '@/lib/server/vat'
 import { calculateShipping } from '@/lib/server/shipping'
 import { syncOrderToSanity } from '@/lib/sanity-order-sync'
 
-const FRONTEND_URL = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
+const FRONTEND_URL = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
 
 const PRODUCT_PRICES_QUERY = `*[_type == "product" && _id in $ids] {
   _id,
