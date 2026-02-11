@@ -15,6 +15,14 @@ STANDALONE_DIR="$WEB_DIR/.next/standalone"
 
 cd "$APP_DIR"
 
+# ── Load production env ──────────────────────
+
+if [ -f "$WEB_DIR/.env.production" ]; then
+  set -a
+  source "$WEB_DIR/.env.production"
+  set +a
+fi
+
 # ── Helpers ──────────────────────────────────
 
 log()  { echo -e "\n\033[1;34m▶ $*\033[0m"; }
