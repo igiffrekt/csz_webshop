@@ -20,6 +20,7 @@ import { Button } from '@/components/ui/button';
 import {
   Sheet,
   SheetContent,
+  SheetDescription,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
@@ -78,6 +79,7 @@ export function MobileNav() {
           <SheetTitle>
             <Logo />
           </SheetTitle>
+          <SheetDescription className="sr-only">Navigációs menü</SheetDescription>
         </SheetHeader>
 
         <div className="flex flex-col h-[calc(100vh-80px)] overflow-y-auto">

@@ -4,6 +4,7 @@ import { Link } from '@/i18n/navigation';
 import {
   Sheet,
   SheetContent,
+  SheetDescription,
   SheetHeader,
   SheetTitle,
   SheetFooter,
@@ -34,6 +35,7 @@ export function CartSheet({ open, onOpenChange }: CartSheetProps) {
         <SheetContent className="flex flex-col w-full sm:max-w-lg p-0">
           <SheetHeader className="p-6 pb-0">
             <SheetTitle>Kosár</SheetTitle>
+            <SheetDescription className="sr-only">A kosár tartalma</SheetDescription>
           </SheetHeader>
           <div className="flex-1 flex items-center justify-center">
             <p className="text-muted-foreground">Betöltés...</p>
@@ -52,6 +54,7 @@ export function CartSheet({ open, onOpenChange }: CartSheetProps) {
           <SheetTitle>
             Kosár {itemCount > 0 && `(${itemCount} termék)`}
           </SheetTitle>
+          <SheetDescription className="sr-only">A kosár tartalma és összegzés</SheetDescription>
         </SheetHeader>
 
         {items.length === 0 ? (
