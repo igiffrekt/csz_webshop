@@ -11,15 +11,12 @@ const productLinks = [
 
 const companyLinks = [
   { label: 'Rólunk', href: '/rolunk' },
-  { label: 'Csapatunk', href: '/csapat' },
-  { label: 'Blog', href: '/blog' },
-  { label: 'Karrier', href: '/karrier' },
-  { label: 'Partnereink', href: '/partnerek' },
+  { label: 'Kapcsolat', href: '/kapcsolat' },
+  { label: 'Árajánlat kérés', href: '/ajanlatkeres' },
 ];
 
 const resourceLinks = [
   { label: 'GYIK', href: '/gyik' },
-  { label: 'Szállítás', href: '/szallitas' },
   { label: 'Visszaküldés', href: '/visszaterites' },
   { label: 'ÁSZF', href: '/aszf' },
   { label: 'Adatvédelem', href: '/adatvedelem' },

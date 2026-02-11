@@ -110,33 +110,34 @@ export async function registerAction(
 
   const { passwordConfirm, password, ...userData } = validatedFields.data
 
-  // Check if email already exists
-  const existingEmail = await prisma.user.findUnique({
-    where: { email: userData.email },
-  })
-  if (existingEmail) {
-    return { error: 'Ez az e-mail c\u00edm m\u00e1r regisztr\u00e1lva van' }
-  }
-
-  // Check if username already exists
-  const existingUsername = await prisma.user.findUnique({
-    where: { username: userData.username },
-  })
-  if (existingUsername) {
-    return { error: 'Ez a felhaszn\u00e1l\u00f3n\u00e9v m\u00e1r foglalt' }
-  }
-
-  // Create user
-  const passwordHash = await bcrypt.hash(password, 12)
-
   try {
+    // Check if email already exists
+    const existingEmail = await prisma.user.findUnique({
+      where: { email: userData.email },
+    })
+    if (existingEmail) {
+      return { error: 'Ez az e-mail c\u00edm m\u00e1r regisztr\u00e1lva van' }
+    }
+
+    // Check if username already exists
+    const existingUsername = await prisma.user.findUnique({
+      where: { username: userData.username },
+    })
+    if (existingUsername) {
+      return { error: 'Ez a felhaszn\u00e1l\u00f3n\u00e9v m\u00e1r foglalt' }
+    }
+
+    // Create user
+    const passwordHash = await bcrypt.hash(password, 12)
+
     await prisma.user.create({
       data: {
         ...userData,
         passwordHash,
       },
     })
-  } catch {
+  } catch (error) {
+    console.error('Registration error:', error)
     return { error: 'Hiba t\u00f6rt\u00e9nt a regisztr\u00e1ci\u00f3 sor\u00e1n. Pr\u00f3b\u00e1ld \u00fajra k\u00e9s\u0151bb.' }
   }
 
