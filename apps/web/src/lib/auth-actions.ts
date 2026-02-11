@@ -75,7 +75,7 @@ export async function loginAction(
     await signIn('credentials', {
       email,
       password,
-      redirectTo: redirectTo || '/hu',
+      redirect: false,
     })
   } catch (error) {
     if (error instanceof AuthError) {
@@ -84,7 +84,7 @@ export async function loginAction(
     throw error
   }
 
-  return {}
+  redirect(redirectTo || '/hu')
 }
 
 /**
@@ -150,7 +150,7 @@ export async function registerAction(
     await signIn('credentials', {
       email: userData.email,
       password,
-      redirectTo: redirectTo || '/hu',
+      redirect: false,
     })
   } catch (error) {
     if (error instanceof AuthError) {
@@ -160,7 +160,7 @@ export async function registerAction(
     throw error
   }
 
-  return {}
+  redirect(redirectTo || '/hu')
 }
 
 /**
