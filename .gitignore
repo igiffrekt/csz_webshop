@@ -14,14 +14,6 @@ build/
 .next/
 out/
 
-# Strapi-specific
-.tmp/
-.cache/
-apps/cms/build/
-apps/cms/.cache/
-apps/cms/.tmp/
-apps/cms/public/uploads/
-
 # Sanity Studio generated
 apps/studio/.sanity/
 

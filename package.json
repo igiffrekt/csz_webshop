@@ -10,18 +10,13 @@
     "build": "pnpm --filter @csz/web build",
     "db:start": "docker compose -f docker/docker-compose.yml up -d",
     "db:stop": "docker compose -f docker/docker-compose.yml down",
-    "db:logs": "docker compose -f docker/docker-compose.yml logs -f postgres",
+    "db:logs": "docker compose -f docker/docker-compose.yml logs -f mariadb",
     "db:reset": "docker compose -f docker/docker-compose.yml down -v && docker compose -f docker/docker-compose.yml up -d"
   },
   "devDependencies": {
-    "@imgly/background-removal-node": "^1.4.5",
-    "cloudinary": "^2.9.0",
-    "csv-parse": "^6.1.0",
-    "sharp": "^0.34.5",
     "tsx": "^4.0.0"
   },
   "dependencies": {
-    "@sanity/client": "^7.14.1",
     "dotenv": "^17.2.4"
   }
 }
