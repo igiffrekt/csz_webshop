@@ -38,15 +38,6 @@ export async function Header() {
 
           {/* Right section: Store icons - small gaps between them */}
           <div className="flex items-center gap-6">
-            {/* Wishlist */}
-            <Link
-              href="/kedvencek"
-              className="hidden md:flex items-center justify-center hover:opacity-70 transition-opacity"
-              title="Kedvencek"
-            >
-              <Image src="/icons/shop-favorite-icon.svg" alt="Kedvencek" width={24} height={24} />
-            </Link>
-
             {/* User */}
             {isAuth && session?.user ? (
               <UserMenu username={session.user.username || session.user.name || ''} email={session.user.email || ''} />

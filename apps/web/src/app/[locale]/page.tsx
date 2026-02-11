@@ -9,7 +9,6 @@ import {
   ProductCollections,
   DealsSection,
   PromoBanners,
-  BlogSection,
   FAQSection,
   InstagramSection,
 } from '@/components/home'
@@ -77,7 +76,6 @@ export default async function HomePage() {
       <ProductCollections products={allProducts} featuredProducts={featuredProducts} />
       <DealsSection products={allProducts} />
       <PromoBanners />
-      <BlogSection />
       <FAQSection />
       <InstagramSection />
     </>
