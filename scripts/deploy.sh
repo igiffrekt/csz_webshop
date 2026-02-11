@@ -50,8 +50,9 @@ if [[ "${1:-}" == "--initial" ]]; then
 
   load_env
 
-  log "Running database migrations…"
+  log "Generating Prisma client & running migrations…"
   cd "$WEB_DIR"
+  pnpm exec prisma generate
   pnpm exec prisma migrate deploy
   cd "$APP_DIR"
 
@@ -86,8 +87,9 @@ NODE_ENV=development pnpm install --frozen-lockfile
 
 load_env
 
-log "Running database migrations…"
+log "Generating Prisma client & running migrations…"
 cd "$WEB_DIR"
+pnpm exec prisma generate
 pnpm exec prisma migrate deploy
 cd "$APP_DIR"
 
