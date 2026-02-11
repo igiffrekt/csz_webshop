@@ -8,7 +8,7 @@
     "dev": "pnpm run --parallel dev:web dev:studio",
     "build:web": "pnpm --filter @csz/web build",
     "build": "pnpm --filter @csz/web build",
-    "start": "HOSTNAME=127.0.0.1 PORT=3000 node apps/web/.next/standalone/apps/web/server.js",
+    "start": "HOSTNAME=0.0.0.0 PORT=3000 node apps/web/.next/standalone/apps/web/server.js",
     "db:start": "docker compose -f docker/docker-compose.yml up -d",
     "db:stop": "docker compose -f docker/docker-compose.yml down",
     "db:logs": "docker compose -f docker/docker-compose.yml logs -f mariadb",
