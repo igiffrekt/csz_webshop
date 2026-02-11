@@ -46,9 +46,9 @@ export async function syncOrderToSanity(orderId: string) {
     })
     if (!order) return
 
-    const lineItems = (order.lineItems as LineItem[]) || []
-    const shippingAddr = order.shippingAddress as Address | null
-    const billingAddr = order.billingAddress as Address | null
+    const lineItems = (order.lineItems as unknown as LineItem[]) || []
+    const shippingAddr = order.shippingAddress as unknown as Address | null
+    const billingAddr = order.billingAddress as unknown as Address | null
 
     await writeClient.createOrReplace({
       _type: 'order',
