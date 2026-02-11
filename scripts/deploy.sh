@@ -6,7 +6,7 @@ set -euo pipefail
 # ─────────────────────────────────────────────
 # Usage:
 #   ./scripts/deploy.sh --initial   First-time setup
-#   ./scripts/deploy.sh             Update & reload
+#   ./scripts/deploy.sh             Update & rebuild
 # ─────────────────────────────────────────────
 
 APP_DIR="$(cd "$(dirname "$0")/.." && pwd)"
@@ -20,19 +20,6 @@ cd "$APP_DIR"
 log()  { echo -e "\n\033[1;34m▶ $*\033[0m"; }
 ok()   { echo -e "\033[1;32m✓ $*\033[0m"; }
 fail() { echo -e "\033[1;31m✗ $*\033[0m"; exit 1; }
-
-health_check() {
-  log "Running health check…"
-  local retries=10
-  while (( retries-- > 0 )); do
-    if curl -sf http://127.0.0.1:3000/hu > /dev/null 2>&1; then
-      ok "Health check passed"
-      return 0
-    fi
-    sleep 2
-  done
-  fail "Health check failed after 20 seconds"
-}
 
 copy_standalone_assets() {
   log "Copying static assets into standalone output…"
@@ -63,15 +50,9 @@ if [[ "${1:-}" == "--initial" ]]; then
 
   copy_standalone_assets
 
-  log "Creating logs directory…"
-  mkdir -p "$APP_DIR/logs"
-
-  log "Starting PM2…"
-  pm2 start ecosystem.config.cjs
-  pm2 save
-
-  health_check
   ok "Initial deployment complete!"
+  echo "Start the Node.js app via OpenLiteSpeed pointing to:"
+  echo "  $STANDALONE_DIR/apps/web/server.js"
   exit 0
 fi
 
@@ -107,15 +88,10 @@ if ! pnpm --filter web build; then
   cd "$WEB_DIR" && npx prisma migrate deploy && cd "$APP_DIR"
   pnpm --filter web build
   copy_standalone_assets
-  pm2 reload ecosystem.config.cjs
-  health_check
   fail "Rolled back to ${PREV_COMMIT:0:7} after build failure"
 fi
 
 copy_standalone_assets
 
-log "Reloading PM2…"
-pm2 reload ecosystem.config.cjs
-
-health_check
-ok "Deployment complete! ${PREV_COMMIT:0:7} → ${NEW_COMMIT:0:7}"
+ok "Build complete! ${PREV_COMMIT:0:7} → ${NEW_COMMIT:0:7}"
+echo "Restart the Node.js app in OpenLiteSpeed to pick up changes."

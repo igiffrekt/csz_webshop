@@ -23,8 +23,7 @@ csz-webshop/
 ├── scripts/
 │   ├── deploy.sh     # Production deployment script
 │   └── seed-prisma.ts # Database seed data
-├── docker/           # Local MariaDB for development
-└── ecosystem.config.cjs  # PM2 process config
+└── docker/           # Local MariaDB for development
 ```
 
 ## Quick Start
@@ -91,7 +90,7 @@ pnpm db:reset    # Reset database (destroys data)
 
 ## Deployment
 
-Target: `csz.wedopixels.hu` — bare-metal Linux with OpenLiteSpeed, Node.js, PM2.
+Target: `csz.wedopixels.hu` — bare-metal Linux with OpenLiteSpeed + Node.js.
 
 ### First-time deploy
 
@@ -106,7 +105,7 @@ Target: `csz.wedopixels.hu` — bare-metal Linux with OpenLiteSpeed, Node.js, PM
 ./scripts/deploy.sh
 ```
 
-The script handles: git pull, install, migrate, build, copy assets, PM2 reload, health check. Auto-rollback on build failure.
+The script handles: git pull, install, migrate, build, copy assets. Auto-rollback on build failure. Restart the Node.js app in OpenLiteSpeed after.
 
 ## Features
 
