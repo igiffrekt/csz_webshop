@@ -90,14 +90,14 @@ pnpm db:reset    # Reset database (destroys data)
 
 ## Deployment
 
-Target: `csz.wedopixels.hu` — bare-metal Linux with OpenLiteSpeed + Node.js.
+Target: `igifftest.cc` — bare-metal Linux with OpenLiteSpeed + Node.js.
 
 ### First-time deploy
 
 1. Copy `.env.production.example` to `apps/web/.env.production` and fill in values
 2. Run `./scripts/deploy.sh --initial`
 3. Configure OpenLiteSpeed reverse proxy to `127.0.0.1:3000`
-4. Register Stripe webhook at `https://csz.wedopixels.hu/api/checkout/webhook`
+4. Register Stripe webhook at `https://igifftest.cc/api/checkout/webhook`
 
 ### Updates
 

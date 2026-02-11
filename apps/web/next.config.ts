@@ -27,12 +27,12 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'csz.wedopixels.hu',
+        hostname: 'igifftest.cc',
         pathname: '/**',
       },
       {
         protocol: 'http',
-        hostname: 'csz.wedopixels.hu',
+        hostname: 'igifftest.cc',
         pathname: '/**',
       },
     ],
