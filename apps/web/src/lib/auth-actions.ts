@@ -5,6 +5,7 @@ import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 import bcrypt from 'bcryptjs'
 import crypto from 'crypto'
+import { AuthError } from 'next-auth'
 import { signIn, signOut, auth } from './auth'
 import { prisma } from './prisma'
 
@@ -68,21 +69,22 @@ export async function loginAction(
     return { error: 'E-mail c\u00edm \u00e9s jelsz\u00f3 sz\u00fcks\u00e9ges' }
   }
 
+  const redirectTo = formData.get('redirectTo') as string
+
   try {
     await signIn('credentials', {
       email,
       password,
-      redirect: false,
+      redirectTo: redirectTo || '/hu',
     })
-  } catch (error: any) {
-    if (error?.type === 'CredentialsSignin') {
+  } catch (error) {
+    if (error instanceof AuthError) {
       return { error: 'Hib\u00e1s e-mail c\u00edm vagy jelsz\u00f3' }
     }
-    return { error: 'Hiba t\u00f6rt\u00e9nt a bejelentkez\u00e9s sor\u00e1n. Pr\u00f3b\u00e1ld \u00fajra k\u00e9s\u0151bb.' }
+    throw error
   }
 
-  const redirectTo = formData.get('redirectTo') as string
-  redirect(redirectTo || '/hu')
+  return {}
 }
 
 /**
@@ -142,19 +144,23 @@ export async function registerAction(
   }
 
   // Auto sign-in after registration
+  const redirectTo = formData.get('redirectTo') as string
+
   try {
     await signIn('credentials', {
       email: userData.email,
       password,
-      redirect: false,
+      redirectTo: redirectTo || '/hu',
     })
-  } catch {
-    // If auto-login fails, redirect to login
-    redirect('/hu/auth/bejelentkezes?registered=true')
+  } catch (error) {
+    if (error instanceof AuthError) {
+      // If auto-login fails, redirect to login
+      redirect('/hu/auth/bejelentkezes?registered=true')
+    }
+    throw error
   }
 
-  const redirectTo = formData.get('redirectTo') as string
-  redirect(redirectTo || '/hu')
+  return {}
 }
 
 /**
