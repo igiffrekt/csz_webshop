@@ -1,7 +1,8 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,11 +15,19 @@ interface RegisterFormProps {
 }
 
 export function RegisterForm({ redirectTo }: RegisterFormProps) {
+  const router = useRouter();
   const [state, formAction, isPending] = useActionState<AuthState, FormData>(
     registerAction,
     {}
   );
   const [showCompanyFields, setShowCompanyFields] = useState(false);
+
+  useEffect(() => {
+    if (state.success) {
+      router.push(redirectTo || '/hu');
+      router.refresh();
+    }
+  }, [state.success, redirectTo, router]);
 
   return (
     <form action={formAction} className="space-y-4">

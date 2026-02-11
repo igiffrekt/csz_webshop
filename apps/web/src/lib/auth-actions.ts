@@ -69,8 +69,6 @@ export async function loginAction(
     return { error: 'E-mail c\u00edm \u00e9s jelsz\u00f3 sz\u00fcks\u00e9ges' }
   }
 
-  const redirectTo = formData.get('redirectTo') as string
-
   try {
     await signIn('credentials', {
       email,
@@ -84,7 +82,7 @@ export async function loginAction(
     throw error
   }
 
-  redirect(redirectTo || '/hu')
+  return { success: true }
 }
 
 /**
@@ -144,8 +142,6 @@ export async function registerAction(
   }
 
   // Auto sign-in after registration
-  const redirectTo = formData.get('redirectTo') as string
-
   try {
     await signIn('credentials', {
       email: userData.email,
@@ -160,7 +156,7 @@ export async function registerAction(
     throw error
   }
 
-  redirect(redirectTo || '/hu')
+  return { success: true }
 }
 
 /**
