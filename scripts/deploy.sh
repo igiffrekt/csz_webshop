@@ -50,7 +50,7 @@ if [[ "${1:-}" == "--initial" ]]; then
 
   log "Running database migrations…"
   cd "$WEB_DIR"
-  npx prisma migrate deploy
+  pnpm exec prisma migrate deploy
   cd "$APP_DIR"
 
   log "Building Next.js…"
@@ -84,7 +84,7 @@ pnpm install --frozen-lockfile
 
 log "Running database migrations…"
 cd "$WEB_DIR"
-npx prisma migrate deploy
+pnpm exec prisma migrate deploy
 cd "$APP_DIR"
 
 log "Building Next.js…"
@@ -93,7 +93,7 @@ if ! pnpm --filter web build; then
   fail "Build failed — rolling back to $PREV_COMMIT"
   git checkout "$PREV_COMMIT"
   pnpm install --frozen-lockfile
-  cd "$WEB_DIR" && npx prisma migrate deploy && cd "$APP_DIR"
+  cd "$WEB_DIR" && pnpm exec prisma migrate deploy && cd "$APP_DIR"
   pnpm --filter web build
   copy_standalone_assets
   fail "Rolled back to ${PREV_COMMIT:0:7} after build failure"
