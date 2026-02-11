@@ -15,13 +15,13 @@ STANDALONE_DIR="$WEB_DIR/.next/standalone"
 
 cd "$APP_DIR"
 
-# ── Load production env ──────────────────────
-
-if [ -f "$WEB_DIR/.env.production" ]; then
-  set -a
-  source "$WEB_DIR/.env.production"
-  set +a
-fi
+load_env() {
+  if [ -f "$WEB_DIR/.env.production" ]; then
+    set -a
+    source "$WEB_DIR/.env.production"
+    set +a
+  fi
+}
 
 # ── Helpers ──────────────────────────────────
 
@@ -46,7 +46,9 @@ if [[ "${1:-}" == "--initial" ]]; then
   log "Initial deployment"
 
   log "Installing dependencies…"
-  pnpm install --frozen-lockfile
+  NODE_ENV=development pnpm install --frozen-lockfile
+
+  load_env
 
   log "Running database migrations…"
   cd "$WEB_DIR"
@@ -54,7 +56,7 @@ if [[ "${1:-}" == "--initial" ]]; then
   cd "$APP_DIR"
 
   log "Building Next.js…"
-  pnpm --filter web build || fail "Build failed"
+  NODE_ENV=production pnpm --filter web build || fail "Build failed"
 
   copy_standalone_assets
 
@@ -80,7 +82,9 @@ fi
 log "Updating from ${PREV_COMMIT:0:7} → ${NEW_COMMIT:0:7}"
 
 log "Installing dependencies…"
-pnpm install --frozen-lockfile
+NODE_ENV=development pnpm install --frozen-lockfile
+
+load_env
 
 log "Running database migrations…"
 cd "$WEB_DIR"
@@ -88,13 +92,14 @@ pnpm exec prisma migrate deploy
 cd "$APP_DIR"
 
 log "Building Next.js…"
-if ! pnpm --filter web build; then
+if ! NODE_ENV=production pnpm --filter web build; then
   echo ""
   fail "Build failed — rolling back to $PREV_COMMIT"
   git checkout "$PREV_COMMIT"
-  pnpm install --frozen-lockfile
+  NODE_ENV=development pnpm install --frozen-lockfile
+  load_env
   cd "$WEB_DIR" && pnpm exec prisma migrate deploy && cd "$APP_DIR"
-  pnpm --filter web build
+  NODE_ENV=production pnpm --filter web build
   copy_standalone_assets
   fail "Rolled back to ${PREV_COMMIT:0:7} after build failure"
 fi
