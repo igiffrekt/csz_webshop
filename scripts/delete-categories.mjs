@@ -26,7 +26,15 @@ async function query(groq, params = {}) {
     url.searchParams.set(`$${k}`, JSON.stringify(v))
   }
   const res = await fetch(url, { headers: { Authorization: `Bearer ${TOKEN}` } })
+  if (!res.ok) {
+    const err = await res.text()
+    throw new Error(`Query failed (${res.status}): ${err}`)
+  }
   const data = await res.json()
+  if (!data.result) {
+    console.error('Query response:', JSON.stringify(data, null, 2))
+    throw new Error('Query returned no result')
+  }
   return data.result
 }
 
