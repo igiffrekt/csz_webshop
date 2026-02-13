@@ -1,6 +1,8 @@
 import {
   getCategoryTree,
   getProducts,
+  getHomepage,
+  getFAQs,
 } from '@/lib/sanity-queries'
 import {
   HeroSection,
@@ -14,10 +16,14 @@ import {
 } from '@/components/home'
 
 export default async function HomePage() {
-  const [categoryTree, productsResult] = await Promise.allSettled([
+  const [categoryTree, productsResult, homepageResult, faqsResult] = await Promise.allSettled([
     getCategoryTree(),
     getProducts({ pageSize: 12 }),
+    getHomepage(),
+    getFAQs(),
   ])
+
+  const homepage = homepageResult.status === 'fulfilled' ? homepageResult.value : null
 
   const categories =
     categoryTree.status === 'fulfilled'
@@ -66,17 +72,39 @@ export default async function HomePage() {
         }))
       : []
 
-  const featuredProducts = allProducts.slice(0, 5)
+  const sanityFeatured = (homepage?.featuredProducts || []).filter(
+    (p: any) => p && p._id
+  )
+  const featuredProducts =
+    sanityFeatured.length > 0
+      ? sanityFeatured.map((p: any) => ({
+          ...p,
+          slug: typeof p.slug === 'string' ? p.slug : p.slug?.current,
+          images: p.images ? [{ ...p.images, id: 0, _id: '', name: '' }] : [],
+          id: 0,
+          createdAt: '',
+          updatedAt: '',
+          publishedAt: '',
+        }))
+      : allProducts.slice(0, 5)
+
+  const faqs =
+    faqsResult.status === 'fulfilled'
+      ? (faqsResult.value || []).map((f: any) => ({
+          question: f.question,
+          answer: f.answer,
+        }))
+      : []
 
   return (
     <>
-      <HeroSection products={featuredProducts} categories={categories} />
-      <TrustBadges />
-      <CategoryCards categories={categories} products={allProducts} />
+      <HeroSection products={featuredProducts} categories={categories} heroData={homepage?.heroSection} />
+      <TrustBadges trustBadges={homepage?.trustBadges} />
+      <CategoryCards categories={categories} products={allProducts} sectionTitle={homepage?.categoriesSection?.title} sectionSubtitle={homepage?.categoriesSection?.subtitle} />
       <ProductCollections products={allProducts} featuredProducts={featuredProducts} />
-      <DealsSection products={allProducts} />
-      <PromoBanners />
-      <FAQSection />
+      <DealsSection products={allProducts} sectionTitle={homepage?.dealsSection?.title} sectionSubtitle={homepage?.dealsSection?.subtitle} />
+      <PromoBanners sanityBanners={homepage?.promoBanners} />
+      <FAQSection sanityFaqs={faqs} sectionTitle={homepage?.faqSection?.title} sectionSubtitle={homepage?.faqSection?.subtitle} />
       <InstagramSection />
     </>
   )

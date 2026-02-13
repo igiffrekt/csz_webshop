@@ -24,9 +24,17 @@ interface HeroCategory {
   children?: { name: string; slug: string }[];
 }
 
+interface HeroData {
+  title?: string;
+  subtitle?: string;
+  ctaText?: string;
+  ctaLink?: string;
+}
+
 interface HeroSectionProps {
   products?: HeroProduct[];
   categories?: HeroCategory[];
+  heroData?: HeroData;
 }
 
 // Fallback categories for sidebar
@@ -43,7 +51,7 @@ const sidebarCategories = [
   { name: 'Akciós termékek', slug: 'termekek?onSale=true', icon: <Percent className="h-4 w-4 text-red-500" />, highlight: true },
 ];
 
-export function HeroSection({ products = [] }: HeroSectionProps) {
+export function HeroSection({ products = [], heroData }: HeroSectionProps) {
   const [categories, setCategories] = useState<Category[]>([]);
 
   // Get up to 3 products for the image grid
@@ -117,12 +125,10 @@ export function HeroSection({ products = [] }: HeroSectionProps) {
                 </div>
                 <div className="flex gap-4 flex-col">
                   <h1 className="text-4xl md:text-5xl lg:text-6xl max-w-lg tracking-tighter text-left font-regular">
-                    Biztonság, amiben megbízhat!
+                    {heroData?.title || 'Biztonság, amiben megbízhat!'}
                   </h1>
                   <p className="text-lg leading-relaxed tracking-tight text-muted-foreground max-w-md text-left">
-                    Professzionális tűzvédelmi eszközök és megoldások otthonára és
-                    vállalkozására. Minőségi termékek, szakértői tanácsadás és gyors
-                    kiszállítás országszerte.
+                    {heroData?.subtitle || 'Professzionális tűzvédelmi eszközök és megoldások otthonára és vállalkozására. Minőségi termékek, szakértői tanácsadás és gyors kiszállítás országszerte.'}
                   </p>
                 </div>
                 <div className="flex flex-row gap-4 flex-wrap">
@@ -132,8 +138,8 @@ export function HeroSection({ products = [] }: HeroSectionProps) {
                     </Link>
                   </Button>
                   <Button size="lg" className="gap-4" asChild>
-                    <Link href="/termekek">
-                      Termékek böngészése <MoveRight className="w-4 h-4" />
+                    <Link href={heroData?.ctaLink || '/termekek'}>
+                      {heroData?.ctaText || 'Termékek böngészése'} <MoveRight className="w-4 h-4" />
                     </Link>
                   </Button>
                 </div>
