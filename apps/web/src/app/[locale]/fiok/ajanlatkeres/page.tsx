@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { FileText, Plus } from 'lucide-react';
 
 export const metadata = {
-  title: 'Árajánlat kérések - CSZ Tűzvédelem',
+  title: 'Árajánlat kérések - Dunamenti CSZ Kft.',
 };
 
 export default async function QuoteHistoryPage() {

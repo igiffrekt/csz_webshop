@@ -7,7 +7,7 @@ import { logoutAction } from "@/lib/auth-actions";
 import { User, Package, MapPin, Building2, FileText } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Fiókom | CSZ Tűzvédelmi Webáruház",
+  title: "Fiókom | Dunamenti CSZ Webáruház",
   description: "A fiók beállításaid és rendeléseid",
 };
 

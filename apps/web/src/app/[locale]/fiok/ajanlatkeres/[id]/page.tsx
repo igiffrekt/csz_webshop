@@ -9,7 +9,7 @@ import { Separator } from '@/components/ui/separator';
 import { ArrowLeft } from 'lucide-react';
 
 export const metadata = {
-  title: 'Árajánlat részletei - CSZ Tűzvédelem',
+  title: 'Árajánlat részletei - Dunamenti CSZ Kft.',
 };
 
 interface PageProps {

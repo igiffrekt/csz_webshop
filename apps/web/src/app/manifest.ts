@@ -2,8 +2,8 @@ import type { MetadataRoute } from 'next';
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: 'CSZ Tűzvédelem - Tűzvédelmi eszközök',
-    short_name: 'CSZ Tűzvédelem',
+    name: 'Dunamenti CSZ Kft. - Tűzvédelmi eszközök',
+    short_name: 'Dunamenti CSZ Kft.',
     description: 'Professzionális tűzvédelmi eszközök és biztonsági felszerelések online boltja.',
     start_url: '/',
     display: 'standalone',

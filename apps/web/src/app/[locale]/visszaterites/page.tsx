@@ -30,7 +30,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const page = await getPageBySlug('visszaterites');
 
   return {
-    title: page?.seo?.metaTitle || 'Visszatérítési szabályzat | CSZ Tűzvédelem',
+    title: page?.seo?.metaTitle || 'Visszatérítési szabályzat | Dunamenti CSZ Kft.',
     description: page?.seo?.metaDescription || 'Elállási jog és visszatérítési feltételek',
   };
 }

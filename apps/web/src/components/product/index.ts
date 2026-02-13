@@ -11,6 +11,7 @@ export { VariantSelector } from './VariantSelector';
 export { SpecsTable } from './SpecsTable';
 export { CertBadges } from './CertBadges';
 export { DocumentList } from './DocumentList';
+export { ProductDetailTabs } from './ProductDetailTabs';
 export { SearchInput } from './SearchInput';
 export { Pagination } from './Pagination';
 export { EmptyState } from './EmptyState';

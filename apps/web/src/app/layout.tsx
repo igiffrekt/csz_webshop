@@ -52,8 +52,8 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://csz-tuzvedelmi.hu'
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: 'CSZ Tűzvédelem - Tűzvédelmi eszközök és felszerelések',
-    template: '%s | CSZ Tűzvédelem',
+    default: 'Dunamenti CSZ Kft. - Tűzvédelmi eszközök és felszerelések',
+    template: '%s | Dunamenti CSZ Kft.',
   },
   description: 'Professzionális tűzvédelmi eszközök és biztonsági felszerelések online boltja. Tűzoltó készülékek, tűzjelző rendszerek, védőfelszerelések gyors szállítással.',
   keywords: [
@@ -68,9 +68,9 @@ export const metadata: Metadata = {
     'Budapest',
     'Magyarország',
   ],
-  authors: [{ name: 'CSZ Tűzvédelmi Kft.' }],
-  creator: 'CSZ Tűzvédelmi Kft.',
-  publisher: 'CSZ Tűzvédelmi Kft.',
+  authors: [{ name: 'Dunamenti CSZ Kft.' }],
+  creator: 'Dunamenti CSZ Kft.',
+  publisher: 'Dunamenti CSZ Kft.',
   formatDetection: {
     email: false,
     telephone: false,
@@ -79,21 +79,21 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'hu_HU',
     url: SITE_URL,
-    siteName: 'CSZ Tűzvédelem',
-    title: 'CSZ Tűzvédelem - Tűzvédelmi eszközök és felszerelések',
+    siteName: 'Dunamenti CSZ Kft.',
+    title: 'Dunamenti CSZ Kft. - Tűzvédelmi eszközök és felszerelések',
     description: 'Professzionális tűzvédelmi eszközök és biztonsági felszerelések online boltja.',
     images: [
       {
         url: '/og-image.jpg',
         width: 1200,
         height: 630,
-        alt: 'CSZ Tűzvédelem',
+        alt: 'Dunamenti CSZ Kft.',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'CSZ Tűzvédelem - Tűzvédelmi eszközök',
+    title: 'Dunamenti CSZ Kft. - Tűzvédelmi eszközök',
     description: 'Professzionális tűzvédelmi eszközök online boltja.',
   },
   robots: {

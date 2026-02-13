@@ -6,7 +6,7 @@ import { FileText } from 'lucide-react';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Árajánlat kérés | CSZ Tűzvédelmi Webshop',
+  title: 'Árajánlat kérés | Dunamenti CSZ Webshop',
   description: 'Kérjen árajánlatot nagyobb mennyiségű rendeléshez',
 };
 

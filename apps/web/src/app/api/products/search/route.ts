@@ -1,18 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getProducts } from '@/lib/sanity-queries'
+import { instantSearch } from '@/lib/sanity-queries'
 
 export async function GET(request: NextRequest) {
   const query = request.nextUrl.searchParams.get('q') || ''
 
-  if (!query.trim()) {
-    return NextResponse.json({ data: [] })
+  if (!query.trim() || query.trim().length < 2) {
+    return NextResponse.json({ products: [], categories: [] })
   }
 
   try {
-    const { data } = await getProducts({ search: query, pageSize: 10 })
-    return NextResponse.json({ data })
+    const results = await instantSearch(query.trim())
+    return NextResponse.json(results)
   } catch (error) {
-    console.error('Product search failed:', error)
-    return NextResponse.json({ data: [] })
+    console.error('Instant search failed:', error)
+    return NextResponse.json({ products: [], categories: [] })
   }
 }

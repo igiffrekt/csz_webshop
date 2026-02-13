@@ -9,7 +9,7 @@ import type { Metadata } from 'next';
 import { CopyButton } from './CopyButton';
 
 export const metadata: Metadata = {
-  title: 'Banki átutalás | CSZ Tűzvédelmi Webshop',
+  title: 'Banki átutalás | Dunamenti CSZ Webshop',
   description: 'Banki átutalás részletei',
 };
 
@@ -64,7 +64,7 @@ export default async function BankTransferPage({ searchParams }: Props) {
             <div className="flex justify-between items-center p-3 bg-muted/50 rounded">
               <div>
                 <p className="text-sm text-muted-foreground">Kedvezményezett neve</p>
-                <p className="font-medium">CSZ Tűzvédelmi Kft.</p>
+                <p className="font-medium">Dunamenti CSZ Kft.</p>
               </div>
             </div>
 

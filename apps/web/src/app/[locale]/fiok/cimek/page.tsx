@@ -9,7 +9,7 @@ import { ArrowLeft } from "lucide-react";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Szállítási címek | CSZ Tűzvédelmi Webáruház",
+  title: "Szállítási címek | Dunamenti CSZ Webáruház",
   description: "Mentett szállítási címeid kezelése",
 };
 

@@ -1,5 +1,5 @@
 import { Link } from '@/i18n/navigation';
-import { Facebook, Instagram, Linkedin, Youtube, Twitter, Phone, Mail, MapPin, Send } from 'lucide-react';
+import { Facebook, Instagram, Youtube, Phone, Mail, MapPin, Send } from 'lucide-react';
 
 const productLinks = [
   { label: 'Tűzoltó készülékek', href: '/kategoriak/tuzolto-keszulekek' },
@@ -24,9 +24,7 @@ const resourceLinks = [
 
 const socialLinks = [
   { icon: Facebook, href: 'https://facebook.com', label: 'Facebook' },
-  { icon: Twitter, href: 'https://twitter.com', label: 'Twitter' },
   { icon: Instagram, href: 'https://instagram.com', label: 'Instagram' },
-  { icon: Linkedin, href: 'https://linkedin.com', label: 'LinkedIn' },
 ];
 
 export function Footer() {
@@ -41,11 +39,11 @@ export function Footer() {
           <div className="col-span-2 md:col-span-4 lg:col-span-2 lg:pr-8">
             <Link href="/" className="inline-block">
               <span className="text-2xl font-bold">
-                CSZ <span className="text-amber-400">Tűzvédelem</span>
+                Dunamenti <span className="text-amber-400">CSZ</span> Kft.
               </span>
             </Link>
             <p className="text-gray-400 text-sm mt-4 leading-relaxed max-w-sm">
-              Professzionális tűzvédelmi megoldások üzletek, irodák és otthonok számára. CE tanúsított termékek széles választéka.
+              Immáron 40 éve kezdtük el tevékenységünket, a tűzvédelem terén. Az általunk kifejlesztett, és folyamatosan továbbfejlesztett tűzoltó szerelvények jelenleg is a tűzvédelmi piac fontos részei. Ennek kiegészítéseként, 20 éve kezdtük el a szerelvényekhez tartozó tűzcsapszekrények gyártását.
             </p>
 
             {/* Social links */}
@@ -132,7 +130,7 @@ export function Footer() {
         <div className="site-container py-5">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-gray-500">
             <p>
-              © {currentYear} CSZ Tűzvédelmi Kft. Minden jog fenntartva.
+              © {currentYear} Dunamenti CSZ Kft. Minden jog fenntartva.
             </p>
             <div className="flex items-center gap-6">
               <Link href="/aszf" className="hover:text-amber-400 transition-colors">
