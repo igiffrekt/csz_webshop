@@ -1,6 +1,13 @@
-import { Truck, Wallet, Headphones } from 'lucide-react';
+import { Truck, Wallet, Headphones, Shield, type LucideIcon } from 'lucide-react';
 
-const badges = [
+const iconMap: Record<string, LucideIcon> = {
+  truck: Truck,
+  wallet: Wallet,
+  headphones: Headphones,
+  shield: Shield,
+};
+
+const defaultBadges = [
   {
     icon: Truck,
     title: 'Ingyenes szállítás',
@@ -18,7 +25,25 @@ const badges = [
   },
 ];
 
-export function TrustBadges() {
+interface SanityTrustBadge {
+  _key?: string;
+  title?: string;
+  description?: string;
+  icon?: string;
+}
+
+interface TrustBadgesProps {
+  trustBadges?: SanityTrustBadge[];
+}
+
+export function TrustBadges({ trustBadges }: TrustBadgesProps) {
+  const badges = trustBadges && trustBadges.length > 0
+    ? trustBadges.map((b) => ({
+        icon: iconMap[b.icon || ''] || Shield,
+        title: b.title || '',
+        description: b.description || '',
+      }))
+    : defaultBadges;
   return (
     <section className="bg-white border-y border-gray-100">
       <div className="site-container">

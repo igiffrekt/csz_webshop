@@ -32,6 +32,8 @@ interface CategoryCardsProps {
     children?: { name: string; slug: string; count?: number }[];
   }[];
   products?: Product[];
+  sectionTitle?: string;
+  sectionSubtitle?: string;
 }
 
 // Category layout config - defines which categories to show
@@ -73,7 +75,7 @@ function seededRandom(seed: string): number {
   return Math.abs(hash) % 2;
 }
 
-export function CategoryCards({ categories, products = [] }: CategoryCardsProps) {
+export function CategoryCards({ categories, products = [], sectionTitle, sectionSubtitle }: CategoryCardsProps) {
   // Collect all categories/subcategories with "tömlő" in their name for the Tömlők card
   const tomloChildren: CategoryChild[] = [];
   let tomloProductCount = 0;
@@ -190,10 +192,10 @@ export function CategoryCards({ categories, products = [] }: CategoryCardsProps)
         {/* Section header */}
         <div className="text-center mb-10 lg:mb-14">
           <span className="text-gray-500 text-sm uppercase tracking-wider">
-            Kategóriák
+            {sectionSubtitle || 'Kategóriák'}
           </span>
           <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mt-2">
-            Termékkategóriák
+            {sectionTitle || 'Termékkategóriák'}
           </h2>
         </div>
 

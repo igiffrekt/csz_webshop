@@ -9,7 +9,7 @@ interface FAQItem {
   answer: string;
 }
 
-const faqs: FAQItem[] = [
+const defaultFaqs: FAQItem[] = [
   {
     question: 'Milyen tűzoltó készülékeket kínálnak?',
     answer: 'Széles választékunkban megtalálhatók a poroltó, CO2, haboltó és vízköddel oltó készülékek különböző méretekben (1kg-tól 50kg-ig). Minden termékünk CE tanúsítvánnyal rendelkezik és megfelel az európai szabványoknak.',
@@ -36,7 +36,14 @@ const faqs: FAQItem[] = [
   },
 ];
 
-export function FAQSection() {
+interface FAQSectionProps {
+  sanityFaqs?: FAQItem[];
+  sectionTitle?: string;
+  sectionSubtitle?: string;
+}
+
+export function FAQSection({ sanityFaqs, sectionTitle, sectionSubtitle }: FAQSectionProps) {
+  const faqs = sanityFaqs && sanityFaqs.length > 0 ? sanityFaqs : defaultFaqs;
   const [openIndex, setOpenIndex] = useState<number | null>(1); // Second item open by default
 
   return (
@@ -46,10 +53,10 @@ export function FAQSection() {
           {/* Section header */}
           <div className="text-center mb-10">
             <span className="inline-block px-3 py-1 bg-amber-100 text-amber-700 text-xs font-semibold rounded-full mb-3">
-              GYIK
+              {sectionSubtitle || 'GYIK'}
             </span>
             <h2 className="text-3xl lg:text-4xl font-bold text-gray-900">
-              Kérdése van? Itt a válasz.
+              {sectionTitle || 'Kérdése van? Itt a válasz.'}
             </h2>
           </div>
 

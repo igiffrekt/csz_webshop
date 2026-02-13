@@ -12,9 +12,11 @@ import type { Product } from '@csz/types';
 
 interface DealsSectionProps {
   products: Product[];
+  sectionTitle?: string;
+  sectionSubtitle?: string;
 }
 
-export function DealsSection({ products }: DealsSectionProps) {
+export function DealsSection({ products, sectionTitle, sectionSubtitle }: DealsSectionProps) {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   // Drag scrolling state
@@ -102,10 +104,10 @@ export function DealsSection({ products }: DealsSectionProps) {
         <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6 mb-10">
           <div>
             <span className="text-gray-500 text-sm uppercase tracking-wider">
-              Napi ajánlatok
+              {sectionSubtitle || 'Napi ajánlatok'}
             </span>
             <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mt-2">
-              <span className="text-[#FFBB36]">Mai</span> Akciók
+              {sectionTitle || <><span className="text-[#FFBB36]">Mai</span> Akciók</>}
             </h2>
           </div>
 

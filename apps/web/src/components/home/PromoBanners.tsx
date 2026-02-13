@@ -36,16 +36,42 @@ const defaultBanners: PromoBanner[] = [
   },
 ];
 
-interface PromoBannersProps {
-  banners?: PromoBanner[];
+interface SanityBanner {
+  _key?: string;
+  title?: string;
+  description?: string;
+  image?: { url: string; alt?: string } | null;
+  link?: string;
+  backgroundColor?: string;
 }
 
-export function PromoBanners({ banners = defaultBanners }: PromoBannersProps) {
+interface PromoBannersProps {
+  banners?: PromoBanner[];
+  sanityBanners?: SanityBanner[];
+}
+
+export function PromoBanners({ banners, sanityBanners }: PromoBannersProps) {
+  const displayBanners: PromoBanner[] = sanityBanners && sanityBanners.length > 0
+    ? sanityBanners.map((b, i) => ({
+        discount: '',
+        title: b.title || '',
+        subtitle: b.description || '',
+        ctaText: 'Vásárlás',
+        ctaLink: b.link || '/termekek',
+        bgColor: b.backgroundColor
+          ? ''
+          : i === 0
+            ? 'bg-gradient-to-br from-green-600 to-green-700'
+            : 'bg-gradient-to-br from-amber-100 to-amber-200',
+        textColor: i === 0 ? 'text-white' : 'text-gray-900',
+        buttonBg: 'bg-amber-400 hover:bg-amber-500 text-gray-900',
+      }))
+    : banners || defaultBanners;
   return (
     <section className="py-10 lg:py-12 bg-white">
       <div className="site-container">
         <div className="grid md:grid-cols-2 gap-6">
-          {banners.map((banner, index) => (
+          {displayBanners.map((banner, index) => (
             <Link
               key={index}
               href={banner.ctaLink}
