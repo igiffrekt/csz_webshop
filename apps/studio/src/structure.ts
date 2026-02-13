@@ -9,7 +9,6 @@ import {
   MenuIcon,
   FolderIcon,
   SearchIcon,
-  AddIcon,
   BasketIcon,
 } from '@sanity/icons'
 
@@ -151,14 +150,6 @@ export const structure: StructureResolver = (S, context) => {
                         .title('Minden kategoria')
                         .filter('_type == "category"')
                         .defaultOrdering([{field: 'name', direction: 'asc'}]),
-                    ),
-
-                  S.listItem()
-                    .title('Uj kategoria')
-                    .icon(AddIcon)
-                    .id('new-category')
-                    .child(
-                      S.initialValueTemplateItem('category'),
                     ),
 
                   S.divider(),
