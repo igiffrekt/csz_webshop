@@ -92,7 +92,13 @@ export default async function HomePage() {
     faqsResult.status === 'fulfilled'
       ? (faqsResult.value || []).map((f: any) => ({
           question: f.question,
-          answer: f.answer,
+          answer: Array.isArray(f.answer)
+            ? f.answer
+                .map((block: any) =>
+                  block.children?.map((child: any) => child.text).join('') ?? ''
+                )
+                .join(' ')
+            : f.answer || '',
         }))
       : []
 
