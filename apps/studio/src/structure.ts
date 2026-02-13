@@ -17,7 +17,7 @@ export const structure: StructureResolver = (S, context) => {
   const client = context.getClient({apiVersion: '2025-01-01'})
 
   return S.list()
-    .title('CSZ Tuzvedelem')
+    .title('Dunamenti CSZ')
     .items([
       // ── Products by Category ──────────────────────────────────────
       S.listItem()
@@ -158,10 +158,7 @@ export const structure: StructureResolver = (S, context) => {
                     .icon(AddIcon)
                     .id('new-category')
                     .child(
-                      S.document()
-                        .schemaType('category')
-                        .documentId('drafts.')
-                        .title('Uj kategoria'),
+                      S.initialValueTemplateItem('category'),
                     ),
 
                   S.divider(),

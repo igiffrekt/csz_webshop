@@ -6,9 +6,9 @@ import {structure} from './src/structure'
 
 export default defineConfig({
   name: 'csz-webshop',
-  title: 'CSZ Tuzvedelem',
-  projectId: process.env.SANITY_STUDIO_PROJECT_ID || 'YOUR_PROJECT_ID',
-  dataset: process.env.SANITY_STUDIO_DATASET || 'production',
+  title: 'Dunamenti CSZ',
+  projectId: '7xz4a7fm',
+  dataset: 'production',
   plugins: [
     structureTool({structure}),
     visionTool(),
