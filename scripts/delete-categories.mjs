@@ -75,8 +75,25 @@ async function main() {
     }
   }
 
-  // Step 2: Delete all categories (published + drafts)
-  console.log('\nStep 2: Deleting all categories...')
+  // Step 2: Delete menu items that reference categories
+  console.log('\nStep 2: Deleting menu items that reference categories...')
+  const menuItems = await query('*[_type == "menuItem" && defined(kategoria)]{_id}')
+  console.log(`  Found ${menuItems.length} menu items to delete`)
+
+  if (menuItems.length > 0) {
+    for (let i = 0; i < menuItems.length; i += 50) {
+      const batch = menuItems.slice(i, i + 50)
+      const mutations = batch.flatMap((m) => [
+        { delete: { id: m._id } },
+        { delete: { id: `drafts.${m._id}` } },
+      ])
+      await mutate(mutations)
+      console.log(`  Deleted ${Math.min(i + 50, menuItems.length)}/${menuItems.length} menu items`)
+    }
+  }
+
+  // Step 3: Delete all categories (published + drafts)
+  console.log('\nStep 3: Deleting all categories...')
   const categories = await query('*[_type == "category"]{_id}')
   console.log(`  Found ${categories.length} categories to delete`)
 
