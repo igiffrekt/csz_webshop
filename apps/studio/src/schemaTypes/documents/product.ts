@@ -1,5 +1,6 @@
 import {defineType, defineField, defineArrayMember} from 'sanity'
 import {PackageIcon} from '@sanity/icons'
+import {hunSlugify} from '../utils'
 
 export const product = defineType({
   name: 'product',
@@ -20,12 +21,7 @@ export const product = defineType({
       options: {
         source: 'name',
         maxLength: 200,
-        slugify: (input) =>
-          input
-            .toLowerCase()
-            .replace(/\s+/g, '-')
-            .replace(/[^a-z0-9-]/g, '')
-            .slice(0, 200),
+        slugify: hunSlugify,
       },
       validation: (rule) => rule.required().error('Az URL slug kotelezo.'),
     }),
