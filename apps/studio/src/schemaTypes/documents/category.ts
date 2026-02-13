@@ -1,5 +1,6 @@
 import {defineType, defineField} from 'sanity'
 import {TagIcon} from '@sanity/icons'
+import {hunSlugify} from '../utils'
 
 export const category = defineType({
   name: 'category',
@@ -20,6 +21,7 @@ export const category = defineType({
       options: {
         source: 'name',
         maxLength: 200,
+        slugify: hunSlugify,
       },
       validation: (rule) => rule.required().error('Az URL slug kotelezo.'),
     }),
