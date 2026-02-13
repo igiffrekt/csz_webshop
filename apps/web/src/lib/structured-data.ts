@@ -14,7 +14,7 @@ export function generateProductJsonLd(product: Product) {
     sku: product.sku,
     brand: {
       '@type': 'Brand',
-      name: 'CSZ Tűzvédelem',
+      name: 'Dunamenti CSZ Kft.',
     },
     offers: {
       '@type': 'Offer',
@@ -26,7 +26,7 @@ export function generateProductJsonLd(product: Product) {
         : 'https://schema.org/OutOfStock',
       seller: {
         '@type': 'Organization',
-        name: 'CSZ Tűzvédelmi Kft.',
+        name: 'Dunamenti CSZ Kft.',
       },
     },
     ...(product.certifications?.length && {
@@ -58,7 +58,7 @@ export function generateOrganizationJsonLd() {
   return {
     '@context': 'https://schema.org',
     '@type': 'Organization',
-    name: 'CSZ Tűzvédelmi Kft.',
+    name: 'Dunamenti CSZ Kft.',
     url: SITE_URL,
     logo: `${SITE_URL}/logo.png`,
     contactPoint: {

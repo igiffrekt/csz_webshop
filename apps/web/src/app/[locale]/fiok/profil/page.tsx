@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Profil beállítások | CSZ Tűzvédelmi Webáruház",
+  title: "Profil beállítások | Dunamenti CSZ Webáruház",
   description: "Személyes és céges adatok szerkesztése",
 };
 

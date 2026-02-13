@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import { LoginForm } from "@/components/auth/LoginForm";
 
 export const metadata: Metadata = {
-  title: "Bejelentkezés | CSZ Tűzvédelmi Webáruház",
+  title: "Bejelentkezés | Dunamenti CSZ Webáruház",
   description: "Jelentkezz be a fiókodba",
 };
 

@@ -30,7 +30,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const page = await getPageBySlug('adatvedelem');
 
   return {
-    title: page?.seo?.metaTitle || 'Adatvédelmi tájékoztató | CSZ Tűzvédelem',
+    title: page?.seo?.metaTitle || 'Adatvédelmi tájékoztató | Dunamenti CSZ Kft.',
     description: page?.seo?.metaDescription || 'Adatvédelmi irányelvek és személyes adatok kezelése',
   };
 }
@@ -43,7 +43,7 @@ export default async function PrivacyPage() {
     <p>Utoljára frissítve: 2026. január</p>
 
     <h3>1. Bevezetés</h3>
-    <p>A CSZ Tűzvédelmi Kft. elkötelezett az Ön személyes adatainak védelme mellett.</p>
+    <p>A Dunamenti CSZ Kft. elkötelezett az Ön személyes adatainak védelme mellett.</p>
 
     <h3>2. Milyen adatokat gyűjtünk</h3>
     <ul>

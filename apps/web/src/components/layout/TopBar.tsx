@@ -9,7 +9,7 @@ export function TopBar() {
           {/* Left side - Welcome message */}
           <div className="hidden lg:flex items-center">
             <span className="text-white/90">
-              Üdvözöljük a CSZ Tűzvédelem webáruházban!
+              Üdvözöljük a Dunamenti CSZ Kft. webáruházban!
             </span>
           </div>
 

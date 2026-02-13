@@ -7,7 +7,7 @@ import { CheckCircle, FileText, Home } from 'lucide-react';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Árajánlat kérés elküldve | CSZ Tűzvédelmi Webshop',
+  title: 'Árajánlat kérés elküldve | Dunamenti CSZ Webshop',
   description: 'Az árajánlat kérését megkaptuk',
 };
 

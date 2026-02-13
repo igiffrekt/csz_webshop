@@ -5,7 +5,7 @@ import { CheckoutClient } from './CheckoutClient';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Pénztár | CSZ Tűzvédelmi Webshop',
+  title: 'Pénztár | Dunamenti CSZ Webshop',
   description: 'Rendelése befejezése',
 };
 

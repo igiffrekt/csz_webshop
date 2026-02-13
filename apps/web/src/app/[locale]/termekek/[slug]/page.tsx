@@ -4,11 +4,8 @@ import { Link } from '@/i18n/navigation'
 import { getProduct, getProducts } from '@/lib/sanity-queries'
 import { ProductInfo } from '@/components/product/ProductInfo'
 import { ProductDetails } from '@/components/product/ProductDetails'
-import { CertBadges } from '@/components/product/CertBadges'
-import { SpecsTable } from '@/components/product/SpecsTable'
-import { DocumentList } from '@/components/product/DocumentList'
+import { ProductDetailTabs } from '@/components/product/ProductDetailTabs'
 import { ProductCardEnhanced } from '@/components/product/ProductCardEnhanced'
-import { getTranslations } from 'next-intl/server'
 import { Home, ChevronRight, Truck, Shield, Headphones, Award } from 'lucide-react'
 
 interface Props {
@@ -136,7 +133,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function ProductPage({ params }: Props) {
   const { slug } = await params
-  const t = await getTranslations('product')
 
   let product: any = null
   let relatedProducts: any[] = []
@@ -224,9 +220,6 @@ export default async function ProductPage({ params }: Props) {
           <div className="bg-[#f6f6f6] rounded-[30px] p-6 lg:p-10">
             <ProductDetails product={product}>
               <ProductInfo product={product} />
-              {product.certifications && product.certifications.length > 0 && (
-                <CertBadges certifications={product.certifications} />
-              )}
             </ProductDetails>
 
             <div className="mt-10 pt-8 border-t border-gray-200">
@@ -271,27 +264,12 @@ export default async function ProductPage({ params }: Props) {
             </div>
           </div>
 
-          {product.description && (
-            <section className="bg-[#f6f6f6] rounded-[30px] p-6 lg:p-10 mt-8">
-              <h2 className="text-xl font-bold text-gray-900 mb-6">{t('description')}</h2>
-              <div
-                className="text-gray-600 leading-relaxed prose prose-gray max-w-none [&_p]:mb-4 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:mb-2 [&_li]:marker:text-gray-500 [&_h3]:text-lg [&_h3]:font-semibold [&_h3]:text-gray-900 [&_h3]:mt-6 [&_h3]:mb-2 [&_h4]:font-semibold [&_h4]:text-gray-800 [&_h4]:mt-4 [&_h4]:mb-2 [&_strong]:font-semibold [&_strong]:text-gray-800 [&_a]:text-inherit [&_a]:no-underline"
-                dangerouslySetInnerHTML={{ __html: product.description }}
-              />
-            </section>
-          )}
-
-          {product.specifications && product.specifications.length > 0 && (
-            <section className="bg-[#f6f6f6] rounded-[30px] p-6 lg:p-10 mt-8">
-              <SpecsTable specifications={product.specifications} />
-            </section>
-          )}
-
-          {product.documents && product.documents.length > 0 && (
-            <section className="bg-[#f6f6f6] rounded-[30px] p-6 lg:p-10 mt-8">
-              <DocumentList documents={product.documents} />
-            </section>
-          )}
+          <ProductDetailTabs
+            description={product.description}
+            specifications={product.specifications}
+            certifications={product.certifications}
+            documents={product.documents}
+          />
 
           {relatedProducts.length > 0 && (
             <section className="mt-16">

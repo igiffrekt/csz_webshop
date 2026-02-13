@@ -7,12 +7,8 @@ import {
   Menu,
   X,
   ChevronRight,
-  ChevronDown,
   Home,
-  Grid3X3,
-  Tag,
   Phone,
-  HelpCircle,
   FileText,
   Flame,
 } from 'lucide-react';
@@ -32,7 +28,6 @@ import type { Category } from '@csz/types';
 
 const mainLinks = [
   { href: '/', label: 'Címlap', icon: Home },
-  { href: '/termekek', label: 'Termékek', icon: Grid3X3 },
   { href: '/rolunk', label: 'Rólunk', icon: FileText },
   { href: '/kapcsolat', label: 'Kapcsolat', icon: Phone },
 ] as const;
@@ -41,7 +36,6 @@ export function MobileNav() {
   const t = useTranslations('nav');
   const [open, setOpen] = useState(false);
   const [categories, setCategories] = useState<Category[]>([]);
-  const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
 
   useEffect(() => {
     async function fetchCategories() {
@@ -62,10 +56,6 @@ export function MobileNav() {
     }
   }, [open]);
 
-  const toggleCategory = (slug: string) => {
-    setExpandedCategory(expandedCategory === slug ? null : slug);
-  };
-
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
@@ -74,112 +64,77 @@ export function MobileNav() {
           <span className="sr-only">Menü megnyitása</span>
         </Button>
       </SheetTrigger>
-      <SheetContent side="left" className="w-[300px] sm:w-[350px] p-0">
-        <SheetHeader className="p-4 border-b">
+      <SheetContent side="top" className="p-0 max-h-[85vh] overflow-y-auto">
+        <SheetHeader className="px-5 pt-5 pb-3 border-b border-gray-100">
           <SheetTitle>
             <Logo />
           </SheetTitle>
           <SheetDescription className="sr-only">Navigációs menü</SheetDescription>
         </SheetHeader>
 
-        <div className="flex flex-col h-[calc(100vh-80px)] overflow-y-auto">
-          {/* Main navigation */}
-          <nav className="flex flex-col p-4">
+        <div className="px-5 py-5">
+          {/* Main navigation — horizontal row */}
+          <nav className="flex items-center gap-1 pb-4 mb-4 border-b border-gray-100">
             {mainLinks.map((link) => {
               const Icon = link.icon;
               return (
                 <SheetClose asChild key={link.href}>
                   <Link
                     href={link.href}
-                    className="flex items-center gap-3 py-3 text-secondary-900 hover:text-primary-500 transition-colors border-b border-secondary-100"
+                    className="flex items-center gap-2 px-4 py-2 rounded-lg text-gray-700 hover:bg-gray-50 hover:text-[#FFBB36] font-medium transition-colors text-sm"
                   >
-                    <Icon className="h-5 w-5 text-secondary-500" />
-                    <span className="font-medium">
-                      {link.label}
-                    </span>
+                    <Icon className="h-4 w-4 text-gray-400" />
+                    {link.label}
                   </Link>
                 </SheetClose>
               );
             })}
           </nav>
 
-          {/* Categories section */}
-          <div className="px-4 pb-4">
-            <h3 className="text-xs font-semibold text-secondary-500 uppercase tracking-wider mb-2">
-              Kategóriák
-            </h3>
-            <div className="space-y-1">
-              {categories.map((category) => (
-                <div key={category.slug} className="border-b border-secondary-100">
-                  <button
-                    onClick={() => toggleCategory(category.slug)}
-                    className="flex items-center justify-between w-full py-3 text-left text-secondary-900 hover:text-primary-500 transition-colors"
-                  >
-                    <span className="flex items-center gap-2">
-                      <Flame className="h-4 w-4 text-primary-500" />
-                      {category.name}
-                    </span>
-                    {category.children && category.children.length > 0 && (
-                      <ChevronDown
-                        className={cn(
-                          'h-4 w-4 text-secondary-400 transition-transform',
-                          expandedCategory === category.slug && 'rotate-180'
-                        )}
-                      />
-                    )}
-                  </button>
-
-                  {/* Subcategories */}
-                  {expandedCategory === category.slug &&
-                    category.children &&
-                    category.children.length > 0 && (
-                      <div className="pl-6 pb-2 space-y-1">
-                        <SheetClose asChild>
-                          <Link
-                            href={`/kategoriak/${category.slug}`}
-                            className="flex items-center gap-2 py-2 text-sm text-secondary-600 hover:text-primary-500"
-                          >
-                            <ChevronRight className="h-3 w-3" />
-                            Összes {category.name}
-                          </Link>
-                        </SheetClose>
-                        {category.children.map((sub) => (
-                          <SheetClose asChild key={sub.slug}>
-                            <Link
-                              href={`/kategoriak/${sub.slug}`}
-                              className="flex items-center gap-2 py-2 text-sm text-secondary-600 hover:text-primary-500"
-                            >
-                              <ChevronRight className="h-3 w-3" />
-                              {sub.name}
-                            </Link>
-                          </SheetClose>
-                        ))}
-                      </div>
-                    )}
-                </div>
-              ))}
+          {/* Categories section — grid */}
+          {categories.length > 0 && (
+            <div className="mb-4">
+              <div className="flex items-center gap-2 mb-3 px-1">
+                <h3 className="text-[11px] font-semibold uppercase tracking-wider text-gray-400">
+                  Kategóriák
+                </h3>
+                <div className="flex-1 h-px bg-gray-100" />
+              </div>
+              <div className="grid grid-cols-2 gap-x-4 gap-y-0.5">
+                {categories.map((category) => (
+                  <SheetClose asChild key={category.slug}>
+                    <Link
+                      href={`/kategoriak/${category.slug}`}
+                      className="flex items-center gap-2 text-[13px] text-gray-600 hover:text-[#FFBB36] py-2 px-2 rounded-md hover:bg-gray-50 transition-colors leading-snug"
+                    >
+                      <Flame className="h-3.5 w-3.5 text-amber-400 flex-shrink-0" />
+                      <span>{category.name}</span>
+                    </Link>
+                  </SheetClose>
+                ))}
+              </div>
 
               <SheetClose asChild>
                 <Link
                   href="/kategoriak"
-                  className="flex items-center justify-center gap-2 py-3 mt-2 text-sm font-medium text-primary-500 hover:text-primary-600 bg-primary-50 rounded-lg"
+                  className="inline-flex items-center gap-1 mt-3 px-2 text-sm font-medium text-[#FFBB36] hover:text-amber-600 transition-colors"
                 >
                   Összes kategória
                   <ChevronRight className="h-4 w-4" />
                 </Link>
               </SheetClose>
             </div>
-          </div>
+          )}
 
-          {/* Bottom section */}
-          <div className="mt-auto p-4 border-t bg-secondary-50">
-            <div className="text-center text-sm text-secondary-600">
-              <p className="font-medium text-primary-500">
+          {/* Bottom promo bar */}
+          <div className="pt-4 border-t border-gray-100">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 text-sm text-gray-500">
+              <p className="font-medium text-[#FFBB36]">
                 Ingyenes szállítás 50.000 Ft felett!
               </p>
-              <p className="mt-1">
-                Kérdése van? Hívjon:{' '}
-                <a href="tel:+3612345678" className="font-medium text-secondary-900">
+              <p>
+                Kérdése van?{' '}
+                <a href="tel:+3612345678" className="font-medium text-gray-700">
                   +36 1 234 5678
                 </a>
               </p>

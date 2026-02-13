@@ -6,7 +6,7 @@ import { client } from './sanity'
 const PRODUCTS_QUERY = defineQuery(`
   *[_type == "product"
     && ($category == "" || $category in categories[]->slug.current || $category in categories[]->parent->slug.current)
-    && ($search == "" || name match $search + "*")
+    && ($search == "" || name match $search + "*" || sku match $search + "*")
     && ($featured == false || isFeatured == true)
     && ($onSale == false || isOnSale == true)
   ] | order(_createdAt desc) [$start...$end] {
@@ -51,7 +51,7 @@ const PRODUCTS_QUERY = defineQuery(`
 const PRODUCTS_COUNT_QUERY = defineQuery(`
   count(*[_type == "product"
     && ($category == "" || $category in categories[]->slug.current || $category in categories[]->parent->slug.current)
-    && ($search == "" || name match $search + "*")
+    && ($search == "" || name match $search + "*" || sku match $search + "*")
     && ($featured == false || isFeatured == true)
     && ($onSale == false || isOnSale == true)
   ])
@@ -325,6 +325,44 @@ const FAQS_QUERY = defineQuery(`
   }
 `)
 
+// ============ Instant Search Query ============
+
+const INSTANT_SEARCH_PRODUCTS_QUERY = defineQuery(`
+  *[_type == "product"
+    && (name match $search + "*" || sku match $search + "*" || $search in categories[]->name)
+  ] | order(_createdAt desc) [0...6] {
+    _id,
+    name,
+    "slug": slug.current,
+    sku,
+    basePrice,
+    compareAtPrice,
+    isOnSale,
+    "image": images[0]{
+      "url": asset->url,
+      "alt": asset->altText
+    },
+    "categories": categories[]->{
+      _id,
+      name,
+      "slug": slug.current
+    }
+  }
+`)
+
+const INSTANT_SEARCH_CATEGORIES_QUERY = defineQuery(`
+  *[_type == "category" && name match $search + "*"] | order(name asc) [0...4] {
+    _id,
+    name,
+    "slug": slug.current,
+    "image": image{
+      "url": asset->url,
+      "alt": asset->altText
+    },
+    "productCount": count(*[_type == "product" && references(^._id)])
+  }
+`)
+
 // ============ Fetcher Functions ============
 
 export interface ProductFilters {
@@ -440,6 +478,20 @@ export async function getFAQs() {
     {},
     { next: { revalidate: 60 } }
   )
+}
+
+export async function instantSearch(search: string) {
+  const params = { search }
+
+  const [products, categories] = await Promise.all([
+    client.fetch(INSTANT_SEARCH_PRODUCTS_QUERY, params, { next: { revalidate: 0 } }),
+    client.fetch(INSTANT_SEARCH_CATEGORIES_QUERY, params, { next: { revalidate: 0 } }),
+  ])
+
+  return {
+    products: products || [],
+    categories: categories || [],
+  }
 }
 
 // Re-export for convenience

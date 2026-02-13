@@ -30,8 +30,8 @@ export async function generateMetadata(): Promise<Metadata> {
   const page = await getPageBySlug('rolunk');
 
   return {
-    title: page?.seo?.metaTitle || page?.title || 'Rólunk | CSZ Tűzvédelem',
-    description: page?.seo?.metaDescription || 'Ismerje meg a CSZ Tűzvédelmi Kft.-t',
+    title: page?.seo?.metaTitle || page?.title || 'Rólunk | Dunamenti CSZ Kft.',
+    description: page?.seo?.metaDescription || 'Ismerje meg a Dunamenti CSZ Kft.-t',
   };
 }
 
@@ -40,7 +40,7 @@ export default async function AboutPage() {
 
   // Show fallback content if page not in CMS yet
   const content = page?.content ? convertPortableTextToHtml(page.content) : `
-    <h2>A CSZ Tűzvédelmi Kft.</h2>
+    <h2>A Dunamenti CSZ Kft.</h2>
     <p>Cégünk több mint 20 éve foglalkozik tűzvédelmi eszközök forgalmazásával és karbantartásával.</p>
     <p>Fő tevékenységeink:</p>
     <ul>

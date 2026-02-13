@@ -5,7 +5,7 @@ import { OrderConfirmation } from './OrderConfirmation';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Sikeres rendelés | CSZ Tűzvédelmi Webshop',
+  title: 'Sikeres rendelés | Dunamenti CSZ Webshop',
   description: 'Köszönjük a rendelését!',
 };
 

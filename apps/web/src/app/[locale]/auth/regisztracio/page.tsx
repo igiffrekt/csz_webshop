@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import { RegisterForm } from "@/components/auth/RegisterForm";
 
 export const metadata: Metadata = {
-  title: "Regisztráció | CSZ Tűzvédelmi Webáruház",
+  title: "Regisztráció | Dunamenti CSZ Webáruház",
   description: "Hozd létre a fiókod a gyorsabb vásárláshoz",
 };
 

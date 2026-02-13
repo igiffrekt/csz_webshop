@@ -110,8 +110,23 @@ export function MegaMenu({ variant = 'default' }: MegaMenuProps) {
     ));
   };
 
-  // Icon variant - opens dropdown with info links and menu items (no categories)
+  // Helper to get href from a menu item
+  const getMenuItemHref = (item: MenuItem) => {
+    if (item.tipus === 'kategoria' && item.kategoria) {
+      return `/kategoriak/${getSlugString(item.kategoria.slug)}`;
+    }
+    return item.url || '#';
+  };
+
+  // Icon variant - wide rectangle dropdown with grid layout
   if (variant === 'icon') {
+    const itemsWithChildren = menuItems.filter(
+      (item) => item.children && item.children.length > 0
+    );
+    const simpleItems = menuItems.filter(
+      (item) => !item.children || item.children.length === 0
+    );
+
     return (
       <div
         className="relative"
@@ -126,40 +141,104 @@ export function MegaMenu({ variant = 'default' }: MegaMenuProps) {
           <Image src="/icons/nav-icon.svg" alt="Menü" width={29} height={29} />
         </button>
 
-        {/* Dropdown */}
+        {/* Wide dropdown */}
         <div
           className={cn(
-            'absolute right-0 top-full pt-2 z-50 transition-all duration-200',
+            'absolute left-0 top-full pt-2 z-50 transition-all duration-200',
             isOpen ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'
           )}
         >
-          <div className="bg-white rounded-lg shadow-xl border p-6 min-w-[280px]">
-            {/* Info links */}
-            <div className="space-y-1 pb-4 mb-4 border-b border-gray-200">
+          <div className="bg-white rounded-2xl shadow-2xl border border-gray-100 p-6 w-[700px]">
+            {/* Top row: info links */}
+            <div className="flex items-center gap-1 pb-4 mb-5 border-b border-gray-100">
               {infoLinks.map((link) => {
                 const Icon = link.icon;
                 return (
                   <Link
                     key={link.href}
                     href={link.href}
-                    className="flex items-center gap-2 text-gray-700 hover:text-[#FFBB36] font-medium transition-colors py-1"
+                    className="flex items-center gap-2 px-4 py-2 rounded-lg text-gray-700 hover:bg-gray-50 hover:text-[#FFBB36] font-medium transition-colors text-sm"
                   >
-                    <Icon className="h-4 w-4" />
+                    <Icon className="h-4 w-4 text-gray-400" />
                     {link.label}
                   </Link>
                 );
               })}
             </div>
 
-            {/* Menu items */}
             {isLoading ? (
-              <div className="flex items-center justify-center py-4">
-                <div className="animate-spin h-5 w-5 border-2 border-primary-500 border-t-transparent rounded-full" />
+              <div className="flex items-center justify-center py-8">
+                <div className="animate-spin h-6 w-6 border-2 border-primary-500 border-t-transparent rounded-full" />
               </div>
             ) : menuItems.length > 0 ? (
-              <div className="space-y-1">
-                {renderMenuTree(menuItems)}
-              </div>
+              <>
+                {/* Sections with children — categories in a grid */}
+                {itemsWithChildren.map((item) => (
+                  <div key={item._id} className="mb-5 last:mb-0">
+                    <div className="flex items-center gap-2 mb-3 px-1">
+                      <h3 className="text-[11px] font-semibold uppercase tracking-wider text-gray-400">
+                        {item.cim}
+                      </h3>
+                      <div className="flex-1 h-px bg-gray-100" />
+                    </div>
+                    <div className="grid grid-cols-2 gap-x-8 gap-y-0.5">
+                      {item.children!.map((child) => {
+                        const href = getMenuItemHref(child);
+                        const isExternal = child.url?.startsWith('http');
+                        return isExternal ? (
+                          <a
+                            key={child._id}
+                            href={child.url}
+                            target={child.nyitasUjTabon ? '_blank' : undefined}
+                            rel={child.nyitasUjTabon ? 'noopener noreferrer' : undefined}
+                            className="text-[13px] text-gray-600 hover:text-[#FFBB36] py-1.5 px-2 rounded-md hover:bg-gray-50 transition-colors leading-snug"
+                          >
+                            {child.cim}
+                          </a>
+                        ) : (
+                          <Link
+                            key={child._id}
+                            href={href}
+                            className="text-[13px] text-gray-600 hover:text-[#FFBB36] py-1.5 px-2 rounded-md hover:bg-gray-50 transition-colors leading-snug"
+                          >
+                            {child.cim}
+                          </Link>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ))}
+
+                {/* Simple items as a bottom row */}
+                {simpleItems.length > 0 && (
+                  <div className="flex items-center gap-1 pt-4 mt-4 border-t border-gray-100">
+                    {simpleItems.map((item) => {
+                      const href = getMenuItemHref(item);
+                      const isExternal = item.url?.startsWith('http');
+                      return isExternal ? (
+                        <a
+                          key={item._id}
+                          href={item.url}
+                          target={item.nyitasUjTabon ? '_blank' : undefined}
+                          rel={item.nyitasUjTabon ? 'noopener noreferrer' : undefined}
+                          className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm text-gray-700 hover:bg-gray-50 hover:text-[#FFBB36] font-medium transition-colors"
+                        >
+                          {item.cim}
+                          {item.nyitasUjTabon && <ExternalLink className="h-3 w-3" />}
+                        </a>
+                      ) : (
+                        <Link
+                          key={item._id}
+                          href={href}
+                          className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm text-gray-700 hover:bg-gray-50 hover:text-[#FFBB36] font-medium transition-colors"
+                        >
+                          {item.cim}
+                        </Link>
+                      );
+                    })}
+                  </div>
+                )}
+              </>
             ) : (
               <Link
                 href="/termekek"

@@ -30,7 +30,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const page = await getPageBySlug('aszf');
 
   return {
-    title: page?.seo?.metaTitle || 'Általános Szerződési Feltételek | CSZ Tűzvédelem',
+    title: page?.seo?.metaTitle || 'Általános Szerződési Feltételek | Dunamenti CSZ Kft.',
     description: page?.seo?.metaDescription || 'Vásárlási feltételek és szabályzat',
   };
 }
@@ -43,7 +43,7 @@ export default async function TermsPage() {
     <p>Érvényes: 2026. január 1-től</p>
 
     <h3>1. Általános rendelkezések</h3>
-    <p>Jelen ÁSZF a CSZ Tűzvédelmi Kft. webáruházában történő vásárlás feltételeit szabályozza.</p>
+    <p>Jelen ÁSZF a Dunamenti CSZ Kft. webáruházában történő vásárlás feltételeit szabályozza.</p>
 
     <h3>2. Megrendelés</h3>
     <p>A megrendelés a kosárba helyezett termékek megvásárlásával jön létre.</p>
@@ -58,7 +58,7 @@ export default async function TermsPage() {
     <p>Szállítás kizárólag Magyarország területére.</p>
 
     <h3>5. Kapcsolat</h3>
-    <p>CSZ Tűzvédelmi Kft. - info@csz-tuzvedelmi.hu</p>
+    <p>Dunamenti CSZ Kft. - info@csz-tuzvedelmi.hu</p>
   `;
 
   return (

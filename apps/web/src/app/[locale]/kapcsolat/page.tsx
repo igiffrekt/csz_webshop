@@ -3,7 +3,7 @@ import { MapPin, Phone, Mail, Clock } from 'lucide-react';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Kapcsolat | CSZ Tűzvédelem',
+  title: 'Kapcsolat | Dunamenti CSZ Kft.',
   description: 'Vegye fel velünk a kapcsolatot tűzvédelmi termékeinkkel kapcsolatban',
 };
 
@@ -32,7 +32,7 @@ export default function ContactPage() {
                 <div>
                   <p className="font-medium">Cím</p>
                   <p className="text-muted-foreground text-sm">
-                    CSZ Tűzvédelmi Kft.<br />
+                    Dunamenti CSZ Kft.<br />
                     1234 Budapest<br />
                     Példa utca 123.
                   </p>

@@ -7,7 +7,7 @@ import { calculateShipping } from '@/lib/server/shipping'
 import { syncOrderToSanity } from '@/lib/sanity-order-sync'
 
 const BANK_ACCOUNT = {
-  accountHolder: 'CSZ Tűzvédelem Kft.',
+  accountHolder: 'Dunamenti CSZ Kft.',
   bankName: 'OTP Bank',
   iban: 'HU42 1176 3103 1234 5678 0000 0000',
   bic: 'OTPVHUHB',

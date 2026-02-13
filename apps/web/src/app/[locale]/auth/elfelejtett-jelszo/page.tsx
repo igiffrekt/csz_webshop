@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import { ForgotPasswordForm } from "@/components/auth/ForgotPasswordForm";
 
 export const metadata: Metadata = {
-  title: "Elfelejtett jelszó | CSZ Tűzvédelmi Webáruház",
+  title: "Elfelejtett jelszó | Dunamenti CSZ Webáruház",
   description: "Állítsd vissza az elfelejtett jelszavadat",
 };
 

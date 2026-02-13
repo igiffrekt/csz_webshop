@@ -1,5 +1,5 @@
 /**
- * CSZ Tűzvédelem Design Tokens
+ * Dunamenti CSZ Kft. Design Tokens
  *
  * Brand colors adapted from reference design with yellow/gold accent
  * for fire safety equipment branding.

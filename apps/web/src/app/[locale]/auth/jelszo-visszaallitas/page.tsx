@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { ResetPasswordForm } from "@/components/auth/ResetPasswordForm";
 
 export const metadata: Metadata = {
-  title: "Jelszó visszaállítás | CSZ Tűzvédelmi Webáruház",
+  title: "Jelszó visszaállítás | Dunamenti CSZ Webáruház",
   description: "Állítsd be az új jelszavadat",
 };
 

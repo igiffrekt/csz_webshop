@@ -29,7 +29,7 @@ function convertPortableTextToHtml(blocks: any): string {
 }
 
 export const metadata: Metadata = {
-  title: 'Gyakran Ismételt Kérdések | CSZ Tűzvédelem',
+  title: 'Gyakran Ismételt Kérdések | Dunamenti CSZ Kft.',
   description: 'Válaszok a tűzvédelmi termékekkel kapcsolatos leggyakoribb kérdésekre',
 };
 
