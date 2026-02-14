@@ -1,8 +1,16 @@
 import { NextResponse } from 'next/server'
-import { getCategories } from '@/lib/sanity-queries'
+import { getCategories, getCategoryTree } from '@/lib/sanity-queries'
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
+    const { searchParams } = new URL(request.url)
+    const tree = searchParams.get('tree')
+
+    if (tree === '1') {
+      const data = await getCategoryTree()
+      return NextResponse.json({ data: data || [] })
+    }
+
     const result = await getCategories()
     return NextResponse.json(result)
   } catch (error) {

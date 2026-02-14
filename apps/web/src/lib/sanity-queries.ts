@@ -174,6 +174,17 @@ const CATEGORY_TREE_QUERY = defineQuery(`
       "image": image{
         "url": asset->url,
         "alt": asset->altText
+      },
+      "children": *[_type == "category" && parent._ref == ^._id] | order(name asc) {
+        _id,
+        name,
+        "slug": slug.current,
+        description,
+        productCount,
+        "image": image{
+          "url": asset->url,
+          "alt": asset->altText
+        }
       }
     }
   }

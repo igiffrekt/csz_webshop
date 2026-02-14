@@ -42,13 +42,12 @@ export function MegaMenu({ variant = 'default' }: MegaMenuProps) {
 
         // Only fetch categories for default variant
         if (variant === 'default') {
-          const res = await fetch(`${window.location.origin}/api/categories`);
+          const res = await fetch(`${window.location.origin}/api/categories?tree=1`);
           if (res.ok) {
             const text = await res.text();
             if (text && text.trim()) {
               const data: { data: Category[] } = JSON.parse(text);
-              const topLevel = data.data?.filter((cat) => !cat.parent) || [];
-              setCategories(topLevel);
+              setCategories(data.data || []);
             }
           }
         }
@@ -310,7 +309,7 @@ export function MegaMenu({ variant = 'default' }: MegaMenuProps) {
             </div>
           ) : (
             <>
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="grid grid-cols-2 lg:grid-cols-3 gap-6">
                 {categories.map((category) => (
                   <div key={getSlugString(category.slug)}>
                     <Link
@@ -321,27 +320,31 @@ export function MegaMenu({ variant = 'default' }: MegaMenuProps) {
                       {category.name}
                     </Link>
                     {category.children && category.children.length > 0 && (
-                      <ul className="mt-2 space-y-1">
-                        {category.children.slice(0, 5).map((sub) => (
+                      <ul className="mt-2 space-y-0.5">
+                        {category.children.map((sub) => (
                           <li key={getSlugString(sub.slug)}>
                             <Link
                               href={`/kategoriak/${getSlugString(sub.slug)}`}
-                              className="text-sm text-secondary-600 hover:text-primary-500 transition-colors block py-0.5"
+                              className="text-sm font-medium text-secondary-700 hover:text-primary-500 transition-colors block py-0.5"
                             >
                               {sub.name}
                             </Link>
+                            {sub.children && sub.children.length > 0 && (
+                              <ul className="ml-3 space-y-0">
+                                {sub.children.map((grandchild) => (
+                                  <li key={getSlugString(grandchild.slug)}>
+                                    <Link
+                                      href={`/kategoriak/${getSlugString(grandchild.slug)}`}
+                                      className="text-xs text-secondary-500 hover:text-primary-500 transition-colors block py-0.5"
+                                    >
+                                      {grandchild.name}
+                                    </Link>
+                                  </li>
+                                ))}
+                              </ul>
+                            )}
                           </li>
                         ))}
-                        {category.children.length > 5 && (
-                          <li>
-                            <Link
-                              href={`/kategoriak/${getSlugString(category.slug)}`}
-                              className="text-sm text-primary-500 hover:text-primary-600 font-medium"
-                            >
-                              + {category.children.length - 5} további
-                            </Link>
-                          </li>
-                        )}
                       </ul>
                     )}
                   </div>
