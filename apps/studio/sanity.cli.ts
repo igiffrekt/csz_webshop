@@ -5,4 +5,5 @@ export default defineCliConfig({
     projectId: '7xz4a7fm',
     dataset: 'production',
   },
+  studioHost: 'csz',
 })

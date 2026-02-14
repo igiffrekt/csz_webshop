@@ -7,6 +7,7 @@ import {
   Menu,
   X,
   ChevronRight,
+  ChevronDown,
   Home,
   Phone,
   FileText,
@@ -32,6 +33,49 @@ const mainLinks = [
   { href: '/kapcsolat', label: 'Kapcsolat', icon: Phone },
 ] as const;
 
+function CategoryItem({ category, depth = 0, onNavigate }: { category: Category; depth?: number; onNavigate: () => void }) {
+  const [expanded, setExpanded] = useState(false);
+  const hasChildren = category.children && category.children.length > 0;
+
+  return (
+    <div>
+      <div className="flex items-center">
+        <SheetClose asChild>
+          <Link
+            href={`/kategoriak/${category.slug}`}
+            onClick={onNavigate}
+            className={cn(
+              'flex-1 flex items-center gap-2 py-2 px-2 rounded-md hover:bg-gray-50 transition-colors leading-snug',
+              depth === 0 && 'text-[13px] text-gray-700 font-medium',
+              depth === 1 && 'text-[13px] text-gray-600 ml-4',
+              depth === 2 && 'text-xs text-gray-500 ml-8',
+            )}
+          >
+            {depth === 0 && <Flame className="h-3.5 w-3.5 text-amber-400 flex-shrink-0" />}
+            <span>{category.name}</span>
+          </Link>
+        </SheetClose>
+        {hasChildren && (
+          <button
+            onClick={() => setExpanded(!expanded)}
+            className="p-2 text-gray-400 hover:text-gray-600 transition-colors"
+            aria-label={expanded ? 'Bezárás' : 'Megnyitás'}
+          >
+            <ChevronDown className={cn('h-4 w-4 transition-transform', expanded && 'rotate-180')} />
+          </button>
+        )}
+      </div>
+      {hasChildren && expanded && (
+        <div>
+          {category.children!.map((child) => (
+            <CategoryItem key={child._id} category={child} depth={depth + 1} onNavigate={onNavigate} />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export function MobileNav() {
   const t = useTranslations('nav');
   const [open, setOpen] = useState(false);
@@ -40,11 +84,10 @@ export function MobileNav() {
   useEffect(() => {
     async function fetchCategories() {
       try {
-        const res = await fetch('/api/categories');
+        const res = await fetch('/api/categories?tree=1');
         if (res.ok) {
           const data: { data: Category[] } = await res.json();
-          const topLevel = data.data.filter((cat) => !cat.parent);
-          setCategories(topLevel);
+          setCategories(data.data || []);
         }
       } catch (error) {
         console.error('Failed to fetch categories:', error);
@@ -91,7 +134,7 @@ export function MobileNav() {
             })}
           </nav>
 
-          {/* Categories section — grid */}
+          {/* Categories section — expandable tree */}
           {categories.length > 0 && (
             <div className="mb-4">
               <div className="flex items-center gap-2 mb-3 px-1">
@@ -100,17 +143,13 @@ export function MobileNav() {
                 </h3>
                 <div className="flex-1 h-px bg-gray-100" />
               </div>
-              <div className="grid grid-cols-2 gap-x-4 gap-y-0.5">
+              <div className="space-y-0">
                 {categories.map((category) => (
-                  <SheetClose asChild key={category.slug}>
-                    <Link
-                      href={`/kategoriak/${category.slug}`}
-                      className="flex items-center gap-2 text-[13px] text-gray-600 hover:text-[#FFBB36] py-2 px-2 rounded-md hover:bg-gray-50 transition-colors leading-snug"
-                    >
-                      <Flame className="h-3.5 w-3.5 text-amber-400 flex-shrink-0" />
-                      <span>{category.name}</span>
-                    </Link>
-                  </SheetClose>
+                  <CategoryItem
+                    key={category._id}
+                    category={category}
+                    onNavigate={() => setOpen(false)}
+                  />
                 ))}
               </div>
 
