@@ -22,13 +22,76 @@ export const structure: StructureResolver = (S, context) => {
       S.listItem()
         .title('Termekek')
         .icon(PackageIcon)
-        .child(() =>
-          client
-            .fetch<{_id: string; name: string; childIds: string[]}[]>(
+        .child(() => {
+          // Collect all descendant IDs for a category (recursive)
+          const getAllDescendantIds = async (catId: string): Promise<string[]> => {
+            const children = await client.fetch<{_id: string}[]>(
+              `*[_type == "category" && parent._ref == $catId]{_id}`,
+              {catId},
+            )
+            const childIds = children.map((c) => c._id)
+            const grandchildIds = await Promise.all(childIds.map(getAllDescendantIds))
+            return [...childIds, ...grandchildIds.flat()]
+          }
+
+          // Recursive helper to build product category tree at any depth
+          const buildProductCategoryChild = (catId: string, catName: string): Promise<any> =>
+            client
+              .fetch<{_id: string; name: string; childCount: number}[]>(
+                `*[_type == "category" && parent._ref == $catId] | order(name asc) {
+                  _id,
+                  name,
+                  "childCount": count(*[_type == "category" && parent._ref == ^._id])
+                }`,
+                {catId},
+              )
+              .then(async (children) => {
+                if (children.length === 0) {
+                  // Leaf category → show products directly
+                  return S.documentList()
+                    .title(catName)
+                    .filter('_type == "product" && $catId in categories[]._ref')
+                    .params({catId})
+                    .defaultOrdering([{field: 'name', direction: 'asc'}])
+                }
+
+                // Has children → collect all descendant IDs for "all products" view
+                const descendantIds = await getAllDescendantIds(catId)
+                const allCatIds = [catId, ...descendantIds]
+
+                return S.list()
+                  .title(catName)
+                  .items([
+                    ...children.map((child) =>
+                      S.listItem()
+                        .title(child.name)
+                        .icon(child.childCount > 0 ? FolderIcon : TagIcon)
+                        .id(`prod-${child._id}`)
+                        .child(() => buildProductCategoryChild(child._id, child.name)),
+                    ),
+
+                    S.divider(),
+
+                    S.listItem()
+                      .title(`Osszes termek (${catName})`)
+                      .icon(PackageIcon)
+                      .id(`${catId}-all`)
+                      .child(
+                        S.documentList()
+                          .title(`Osszes ${catName} termek`)
+                          .filter('_type == "product" && count((categories[]._ref)[@ in $catIds]) > 0')
+                          .params({catIds: allCatIds})
+                          .defaultOrdering([{field: 'name', direction: 'asc'}]),
+                      ),
+                  ])
+              })
+
+          return client
+            .fetch<{_id: string; name: string; childCount: number}[]>(
               `*[_type == "category" && !defined(parent)] | order(name asc) {
                 _id,
                 name,
-                "childIds": *[_type == "category" && parent._ref == ^._id]._id
+                "childCount": count(*[_type == "category" && parent._ref == ^._id])
               }`,
             )
             .then((parentCategories) =>
@@ -48,65 +111,13 @@ export const structure: StructureResolver = (S, context) => {
 
                   S.divider(),
 
-                  ...parentCategories.map((cat) => {
-                    // All IDs: parent + its children
-                    const allCatIds = [cat._id, ...cat.childIds]
-
-                    return S.listItem()
+                  ...parentCategories.map((cat) =>
+                    S.listItem()
                       .title(cat.name)
-                      .icon(cat.childIds.length > 0 ? FolderIcon : TagIcon)
+                      .icon(cat.childCount > 0 ? FolderIcon : TagIcon)
                       .id(cat._id)
-                      .child(() =>
-                        cat.childIds.length === 0
-                          ? // No children → products directly
-                            S.documentList()
-                              .title(cat.name)
-                              .filter('_type == "product" && count((categories[]._ref)[@ in $catIds]) > 0')
-                              .params({catIds: allCatIds})
-                              .defaultOrdering([{field: 'name', direction: 'asc'}])
-                          : // Has children → fetch child names, show sub-cats + products
-                            client
-                              .fetch<{_id: string; name: string}[]>(
-                                `*[_type == "category" && parent._ref == $catId] | order(name asc) {_id, name}`,
-                                {catId: cat._id},
-                              )
-                              .then((subCategories) =>
-                                S.list()
-                                  .title(cat.name)
-                                  .items([
-                                    // Sub-categories first
-                                    ...subCategories.map((sub) =>
-                                      S.listItem()
-                                        .title(sub.name)
-                                        .icon(TagIcon)
-                                        .id(sub._id)
-                                        .child(
-                                          S.documentList()
-                                            .title(sub.name)
-                                            .filter('_type == "product" && $catId in categories[]._ref')
-                                            .params({catId: sub._id})
-                                            .defaultOrdering([{field: 'name', direction: 'asc'}]),
-                                        ),
-                                    ),
-
-                                    S.divider(),
-
-                                    // All products in parent + children combined
-                                    S.listItem()
-                                      .title(`Osszes termek (${cat.name})`)
-                                      .icon(PackageIcon)
-                                      .id(`${cat._id}-all`)
-                                      .child(
-                                        S.documentList()
-                                          .title(`Osszes ${cat.name} termek`)
-                                          .filter('_type == "product" && count((categories[]._ref)[@ in $catIds]) > 0')
-                                          .params({catIds: allCatIds})
-                                          .defaultOrdering([{field: 'name', direction: 'asc'}]),
-                                      ),
-                                  ]),
-                              ),
-                      )
-                  }),
+                      .child(() => buildProductCategoryChild(cat._id, cat.name)),
+                  ),
 
                   S.divider(),
 
@@ -121,15 +132,58 @@ export const structure: StructureResolver = (S, context) => {
                         .defaultOrdering([{field: 'name', direction: 'asc'}]),
                     ),
                 ]),
-            ),
-        ),
+            )
+        }),
 
       // ── Categories (hierarchical) ─────────────────────────────────
       S.listItem()
         .title('Kategoriak')
         .icon(TagIcon)
-        .child(() =>
-          client
+        .child(() => {
+          // Recursive helper to build category tree at any depth
+          const buildCategoryChild = (catId: string, catName: string): Promise<any> =>
+            client
+              .fetch<{_id: string; name: string; childCount: number}[]>(
+                `*[_type == "category" && parent._ref == $catId] | order(name asc) {
+                  _id,
+                  name,
+                  "childCount": count(*[_type == "category" && parent._ref == ^._id])
+                }`,
+                {catId},
+              )
+              .then((children) =>
+                children.length === 0
+                  ? S.document()
+                      .schemaType('category')
+                      .documentId(catId)
+                      .title(catName)
+                  : S.list()
+                      .title(catName)
+                      .items([
+                        S.listItem()
+                          .title(`${catName} szerkesztese`)
+                          .icon(TagIcon)
+                          .id(`cat-edit-${catId}`)
+                          .child(
+                            S.document()
+                              .schemaType('category')
+                              .documentId(catId)
+                              .title(catName),
+                          ),
+
+                        S.divider(),
+
+                        ...children.map((child) =>
+                          S.listItem()
+                            .title(child.name)
+                            .icon(child.childCount > 0 ? FolderIcon : TagIcon)
+                            .id(`cat-nav-${child._id}`)
+                            .child(() => buildCategoryChild(child._id, child.name)),
+                        ),
+                      ]),
+              )
+
+          return client
             .fetch<{_id: string; name: string; childCount: number}[]>(
               `*[_type == "category" && !defined(parent)] | order(name asc) {
                 _id,
@@ -159,57 +213,11 @@ export const structure: StructureResolver = (S, context) => {
                       .title(cat.name)
                       .icon(cat.childCount > 0 ? FolderIcon : TagIcon)
                       .id(`cat-nav-${cat._id}`)
-                      .child(() =>
-                        cat.childCount === 0
-                          ? // No children → open document editor directly
-                            S.document()
-                              .schemaType('category')
-                              .documentId(cat._id)
-                              .title(cat.name)
-                          : // Has children → show parent + child categories
-                            client
-                              .fetch<{_id: string; name: string}[]>(
-                                `*[_type == "category" && parent._ref == $catId] | order(name asc) {_id, name}`,
-                                {catId: cat._id},
-                              )
-                              .then((subCategories) =>
-                                S.list()
-                                  .title(cat.name)
-                                  .items([
-                                    // Parent category document at top
-                                    S.listItem()
-                                      .title(`${cat.name} szerkesztese`)
-                                      .icon(TagIcon)
-                                      .id(`cat-edit-${cat._id}`)
-                                      .child(
-                                        S.document()
-                                          .schemaType('category')
-                                          .documentId(cat._id)
-                                          .title(cat.name),
-                                      ),
-
-                                    S.divider(),
-
-                                    // Child categories
-                                    ...subCategories.map((sub) =>
-                                      S.listItem()
-                                        .title(sub.name)
-                                        .icon(TagIcon)
-                                        .id(`cat-nav-${sub._id}`)
-                                        .child(
-                                          S.document()
-                                            .schemaType('category')
-                                            .documentId(sub._id)
-                                            .title(sub.name),
-                                        ),
-                                    ),
-                                  ]),
-                              ),
-                      ),
+                      .child(() => buildCategoryChild(cat._id, cat.name)),
                   ),
                 ]),
-            ),
-        ),
+            )
+        }),
 
       // ── Product Variants ──────────────────────────────────────────
       S.listItem()
