@@ -3,7 +3,7 @@
 import { useMemo } from 'react';
 import Image from 'next/image';
 import { Link } from '@/i18n/navigation';
-import { ChevronRight } from 'lucide-react';
+import { ChevronRight, ArrowRight } from 'lucide-react';
 import type { Product } from '@csz/types';
 import { getImageUrl, getSlugString } from '@/lib/formatters';
 
@@ -20,7 +20,6 @@ interface CategoryCardData {
   productCount: number;
   image?: string | null;
   children: CategoryChild[];
-  peekDirection: 'right' | 'bottom';
 }
 
 interface CategoryCardsProps {
@@ -46,6 +45,16 @@ const categoryConfig: string[][] = [
   ['passziv-tuzvedelme', 'passziv-tuzvedelmi-termekek'],
 ];
 
+// Accent colors per card position
+const accents = [
+  { bg: 'bg-amber-500', light: 'bg-amber-50', text: 'text-amber-600' },
+  { bg: 'bg-red-500', light: 'bg-red-50', text: 'text-red-600' },
+  { bg: 'bg-blue-500', light: 'bg-blue-50', text: 'text-blue-600' },
+  { bg: 'bg-emerald-500', light: 'bg-emerald-50', text: 'text-emerald-600' },
+  { bg: 'bg-orange-500', light: 'bg-orange-50', text: 'text-orange-600' },
+  { bg: 'bg-violet-500', light: 'bg-violet-50', text: 'text-violet-600' },
+];
+
 function findProductImageForCategory(
   categorySlug: string,
   products: Product[]
@@ -60,8 +69,6 @@ function findProductImageForCategory(
   if (product.images?.[0]?.url) return getImageUrl(product.images[0].url);
   return null;
 }
-
-const MAX_CHILDREN = 5;
 
 export function CategoryCards({ categories, products = [], sectionTitle, sectionSubtitle }: CategoryCardsProps) {
   const tomloChildren: CategoryChild[] = [];
@@ -86,9 +93,7 @@ export function CategoryCards({ categories, products = [], sectionTitle, section
 
   const displayCategories = useMemo(() => {
     return categoryConfig
-      .map((slugs, index): CategoryCardData | null => {
-        const peekDirection = index % 2 === 0 ? 'right' : 'bottom';
-
+      .map((slugs): CategoryCardData | null => {
         if (slugs.includes('tomlok')) {
           if (tomloChildren.length === 0) return null;
           let image = tomloImage;
@@ -99,13 +104,8 @@ export function CategoryCards({ categories, products = [], sectionTitle, section
             }
           }
           return {
-            id: 'tomlok',
-            name: 'Tömlők',
-            slug: 'tomlok',
-            productCount: tomloProductCount,
-            image,
-            children: tomloChildren.slice(0, 10),
-            peekDirection,
+            id: 'tomlok', name: 'Tömlők', slug: 'tomlok',
+            productCount: tomloProductCount, image, children: [...tomloChildren],
           };
         }
 
@@ -133,13 +133,9 @@ export function CategoryCards({ categories, products = [], sectionTitle, section
         }
 
         return {
-          id: matchedCat._id || matchedCat.slug,
-          name: matchedCat.name,
-          slug: matchedCat.slug,
-          productCount: totalProductCount,
-          image,
-          children: children.slice(0, 10),
-          peekDirection,
+          id: matchedCat._id || matchedCat.slug, name: matchedCat.name,
+          slug: matchedCat.slug, productCount: totalProductCount, image,
+          children,
         };
       })
       .filter((cat): cat is CategoryCardData => cat !== null);
@@ -147,11 +143,8 @@ export function CategoryCards({ categories, products = [], sectionTitle, section
 
   if (displayCategories.length === 0) return null;
 
-  const leftColumn = displayCategories.filter((_, i) => [0, 3, 5].includes(i));
-  const rightColumn = displayCategories.filter((_, i) => [1, 2, 4].includes(i));
-
   return (
-    <section className="py-12 lg:py-20 bg-gray-50/60">
+    <section className="py-12 lg:py-20">
       <div className="site-container">
         {/* Section header */}
         <div className="text-center mb-10 lg:mb-14">
@@ -163,127 +156,233 @@ export function CategoryCards({ categories, products = [], sectionTitle, section
           </h2>
         </div>
 
-        {/* Masonry Grid - 2 columns */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 lg:gap-6">
-          <div className="flex flex-col gap-5 lg:gap-6">
-            {leftColumn.map((category) => (
-              <MasonryCard key={category.id} category={category} />
-            ))}
+        {/* Row 1: one wide card + one narrow card */}
+        <div className="flex flex-col lg:flex-row gap-5 mb-5">
+          <div className="lg:flex-[2]">
+            <CategoryCard category={displayCategories[0]} accent={accents[0]} variant="wide" />
           </div>
-          <div className="flex flex-col gap-5 lg:gap-6">
-            {rightColumn.map((category) => (
-              <MasonryCard key={category.id} category={category} />
-            ))}
-          </div>
+          {displayCategories[1] && (
+            <div className="lg:flex-[1]">
+              <CategoryCard category={displayCategories[1]} accent={accents[1]} variant="tall" />
+            </div>
+          )}
         </div>
+
+        {/* Row 2: three equal cards */}
+        {displayCategories.length > 2 && (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-5">
+            {displayCategories.slice(2, 5).map((cat, i) => (
+              <CategoryCard key={cat.id} category={cat} accent={accents[i + 2]} variant="compact" />
+            ))}
+          </div>
+        )}
+
+        {/* Row 3: remaining card as full-width banner */}
+        {displayCategories[5] && (
+          <CategoryCard category={displayCategories[5]} accent={accents[5]} variant="banner" />
+        )}
       </div>
     </section>
   );
 }
 
-function MasonryCard({ category }: { category: CategoryCardData }) {
-  const visibleChildren = category.children.slice(0, MAX_CHILDREN);
-  const remainingCount = Math.max(0, category.children.length - MAX_CHILDREN);
-  const isBottomPeek = category.peekDirection === 'bottom';
+function CategoryCard({
+  category,
+  accent,
+  variant,
+}: {
+  category: CategoryCardData;
+  accent: (typeof accents)[number];
+  variant: 'wide' | 'tall' | 'compact' | 'banner';
+}) {
+  const hasImage = !!category.image;
 
-  return (
-    <div className="group relative bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-lg hover:border-gray-200 transition-all duration-300">
-      <div className={`flex ${isBottomPeek ? 'flex-col' : 'flex-row'}`}>
-        {/* Content section */}
-        <div className={`flex flex-col p-6 lg:p-7 relative z-10 ${isBottomPeek ? 'w-full' : 'w-[60%]'}`}>
-          {/* Product count badge */}
-          {category.productCount > 0 && (
-            <div className="inline-flex items-center gap-1.5 bg-gray-50 rounded-full px-3 py-1.5 w-fit mb-3">
-              <span className="text-amber-500 font-bold text-sm">
-                {category.productCount}
-              </span>
-              <span className="text-gray-500 text-sm">termék</span>
-            </div>
-          )}
-
-          {/* Category title */}
-          <Link href={`/kategoriak/${category.slug}`}>
-            <h3 className="text-xl lg:text-2xl font-bold text-gray-900 leading-tight mb-3 group-hover:text-amber-500 transition-colors">
-              {category.name}
-            </h3>
-          </Link>
-
-          {/* Subcategory list - capped */}
-          {visibleChildren.length > 0 && (
-            <div className="flex flex-col gap-0.5">
-              {visibleChildren.map((child, idx) => (
-                <Link
-                  key={idx}
-                  href={`/kategoriak/${child.slug}`}
-                  className="group/link flex items-center gap-1.5 text-sm text-gray-500 hover:text-amber-500 transition-colors py-1"
-                >
-                  <ChevronRight className="h-3 w-3 text-gray-300 group-hover/link:text-amber-400 transition-colors flex-shrink-0" />
-                  <span className="truncate">{child.name}</span>
-                </Link>
-              ))}
-              {remainingCount > 0 && (
-                <Link
-                  href={`/kategoriak/${category.slug}`}
-                  className="text-xs font-medium text-amber-500 hover:text-amber-600 transition-colors mt-1 ml-[18px]"
-                >
-                  +{remainingCount} további
-                </Link>
+  if (variant === 'wide') {
+    return (
+      <div className="group relative bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-lg transition-all duration-300 h-full">
+        <div className={`absolute top-0 left-0 right-0 h-1 ${accent.bg}`} />
+        <div className="flex flex-col sm:flex-row h-full">
+          <div className="flex flex-col p-6 lg:p-8 sm:flex-1 min-w-0">
+            <div className="flex items-start justify-between gap-3 mb-4">
+              <Link href={`/kategoriak/${category.slug}`}>
+                <h3 className="text-2xl font-bold text-gray-900 leading-tight group-hover:text-amber-500 transition-colors">
+                  {category.name}
+                </h3>
+              </Link>
+              {(
+                <span className={`flex-shrink-0 inline-flex items-center ${accent.light} ${accent.text} rounded-full px-3 py-1 text-xs font-bold`}>
+                  {category.productCount}
+                </span>
               )}
             </div>
-          )}
-
-          {visibleChildren.length === 0 && (
-            <Link
-              href={`/kategoriak/${category.slug}`}
-              className="inline-flex items-center gap-1 text-sm font-medium text-amber-500 hover:text-amber-600 transition-colors"
-            >
-              Termékek megtekintése
-              <ChevronRight className="h-3.5 w-3.5" />
+            <SubcategoryList items={category.children} slug={category.slug} />
+            <div className="mt-auto pt-4">
+              <Link
+                href={`/kategoriak/${category.slug}`}
+                className="inline-flex items-center gap-1.5 text-sm font-semibold text-amber-500 hover:text-amber-600 transition-colors"
+              >
+                Összes termék <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+              </Link>
+            </div>
+          </div>
+          {hasImage && (
+            <Link href={`/kategoriak/${category.slug}`} className="relative sm:w-[240px] h-[180px] sm:h-auto flex-shrink-0 bg-gray-50/50">
+              <Image src={category.image!} alt={category.name} fill className="object-contain p-6 transition-transform duration-500 group-hover:scale-105" sizes="240px" />
             </Link>
           )}
         </div>
+      </div>
+    );
+  }
 
-        {/* Image section - peek effect */}
-        {isBottomPeek ? (
-          <Link
-            href={`/kategoriak/${category.slug}`}
-            className="relative w-full h-[180px] lg:h-[220px] bg-gradient-to-t from-gray-50 to-transparent"
-          >
-            {category.image ? (
-              <Image
-                src={category.image}
-                alt={category.name}
-                fill
-                className="object-contain object-center p-4 transition-transform duration-500 group-hover:scale-105 drop-shadow-lg"
-                sizes="(max-width: 1024px) 90vw, 45vw"
-              />
-            ) : (
-              <div className="absolute inset-0 flex items-center justify-center">
-                <span className="text-8xl opacity-5">🧯</span>
-              </div>
-            )}
+  if (variant === 'tall') {
+    return (
+      <div className="group relative bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-lg transition-all duration-300 h-full flex flex-col">
+        <div className={`absolute top-0 left-0 right-0 h-1 ${accent.bg}`} />
+        {hasImage && (
+          <Link href={`/kategoriak/${category.slug}`} className="relative h-[160px] flex-shrink-0 bg-gray-50/50">
+            <Image src={category.image!} alt={category.name} fill className="object-contain p-5 transition-transform duration-500 group-hover:scale-105" sizes="400px" />
           </Link>
+        )}
+        <div className="flex flex-col flex-1 p-6">
+          <div className="flex items-start justify-between gap-3 mb-4">
+            <Link href={`/kategoriak/${category.slug}`}>
+              <h3 className="text-xl font-bold text-gray-900 leading-tight group-hover:text-amber-500 transition-colors">
+                {category.name}
+              </h3>
+            </Link>
+            {(
+              <span className={`flex-shrink-0 inline-flex items-center ${accent.light} ${accent.text} rounded-full px-3 py-1 text-xs font-bold`}>
+                {category.productCount}
+              </span>
+            )}
+          </div>
+          <SubcategoryList items={category.children} slug={category.slug} />
+          <div className="mt-auto pt-4">
+            <Link
+              href={`/kategoriak/${category.slug}`}
+              className="inline-flex items-center gap-1.5 text-sm font-semibold text-amber-500 hover:text-amber-600 transition-colors"
+            >
+              Összes termék <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (variant === 'banner') {
+    return (
+      <div className="group relative bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-lg transition-all duration-300">
+        <div className={`absolute top-0 left-0 right-0 h-1 ${accent.bg}`} />
+        <div className="flex flex-col sm:flex-row">
+          <div className="flex flex-col p-6 lg:p-8 flex-1 min-w-0">
+            <div className="flex items-start justify-between gap-3 mb-4">
+              <Link href={`/kategoriak/${category.slug}`}>
+                <h3 className="text-xl font-bold text-gray-900 leading-tight group-hover:text-amber-500 transition-colors">
+                  {category.name}
+                </h3>
+              </Link>
+              {(
+                <span className={`flex-shrink-0 inline-flex items-center ${accent.light} ${accent.text} rounded-full px-3 py-1 text-xs font-bold`}>
+                  {category.productCount}
+                </span>
+              )}
+            </div>
+            {category.children.length > 0 ? (
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-6 gap-y-1">
+                {category.children.map((child, idx) => (
+                  <Link
+                    key={idx}
+                    href={`/kategoriak/${child.slug}`}
+                    className="group/link flex items-center gap-1.5 text-sm text-gray-500 hover:text-amber-500 transition-colors py-0.5"
+                  >
+                    <ChevronRight className="h-3 w-3 text-gray-300 group-hover/link:text-amber-400 transition-colors flex-shrink-0" />
+                    <span className="truncate">{child.name}</span>
+                  </Link>
+                ))}
+              </div>
+            ) : (
+              <Link
+                href={`/kategoriak/${category.slug}`}
+                className="inline-flex items-center gap-1.5 text-sm font-semibold text-amber-500 hover:text-amber-600 transition-colors"
+              >
+                Termékek megtekintése <ArrowRight className="h-3.5 w-3.5" />
+              </Link>
+            )}
+          </div>
+          {hasImage && (
+            <Link href={`/kategoriak/${category.slug}`} className="relative sm:w-[200px] h-[140px] sm:h-auto flex-shrink-0 bg-gray-50/50">
+              <Image src={category.image!} alt={category.name} fill className="object-contain p-5 transition-transform duration-500 group-hover:scale-105" sizes="200px" />
+            </Link>
+          )}
+        </div>
+      </div>
+    );
+  }
+
+  // compact
+  return (
+    <div className="group relative bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-lg transition-all duration-300 h-full flex flex-col">
+      <div className={`absolute top-0 left-0 right-0 h-1 ${accent.bg}`} />
+      <div className="flex flex-col flex-1 p-5 lg:p-6">
+        <div className="flex items-start justify-between gap-2 mb-3">
+          <Link href={`/kategoriak/${category.slug}`}>
+            <h3 className="text-lg font-bold text-gray-900 leading-tight group-hover:text-amber-500 transition-colors">
+              {category.name}
+            </h3>
+          </Link>
+          {(
+            <span className={`flex-shrink-0 inline-flex items-center ${accent.light} ${accent.text} rounded-full px-2.5 py-0.5 text-xs font-bold`}>
+              {category.productCount}
+            </span>
+          )}
+        </div>
+        {category.children.length > 0 ? (
+          <div className="flex flex-col gap-0.5">
+            {category.children.map((child, idx) => (
+              <Link
+                key={idx}
+                href={`/kategoriak/${child.slug}`}
+                className="group/link flex items-center gap-1.5 text-sm text-gray-500 hover:text-amber-500 transition-colors py-0.5"
+              >
+                <ChevronRight className="h-3 w-3 text-gray-300 group-hover/link:text-amber-400 transition-colors flex-shrink-0" />
+                <span className="truncate">{child.name}</span>
+              </Link>
+            ))}
+          </div>
         ) : (
           <Link
             href={`/kategoriak/${category.slug}`}
-            className="relative w-[40%] min-h-[200px] bg-gradient-to-l from-gray-50 to-transparent flex-shrink-0"
+            className="inline-flex items-center gap-1.5 text-sm font-semibold text-amber-500 hover:text-amber-600 transition-colors"
           >
-            {category.image ? (
-              <Image
-                src={category.image}
-                alt={category.name}
-                fill
-                className="object-contain object-center p-4 transition-transform duration-500 group-hover:scale-105 drop-shadow-lg"
-                sizes="(max-width: 1024px) 40vw, 25vw"
-              />
-            ) : (
-              <div className="absolute inset-0 flex items-center justify-center">
-                <span className="text-8xl opacity-5">🧯</span>
-              </div>
-            )}
+            Termékek megtekintése <ArrowRight className="h-3.5 w-3.5" />
+          </Link>
+        )}
+        {hasImage && (
+          <Link href={`/kategoriak/${category.slug}`} className="relative h-[120px] mt-auto pt-3 flex-shrink-0">
+            <Image src={category.image!} alt={category.name} fill className="object-contain object-center transition-transform duration-500 group-hover:scale-105" sizes="300px" />
           </Link>
         )}
       </div>
+    </div>
+  );
+}
+
+function SubcategoryList({ items, slug }: { items: CategoryChild[]; slug: string }) {
+  if (items.length === 0) return null;
+  return (
+    <div className="flex flex-col gap-0.5">
+      {items.map((child, idx) => (
+        <Link
+          key={idx}
+          href={`/kategoriak/${child.slug}`}
+          className="group/link flex items-center gap-1.5 text-sm text-gray-500 hover:text-amber-500 transition-colors py-0.5"
+        >
+          <ChevronRight className="h-3 w-3 text-gray-300 group-hover/link:text-amber-400 transition-colors flex-shrink-0" />
+          <span className="truncate">{child.name}</span>
+        </Link>
+      ))}
     </div>
   );
 }

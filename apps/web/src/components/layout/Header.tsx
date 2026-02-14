@@ -8,10 +8,22 @@ import { UserMenu } from './UserMenu';
 import { MobileNav } from './MobileNav';
 import { MegaMenu } from './MegaMenu';
 import { auth } from '@/lib/auth';
+import type { Session } from 'next-auth';
+
+async function safeAuth(): Promise<Session | null> {
+  try {
+    const timeout = new Promise<null>((resolve) =>
+      setTimeout(() => resolve(null), 3000)
+    );
+    return await Promise.race([auth() as Promise<Session | null>, timeout]);
+  } catch {
+    return null;
+  }
+}
 
 export async function Header() {
   const t = await getTranslations('nav');
-  const session = await auth();
+  const session = await safeAuth();
   const isAuth = !!session?.user;
 
   return (
