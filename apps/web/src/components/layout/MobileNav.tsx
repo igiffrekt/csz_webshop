@@ -45,31 +45,46 @@ function CategoryItem({ category, depth = 0, onNavigate }: { category: Category;
             href={`/kategoriak/${category.slug}`}
             onClick={onNavigate}
             className={cn(
-              'flex-1 flex items-center gap-2 py-2 px-2 rounded-md hover:bg-gray-50 transition-colors leading-snug',
+              'flex-1 flex items-center gap-2 py-2.5 px-2 rounded-md hover:bg-gray-50 transition-colors leading-snug',
               depth === 0 && 'text-[13px] text-gray-700 font-medium',
-              depth === 1 && 'text-[13px] text-gray-600 ml-4',
-              depth === 2 && 'text-xs text-gray-500 ml-8',
+              depth === 1 && 'text-[13px] text-gray-600 pl-5',
+              depth === 2 && 'text-xs text-gray-500 pl-9',
             )}
           >
             {depth === 0 && <Flame className="h-3.5 w-3.5 text-amber-400 flex-shrink-0" />}
+            {depth === 1 && <span className="w-1 h-1 rounded-full bg-amber-300 flex-shrink-0" />}
             <span>{category.name}</span>
           </Link>
         </SheetClose>
         {hasChildren && (
           <button
             onClick={() => setExpanded(!expanded)}
-            className="p-2 text-gray-400 hover:text-gray-600 transition-colors"
+            className="p-2.5 text-gray-400 hover:text-gray-600 active:scale-90 transition-all"
             aria-label={expanded ? 'Bezárás' : 'Megnyitás'}
+            aria-expanded={expanded}
           >
-            <ChevronDown className={cn('h-4 w-4 transition-transform', expanded && 'rotate-180')} />
+            <ChevronDown className={cn('h-4 w-4 transition-transform duration-200', expanded && 'rotate-180')} />
           </button>
         )}
       </div>
-      {hasChildren && expanded && (
-        <div>
-          {category.children!.map((child) => (
-            <CategoryItem key={child._id} category={child} depth={depth + 1} onNavigate={onNavigate} />
-          ))}
+
+      {/* Animated accordion content */}
+      {hasChildren && (
+        <div className="accordion-content" data-open={expanded}>
+          <div className="accordion-inner">
+            {depth === 0 && <div className="ml-4 border-l-2 border-amber-100 pl-0">
+              {category.children!.map((child) => (
+                <CategoryItem key={child._id} category={child} depth={depth + 1} onNavigate={onNavigate} />
+              ))}
+            </div>}
+            {depth > 0 && (
+              <div>
+                {category.children!.map((child) => (
+                  <CategoryItem key={child._id} category={child} depth={depth + 1} onNavigate={onNavigate} />
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       )}
     </div>
