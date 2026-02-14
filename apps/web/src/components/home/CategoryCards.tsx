@@ -20,6 +20,7 @@ interface CategoryCardData {
   productCount: number;
   image?: string | null;
   children: CategoryChild[];
+  peekDirection: 'right' | 'bottom';
 }
 
 interface CategoryCardsProps {
@@ -60,10 +61,9 @@ function findProductImageForCategory(
   return null;
 }
 
-const MAX_CHILDREN = 4;
+const MAX_CHILDREN = 5;
 
 export function CategoryCards({ categories, products = [], sectionTitle, sectionSubtitle }: CategoryCardsProps) {
-  // Collect tömlő-related categories
   const tomloChildren: CategoryChild[] = [];
   let tomloProductCount = 0;
   let tomloImage: string | null = null;
@@ -86,7 +86,9 @@ export function CategoryCards({ categories, products = [], sectionTitle, section
 
   const displayCategories = useMemo(() => {
     return categoryConfig
-      .map((slugs): CategoryCardData | null => {
+      .map((slugs, index): CategoryCardData | null => {
+        const peekDirection = index % 2 === 0 ? 'right' : 'bottom';
+
         if (slugs.includes('tomlok')) {
           if (tomloChildren.length === 0) return null;
           let image = tomloImage;
@@ -103,6 +105,7 @@ export function CategoryCards({ categories, products = [], sectionTitle, section
             productCount: tomloProductCount,
             image,
             children: tomloChildren.slice(0, 10),
+            peekDirection,
           };
         }
 
@@ -136,12 +139,16 @@ export function CategoryCards({ categories, products = [], sectionTitle, section
           productCount: totalProductCount,
           image,
           children: children.slice(0, 10),
+          peekDirection,
         };
       })
       .filter((cat): cat is CategoryCardData => cat !== null);
   }, [categories, products, tomloChildren, tomloProductCount, tomloImage]);
 
   if (displayCategories.length === 0) return null;
+
+  const leftColumn = displayCategories.filter((_, i) => [0, 3, 5].includes(i));
+  const rightColumn = displayCategories.filter((_, i) => [1, 2, 4].includes(i));
 
   return (
     <section className="py-12 lg:py-20 bg-gray-50/60">
@@ -156,92 +163,124 @@ export function CategoryCards({ categories, products = [], sectionTitle, section
           </h2>
         </div>
 
-        {/* Uniform 3-column grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-5">
-          {displayCategories.map((category) => (
-            <CategoryCard key={category.id} category={category} />
-          ))}
+        {/* Masonry Grid - 2 columns */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 lg:gap-6">
+          <div className="flex flex-col gap-5 lg:gap-6">
+            {leftColumn.map((category) => (
+              <MasonryCard key={category.id} category={category} />
+            ))}
+          </div>
+          <div className="flex flex-col gap-5 lg:gap-6">
+            {rightColumn.map((category) => (
+              <MasonryCard key={category.id} category={category} />
+            ))}
+          </div>
         </div>
       </div>
     </section>
   );
 }
 
-function CategoryCard({ category }: { category: CategoryCardData }) {
+function MasonryCard({ category }: { category: CategoryCardData }) {
   const visibleChildren = category.children.slice(0, MAX_CHILDREN);
   const remainingCount = Math.max(0, category.children.length - MAX_CHILDREN);
+  const isBottomPeek = category.peekDirection === 'bottom';
 
   return (
     <div className="group relative bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-lg hover:border-gray-200 transition-all duration-300">
-      {/* Top: image area */}
-      <Link
-        href={`/kategoriak/${category.slug}`}
-        className="block relative h-40 bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden"
-      >
-        {category.image ? (
-          <Image
-            src={category.image}
-            alt={category.name}
-            fill
-            className="object-contain p-6 transition-transform duration-500 group-hover:scale-110"
-            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-          />
-        ) : (
-          <div className="absolute inset-0 flex items-center justify-center">
-            <span className="text-7xl opacity-10">🧯</span>
-          </div>
-        )}
+      <div className={`flex ${isBottomPeek ? 'flex-col' : 'flex-row'}`}>
+        {/* Content section */}
+        <div className={`flex flex-col p-6 lg:p-7 relative z-10 ${isBottomPeek ? 'w-full' : 'w-[60%]'}`}>
+          {/* Product count badge */}
+          {category.productCount > 0 && (
+            <div className="inline-flex items-center gap-1.5 bg-gray-50 rounded-full px-3 py-1.5 w-fit mb-3">
+              <span className="text-amber-500 font-bold text-sm">
+                {category.productCount}
+              </span>
+              <span className="text-gray-500 text-sm">termék</span>
+            </div>
+          )}
 
-        {/* Product count pill - top right */}
-        {category.productCount > 0 && (
-          <span className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm text-xs font-semibold text-gray-600 px-2.5 py-1 rounded-full shadow-sm">
-            {category.productCount} termék
-          </span>
-        )}
-      </Link>
+          {/* Category title */}
+          <Link href={`/kategoriak/${category.slug}`}>
+            <h3 className="text-xl lg:text-2xl font-bold text-gray-900 leading-tight mb-3 group-hover:text-amber-500 transition-colors">
+              {category.name}
+            </h3>
+          </Link>
 
-      {/* Bottom: content */}
-      <div className="p-5">
-        {/* Category name */}
-        <Link
-          href={`/kategoriak/${category.slug}`}
-          className="block text-lg font-bold text-gray-900 group-hover:text-amber-500 transition-colors leading-tight mb-3"
-        >
-          {category.name}
-        </Link>
+          {/* Subcategory list - capped */}
+          {visibleChildren.length > 0 && (
+            <div className="flex flex-col gap-0.5">
+              {visibleChildren.map((child, idx) => (
+                <Link
+                  key={idx}
+                  href={`/kategoriak/${child.slug}`}
+                  className="group/link flex items-center gap-1.5 text-sm text-gray-500 hover:text-amber-500 transition-colors py-1"
+                >
+                  <ChevronRight className="h-3 w-3 text-gray-300 group-hover/link:text-amber-400 transition-colors flex-shrink-0" />
+                  <span className="truncate">{child.name}</span>
+                </Link>
+              ))}
+              {remainingCount > 0 && (
+                <Link
+                  href={`/kategoriak/${category.slug}`}
+                  className="text-xs font-medium text-amber-500 hover:text-amber-600 transition-colors mt-1 ml-[18px]"
+                >
+                  +{remainingCount} további
+                </Link>
+              )}
+            </div>
+          )}
 
-        {/* Subcategories - capped at MAX_CHILDREN */}
-        {visibleChildren.length > 0 && (
-          <div className="flex flex-col gap-1">
-            {visibleChildren.map((child, idx) => (
-              <Link
-                key={idx}
-                href={`/kategoriak/${child.slug}`}
-                className="group/link flex items-center gap-1.5 text-sm text-gray-500 hover:text-amber-500 transition-colors py-0.5"
-              >
-                <ChevronRight className="h-3 w-3 text-gray-300 group-hover/link:text-amber-400 transition-colors flex-shrink-0" />
-                <span className="truncate">{child.name}</span>
-              </Link>
-            ))}
-            {remainingCount > 0 && (
-              <Link
-                href={`/kategoriak/${category.slug}`}
-                className="text-xs font-medium text-amber-500 hover:text-amber-600 transition-colors mt-1 ml-4.5"
-              >
-                +{remainingCount} további
-              </Link>
-            )}
-          </div>
-        )}
+          {visibleChildren.length === 0 && (
+            <Link
+              href={`/kategoriak/${category.slug}`}
+              className="inline-flex items-center gap-1 text-sm font-medium text-amber-500 hover:text-amber-600 transition-colors"
+            >
+              Termékek megtekintése
+              <ChevronRight className="h-3.5 w-3.5" />
+            </Link>
+          )}
+        </div>
 
-        {/* View all link */}
-        {visibleChildren.length === 0 && (
+        {/* Image section - peek effect */}
+        {isBottomPeek ? (
           <Link
             href={`/kategoriak/${category.slug}`}
-            className="inline-flex items-center gap-1 text-sm font-medium text-amber-500 hover:text-amber-600 transition-colors"
+            className="relative w-full h-[180px] lg:h-[220px] bg-gradient-to-t from-gray-50 to-transparent"
           >
-            Termékek megtekintése
-            <ChevronRight className="h-3.5 w-3.5" />
+            {category.image ? (
+              <Image
+                src={category.image}
+                alt={category.name}
+                fill
+                className="object-contain object-center p-4 transition-transform duration-500 group-hover:scale-105 drop-shadow-lg"
+                sizes="(max-width: 1024px) 90vw, 45vw"
+              />
+            ) : (
+              <div className="absolute inset-0 flex items-center justify-center">
+                <span className="text-8xl opacity-5">🧯</span>
+              </div>
+            )}
+          </Link>
+        ) : (
+          <Link
+            href={`/kategoriak/${category.slug}`}
+            className="relative w-[40%] min-h-[200px] bg-gradient-to-l from-gray-50 to-transparent flex-shrink-0"
+          >
+            {category.image ? (
+              <Image
+                src={category.image}
+                alt={category.name}
+                fill
+                className="object-contain object-center p-4 transition-transform duration-500 group-hover:scale-105 drop-shadow-lg"
+                sizes="(max-width: 1024px) 40vw, 25vw"
+              />
+            ) : (
+              <div className="absolute inset-0 flex items-center justify-center">
+                <span className="text-8xl opacity-5">🧯</span>
+              </div>
+            )}
           </Link>
         )}
       </div>
