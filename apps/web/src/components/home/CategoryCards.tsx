@@ -225,7 +225,7 @@ function CategoryCard({
             </div>
           </div>
           {hasImage && (
-            <Link href={`/kategoriak/${category.slug}`} className="relative sm:w-[260px] h-[120px] sm:h-auto flex-shrink-0 overflow-visible">
+            <Link href={`/kategoriak/${category.slug}`} className="relative sm:w-[260px] h-[120px] sm:h-auto flex-shrink-0 overflow-visible hidden sm:block">
               <div className="absolute inset-0 overflow-visible">
                 <div className="relative w-[160%] h-full">
                   <Image src={category.image!} alt={category.name} fill className="object-contain object-right transition-transform duration-500 group-hover:scale-110 drop-shadow-xl" sizes="(max-width: 1024px) 50vw, 30vw" />
@@ -265,7 +265,7 @@ function CategoryCard({
         </div>
         {/* Bottom-right image area */}
         {hasImage && (
-          <div className="relative h-[100px] flex-shrink-0 overflow-visible">
+          <div className="relative h-[100px] flex-shrink-0 overflow-visible hidden sm:block">
             <div className="absolute bottom-0 right-0 w-[70%] h-[220%] overflow-visible">
               <Image src={category.image!} alt={category.name} fill className="object-contain object-right-bottom transition-transform duration-500 group-hover:scale-110 drop-shadow-xl" sizes="(max-width: 1024px) 40vw, 25vw" />
             </div>
@@ -303,7 +303,7 @@ function CategoryCard({
             )}
           </div>
           {hasImage && (
-            <Link href={`/kategoriak/${category.slug}`} className="relative sm:w-[220px] h-[100px] sm:h-auto flex-shrink-0 overflow-visible">
+            <Link href={`/kategoriak/${category.slug}`} className="relative sm:w-[220px] h-[100px] sm:h-auto flex-shrink-0 overflow-visible hidden sm:block">
               <div className="absolute inset-0 overflow-visible">
                 <div className="relative w-[150%] h-full">
                   <Image src={category.image!} alt={category.name} fill className="object-contain object-right transition-transform duration-500 group-hover:scale-110 drop-shadow-xl" sizes="(max-width: 1024px) 40vw, 20vw" />
@@ -324,11 +324,11 @@ function CategoryCard({
       <div className={`absolute top-0 left-0 right-0 h-1.5 ${theme.bar}`} />
       {/* Bottom-right image: overlay positioned inside the card */}
       {hasImage && imgPos === 'bottom-right' && (
-        <Link href={`/kategoriak/${category.slug}`} className="absolute bottom-0 right-0 w-[55%] h-[75%] z-0 pointer-events-auto">
+        <Link href={`/kategoriak/${category.slug}`} className="absolute bottom-0 right-0 w-[55%] h-[75%] z-0 pointer-events-auto hidden sm:block">
           <Image src={category.image!} alt={category.name} fill className="object-contain object-right-bottom transition-transform duration-500 group-hover:scale-110 drop-shadow-xl" sizes="300px" />
         </Link>
       )}
-      <div className={`flex flex-col flex-1 p-5 lg:p-6 relative z-10 ${imgPos === 'right' ? 'pr-[120px]' : ''}`}>
+      <div className={`flex flex-col flex-1 p-5 lg:p-6 relative z-10 ${imgPos === 'right' ? 'sm:pr-[120px]' : ''}`}>
         <div className="flex items-start justify-between gap-2 mb-3">
           <Link href={`/kategoriak/${category.slug}`}>
             <h3 className="text-lg font-extrabold text-gray-900 leading-tight group-hover:text-amber-600 transition-colors">
@@ -351,7 +351,7 @@ function CategoryCard({
         )}
         {/* Right-aligned image: absolutely positioned inside the content area */}
         {hasImage && imgPos === 'right' && (
-          <div className="absolute right-0 top-0 bottom-0 w-[130px] overflow-visible">
+          <div className="absolute right-0 top-0 bottom-0 w-[130px] overflow-visible hidden sm:block">
             <div className="relative w-[180%] h-full">
               <Image src={category.image!} alt={category.name} fill className="object-contain object-right transition-transform duration-500 group-hover:scale-110 drop-shadow-xl" sizes="300px" />
             </div>
@@ -360,7 +360,7 @@ function CategoryCard({
       </div>
       {/* Bottom-center image */}
       {hasImage && imgPos === 'bottom' && (
-        <div className="relative h-[60px] flex-shrink-0 overflow-visible">
+        <div className="relative h-[60px] flex-shrink-0 overflow-visible hidden sm:block">
           <div className="absolute inset-0 overflow-visible">
             <div className="relative w-full h-[250%] -translate-y-[30%]">
               <Image src={category.image!} alt={category.name} fill className="object-contain object-center transition-transform duration-500 group-hover:scale-110 drop-shadow-xl" sizes="300px" />

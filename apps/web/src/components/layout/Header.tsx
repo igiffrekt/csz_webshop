@@ -31,8 +31,13 @@ export async function Header() {
       {/* Main header - matching Figma design */}
       <div className="site-container">
         <div className="flex items-center h-16 lg:h-[92px]">
-          {/* Logo */}
-          <Link href="/" className="flex-shrink-0">
+          {/* Mobile: hamburger on left */}
+          <div className="lg:hidden flex-shrink-0 -ml-2">
+            <MobileNav />
+          </div>
+
+          {/* Logo — centered on mobile, left-aligned on desktop */}
+          <Link href="/" className="flex-shrink-0 flex-1 lg:flex-none flex justify-center lg:justify-start">
             <Logo />
           </Link>
 
@@ -48,15 +53,17 @@ export async function Header() {
             <SearchBar variant="hero" className="flex-1 mr-[50px]" />
           </nav>
 
-          {/* Right section: Store icons - small gaps between them */}
+          {/* Right section: Store icons */}
           <div className="flex items-center gap-6">
-            {/* User */}
+            {/* User — desktop only */}
             {isAuth && session?.user ? (
-              <UserMenu username={session.user.username || session.user.name || ''} email={session.user.email || ''} />
+              <div className="hidden lg:block">
+                <UserMenu username={session.user.username || session.user.name || ''} email={session.user.email || ''} />
+              </div>
             ) : (
               <Link
                 href="/auth/bejelentkezes"
-                className="hidden md:flex items-center justify-center hover:opacity-70 transition-opacity"
+                className="hidden lg:flex items-center justify-center hover:opacity-70 transition-opacity"
                 title={t('login')}
               >
                 <Image src="/icons/shop-profile-icon.svg" alt="Profil" width={24} height={24} />
@@ -65,11 +72,6 @@ export async function Header() {
 
             {/* Cart */}
             <HeaderCart />
-
-            {/* Mobile menu button */}
-            <div className="lg:hidden">
-              <MobileNav />
-            </div>
           </div>
         </div>
       </div>

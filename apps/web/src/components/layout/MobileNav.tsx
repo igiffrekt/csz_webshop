@@ -3,7 +3,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from '@/i18n/navigation';
 import {
-  Menu,
   ChevronRight,
   ChevronLeft,
   Home,
@@ -137,9 +136,11 @@ export function MobileNav() {
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <Button variant="ghost" size="icon" className="lg:hidden">
-          <Menu className="h-5 w-5" />
-          <span className="sr-only">Menü megnyitása</span>
+        <Button variant="ghost" size="icon" className="lg:hidden" aria-label="Menü megnyitása">
+          <svg width="20" height="14" viewBox="0 0 20 14" fill="none" className="text-gray-800">
+            <rect y="0" width="20" height="2.5" rx="1.25" fill="currentColor" />
+            <rect y="11.5" width="14" height="2.5" rx="1.25" fill="currentColor" />
+          </svg>
         </Button>
       </SheetTrigger>
       <SheetContent
@@ -332,9 +333,9 @@ function CategoryButton({
       <button
         onClick={() => onDrill(category._id)}
         className={cn(
-          'flex items-center justify-between w-full py-2.5 px-3 rounded-lg hover:bg-gray-50 transition-colors text-left',
-          depth === 0 && 'text-[13px] text-gray-700 font-medium',
-          depth >= 1 && 'text-[13px] text-gray-600',
+          'flex items-center justify-between w-full px-3 rounded-lg hover:bg-gray-50 transition-colors text-left',
+          depth === 0 && 'py-2.5 text-[13px] text-gray-700 font-medium',
+          depth >= 1 && 'py-3.5 text-[15px] text-gray-600',
         )}
       >
         <span className="flex items-center gap-2.5">
@@ -351,9 +352,9 @@ function CategoryButton({
     <button
       onClick={() => onNavigate(`/kategoriak/${category.slug}`)}
       className={cn(
-        'flex items-center w-full py-2.5 px-3 rounded-lg hover:bg-gray-50 transition-colors text-left',
-        depth === 0 && 'text-[13px] text-gray-700 font-medium',
-        depth >= 1 && 'text-[13px] text-gray-600',
+        'flex items-center w-full px-3 rounded-lg hover:bg-gray-50 transition-colors text-left',
+        depth === 0 && 'py-2.5 text-[13px] text-gray-700 font-medium',
+        depth >= 1 && 'py-3.5 text-[15px] text-gray-600',
       )}
     >
       <span className="flex items-center gap-2.5">
