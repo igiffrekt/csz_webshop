@@ -7,5 +7,4 @@ export { ProductCollections } from './ProductCollections';
 export { DealsSection } from './DealsSection';
 export { PromoBanners } from './PromoBanners';
 export { BlogSection } from './BlogSection';
-export { InstagramSection } from './InstagramSection';
 export { FAQSection } from './FAQSection';

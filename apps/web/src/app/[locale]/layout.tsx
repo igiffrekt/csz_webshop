@@ -9,6 +9,7 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { Toaster } from "@/components/ui/sonner";
 import { generateOrganizationJsonLd } from "@/lib/structured-data";
+import { getFooter } from "@/lib/sanity-queries";
 
 export default async function LocaleLayout({
   children,
@@ -29,6 +30,8 @@ export default async function LocaleLayout({
 
   const organizationJsonLd = generateOrganizationJsonLd();
 
+  const footerData = await getFooter().catch(() => null);
+
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
       <NuqsAdapter>
@@ -46,7 +49,7 @@ export default async function LocaleLayout({
             <TopBar />
             <Header />
             <main id="main-content" className="flex-1">{children}</main>
-            <Footer />
+            <Footer data={footerData} />
           </div>
           <Toaster />
         </QueryProvider>

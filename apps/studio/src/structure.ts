@@ -352,5 +352,15 @@ export const structure: StructureResolver = (S, context) => {
             .documentId('homepage')
             .title('Kezdőlap'),
         ),
+
+      S.listItem()
+        .title('Lábléc')
+        .icon(DocumentTextIcon)
+        .child(
+          S.document()
+            .schemaType('footer')
+            .documentId('footer')
+            .title('Lábléc'),
+        ),
     ])
 }

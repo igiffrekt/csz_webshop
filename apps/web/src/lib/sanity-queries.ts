@@ -378,6 +378,34 @@ const BLOG_POST_BY_SLUG_QUERY = defineQuery(`
   }
 `)
 
+// ============ Footer Query ============
+
+const FOOTER_QUERY = defineQuery(`
+  *[_type == "footer"][0] {
+    companyDescription,
+    socialLinks[]{
+      _key,
+      platform,
+      url
+    },
+    linkColumns[]{
+      _key,
+      title,
+      links[]{
+        _key,
+        label,
+        href
+      }
+    },
+    bottomBarLinks[]{
+      _key,
+      label,
+      href
+    },
+    copyrightText
+  }
+`)
+
 // ============ Instant Search Query ============
 
 const INSTANT_SEARCH_PRODUCTS_QUERY = defineQuery(`
@@ -504,6 +532,14 @@ export async function getCategory(slug: string) {
 export async function getHomepage() {
   return client.fetch(
     HOMEPAGE_QUERY,
+    {},
+    { next: { revalidate: 60 } }
+  )
+}
+
+export async function getFooter() {
+  return client.fetch(
+    FOOTER_QUERY,
     {},
     { next: { revalidate: 60 } }
   )

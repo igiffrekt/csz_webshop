@@ -15,6 +15,7 @@ import {homepage} from './documents/homepage'
 import {menuItem} from './documents/menuItem'
 import {order} from './documents/order'
 import {blogPost} from './documents/blogPost'
+import {footer} from './documents/footer'
 
 export const schemaTypes = [
   // Objects
@@ -33,4 +34,5 @@ export const schemaTypes = [
   homepage,
   menuItem,
   order,
+  footer,
 ]

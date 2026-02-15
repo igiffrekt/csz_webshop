@@ -15,7 +15,6 @@ import {
   PromoBanners,
   BlogSection,
   FAQSection,
-  InstagramSection,
 } from '@/components/home'
 
 export const metadata: Metadata = {
@@ -137,7 +136,6 @@ export default async function HomePage() {
       <PromoBanners sanityBanners={homepage?.promoBanners} />
       <BlogSection posts={blogPosts.length > 0 ? blogPosts : undefined} />
       <FAQSection sanityFaqs={faqs} sectionTitle={homepage?.faqSection?.title} sectionSubtitle={homepage?.faqSection?.subtitle} />
-      <InstagramSection />
     </>
   )
 }
