@@ -172,7 +172,7 @@ export function MobileNav() {
               {/* Main nav links */}
               <nav
                 className={cn(
-                  'flex flex-col gap-1 pb-4 mb-4 border-b border-gray-100',
+                  'flex items-center gap-1 pb-4 mb-4 border-b border-gray-100',
                   isMain && open && 'animate-stagger-children',
                 )}
               >
@@ -182,9 +182,9 @@ export function MobileNav() {
                     <button
                       key={link.href}
                       onClick={() => navigate(link.href)}
-                      className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-700 hover:bg-gray-50 hover:text-[#D4960A] font-medium transition-colors text-sm text-left"
+                      className="flex items-center justify-center gap-2 flex-1 px-2 py-2.5 rounded-lg text-gray-700 hover:bg-gray-50 hover:text-[#D4960A] font-semibold transition-colors text-base"
                     >
-                      <Icon className="h-4 w-4 text-gray-400" />
+                      <Icon className="h-4 w-4 text-gray-400 flex-shrink-0" />
                       {link.label}
                     </button>
                   );
@@ -334,7 +334,7 @@ function CategoryButton({
         onClick={() => onDrill(category._id)}
         className={cn(
           'flex items-center justify-between w-full px-3 rounded-lg hover:bg-gray-50 transition-colors text-left',
-          depth === 0 && 'py-2.5 text-[13px] text-gray-700 font-medium',
+          depth === 0 && 'py-2.5 text-[15px] text-gray-700 font-medium',
           depth >= 1 && 'py-3.5 text-[15px] text-gray-600',
         )}
       >
