@@ -103,11 +103,11 @@ export function DealsSection({ products, sectionTitle, sectionSubtitle }: DealsS
         {/* Section header */}
         <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6 mb-10">
           <div>
-            <span className="text-gray-500 text-sm uppercase tracking-wider">
+            <span className="inline-block bg-amber-500 text-white text-xs font-bold uppercase tracking-widest px-4 py-1.5 rounded-full mb-4">
               {sectionSubtitle || 'Napi ajánlatok'}
             </span>
-            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mt-2">
-              {sectionTitle || <><span className="text-[#FFBB36]">Mai</span> Akciók</>}
+            <h2 className="text-3xl lg:text-5xl font-extrabold text-gray-900">
+              {sectionTitle || <><span className="text-amber-500">Mai</span> Akciók</>}
             </h2>
           </div>
 
@@ -221,6 +221,7 @@ function DealCard({ product }: DealCardProps) {
                 alt={product.name}
                 fill
                 className="object-contain p-6 transition-transform duration-300 group-hover:scale-110"
+                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
               />
             ) : (
               <span className="text-6xl">🧯</span>
@@ -239,7 +240,7 @@ function DealCard({ product }: DealCardProps) {
 
           {/* Title */}
           <Link href={productUrl}>
-            <h3 className="text-[18px] font-bold text-gray-900 mt-1 group-hover:text-[#FFBB36] transition-colors line-clamp-2">
+            <h3 className="text-[18px] font-bold text-gray-900 mt-1 group-hover:text-[#D4960A] transition-colors line-clamp-2">
               {product.name}
             </h3>
           </Link>

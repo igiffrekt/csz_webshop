@@ -14,7 +14,7 @@ export function CategoryHeader({ category }: CategoryHeaderProps) {
       {/* Breadcrumb */}
       <nav className="text-sm text-muted-foreground mb-4 flex items-center gap-1">
         <Link href="/kategoriak" className="hover:underline">
-          Kategoriak
+          Kategóriák
         </Link>
         {category.parent && (
           <>

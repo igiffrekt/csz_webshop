@@ -3,63 +3,63 @@ import {ComponentIcon} from '@sanity/icons'
 
 export const productVariant = defineType({
   name: 'productVariant',
-  title: 'Termekvarians',
+  title: 'Termékváriáns',
   type: 'document',
   icon: ComponentIcon,
   fields: [
     defineField({
       name: 'name',
-      title: 'Nev',
+      title: 'Név',
       type: 'string',
-      validation: (rule) => rule.required().error('A varians neve kotelezo.'),
+      validation: (rule) => rule.required().error('A variáns neve kötelező.'),
     }),
     defineField({
       name: 'sku',
-      title: 'Cikkszam',
+      title: 'Cikkszám',
       type: 'string',
-      validation: (rule) => rule.required().error('A cikkszam kotelezo.'),
+      validation: (rule) => rule.required().error('A cikkszám kötelező.'),
     }),
     defineField({
       name: 'price',
-      title: 'Ar (Ft)',
+      title: 'Ár (Ft)',
       type: 'number',
       validation: (rule) =>
-        rule.required().min(0).error('Az ar kotelezo es nem lehet negativ.'),
+        rule.required().min(0).error('Az ár kötelező és nem lehet negatív.'),
     }),
     defineField({
       name: 'compareAtPrice',
-      title: 'Osszehasonlito ar (Ft)',
+      title: 'Összehasonlító ár (Ft)',
       type: 'number',
-      description: 'Az eredeti ar, ha a varians akcios',
+      description: 'Az eredeti ár, ha a variáns akciós',
     }),
     defineField({
       name: 'stock',
-      title: 'Keszlet',
+      title: 'Készlet',
       type: 'number',
       initialValue: 0,
       validation: (rule) =>
-        rule.required().min(0).error('A keszlet kotelezo es nem lehet negativ.'),
+        rule.required().min(0).error('A készlet kötelező és nem lehet negatív.'),
     }),
     defineField({
       name: 'weight',
-      title: 'Suly (kg)',
+      title: 'Súly (kg)',
       type: 'number',
     }),
     defineField({
       name: 'attributeLabel',
-      title: 'Tulajdonsag neve',
+      title: 'Tulajdonság neve',
       type: 'string',
-      description: 'Pl.: Meret, Szin, Kiszereles',
+      description: 'Pl.: Méret, Szín, Kiszerelés',
     }),
     defineField({
       name: 'attributeValue',
-      title: 'Tulajdonsag erteke',
+      title: 'Tulajdonság értéke',
       type: 'string',
       description: 'Pl.: 6 kg, Piros, 12 db',
     }),
     defineField({
       name: 'image',
-      title: 'Kep',
+      title: 'Kép',
       type: 'image',
       options: {
         hotspot: true,
@@ -67,10 +67,10 @@ export const productVariant = defineType({
     }),
     defineField({
       name: 'product',
-      title: 'Termek',
+      title: 'Termék',
       type: 'reference',
       to: [{type: 'product'}],
-      description: 'A szulo termek, amelyhez ez a varians tartozik',
+      description: 'A szülő termék, amelyhez ez a variáns tartozik',
     }),
   ],
   preview: {

@@ -40,13 +40,13 @@ export async function Header() {
           <div className="hidden lg:block w-[250px] flex-shrink-0" />
 
           {/* Center section: Menu + Search */}
-          <div className="hidden lg:flex items-center gap-6 flex-1">
+          <nav aria-label="Fő navigáció" className="hidden lg:flex items-center gap-6 flex-1">
             {/* Hamburger menu / Categories */}
             <MegaMenu variant="icon" />
 
             {/* Search bar - dynamic width with right margin for spacing from icons */}
             <SearchBar variant="hero" className="flex-1 mr-[50px]" />
-          </div>
+          </nav>
 
           {/* Right section: Store icons - small gaps between them */}
           <div className="flex items-center gap-6">

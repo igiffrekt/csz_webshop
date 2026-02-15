@@ -5,7 +5,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
-import { Loader2, CheckCircle, AlertCircle } from 'lucide-react';
+import { InteractiveHoverButton } from '@/components/ui/interactive-hover-button';
+import { Loader2, CheckCircle, AlertCircle, Send } from 'lucide-react';
 
 interface FormData {
   name: string;
@@ -82,7 +83,7 @@ export function ContactForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       {status === 'error' && (
-        <div className="flex items-center gap-2 p-4 bg-destructive/10 text-destructive rounded-lg">
+        <div role="alert" className="flex items-center gap-2 p-4 bg-destructive/10 text-destructive rounded-lg">
           <AlertCircle className="h-5 w-5 flex-shrink-0" />
           <p>{errorMessage}</p>
         </div>
@@ -154,16 +155,20 @@ export function ContactForm() {
         />
       </div>
 
-      <Button type="submit" disabled={isSubmitting} className="w-full md:w-auto">
-        {isSubmitting ? (
-          <>
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            Küldés...
-          </>
-        ) : (
-          'Üzenet küldése'
-        )}
-      </Button>
+      {isSubmitting ? (
+        <Button type="submit" disabled className="w-full md:w-auto">
+          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+          Küldés...
+        </Button>
+      ) : (
+        <InteractiveHoverButton
+          type="submit"
+          text="Üzenet küldése"
+          icon={Send}
+          variant="filled"
+          className="w-48 h-12 text-sm"
+        />
+      )}
     </form>
   );
 }

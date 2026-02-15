@@ -100,7 +100,7 @@ export function PromoBanners({ banners, sanityBanners }: PromoBannersProps) {
 
               {/* Decorative image placeholder */}
               <div className="absolute right-4 bottom-4 w-32 h-32 lg:w-40 lg:h-40 flex items-center justify-center opacity-80">
-                <span className="text-7xl lg:text-8xl">
+                <span className="text-7xl lg:text-8xl" aria-hidden="true">
                   {index === 0 ? '🧯' : '🔔'}
                 </span>
               </div>

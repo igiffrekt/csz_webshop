@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { categorySlug } = await params;
   const category = await getCategory(categorySlug);
   if (!category) {
-    return { title: 'Kategoria nem talalhato' };
+    return { title: 'Kategória nem található' };
   }
   return {
     title: category.name,
@@ -111,7 +111,7 @@ export default async function CategoryPage({ params, searchParams }: Props) {
             </Link>
             <ChevronRight className="h-4 w-4 text-secondary-400" />
             <Link href="/kategoriak" className="text-secondary-500 hover:text-primary-500 transition-colors">
-              Kategoriak
+              Kategóriák
             </Link>
             {category.parent && (
               <>
@@ -141,7 +141,7 @@ export default async function CategoryPage({ params, searchParams }: Props) {
               {category.description && (
                 <p className="text-secondary-600 mt-1 max-w-2xl">{category.description}</p>
               )}
-              <p className="text-secondary-500 text-sm mt-2">{pagination.total} termek</p>
+              <p className="text-secondary-500 text-sm mt-2">{pagination.total} termék</p>
             </div>
           </div>
         </div>
@@ -150,7 +150,7 @@ export default async function CategoryPage({ params, searchParams }: Props) {
       <div className="site-container py-8">
         {hasSubcategories && (
           <section className="mb-10">
-            <h2 className="text-xl font-bold text-secondary-900 mb-4">Alkategoriak</h2>
+            <h2 className="text-xl font-bold text-secondary-900 mb-4">Alkategóriák</h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
               {transformedChildren.map((child: any) => (
                 <CategoryCard key={child._id} category={child} />

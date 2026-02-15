@@ -7,23 +7,23 @@ export const seo = defineType({
   fields: [
     defineField({
       name: 'metaTitle',
-      title: 'SEO cim',
+      title: 'SEO cím',
       type: 'string',
-      validation: (rule) => rule.max(70).warning('Az SEO cim idealis esetben 70 karakter alatt legyen.'),
+      validation: (rule) => rule.max(70).warning('Az SEO cím ideális esetben 70 karakter alatt legyen.'),
     }),
     defineField({
       name: 'metaDescription',
-      title: 'SEO leiras',
+      title: 'SEO leírás',
       type: 'text',
       rows: 3,
       validation: (rule) =>
-        rule.max(160).warning('Az SEO leiras idealis esetben 160 karakter alatt legyen.'),
+        rule.max(160).warning('Az SEO leírás ideális esetben 160 karakter alatt legyen.'),
     }),
     defineField({
       name: 'metaImage',
-      title: 'OG kep',
+      title: 'OG kép',
       type: 'image',
-      description: 'Kozossegi media megosztas kep (ajanlott: 1200x630px)',
+      description: 'Közösségi média megosztás kép (ajánlott: 1200x630px)',
       options: {
         hotspot: true,
       },
@@ -32,7 +32,7 @@ export const seo = defineType({
       name: 'keywords',
       title: 'Kulcsszavak',
       type: 'string',
-      description: 'Vesszoval elvalasztott kulcsszavak',
+      description: 'Vesszővel elválasztott kulcsszavak',
     }),
   ],
 })

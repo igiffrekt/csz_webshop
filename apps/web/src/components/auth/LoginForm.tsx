@@ -33,7 +33,7 @@ export function LoginForm({ redirectTo }: LoginFormProps) {
       )}
 
       {state.error && (
-        <div className="bg-destructive/15 text-destructive px-4 py-3 rounded-md text-sm">
+        <div role="alert" className="bg-destructive/15 text-destructive px-4 py-3 rounded-md text-sm">
           {state.error}
         </div>
       )}

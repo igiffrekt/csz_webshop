@@ -4,15 +4,15 @@ import {hunSlugify} from '../utils'
 
 export const category = defineType({
   name: 'category',
-  title: 'Kategoria',
+  title: 'Kategória',
   type: 'document',
   icon: TagIcon,
   fields: [
     defineField({
       name: 'name',
-      title: 'Nev',
+      title: 'Név',
       type: 'string',
-      validation: (rule) => rule.required().error('A kategoria neve kotelezo.'),
+      validation: (rule) => rule.required().error('A kategória neve kötelező.'),
     }),
     defineField({
       name: 'slug',
@@ -23,17 +23,17 @@ export const category = defineType({
         maxLength: 200,
         slugify: hunSlugify,
       },
-      validation: (rule) => rule.required().error('Az URL slug kotelezo.'),
+      validation: (rule) => rule.required().error('Az URL slug kötelező.'),
     }),
     defineField({
       name: 'description',
-      title: 'Leiras',
+      title: 'Leírás',
       type: 'text',
       rows: 4,
     }),
     defineField({
       name: 'image',
-      title: 'Kep',
+      title: 'Kép',
       type: 'image',
       options: {
         hotspot: true,
@@ -41,17 +41,17 @@ export const category = defineType({
     }),
     defineField({
       name: 'parent',
-      title: 'Szulo kategoria',
+      title: 'Szülő kategória',
       type: 'reference',
       to: [{type: 'category'}],
-      description: 'Valasszon szulo kategoriat a hierarchia kiepitesehez',
+      description: 'Válasszon szülő kategóriát a hierarchia kiépítéséhez',
     }),
     defineField({
       name: 'productCount',
-      title: 'Termekek szama',
+      title: 'Termékek száma',
       type: 'number',
       readOnly: true,
-      description: 'Automatikusan szamolt mezo',
+      description: 'Automatikusan számolt mező',
     }),
   ],
   preview: {
@@ -63,7 +63,7 @@ export const category = defineType({
     prepare({title, media, parentName}) {
       return {
         title,
-        subtitle: parentName ? `Szulo: ${parentName}` : 'Fo kategoria',
+        subtitle: parentName ? `Szülő: ${parentName}` : 'Fő kategória',
         media,
       }
     },

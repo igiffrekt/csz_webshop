@@ -9,8 +9,8 @@ import { ArrowLeft, Package, ChevronRight } from 'lucide-react';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Rendeleseim | CSZ Tuzvedelmi Webshop',
-  description: 'Korabbi rendelesek megtekintese',
+  title: 'Rendeléseim | CSZ Tűzvédelmi Webshop',
+  description: 'Korábbi rendelések megtekintése',
 };
 
 export default async function OrderHistoryPage() {
@@ -29,7 +29,7 @@ export default async function OrderHistoryPage() {
             <ArrowLeft className="h-5 w-5" />
           </Link>
         </Button>
-        <h1 className="text-2xl font-bold">Rendeleseim</h1>
+        <h1 className="text-2xl font-bold">Rendeléseim</h1>
       </div>
 
       {error && (
@@ -41,12 +41,12 @@ export default async function OrderHistoryPage() {
       {orders && orders.length === 0 ? (
         <div className="text-center py-12 border rounded-lg">
           <Package className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
-          <h2 className="text-lg font-medium mb-2">Meg nincs rendelese</h2>
+          <h2 className="text-lg font-medium mb-2">Még nincs rendelése</h2>
           <p className="text-muted-foreground mb-6">
-            Az elso rendelese utan itt lathatja a rendeles tortenetet.
+            Az első rendelése után itt láthatja a rendelés történetét.
           </p>
           <Button asChild>
-            <Link href="/termekek">Termekek bongeszese</Link>
+            <Link href="/termekek">Termékek böngészése</Link>
           </Button>
         </div>
       ) : (
@@ -75,7 +75,7 @@ export default async function OrderHistoryPage() {
                     </div>
                     <p className="text-sm text-muted-foreground">{orderDate}</p>
                     <p className="text-sm text-muted-foreground">
-                      {itemCount} termek
+                      {itemCount} termék
                     </p>
                   </div>
                   <div className="flex items-center gap-4">

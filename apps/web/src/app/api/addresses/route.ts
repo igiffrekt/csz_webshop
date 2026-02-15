@@ -1,6 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { z } from 'zod'
 import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+
+const addressSchema = z.object({
+  label: z.string().min(1).max(100).optional(),
+  recipientName: z.string().min(1).max(200),
+  street: z.string().min(1).max(500),
+  city: z.string().min(1).max(200),
+  postalCode: z.string().min(1).max(20),
+  country: z.string().min(1).max(100).optional(),
+  phone: z.string().max(50).optional(),
+  isDefault: z.boolean().optional(),
+})
 
 export async function GET() {
   const session = await auth()
@@ -22,10 +34,19 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Nincs bejelentkezve' }, { status: 401 })
   }
 
-  const body = await request.json()
+  let validated
+  try {
+    const body = await request.json()
+    validated = addressSchema.parse(body)
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return NextResponse.json({ error: 'Érvénytelen adatok', details: error.issues }, { status: 400 })
+    }
+    return NextResponse.json({ error: 'Érvénytelen kérés' }, { status: 400 })
+  }
 
   // If setting as default, clear other defaults
-  if (body.isDefault) {
+  if (validated.isDefault) {
     await prisma.shippingAddress.updateMany({
       where: { userId: session.user.id, isDefault: true },
       data: { isDefault: false },
@@ -34,14 +55,14 @@ export async function POST(request: NextRequest) {
 
   const address = await prisma.shippingAddress.create({
     data: {
-      label: body.label,
-      recipientName: body.recipientName,
-      street: body.street,
-      city: body.city,
-      postalCode: body.postalCode,
-      country: body.country || 'Magyarország',
-      phone: body.phone,
-      isDefault: body.isDefault || false,
+      label: validated.label ?? '',
+      recipientName: validated.recipientName,
+      street: validated.street,
+      city: validated.city,
+      postalCode: validated.postalCode,
+      country: validated.country || 'Magyarország',
+      phone: validated.phone,
+      isDefault: validated.isDefault || false,
       userId: session.user.id,
     },
   })
@@ -55,8 +76,19 @@ export async function PUT(request: NextRequest) {
     return NextResponse.json({ error: 'Nincs bejelentkezve' }, { status: 401 })
   }
 
-  const body = await request.json()
-  const { id, ...data } = body
+  let id: string
+  let data
+  try {
+    const body = await request.json()
+    id = body.id
+    const { id: _id, ...raw } = body
+    data = addressSchema.partial().parse(raw)
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return NextResponse.json({ error: 'Érvénytelen adatok', details: error.issues }, { status: 400 })
+    }
+    return NextResponse.json({ error: 'Érvénytelen kérés' }, { status: 400 })
+  }
 
   if (!id) {
     return NextResponse.json({ error: 'id szükséges' }, { status: 400 })

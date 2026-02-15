@@ -139,7 +139,7 @@ export function MobileNav() {
                 <SheetClose asChild key={link.href}>
                   <Link
                     href={link.href}
-                    className="flex items-center gap-2 px-4 py-2 rounded-lg text-gray-700 hover:bg-gray-50 hover:text-[#FFBB36] font-medium transition-colors text-sm"
+                    className="flex items-center gap-2 px-4 py-2 rounded-lg text-gray-700 hover:bg-gray-50 hover:text-[#D4960A] font-medium transition-colors text-sm"
                   >
                     <Icon className="h-4 w-4 text-gray-400" />
                     {link.label}
@@ -171,7 +171,7 @@ export function MobileNav() {
               <SheetClose asChild>
                 <Link
                   href="/kategoriak"
-                  className="inline-flex items-center gap-1 mt-3 px-2 text-sm font-medium text-[#FFBB36] hover:text-amber-600 transition-colors"
+                  className="inline-flex items-center gap-1 mt-3 px-2 text-sm font-medium text-[#D4960A] hover:text-amber-600 transition-colors"
                 >
                   Összes kategória
                   <ChevronRight className="h-4 w-4" />
@@ -183,13 +183,13 @@ export function MobileNav() {
           {/* Bottom promo bar */}
           <div className="pt-4 border-t border-gray-100">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 text-sm text-gray-500">
-              <p className="font-medium text-[#FFBB36]">
+              <p className="font-medium text-[#D4960A]">
                 Ingyenes szállítás 50.000 Ft felett!
               </p>
               <p>
                 Kérdése van?{' '}
-                <a href="tel:+3612345678" className="font-medium text-gray-700">
-                  +36 1 234 5678
+                <a href="tel:+3633506690" className="font-medium text-gray-700">
+                  +36 33 506 690
                 </a>
               </p>
             </div>

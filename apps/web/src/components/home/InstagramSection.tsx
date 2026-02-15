@@ -18,10 +18,10 @@ export function InstagramSection() {
       <div className="site-container">
         {/* Section header */}
         <div className="text-center mb-10">
-          <span className="text-amber-400 font-medium text-sm uppercase tracking-wider">
+          <span className="inline-block bg-amber-500 text-white text-xs font-bold uppercase tracking-widest px-4 py-1.5 rounded-full mb-4">
             Kövessen minket
           </span>
-          <h2 className="text-3xl lg:text-4xl font-bold text-white mt-2">
+          <h2 className="text-3xl lg:text-5xl font-extrabold text-white">
             Kövessen minket Instagramon
           </h2>
         </div>
@@ -41,7 +41,7 @@ export function InstagramSection() {
 
               {/* Placeholder icon */}
               <div className="absolute inset-0 flex items-center justify-center">
-                <span className="text-4xl opacity-50">📷</span>
+                <span className="text-4xl opacity-50" aria-hidden="true">📷</span>
               </div>
 
               {/* Hover overlay */}

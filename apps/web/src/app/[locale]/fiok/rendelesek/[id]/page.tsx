@@ -10,7 +10,7 @@ import { ArrowLeft, Package, FileText } from 'lucide-react';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Rendeles reszletei | CSZ Tuzvedelmi Webshop',
+  title: 'Rendelés részletei | CSZ Tűzvédelmi Webshop',
 };
 
 interface Props {
@@ -65,7 +65,7 @@ export default async function OrderDetailPage({ params }: Props) {
           <div className="border rounded-lg p-6">
             <h2 className="font-semibold mb-4 flex items-center gap-2">
               <Package className="h-5 w-5" />
-              Termekek
+              Termékek
             </h2>
             <div className="space-y-4">
               {lineItems.map((item: any, index: number) => (
@@ -87,7 +87,7 @@ export default async function OrderDetailPage({ params }: Props) {
 
           <div className="grid sm:grid-cols-2 gap-4">
             <div className="border rounded-lg p-6">
-              <h2 className="font-semibold mb-2">Szallitasi cim</h2>
+              <h2 className="font-semibold mb-2">Szállítási cím</h2>
               <div className="text-sm text-muted-foreground">
                 <p>{shippingAddress.recipientName}</p>
                 <p>{shippingAddress.street}</p>
@@ -97,13 +97,13 @@ export default async function OrderDetailPage({ params }: Props) {
 
             {billingAddress && (
               <div className="border rounded-lg p-6">
-                <h2 className="font-semibold mb-2">Szamlazasi cim</h2>
+                <h2 className="font-semibold mb-2">Számlázási cím</h2>
                 <div className="text-sm text-muted-foreground">
                   {billingAddress.companyName && (
                     <p className="font-medium">{billingAddress.companyName}</p>
                   )}
                   {billingAddress.vatNumber && (
-                    <p>Adoszam: {billingAddress.vatNumber}</p>
+                    <p>Adószám: {billingAddress.vatNumber}</p>
                   )}
                   <p>{billingAddress.recipientName}</p>
                   <p>{billingAddress.street}</p>
@@ -117,7 +117,7 @@ export default async function OrderDetailPage({ params }: Props) {
             <div className="border rounded-lg p-6">
               <h2 className="font-semibold mb-2 flex items-center gap-2">
                 <FileText className="h-5 w-5" />
-                Megrendelesi hivatkozas
+                Megrendelési hivatkozás
               </h2>
               <p className="font-mono">{order.poReference}</p>
             </div>
@@ -126,20 +126,20 @@ export default async function OrderDetailPage({ params }: Props) {
 
         <div className="lg:col-span-1">
           <div className="border rounded-lg p-6 sticky top-4">
-            <h2 className="font-semibold mb-4">Osszegzes</h2>
+            <h2 className="font-semibold mb-4">Összegzés</h2>
             <div className="space-y-2 text-sm">
               <div className="flex justify-between">
-                <span>Reszosszeg</span>
+                <span>Részösszeg</span>
                 <span>{formatPrice(order.subtotal)}</span>
               </div>
               {order.discount > 0 && (
                 <div className="flex justify-between text-green-600">
-                  <span>Kedvezmeny</span>
+                  <span>Kedvezmény</span>
                   <span>-{formatPrice(order.discount)}</span>
                 </div>
               )}
               <div className="flex justify-between">
-                <span>Szallitas</span>
+                <span>Szállítás</span>
                 <span>{order.shipping === 0 ? 'Ingyenes' : formatPrice(order.shipping)}</span>
               </div>
               <div className="flex justify-between text-muted-foreground">
@@ -147,7 +147,7 @@ export default async function OrderDetailPage({ params }: Props) {
                 <span>{formatPrice(order.vatAmount)}</span>
               </div>
               <div className="flex justify-between font-semibold text-lg pt-2 border-t">
-                <span>Osszesen</span>
+                <span>Összesen</span>
                 <span>{formatPrice(order.total)}</span>
               </div>
             </div>

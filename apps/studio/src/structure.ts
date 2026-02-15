@@ -10,6 +10,7 @@ import {
   FolderIcon,
   SearchIcon,
   BasketIcon,
+  ComposeIcon,
 } from '@sanity/icons'
 
 export const structure: StructureResolver = (S, context) => {
@@ -20,7 +21,7 @@ export const structure: StructureResolver = (S, context) => {
     .items([
       // ── Products by Category ──────────────────────────────────────
       S.listItem()
-        .title('Termekek')
+        .title('Termékek')
         .icon(PackageIcon)
         .child(() => {
           // Collect all descendant IDs for a category (recursive)
@@ -73,12 +74,12 @@ export const structure: StructureResolver = (S, context) => {
                     S.divider(),
 
                     S.listItem()
-                      .title(`Osszes termek (${catName})`)
+                      .title(`Összes termék (${catName})`)
                       .icon(PackageIcon)
                       .id(`${catId}-all`)
                       .child(
                         S.documentList()
-                          .title(`Osszes ${catName} termek`)
+                          .title(`Összes ${catName} termék`)
                           .filter('_type == "product" && count((categories[]._ref)[@ in $catIds]) > 0')
                           .params({catIds: allCatIds})
                           .defaultOrdering([{field: 'name', direction: 'asc'}]),
@@ -96,15 +97,15 @@ export const structure: StructureResolver = (S, context) => {
             )
             .then((parentCategories) =>
               S.list()
-                .title('Termekek')
+                .title('Termékek')
                 .items([
                   S.listItem()
-                    .title('Minden termek')
+                    .title('Minden termék')
                     .icon(SearchIcon)
                     .id('all-products')
                     .child(
                       S.documentList()
-                        .title('Minden termek')
+                        .title('Minden termék')
                         .filter('_type == "product"')
                         .defaultOrdering([{field: 'name', direction: 'asc'}]),
                     ),
@@ -122,12 +123,12 @@ export const structure: StructureResolver = (S, context) => {
                   S.divider(),
 
                   S.listItem()
-                    .title('Kategoria nelkul')
+                    .title('Kategória nélkül')
                     .icon(PackageIcon)
                     .id('uncategorized')
                     .child(
                       S.documentList()
-                        .title('Kategoria nelkul')
+                        .title('Kategória nélkül')
                         .filter('_type == "product" && (!defined(categories) || length(categories) == 0)')
                         .defaultOrdering([{field: 'name', direction: 'asc'}]),
                     ),
@@ -137,7 +138,7 @@ export const structure: StructureResolver = (S, context) => {
 
       // ── Categories (hierarchical) ─────────────────────────────────
       S.listItem()
-        .title('Kategoriak')
+        .title('Kategóriák')
         .icon(TagIcon)
         .child(() => {
           // Recursive helper to build category tree at any depth
@@ -161,7 +162,7 @@ export const structure: StructureResolver = (S, context) => {
                       .title(catName)
                       .items([
                         S.listItem()
-                          .title(`${catName} szerkesztese`)
+                          .title(`${catName} szerkesztése`)
                           .icon(TagIcon)
                           .id(`cat-edit-${catId}`)
                           .child(
@@ -193,15 +194,15 @@ export const structure: StructureResolver = (S, context) => {
             )
             .then((parentCategories) =>
               S.list()
-                .title('Kategoriak')
+                .title('Kategóriák')
                 .items([
                   S.listItem()
-                    .title('Minden kategoria')
+                    .title('Minden kategória')
                     .icon(SearchIcon)
                     .id('all-categories')
                     .child(
                       S.documentList()
-                        .title('Minden kategoria')
+                        .title('Minden kategória')
                         .filter('_type == "category"')
                         .defaultOrdering([{field: 'name', direction: 'asc'}]),
                     ),
@@ -221,28 +222,28 @@ export const structure: StructureResolver = (S, context) => {
 
       // ── Product Variants ──────────────────────────────────────────
       S.listItem()
-        .title('Termekvariansok')
+        .title('Termékváriánsok')
         .icon(ComponentIcon)
         .schemaType('productVariant')
-        .child(S.documentTypeList('productVariant').title('Termekvariansok')),
+        .child(S.documentTypeList('productVariant').title('Termékváriánsok')),
 
       S.divider(),
 
       // ── Orders ──────────────────────────────────────────────────
       S.listItem()
-        .title('Rendelesek')
+        .title('Rendelések')
         .icon(BasketIcon)
         .child(
           S.list()
-            .title('Rendelesek')
+            .title('Rendelések')
             .items([
               S.listItem()
-                .title('Minden rendeles')
+                .title('Minden rendelés')
                 .icon(BasketIcon)
                 .id('all-orders')
                 .child(
                   S.documentList()
-                    .title('Minden rendeles')
+                    .title('Minden rendelés')
                     .filter('_type == "order"')
                     .defaultOrdering([{field: '_createdAt', direction: 'desc'}]),
                 ),
@@ -250,11 +251,11 @@ export const structure: StructureResolver = (S, context) => {
               S.divider(),
 
               S.listItem()
-                .title('Fizetesre var')
+                .title('Fizetésre vár')
                 .id('orders-pending')
                 .child(
                   S.documentList()
-                    .title('Fizetesre var')
+                    .title('Fizetésre vár')
                     .filter('_type == "order" && status == "pending"')
                     .defaultOrdering([{field: '_createdAt', direction: 'desc'}]),
                 ),
@@ -268,29 +269,29 @@ export const structure: StructureResolver = (S, context) => {
                     .defaultOrdering([{field: '_createdAt', direction: 'desc'}]),
                 ),
               S.listItem()
-                .title('Feldolgozas alatt')
+                .title('Feldolgozás alatt')
                 .id('orders-processing')
                 .child(
                   S.documentList()
-                    .title('Feldolgozas alatt')
+                    .title('Feldolgozás alatt')
                     .filter('_type == "order" && status == "processing"')
                     .defaultOrdering([{field: '_createdAt', direction: 'desc'}]),
                 ),
               S.listItem()
-                .title('Kiszallitva')
+                .title('Kiszállítva')
                 .id('orders-shipped')
                 .child(
                   S.documentList()
-                    .title('Kiszallitva')
+                    .title('Kiszállítva')
                     .filter('_type == "order" && status == "shipped"')
                     .defaultOrdering([{field: '_createdAt', direction: 'desc'}]),
                 ),
               S.listItem()
-                .title('Kezbesitve')
+                .title('Kézbesítve')
                 .id('orders-delivered')
                 .child(
                   S.documentList()
-                    .title('Kezbesitve')
+                    .title('Kézbesítve')
                     .filter('_type == "order" && status == "delivered"')
                     .defaultOrdering([{field: '_createdAt', direction: 'desc'}]),
                 ),
@@ -298,11 +299,11 @@ export const structure: StructureResolver = (S, context) => {
               S.divider(),
 
               S.listItem()
-                .title('Torolve / Visszateritett')
+                .title('Törölve / Visszatérített')
                 .id('orders-cancelled-refunded')
                 .child(
                   S.documentList()
-                    .title('Torolve / Visszateritett')
+                    .title('Törölve / Visszatérített')
                     .filter('_type == "order" && status in ["cancelled", "refunded"]')
                     .defaultOrdering([{field: '_createdAt', direction: 'desc'}]),
                 ),
@@ -325,21 +326,31 @@ export const structure: StructureResolver = (S, context) => {
         .child(S.documentTypeList('faq').title('GYIK')),
 
       S.listItem()
+        .title('Blog')
+        .icon(ComposeIcon)
+        .schemaType('blogPost')
+        .child(
+          S.documentTypeList('blogPost')
+            .title('Blog bejegyzések')
+            .defaultOrdering([{field: 'publishedAt', direction: 'desc'}]),
+        ),
+
+      S.listItem()
         .title('Menu')
         .icon(MenuIcon)
         .schemaType('menuItem')
-        .child(S.documentTypeList('menuItem').title('Menupontok')),
+        .child(S.documentTypeList('menuItem').title('Menüpontok')),
 
       S.divider(),
 
       S.listItem()
-        .title('Kezdolap')
+        .title('Kezdőlap')
         .icon(HomeIcon)
         .child(
           S.document()
             .schemaType('homepage')
             .documentId('homepage')
-            .title('Kezdolap'),
+            .title('Kezdőlap'),
         ),
     ])
 }

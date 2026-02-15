@@ -118,10 +118,10 @@ export function ProductCollections({
       <div className="site-container">
         {/* Section header */}
         <div className="text-center mb-8">
-          <span className="text-gray-500 text-sm uppercase tracking-wider">
+          <span className="inline-block bg-amber-500 text-white text-xs font-bold uppercase tracking-widest px-4 py-1.5 rounded-full mb-4">
             Termékeink
           </span>
-          <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mt-2">
+          <h2 className="text-3xl lg:text-5xl font-extrabold text-gray-900">
             Termékkínálatunk
           </h2>
         </div>

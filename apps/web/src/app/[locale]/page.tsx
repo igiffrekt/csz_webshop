@@ -1,8 +1,10 @@
+import type { Metadata } from 'next'
 import {
   getCategoryTree,
   getProducts,
   getHomepage,
   getFAQs,
+  getBlogPosts,
 } from '@/lib/sanity-queries'
 import {
   HeroSection,
@@ -11,16 +13,28 @@ import {
   ProductCollections,
   DealsSection,
   PromoBanners,
+  BlogSection,
   FAQSection,
   InstagramSection,
 } from '@/components/home'
 
+export const metadata: Metadata = {
+  title: 'Tűzvédelmi termékek és megoldások | Dunamenti CSZ Kft.',
+  description: 'Tűzoltó készülékek, tűzvédelmi felszerelések és eszközök forgalmazása. Szakértői tanácsadás, gyors szállítás, garanciális szerviz.',
+  openGraph: {
+    title: 'Dunamenti CSZ Kft. - Tűzvédelmi Webáruház',
+    description: 'Tűzoltó készülékek, tűzvédelmi felszerelések és eszközök forgalmazása.',
+    type: 'website',
+  },
+}
+
 export default async function HomePage() {
-  const [categoryTree, productsResult, homepageResult, faqsResult] = await Promise.allSettled([
+  const [categoryTree, productsResult, homepageResult, faqsResult, blogResult] = await Promise.allSettled([
     getCategoryTree(),
     getProducts({ pageSize: 12 }),
     getHomepage(),
     getFAQs(),
+    getBlogPosts(1, 3),
   ])
 
   const homepage = homepageResult.status === 'fulfilled' ? homepageResult.value : null
@@ -102,6 +116,17 @@ export default async function HomePage() {
         }))
       : []
 
+  const blogPosts =
+    blogResult.status === 'fulfilled'
+      ? (blogResult.value.data || []).map((post: any) => ({
+          title: post.title,
+          excerpt: post.excerpt || '',
+          date: post.publishedAt || '',
+          slug: post.slug,
+          image: post.coverImage?.url || undefined,
+        }))
+      : []
+
   return (
     <>
       <HeroSection products={featuredProducts} categories={categories} heroData={homepage?.heroSection} />
@@ -110,6 +135,7 @@ export default async function HomePage() {
       <ProductCollections products={allProducts} featuredProducts={featuredProducts} />
       <DealsSection products={allProducts} sectionTitle={homepage?.dealsSection?.title} sectionSubtitle={homepage?.dealsSection?.subtitle} />
       <PromoBanners sanityBanners={homepage?.promoBanners} />
+      <BlogSection posts={blogPosts.length > 0 ? blogPosts : undefined} />
       <FAQSection sanityFaqs={faqs} sectionTitle={homepage?.faqSection?.title} sectionSubtitle={homepage?.faqSection?.subtitle} />
       <InstagramSection />
     </>

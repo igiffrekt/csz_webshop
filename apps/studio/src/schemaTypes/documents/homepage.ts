@@ -3,7 +3,7 @@ import {HomeIcon} from '@sanity/icons'
 
 export const homepage = defineType({
   name: 'homepage',
-  title: 'Kezdolap',
+  title: 'Kezdőlap',
   type: 'document',
   icon: HomeIcon,
   fields: [
@@ -14,17 +14,17 @@ export const homepage = defineType({
       fields: [
         defineField({
           name: 'title',
-          title: 'Cim',
+          title: 'Cím',
           type: 'string',
         }),
         defineField({
           name: 'subtitle',
-          title: 'Alcim',
+          title: 'Alcím',
           type: 'string',
         }),
         defineField({
           name: 'ctaText',
-          title: 'CTA gomb szoveg',
+          title: 'CTA gomb szöveg',
           type: 'string',
         }),
         defineField({
@@ -34,7 +34,7 @@ export const homepage = defineType({
         }),
         defineField({
           name: 'backgroundImage',
-          title: 'Hatterkep',
+          title: 'Háttérkép',
           type: 'image',
           options: {
             hotspot: true,
@@ -44,24 +44,24 @@ export const homepage = defineType({
     }),
     defineField({
       name: 'categoriesSection',
-      title: 'Kategoriak szekcio',
+      title: 'Kategóriák szekció',
       type: 'object',
       fields: [
         defineField({
           name: 'title',
-          title: 'Cim',
+          title: 'Cím',
           type: 'string',
         }),
         defineField({
           name: 'subtitle',
-          title: 'Alcim',
+          title: 'Alcím',
           type: 'string',
         }),
       ],
     }),
     defineField({
       name: 'featuredProducts',
-      title: 'Kiemelt termekek',
+      title: 'Kiemelt termékek',
       type: 'array',
       of: [
         defineArrayMember({
@@ -72,22 +72,22 @@ export const homepage = defineType({
     }),
     defineField({
       name: 'dealsSection',
-      title: 'Akciok szekcio',
+      title: 'Akciók szekció',
       type: 'object',
       fields: [
         defineField({
           name: 'title',
-          title: 'Cim',
+          title: 'Cím',
           type: 'string',
         }),
         defineField({
           name: 'subtitle',
-          title: 'Alcim',
+          title: 'Alcím',
           type: 'string',
         }),
         defineField({
           name: 'products',
-          title: 'Akcios termekek',
+          title: 'Akciós termékek',
           type: 'array',
           of: [
             defineArrayMember({
@@ -108,18 +108,18 @@ export const homepage = defineType({
           fields: [
             defineField({
               name: 'title',
-              title: 'Cim',
+              title: 'Cím',
               type: 'string',
             }),
             defineField({
               name: 'description',
-              title: 'Leiras',
+              title: 'Leírás',
               type: 'text',
               rows: 2,
             }),
             defineField({
               name: 'image',
-              title: 'Kep',
+              title: 'Kép',
               type: 'image',
               options: {
                 hotspot: true,
@@ -132,9 +132,9 @@ export const homepage = defineType({
             }),
             defineField({
               name: 'backgroundColor',
-              title: 'Hatterszin',
+              title: 'Háttérszín',
               type: 'string',
-              description: 'CSS szin ertek, pl.: #FF6600',
+              description: 'CSS szín érték, pl.: #FF6600',
             }),
           ],
           preview: {
@@ -148,24 +148,24 @@ export const homepage = defineType({
     }),
     defineField({
       name: 'faqSection',
-      title: 'GYIK szekcio',
+      title: 'GYIK szekció',
       type: 'object',
       fields: [
         defineField({
           name: 'title',
-          title: 'Cim',
+          title: 'Cím',
           type: 'string',
         }),
         defineField({
           name: 'subtitle',
-          title: 'Alcim',
+          title: 'Alcím',
           type: 'string',
         }),
       ],
     }),
     defineField({
       name: 'trustBadges',
-      title: 'Bizalmi jelvenyek',
+      title: 'Bizalmi jelvények',
       type: 'array',
       of: [
         defineArrayMember({
@@ -173,19 +173,19 @@ export const homepage = defineType({
           fields: [
             defineField({
               name: 'title',
-              title: 'Cim',
+              title: 'Cím',
               type: 'string',
             }),
             defineField({
               name: 'description',
-              title: 'Leiras',
+              title: 'Leírás',
               type: 'string',
             }),
             defineField({
               name: 'icon',
               title: 'Ikon',
               type: 'string',
-              description: 'Ikon azonosito (pl.: shield, truck, headphones)',
+              description: 'Ikon azonosító (pl.: shield, truck, headphones)',
             }),
           ],
           preview: {
@@ -206,7 +206,7 @@ export const homepage = defineType({
   preview: {
     prepare() {
       return {
-        title: 'Kezdolap',
+        title: 'Kezdőlap',
       }
     },
   },

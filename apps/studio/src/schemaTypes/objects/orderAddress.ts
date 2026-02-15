@@ -2,36 +2,36 @@ import {defineType, defineField} from 'sanity'
 
 export const orderAddress = defineType({
   name: 'orderAddress',
-  title: 'Cim',
+  title: 'Cím',
   type: 'object',
   fields: [
     defineField({
       name: 'recipientName',
-      title: 'Cimzett neve',
+      title: 'Címzett neve',
       type: 'string',
       readOnly: true,
     }),
     defineField({
       name: 'street',
-      title: 'Utca, hazszam',
+      title: 'Utca, házszám',
       type: 'string',
       readOnly: true,
     }),
     defineField({
       name: 'city',
-      title: 'Varos',
+      title: 'Város',
       type: 'string',
       readOnly: true,
     }),
     defineField({
       name: 'postalCode',
-      title: 'Iranyitoszam',
+      title: 'Irányítószám',
       type: 'string',
       readOnly: true,
     }),
     defineField({
       name: 'country',
-      title: 'Orszag',
+      title: 'Ország',
       type: 'string',
       readOnly: true,
     }),
@@ -43,13 +43,13 @@ export const orderAddress = defineType({
     }),
     defineField({
       name: 'companyName',
-      title: 'Cegnev',
+      title: 'Cégnév',
       type: 'string',
       readOnly: true,
     }),
     defineField({
       name: 'vatNumber',
-      title: 'Adoszam',
+      title: 'Adószám',
       type: 'string',
       readOnly: true,
     }),
@@ -61,7 +61,7 @@ export const orderAddress = defineType({
     },
     prepare({recipientName, city}) {
       return {
-        title: recipientName || 'Cim',
+        title: recipientName || 'Cím',
         subtitle: city || '',
       }
     },

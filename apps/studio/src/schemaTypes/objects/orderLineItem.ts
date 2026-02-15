@@ -2,54 +2,54 @@ import {defineType, defineField} from 'sanity'
 
 export const orderLineItem = defineType({
   name: 'orderLineItem',
-  title: 'Rendeles tetel',
+  title: 'Rendelés tétel',
   type: 'object',
   fields: [
     defineField({
       name: 'productId',
-      title: 'Termek ID',
+      title: 'Termék ID',
       type: 'string',
       readOnly: true,
     }),
     defineField({
       name: 'variantId',
-      title: 'Arians ID',
+      title: 'Variáns ID',
       type: 'string',
       readOnly: true,
     }),
     defineField({
       name: 'name',
-      title: 'Termek nev',
+      title: 'Termék név',
       type: 'string',
       readOnly: true,
     }),
     defineField({
       name: 'variantName',
-      title: 'Arians nev',
+      title: 'Variáns név',
       type: 'string',
       readOnly: true,
     }),
     defineField({
       name: 'sku',
-      title: 'Cikkszam',
+      title: 'Cikkszám',
       type: 'string',
       readOnly: true,
     }),
     defineField({
       name: 'price',
-      title: 'Egysegar (Ft)',
+      title: 'Egységár (Ft)',
       type: 'number',
       readOnly: true,
     }),
     defineField({
       name: 'quantity',
-      title: 'Mennyiseg',
+      title: 'Mennyiség',
       type: 'number',
       readOnly: true,
     }),
     defineField({
       name: 'total',
-      title: 'Osszesen (Ft)',
+      title: 'Összesen (Ft)',
       type: 'number',
       readOnly: true,
     }),
@@ -62,7 +62,7 @@ export const orderLineItem = defineType({
     },
     prepare({name, quantity, price}) {
       return {
-        title: name || 'Tetel',
+        title: name || 'Tétel',
         subtitle: `${quantity || 0} x ${price || 0} Ft`,
       }
     },

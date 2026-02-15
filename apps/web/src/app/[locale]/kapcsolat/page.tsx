@@ -32,9 +32,8 @@ export default function ContactPage() {
                 <div>
                   <p className="font-medium">Cím</p>
                   <p className="text-muted-foreground text-sm">
-                    Dunamenti CSZ Kft.<br />
-                    1234 Budapest<br />
-                    Példa utca 123.
+                    2521 Csolnok,<br />
+                    Szénbányászok útja 32.
                   </p>
                 </div>
               </div>
@@ -44,8 +43,8 @@ export default function ContactPage() {
                 <div>
                   <p className="font-medium">Telefon</p>
                   <p className="text-muted-foreground text-sm">
-                    <a href="tel:+3612345678" className="hover:text-primary">
-                      +36 1 234 5678
+                    <a href="tel:+3633506690" className="hover:text-primary">
+                      +36 33 506 690
                     </a>
                   </p>
                 </div>
@@ -56,8 +55,8 @@ export default function ContactPage() {
                 <div>
                   <p className="font-medium">E-mail</p>
                   <p className="text-muted-foreground text-sm">
-                    <a href="mailto:info@csz-tuzvedelmi.hu" className="hover:text-primary">
-                      info@csz-tuzvedelmi.hu
+                    <a href="mailto:info@csz.hu" className="hover:text-primary">
+                      info@csz.hu
                     </a>
                   </p>
                 </div>

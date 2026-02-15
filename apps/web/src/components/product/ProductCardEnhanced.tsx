@@ -216,7 +216,7 @@ export function ProductCardEnhanced({
           {category && (
             <Link
               href={`/kategoriak/${category.slug}`}
-              className="text-[14px] text-[#6f6f6f] hover:text-[#FFBB36] transition-colors"
+              className="text-[14px] text-[#6f6f6f] hover:text-[#D4960A] transition-colors"
             >
               {category.name}
             </Link>
@@ -231,7 +231,7 @@ export function ProductCardEnhanced({
 
         {/* Title */}
         <Link href={productUrl}>
-          <h3 className="font-medium text-gray-900 mt-2 line-clamp-2 group-hover:text-[#FFBB36] transition-colors text-[16px]">
+          <h3 className="font-medium text-gray-900 mt-2 line-clamp-2 group-hover:text-[#D4960A] transition-colors text-[16px]">
             {product.name}
           </h3>
         </Link>

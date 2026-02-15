@@ -35,11 +35,11 @@ export function TopBar() {
           {/* Right side - Contact & Store */}
           <div className="flex items-center gap-4">
             <a
-              href="tel:+3612345678"
+              href="tel:+3633506690"
               className="hidden sm:flex items-center gap-1.5 hover:text-white/80 transition-colors"
             >
               <Phone className="h-3.5 w-3.5" />
-              <span>+36 1 234 5678</span>
+              <span>+36 33 506 690</span>
             </a>
             <Link
               href="/kapcsolat"

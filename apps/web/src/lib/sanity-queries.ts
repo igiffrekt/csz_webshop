@@ -336,6 +336,48 @@ const FAQS_QUERY = defineQuery(`
   }
 `)
 
+// ============ Blog Queries ============
+
+const BLOG_POSTS_QUERY = defineQuery(`
+  *[_type == "blogPost" && defined(publishedAt)] | order(publishedAt desc) [$start...$end] {
+    _id,
+    title,
+    "slug": slug.current,
+    excerpt,
+    "coverImage": coverImage{
+      "url": asset->url,
+      "alt": asset->altText,
+      "width": asset->metadata.dimensions.width,
+      "height": asset->metadata.dimensions.height
+    },
+    publishedAt,
+    author
+  }
+`)
+
+const BLOG_POSTS_COUNT_QUERY = defineQuery(`
+  count(*[_type == "blogPost" && defined(publishedAt)])
+`)
+
+const BLOG_POST_BY_SLUG_QUERY = defineQuery(`
+  *[_type == "blogPost" && slug.current == $slug][0] {
+    _id,
+    title,
+    "slug": slug.current,
+    excerpt,
+    "coverImage": coverImage{
+      "url": asset->url,
+      "alt": asset->altText,
+      "width": asset->metadata.dimensions.width,
+      "height": asset->metadata.dimensions.height
+    },
+    body,
+    publishedAt,
+    author,
+    seo
+  }
+`)
+
 // ============ Instant Search Query ============
 
 const INSTANT_SEARCH_PRODUCTS_QUERY = defineQuery(`
@@ -503,6 +545,36 @@ export async function instantSearch(search: string) {
     products: products || [],
     categories: categories || [],
   }
+}
+
+export async function getBlogPosts(page = 1, pageSize = 9) {
+  const start = (page - 1) * pageSize
+  const end = start + pageSize
+
+  const [posts, total] = await Promise.all([
+    client.fetch(BLOG_POSTS_QUERY, { start, end }, { next: { revalidate: 60 } }),
+    client.fetch(BLOG_POSTS_COUNT_QUERY, {}, { next: { revalidate: 60 } }),
+  ])
+
+  return {
+    data: posts || [],
+    meta: {
+      pagination: {
+        page,
+        pageSize,
+        pageCount: Math.ceil((total || 0) / pageSize),
+        total: total || 0,
+      },
+    },
+  }
+}
+
+export async function getBlogPost(slug: string) {
+  return client.fetch(
+    BLOG_POST_BY_SLUG_QUERY,
+    { slug },
+    { next: { revalidate: 60 } }
+  )
 }
 
 // Re-export for convenience

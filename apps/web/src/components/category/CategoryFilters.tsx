@@ -187,11 +187,9 @@ export function CategoryFilters({
                         )}>
                           {cat.name}
                         </div>
-                        {cat.productCount !== undefined && (
-                          <div className="text-xs text-gray-500">
-                            {cat.productCount} termék
+                        <div className="text-xs text-gray-500">
+                            termék
                           </div>
-                        )}
                       </div>
                       {cat.slug === categorySlug && (
                         <Check className="h-4 w-4 text-amber-500" />
@@ -215,11 +213,6 @@ export function CategoryFilters({
                           >
                             <ChevronRight className="h-3 w-3 text-gray-400 flex-shrink-0" />
                             <span className="flex-1 truncate">{child.name}</span>
-                            {child.productCount !== undefined && (
-                              <span className="text-xs text-gray-400 flex-shrink-0">
-                                ({child.productCount})
-                              </span>
-                            )}
                             {child.slug === categorySlug && (
                               <Check className="h-3 w-3 text-amber-500 flex-shrink-0" />
                             )}
@@ -255,9 +248,6 @@ export function CategoryFilters({
                 <SelectItem key={sub.slug} value={sub.slug}>
                   <span className="flex items-center justify-between gap-4">
                     {sub.name}
-                    {sub.productCount !== undefined && (
-                      <span className="text-xs text-gray-400">({sub.productCount})</span>
-                    )}
                   </span>
                 </SelectItem>
               ))}

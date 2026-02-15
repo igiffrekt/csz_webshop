@@ -52,7 +52,7 @@ export function SummaryStep({ addresses }: SummaryStepProps) {
         quantity: item.quantity,
       }));
 
-      const shippingCountry = shippingAddress?.country || 'Magyarorszag';
+      const shippingCountry = shippingAddress?.country || 'Magyarország';
 
       const result = await calculateTotals({
         lineItems,

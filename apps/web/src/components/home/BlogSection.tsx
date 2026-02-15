@@ -43,14 +43,14 @@ export function BlogSection({ posts = placeholderPosts }: BlogSectionProps) {
         {/* Section header */}
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-10">
           <div>
-            <span className="text-gray-500 text-sm uppercase tracking-wider">
-              Hírek és Blog
+            <span className="inline-block bg-amber-100 text-amber-800 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider mb-3">
+              Blog
             </span>
-            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mt-2">
+            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900">
               Legfrissebb cikkeink
             </h2>
             <p className="text-gray-600 mt-2">
-              Tippek, hírek és útmutatók a tűzvédelem világából
+              Tippek, hírek és útmutatók a tűzvédelmi termékek világából
             </p>
           </div>
           <Link
@@ -90,6 +90,7 @@ function BlogCard({ post }: { post: BlogPost }) {
             alt={post.title}
             fill
             className="object-cover transition-transform duration-500 group-hover:scale-105"
+            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center bg-[#f6f6f6]">
@@ -112,7 +113,7 @@ function BlogCard({ post }: { post: BlogPost }) {
       <div className="pt-4">
         {/* Title */}
         <Link href={`/blog/${post.slug}`}>
-          <h3 className="font-bold text-gray-900 text-lg leading-tight line-clamp-2 group-hover:text-[#FFBB36] transition-colors">
+          <h3 className="font-bold text-gray-900 text-lg leading-tight line-clamp-2 group-hover:text-[#D4960A] transition-colors">
             {post.title}
           </h3>
         </Link>
@@ -125,7 +126,7 @@ function BlogCard({ post }: { post: BlogPost }) {
         {/* Read more link */}
         <Link
           href={`/blog/${post.slug}`}
-          className="inline-flex items-center gap-1.5 text-[#FFBB36] font-medium text-sm mt-3 hover:gap-3 transition-all duration-200"
+          className="inline-flex items-center gap-1.5 text-[#D4960A] font-medium text-sm mt-3 hover:gap-3 transition-all duration-200"
         >
           Tovább olvasom
           <ArrowRight className="h-4 w-4" />

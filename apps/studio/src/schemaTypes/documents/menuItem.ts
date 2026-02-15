@@ -3,28 +3,28 @@ import {MenuIcon} from '@sanity/icons'
 
 export const menuItem = defineType({
   name: 'menuItem',
-  title: 'Menupont',
+  title: 'Menüpont',
   type: 'document',
   icon: MenuIcon,
   fields: [
     defineField({
       name: 'cim',
-      title: 'Cim',
+      title: 'Cím',
       type: 'string',
-      validation: (rule) => rule.required().error('A menupont cime kotelezo.'),
+      validation: (rule) => rule.required().error('A menüpont címe kötelező.'),
     }),
     defineField({
       name: 'tipus',
-      title: 'Tipus',
+      title: 'Típus',
       type: 'string',
       options: {
         list: [
           {title: 'URL', value: 'url'},
-          {title: 'Kategoria', value: 'kategoria'},
+          {title: 'Kategória', value: 'kategoria'},
         ],
         layout: 'radio',
       },
-      validation: (rule) => rule.required().error('A tipus valasztasa kotelezo.'),
+      validation: (rule) => rule.required().error('A típus választása kötelező.'),
     }),
     defineField({
       name: 'url',
@@ -35,14 +35,14 @@ export const menuItem = defineType({
         rule.custom((value, context) => {
           const doc = context.document as {tipus?: string} | undefined
           if (doc?.tipus === 'url' && !value) {
-            return 'Az URL megadasa kotelezo URL tipus eseten.'
+            return 'Az URL megadása kötelező URL típus esetén.'
           }
           return true
         }),
     }),
     defineField({
       name: 'kategoria',
-      title: 'Kategoria',
+      title: 'Kategória',
       type: 'reference',
       to: [{type: 'category'}],
       hidden: ({document}) => document?.tipus !== 'kategoria',
@@ -50,28 +50,28 @@ export const menuItem = defineType({
         rule.custom((value, context) => {
           const doc = context.document as {tipus?: string} | undefined
           if (doc?.tipus === 'kategoria' && !value) {
-            return 'A kategoria valasztasa kotelezo kategoria tipus eseten.'
+            return 'A kategória választása kötelező kategória típus esetén.'
           }
           return true
         }),
     }),
     defineField({
       name: 'parent',
-      title: 'Szulo menupont',
+      title: 'Szülő menüpont',
       type: 'reference',
       to: [{type: 'menuItem'}],
-      description: 'Valasszon szulo menupontot al-menu letrehozasahoz',
+      description: 'Válasszon szülő menüpontot al-menü létrehozásához',
     }),
     defineField({
       name: 'sorrend',
       title: 'Sorrend',
       type: 'number',
       initialValue: 0,
-      description: 'Kisebb szam = elobb jelenik meg',
+      description: 'Kisebb szám = előbb jelenik meg',
     }),
     defineField({
       name: 'nyitasUjTabon',
-      title: 'Megnyitas uj lapon',
+      title: 'Megnyitás új lapon',
       type: 'boolean',
       initialValue: false,
     }),
@@ -79,7 +79,7 @@ export const menuItem = defineType({
       name: 'ikon',
       title: 'Ikon',
       type: 'string',
-      description: 'Ikon azonosito (opcionalis)',
+      description: 'Ikon azonosító (opcionális)',
     }),
   ],
   orderings: [
@@ -98,7 +98,7 @@ export const menuItem = defineType({
     prepare({title, sorrend, tipus}) {
       return {
         title,
-        subtitle: `Sorrend: ${sorrend ?? 0} | Tipus: ${tipus ?? ''}`,
+        subtitle: `Sorrend: ${sorrend ?? 0} | Típus: ${tipus ?? ''}`,
       }
     },
   },

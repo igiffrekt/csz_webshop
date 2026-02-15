@@ -21,7 +21,7 @@ export async function POST(request: NextRequest) {
 
   // Set new default
   await prisma.shippingAddress.update({
-    where: { id },
+    where: { id, userId: session.user.id },
     data: { isDefault: true },
   })
 

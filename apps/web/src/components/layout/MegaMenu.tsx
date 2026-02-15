@@ -130,7 +130,7 @@ export function MegaMenu({ variant = 'default' }: MegaMenuProps) {
                   <Link
                     key={link.href}
                     href={link.href}
-                    className="flex items-center gap-2 px-4 py-2 rounded-lg text-gray-700 hover:bg-gray-50 hover:text-[#FFBB36] font-medium transition-colors text-sm"
+                    className="flex items-center gap-2 px-4 py-2 rounded-lg text-gray-700 hover:bg-gray-50 hover:text-[#D4960A] font-medium transition-colors text-sm"
                   >
                     <Icon className="h-4 w-4 text-gray-400" />
                     {link.label}
@@ -164,7 +164,7 @@ export function MegaMenu({ variant = 'default' }: MegaMenuProps) {
                             href={child.url}
                             target={child.nyitasUjTabon ? '_blank' : undefined}
                             rel={child.nyitasUjTabon ? 'noopener noreferrer' : undefined}
-                            className="text-[13px] text-gray-600 hover:text-[#FFBB36] py-1.5 px-2 rounded-md hover:bg-gray-50 transition-colors leading-snug"
+                            className="text-[13px] text-gray-600 hover:text-[#D4960A] py-1.5 px-2 rounded-md hover:bg-gray-50 transition-colors leading-snug"
                           >
                             {child.cim}
                           </a>
@@ -172,7 +172,7 @@ export function MegaMenu({ variant = 'default' }: MegaMenuProps) {
                           <Link
                             key={child._id}
                             href={href}
-                            className="text-[13px] text-gray-600 hover:text-[#FFBB36] py-1.5 px-2 rounded-md hover:bg-gray-50 transition-colors leading-snug"
+                            className="text-[13px] text-gray-600 hover:text-[#D4960A] py-1.5 px-2 rounded-md hover:bg-gray-50 transition-colors leading-snug"
                           >
                             {child.cim}
                           </Link>
@@ -194,7 +194,7 @@ export function MegaMenu({ variant = 'default' }: MegaMenuProps) {
                           href={item.url}
                           target={item.nyitasUjTabon ? '_blank' : undefined}
                           rel={item.nyitasUjTabon ? 'noopener noreferrer' : undefined}
-                          className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm text-gray-700 hover:bg-gray-50 hover:text-[#FFBB36] font-medium transition-colors"
+                          className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm text-gray-700 hover:bg-gray-50 hover:text-[#D4960A] font-medium transition-colors"
                         >
                           {item.cim}
                           {item.nyitasUjTabon && <ExternalLink className="h-3 w-3" />}
@@ -203,7 +203,7 @@ export function MegaMenu({ variant = 'default' }: MegaMenuProps) {
                         <Link
                           key={item._id}
                           href={href}
-                          className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm text-gray-700 hover:bg-gray-50 hover:text-[#FFBB36] font-medium transition-colors"
+                          className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm text-gray-700 hover:bg-gray-50 hover:text-[#D4960A] font-medium transition-colors"
                         >
                           {item.cim}
                         </Link>
@@ -215,7 +215,7 @@ export function MegaMenu({ variant = 'default' }: MegaMenuProps) {
             ) : (
               <Link
                 href="/termekek"
-                className="flex items-center gap-2 text-gray-700 hover:text-[#FFBB36] font-medium transition-colors"
+                className="flex items-center gap-2 text-gray-700 hover:text-[#D4960A] font-medium transition-colors"
               >
                 <Package className="h-4 w-4" />
                 Termékek

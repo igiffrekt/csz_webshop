@@ -14,6 +14,7 @@ import {faq} from './documents/faq'
 import {homepage} from './documents/homepage'
 import {menuItem} from './documents/menuItem'
 import {order} from './documents/order'
+import {blogPost} from './documents/blogPost'
 
 export const schemaTypes = [
   // Objects
@@ -28,6 +29,7 @@ export const schemaTypes = [
   category,
   page,
   faq,
+  blogPost,
   homepage,
   menuItem,
   order,

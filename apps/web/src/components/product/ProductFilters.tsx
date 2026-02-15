@@ -15,6 +15,7 @@ interface Category {
   name: string;
   slug: string;
   id?: number;
+  parent?: { _id: string; name: string; slug: string } | null;
 }
 
 interface ProductFiltersProps {
@@ -61,11 +62,13 @@ export function ProductFilters({ categories, className }: ProductFiltersProps) {
         </SelectTrigger>
         <SelectContent>
           <SelectItem value="all">{t("allCategories")}</SelectItem>
-          {categories.map((cat) => (
-            <SelectItem key={cat.slug} value={cat.slug}>
-              {cat.name}
-            </SelectItem>
-          ))}
+          {categories
+            .filter((cat) => !cat.parent)
+            .map((cat) => (
+              <SelectItem key={cat.slug} value={cat.slug}>
+                {cat.name}
+              </SelectItem>
+            ))}
         </SelectContent>
       </Select>
 

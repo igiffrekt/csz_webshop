@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { client } from '@/lib/sanity'
 import { getStripe } from '@/lib/server/stripe'
@@ -38,16 +39,18 @@ interface LineItemInput {
 
 export async function POST(request: NextRequest) {
   try {
-    const { lineItems, shippingAddress, billingAddress, couponCode, poReference, userId } = await request.json()
+    const session = await auth()
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
+    const { lineItems, shippingAddress, billingAddress, couponCode, poReference } = await request.json()
 
     if (!lineItems || lineItems.length === 0) {
       return NextResponse.json({ error: 'A kosár üres' }, { status: 400 })
     }
     if (!shippingAddress) {
       return NextResponse.json({ error: 'Szállítási cím szükséges' }, { status: 400 })
-    }
-    if (!userId) {
-      return NextResponse.json({ error: 'Felhasználó azonosító szükséges' }, { status: 400 })
     }
 
     const stripe = getStripe()
@@ -126,7 +129,7 @@ export async function POST(request: NextRequest) {
       data: {
         orderNumber,
         status: 'pending',
-        userId,
+        userId: session.user.id,
         subtotal,
         discount,
         shipping,
@@ -178,7 +181,7 @@ export async function POST(request: NextRequest) {
       discounts = [{ coupon: stripeCoupon.id }]
     }
 
-    const session = await stripe.checkout.sessions.create({
+    const stripeSession = await stripe.checkout.sessions.create({
       ui_mode: 'embedded',
       mode: 'payment',
       currency: 'huf',
@@ -196,11 +199,11 @@ export async function POST(request: NextRequest) {
     // Update order with Stripe session ID
     await prisma.order.update({
       where: { id: order.id },
-      data: { stripeSessionId: session.id },
+      data: { stripeSessionId: stripeSession.id },
     })
 
     return NextResponse.json({
-      clientSecret: session.client_secret,
+      clientSecret: stripeSession.client_secret,
       orderId: order.id,
       orderNumber: order.orderNumber,
     })

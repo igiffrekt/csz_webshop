@@ -9,9 +9,9 @@ export const page = defineType({
   fields: [
     defineField({
       name: 'title',
-      title: 'Cim',
+      title: 'Cím',
       type: 'string',
-      validation: (rule) => rule.required().error('Az oldal cime kotelezo.'),
+      validation: (rule) => rule.required().error('Az oldal címe kötelező.'),
     }),
     defineField({
       name: 'slug',
@@ -21,7 +21,7 @@ export const page = defineType({
         source: 'title',
         maxLength: 200,
       },
-      validation: (rule) => rule.required().error('Az URL slug kotelezo.'),
+      validation: (rule) => rule.required().error('Az URL slug kötelező.'),
     }),
     defineField({
       name: 'content',

@@ -2,24 +2,24 @@ import {defineType, defineField} from 'sanity'
 
 export const specification = defineType({
   name: 'specification',
-  title: 'Muszaki adat',
+  title: 'Műszaki adat',
   type: 'object',
   fields: [
     defineField({
       name: 'name',
-      title: 'Nev',
+      title: 'Név',
       type: 'string',
-      validation: (rule) => rule.required().error('A nev megadasa kotelezo.'),
+      validation: (rule) => rule.required().error('A név megadása kötelező.'),
     }),
     defineField({
       name: 'value',
-      title: 'Ertek',
+      title: 'Érték',
       type: 'string',
-      validation: (rule) => rule.required().error('Az ertek megadasa kotelezo.'),
+      validation: (rule) => rule.required().error('Az érték megadása kötelező.'),
     }),
     defineField({
       name: 'unit',
-      title: 'Mertekegyseg',
+      title: 'Mértékegység',
       type: 'string',
       description: 'Pl.: kg, mm, db, W',
     }),

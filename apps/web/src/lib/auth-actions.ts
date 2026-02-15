@@ -151,7 +151,7 @@ export async function registerAction(
   } catch (error) {
     if (error instanceof AuthError) {
       // If auto-login fails, redirect to login
-      redirect('/hu/auth/bejelentkezes?registered=true')
+      redirect('/auth/bejelentkezes?registered=true')
     }
     throw error
   }
@@ -164,7 +164,7 @@ export async function registerAction(
  */
 export async function logoutAction(): Promise<void> {
   await signOut({ redirect: false })
-  redirect('/hu')
+  redirect('/')
 }
 
 /**
@@ -203,8 +203,7 @@ export async function forgotPasswordAction(
         },
       })
 
-      // TODO: Send email with reset link containing token
-      console.log(`Password reset token for ${user.email}: ${token}`)
+      // TODO: Send password reset email with token
     }
   } catch (error) {
     console.error('Forgot password error:', error)
@@ -255,7 +254,7 @@ export async function resetPasswordAction(
     return { error: 'Hiba t\u00f6rt\u00e9nt. Pr\u00f3b\u00e1ld \u00fajra k\u00e9s\u0151bb.' }
   }
 
-  redirect('/hu/auth/bejelentkezes?reset=success')
+  redirect('/auth/bejelentkezes?reset=success')
 }
 
 /**

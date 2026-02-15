@@ -9,29 +9,29 @@ export const faq = defineType({
   fields: [
     defineField({
       name: 'question',
-      title: 'Kerdes',
+      title: 'Kérdés',
       type: 'string',
-      validation: (rule) => rule.required().error('A kerdes megadasa kotelezo.'),
+      validation: (rule) => rule.required().error('A kérdés megadása kötelező.'),
     }),
     defineField({
       name: 'answer',
-      title: 'Valasz',
+      title: 'Válasz',
       type: 'array',
       of: [defineArrayMember({type: 'block'})],
-      validation: (rule) => rule.required().error('A valasz megadasa kotelezo.'),
+      validation: (rule) => rule.required().error('A válasz megadása kötelező.'),
     }),
     defineField({
       name: 'order',
       title: 'Sorrend',
       type: 'number',
       initialValue: 0,
-      description: 'Kisebb szam = elobb jelenik meg',
+      description: 'Kisebb szám = előbb jelenik meg',
     }),
     defineField({
       name: 'category',
-      title: 'Kategoria',
+      title: 'Kategória',
       type: 'string',
-      description: 'GYIK kategoria (pl.: Szallitas, Fizetes, Garancia)',
+      description: 'GYIK kategória (pl.: Szállítás, Fizetés, Garancia)',
     }),
   ],
   orderings: [

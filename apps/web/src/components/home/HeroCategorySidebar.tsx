@@ -92,7 +92,7 @@ function GrandchildList({ children }: { children: Category[] }) {
         <motion.div key={gc._id} variants={grandchildItem}>
           <Link
             href={`/kategoriak/${gc.slug}`}
-            className="group/gc flex items-center gap-1.5 py-1 px-1.5 text-[11px] text-gray-400 rounded hover:text-amber-500 hover:bg-amber-50/50 transition-colors"
+            className="group/gc flex items-center gap-1.5 py-1 px-1.5 text-[16px] text-gray-400 rounded hover:text-amber-500 hover:bg-amber-50/50 transition-colors"
           >
             <span className="w-1 h-1 rounded-full bg-gray-300 group-hover/gc:bg-amber-400 transition-colors flex-shrink-0" />
             {gc.name}
@@ -120,32 +120,40 @@ function ChildList({ children: childCats }: { children: Category[] }) {
         return (
           <motion.div key={child._id} variants={childItem}>
             <div className="flex items-center ml-3">
-              <Link
-                href={`/kategoriak/${child.slug}`}
-                className="group/child flex-1 flex items-center gap-2 py-1.5 px-2 text-[12px] font-medium text-gray-600 rounded hover:text-amber-600 hover:bg-amber-50/60 transition-colors"
-              >
-                <motion.span
-                  className="w-1.5 h-1.5 rounded-full bg-amber-300 flex-shrink-0"
-                  whileHover={{ scale: 1.5 }}
-                  transition={springTransition}
-                />
-                <span className="flex-1 truncate">{child.name}</span>
-              </Link>
-              {hasGrandchildren && (
-                <motion.button
+              {hasGrandchildren ? (
+                <button
                   onClick={() => setExpandedChild(isExpanded ? null : child._id)}
-                  className="p-1 mr-1 text-gray-300 hover:text-amber-500 transition-colors rounded hover:bg-amber-50/60"
-                  whileTap={{ scale: 0.85 }}
-                  aria-label={isExpanded ? 'Bezárás' : 'Megnyitás'}
+                  className="group/child flex-1 flex items-center gap-2 py-1.5 px-2 text-[17px] font-medium text-gray-600 rounded hover:text-amber-600 hover:bg-amber-50/60 transition-colors text-left cursor-pointer"
                 >
+                  <motion.span
+                    className="w-1.5 h-1.5 rounded-full bg-amber-300 flex-shrink-0"
+                    whileHover={{ scale: 1.5 }}
+                    transition={springTransition}
+                  />
+                  <span className="flex-1 truncate">{child.name}</span>
                   <motion.span
                     animate={{ rotate: isExpanded ? 180 : 0 }}
                     transition={springTransition}
-                    className="block"
+                    className={cn(
+                      'ml-auto mr-1 transition-colors',
+                      isExpanded ? 'text-amber-500' : 'text-gray-300',
+                    )}
                   >
                     <ChevronDown className="h-3 w-3" />
                   </motion.span>
-                </motion.button>
+                </button>
+              ) : (
+                <Link
+                  href={`/kategoriak/${child.slug}`}
+                  className="group/child flex-1 flex items-center gap-2 py-1.5 px-2 text-[17px] font-medium text-gray-600 rounded hover:text-amber-600 hover:bg-amber-50/60 transition-colors"
+                >
+                  <motion.span
+                    className="w-1.5 h-1.5 rounded-full bg-amber-300 flex-shrink-0"
+                    whileHover={{ scale: 1.5 }}
+                    transition={springTransition}
+                  />
+                  <span className="flex-1 truncate">{child.name}</span>
+                </Link>
               )}
             </div>
 
@@ -198,51 +206,57 @@ function CategoryRow({
           transition={springTransition}
         />
 
-        <Link
-          href={`/kategoriak/${category.slug}`}
-          className={cn(
-            'group flex-1 flex items-center gap-2.5 py-2.5 pl-4 pr-1 text-[13px] font-medium rounded-r-lg transition-colors',
-            isExpanded
-              ? 'text-amber-600 bg-amber-50/70'
-              : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50',
-          )}
-        >
-          <motion.div
-            className="flex-shrink-0"
-            whileHover={{ rotate: 15, scale: 1.15 }}
-            transition={springTransition}
-          >
-            <Flame
-              className={cn(
-                'h-4 w-4 transition-colors',
-                isExpanded ? 'text-amber-500' : 'text-gray-400 group-hover:text-gray-500',
-              )}
-            />
-          </motion.div>
-          <span className="flex-1 truncate">{category.name}</span>
-        </Link>
-
-        {hasChildren && (
-          <motion.button
+        {hasChildren ? (
+          <button
             onClick={onToggle}
             className={cn(
-              'flex items-center justify-center w-8 h-8 mr-1 rounded-lg transition-colors',
+              'group flex-1 flex items-center gap-2.5 py-2.5 pl-4 pr-1 text-[18px] font-medium rounded-r-lg transition-colors text-left cursor-pointer',
               isExpanded
-                ? 'text-amber-500 hover:bg-amber-100/60'
-                : 'text-gray-400 hover:text-gray-600 hover:bg-gray-100',
+                ? 'text-amber-600 bg-amber-50/70'
+                : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50',
             )}
-            whileTap={{ scale: 0.85 }}
-            aria-expanded={isExpanded}
-            aria-label={isExpanded ? 'Bezárás' : 'Megnyitás'}
           >
+            <motion.div
+              className="flex-shrink-0"
+              whileHover={{ rotate: 15, scale: 1.15 }}
+              transition={springTransition}
+            >
+              <Flame
+                className={cn(
+                  'h-4 w-4 transition-colors',
+                  isExpanded ? 'text-amber-500' : 'text-gray-400 group-hover:text-gray-500',
+                )}
+              />
+            </motion.div>
+            <span className="flex-1 truncate">{category.name}</span>
             <motion.span
               animate={{ rotate: isExpanded ? 90 : 0 }}
               transition={springTransition}
-              className="block"
+              className={cn(
+                'ml-auto mr-1 transition-colors',
+                isExpanded ? 'text-amber-500' : 'text-gray-400',
+              )}
             >
               <ChevronRight className="h-3.5 w-3.5" />
             </motion.span>
-          </motion.button>
+          </button>
+        ) : (
+          <Link
+            href={`/kategoriak/${category.slug}`}
+            className={cn(
+              'group flex-1 flex items-center gap-2.5 py-2.5 pl-4 pr-1 text-[18px] font-medium rounded-r-lg transition-colors',
+              'text-gray-700 hover:text-gray-900 hover:bg-gray-50',
+            )}
+          >
+            <motion.div
+              className="flex-shrink-0"
+              whileHover={{ rotate: 15, scale: 1.15 }}
+              transition={springTransition}
+            >
+              <Flame className="h-4 w-4 transition-colors text-gray-400 group-hover:text-gray-500" />
+            </motion.div>
+            <span className="flex-1 truncate">{category.name}</span>
+          </Link>
         )}
       </div>
 
@@ -293,7 +307,7 @@ export function HeroCategorySidebar() {
     <div className="h-full flex flex-col bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
       {/* Header */}
       <div className="px-4 pt-4 pb-3 border-b border-gray-100">
-        <h3 className="text-[11px] font-bold uppercase tracking-wider text-gray-400">
+        <h3 className="text-[15px] font-bold uppercase tracking-wider text-gray-400">
           Kategóriák
         </h3>
       </div>

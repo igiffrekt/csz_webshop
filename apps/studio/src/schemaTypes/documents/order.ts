@@ -3,13 +3,13 @@ import {BasketIcon} from '@sanity/icons'
 
 export const order = defineType({
   name: 'order',
-  title: 'Rendeles',
+  title: 'Rendelés',
   type: 'document',
   icon: BasketIcon,
   fields: [
     defineField({
       name: 'orderNumber',
-      title: 'Rendelesi szam',
+      title: 'Rendelési szám',
       type: 'string',
       readOnly: true,
       validation: (rule) => rule.required(),
@@ -20,13 +20,13 @@ export const order = defineType({
       type: 'string',
       options: {
         list: [
-          {title: 'Fizetesre var', value: 'pending'},
+          {title: 'Fizetésre vár', value: 'pending'},
           {title: 'Fizetve', value: 'paid'},
-          {title: 'Feldolgozas alatt', value: 'processing'},
-          {title: 'Kiszallitva', value: 'shipped'},
-          {title: 'Kezbesitve', value: 'delivered'},
-          {title: 'Torolve', value: 'cancelled'},
-          {title: 'Visszateritett', value: 'refunded'},
+          {title: 'Feldolgozás alatt', value: 'processing'},
+          {title: 'Kiszállítva', value: 'shipped'},
+          {title: 'Kézbesítve', value: 'delivered'},
+          {title: 'Törölve', value: 'cancelled'},
+          {title: 'Visszatérített', value: 'refunded'},
         ],
         layout: 'dropdown',
       },
@@ -34,80 +34,80 @@ export const order = defineType({
     }),
     defineField({
       name: 'customerEmail',
-      title: 'Vasarlo email',
+      title: 'Vásárló email',
       type: 'string',
       readOnly: true,
     }),
     defineField({
       name: 'customerName',
-      title: 'Vasarlo neve',
+      title: 'Vásárló neve',
       type: 'string',
       readOnly: true,
     }),
     defineField({
       name: 'subtotal',
-      title: 'Reszosszeg (Ft)',
+      title: 'Részösszeg (Ft)',
       type: 'number',
       readOnly: true,
     }),
     defineField({
       name: 'discount',
-      title: 'Kedvezmeny (Ft)',
+      title: 'Kedvezmény (Ft)',
       type: 'number',
       readOnly: true,
     }),
     defineField({
       name: 'shipping',
-      title: 'Szallitasi dij (Ft)',
+      title: 'Szállítási díj (Ft)',
       type: 'number',
       readOnly: true,
     }),
     defineField({
       name: 'vatAmount',
-      title: 'AFA (Ft)',
+      title: 'ÁFA (Ft)',
       type: 'number',
       readOnly: true,
     }),
     defineField({
       name: 'total',
-      title: 'Vegosszeg (Ft)',
+      title: 'Végösszeg (Ft)',
       type: 'number',
       readOnly: true,
     }),
     defineField({
       name: 'lineItems',
-      title: 'Tetelek',
+      title: 'Tételek',
       type: 'array',
       readOnly: true,
       of: [defineArrayMember({type: 'orderLineItem'})],
     }),
     defineField({
       name: 'shippingAddress',
-      title: 'Szallitasi cim',
+      title: 'Szállítási cím',
       type: 'orderAddress',
       readOnly: true,
     }),
     defineField({
       name: 'billingAddress',
-      title: 'Szamlazasi cim',
+      title: 'Számlázási cím',
       type: 'orderAddress',
       readOnly: true,
     }),
     defineField({
       name: 'couponCode',
-      title: 'Kupon kod',
+      title: 'Kupon kód',
       type: 'string',
       readOnly: true,
     }),
     defineField({
       name: 'paymentMethod',
-      title: 'Fizetesi mod',
+      title: 'Fizetési mód',
       type: 'string',
       readOnly: true,
     }),
     defineField({
       name: 'paymentId',
-      title: 'Fizetesi azonosito',
+      title: 'Fizetési azonosító',
       type: 'string',
       readOnly: true,
     }),
@@ -119,19 +119,19 @@ export const order = defineType({
     }),
     defineField({
       name: 'paidAt',
-      title: 'Fizetes datuma',
+      title: 'Fizetés dátuma',
       type: 'datetime',
       readOnly: true,
     }),
     defineField({
       name: 'poReference',
-      title: 'PO hivatkozas',
+      title: 'PO hivatkozás',
       type: 'string',
       readOnly: true,
     }),
     defineField({
       name: 'notes',
-      title: 'Admin megjegyzes',
+      title: 'Admin megjegyzés',
       type: 'text',
     }),
   ],
@@ -144,26 +144,26 @@ export const order = defineType({
     },
     prepare({orderNumber, status, total, customerName}) {
       const statusLabels: Record<string, string> = {
-        pending: 'Fizetesre var',
+        pending: 'Fizetésre vár',
         paid: 'Fizetve',
-        processing: 'Feldolgozas alatt',
-        shipped: 'Kiszallitva',
-        delivered: 'Kezbesitve',
-        cancelled: 'Torolve',
-        refunded: 'Visszateritett',
+        processing: 'Feldolgozás alatt',
+        shipped: 'Kiszállítva',
+        delivered: 'Kézbesítve',
+        cancelled: 'Törölve',
+        refunded: 'Visszatérített',
       }
       const parts = [statusLabels[status] || status]
       if (total != null) parts.push(`${total} Ft`)
       if (customerName) parts.push(customerName)
       return {
-        title: orderNumber || 'Rendeles',
+        title: orderNumber || 'Rendelés',
         subtitle: parts.join(' · '),
       }
     },
   },
   orderings: [
     {
-      title: 'Letrehozas (ujabb elol)',
+      title: 'Létrehozás (újabb elől)',
       name: 'createdDesc',
       by: [{field: '_createdAt', direction: 'desc'}],
     },

@@ -52,6 +52,9 @@ importers:
       '@csz/types':
         specifier: workspace:*
         version: link:../../packages/types
+      '@portabletext/react':
+        specifier: ^6.0.2
+        version: 6.0.2(react@19.2.3)
       '@prisma/client':
         specifier: ^6.19.2
         version: 6.19.2(prisma@6.19.2(typescript@5.9.3))(typescript@5.9.3)

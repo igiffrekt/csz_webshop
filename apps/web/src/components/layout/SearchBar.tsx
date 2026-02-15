@@ -205,6 +205,7 @@ export function SearchBar({ className, variant = 'default' }: SearchBarProps) {
           type="button"
           onClick={() => { setQuery(''); setResults(null); setShowResults(false); inputRef.current?.focus() }}
           className="p-1 hover:text-gray-600 transition-colors mr-1 flex-shrink-0"
+          aria-label="Keresés törlése"
         >
           <X className="h-4 w-4" />
         </button>
@@ -213,6 +214,7 @@ export function SearchBar({ className, variant = 'default' }: SearchBarProps) {
       <button
         type="submit"
         className="flex items-center justify-center flex-shrink-0"
+        aria-label="Keresés"
       >
         <Search className={cn('text-black', isHero ? 'h-6 w-6' : 'h-5 w-5')} />
       </button>

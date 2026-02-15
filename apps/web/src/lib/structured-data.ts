@@ -63,15 +63,16 @@ export function generateOrganizationJsonLd() {
     logo: `${SITE_URL}/logo.png`,
     contactPoint: {
       '@type': 'ContactPoint',
-      telephone: '+36-1-234-5678',
+      telephone: '+36 33 506 690',
       contactType: 'customer service',
       availableLanguage: 'Hungarian',
     },
     address: {
       '@type': 'PostalAddress',
-      streetAddress: 'Példa utca 123.',
-      addressLocality: 'Budapest',
-      postalCode: '1234',
+      streetAddress: 'Szénbányászok útja 32.',
+      addressLocality: 'Csolnok',
+      postalCode: '2521',
+      addressRegion: 'Komárom-Esztergom',
       addressCountry: 'HU',
     },
   };

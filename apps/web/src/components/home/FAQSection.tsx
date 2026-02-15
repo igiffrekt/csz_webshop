@@ -31,8 +31,8 @@ const defaultFaqs: FAQItem[] = [
     answer: 'Tűzoltó készülékeink acél és alumínium hengerből készülnek, porszórt bevonattal a korrózióállóság érdekében. Az oltóanyagok (por, CO2, hab) megfelelnek az MSZ EN szabványoknak.',
   },
   {
-    question: 'Vannak kedvezmények vagy akciók?',
-    answer: 'Igen! Rendszeresen kínálunk akciókat és mennyiségi kedvezményeket. Iratkozzon fel hírlevelünkre, hogy elsőként értesüljön az aktuális ajánlatokról. Nagyobb mennyiségű rendelés esetén egyedi árajánlatot készítünk.',
+    question: 'Hogyan kérhetők egyedi árajánlatok?',
+    answer: 'Nagyobb mennyiségű rendelés esetén egyedi árajánlatot készítünk. Vegye fel velünk a kapcsolatot e-mailben vagy telefonon, és kollégáink rövid időn belül személyre szabott ajánlattal keresik meg Önt.',
   },
 ];
 
@@ -52,10 +52,10 @@ export function FAQSection({ sanityFaqs, sectionTitle, sectionSubtitle }: FAQSec
         <div className="max-w-3xl mx-auto">
           {/* Section header */}
           <div className="text-center mb-10">
-            <span className="inline-block px-3 py-1 bg-amber-100 text-amber-700 text-xs font-semibold rounded-full mb-3">
+            <span className="inline-block bg-amber-500 text-white text-xs font-bold uppercase tracking-widest px-4 py-1.5 rounded-full mb-4">
               {sectionSubtitle || 'GYIK'}
             </span>
-            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900">
+            <h2 className="text-3xl lg:text-5xl font-extrabold text-gray-900">
               {sectionTitle || 'Kérdése van? Itt a válasz.'}
             </h2>
           </div>
@@ -94,6 +94,7 @@ function FAQItem({ question, answer, isOpen, onToggle }: FAQItemProps) {
       <button
         className="w-full px-6 py-4 flex items-center justify-between text-left"
         onClick={onToggle}
+        aria-expanded={isOpen}
       >
         <span className={cn(
           'font-medium',
