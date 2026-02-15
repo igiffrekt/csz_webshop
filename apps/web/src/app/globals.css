@@ -779,6 +779,10 @@ ol.list-decimal > li::marker {
 .animate-stagger-children > *:nth-child(6) { animation-delay: 200ms; }
 .animate-stagger-children > *:nth-child(7) { animation-delay: 240ms; }
 .animate-stagger-children > *:nth-child(8) { animation-delay: 280ms; }
+.animate-stagger-children > *:nth-child(9) { animation-delay: 320ms; }
+.animate-stagger-children > *:nth-child(10) { animation-delay: 360ms; }
+.animate-stagger-children > *:nth-child(11) { animation-delay: 400ms; }
+.animate-stagger-children > *:nth-child(12) { animation-delay: 440ms; }
 
 /* Mobile accordion smooth height */
 .accordion-content {
@@ -850,4 +854,32 @@ ol.list-decimal > li::marker {
 
 .animate-badge-pop {
   animation: badge-pop 0.3s ease-out forwards;
+}
+
+/* Promo ticker — seamless horizontal scroll */
+@keyframes promo-ticker {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.promo-ticker {
+  display: flex;
+  width: max-content;
+  animation: promo-ticker 20s linear infinite;
+  will-change: transform;
+}
+
+.promo-ticker:hover,
+.promo-ticker-wrap:active .promo-ticker {
+  animation-play-state: paused;
+}
+
+/* Mobile nav panel transitions */
+.nav-panel {
+  transition: transform 300ms ease-out;
+  will-change: transform;
 }

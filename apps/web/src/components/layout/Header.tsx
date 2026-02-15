@@ -30,7 +30,7 @@ export async function Header() {
     <header className="sticky top-0 z-50 bg-white">
       {/* Main header - matching Figma design */}
       <div className="site-container">
-        <div className="flex items-center h-[92px]">
+        <div className="flex items-center h-16 lg:h-[92px]">
           {/* Logo */}
           <Link href="/" className="flex-shrink-0">
             <Logo />
