@@ -6,7 +6,7 @@ import {
   ContainerInset,
   ContainerScroll,
   ContainerStagger,
-} from '@/components/ui/hero-video'
+} from '@/components/hero-video'
 
 interface VideoSectionProps {
   videoData?: {
