@@ -92,7 +92,7 @@ export function SearchBar({ className, variant = 'default' }: SearchBarProps) {
 
     debounceRef.current = setTimeout(() => {
       fetchResults(query)
-    }, 1000)
+    }, 350)
 
     return () => {
       if (debounceRef.current) clearTimeout(debounceRef.current)
@@ -223,7 +223,7 @@ export function SearchBar({ className, variant = 'default' }: SearchBarProps) {
 
   const dropdown = showResults && results && (
     <div
-      className="absolute left-0 right-0 top-full mt-2 bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden z-[100] max-h-[70vh] overflow-y-auto"
+      className="absolute left-0 right-0 top-full mt-2 bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden z-[100] max-h-[50vh] sm:max-h-[60vh] overflow-y-auto scroll-smooth"
       role="listbox"
     >
       {totalResults === 0 && !isSearching && (

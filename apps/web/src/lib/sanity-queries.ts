@@ -410,8 +410,14 @@ const FOOTER_QUERY = defineQuery(`
 
 const INSTANT_SEARCH_PRODUCTS_QUERY = defineQuery(`
   *[_type == "product"
-    && (name match $search + "*" || sku match $search + "*" || $search in categories[]->name)
-  ] | order(_createdAt desc) [0...6] {
+    && (
+      name match $search + "*"
+      || sku match $search + "*"
+      || $search in categories[]->name
+      || count(string::split(lower(name), lower($search))) > 1
+      || count(string::split(lower(sku), lower($search))) > 1
+    )
+  ] | order(_createdAt desc) [0...20] {
     _id,
     name,
     "slug": slug.current,
@@ -432,7 +438,7 @@ const INSTANT_SEARCH_PRODUCTS_QUERY = defineQuery(`
 `)
 
 const INSTANT_SEARCH_CATEGORIES_QUERY = defineQuery(`
-  *[_type == "category" && name match $search + "*"] | order(name asc) [0...4] {
+  *[_type == "category" && (name match $search + "*" || count(string::split(lower(name), lower($search))) > 1)] | order(name asc) [0...8] {
     _id,
     name,
     "slug": slug.current,
