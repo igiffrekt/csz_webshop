@@ -126,7 +126,7 @@ export function QuoteRequestForm({ userEmail, companyName, phone }: QuoteRequest
           type="submit"
           disabled={isSubmitting || items.length === 0}
           size="lg"
-          className="w-full sm:w-auto"
+          className="w-full sm:w-auto h-12 sm:h-11 rounded-full bg-amber-500 text-gray-900 font-semibold hover:bg-amber-400"
         >
           {isSubmitting ? (
             <>

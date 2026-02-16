@@ -22,7 +22,7 @@ export default async function AddressesPage() {
   const { data: addresses, error } = await getAddresses();
 
   return (
-    <div className="site-container py-8">
+    <div className="site-container py-4 sm:py-8">
       <div className="mb-6">
         <Link
           href="/fiok"
@@ -31,8 +31,8 @@ export default async function AddressesPage() {
           <ArrowLeft className="h-4 w-4 mr-1" />
           Vissza a fiókhoz
         </Link>
-        <h1 className="text-2xl font-bold">Szállítási címek</h1>
-        <p className="text-muted-foreground mt-1">
+        <h1 className="text-xl sm:text-2xl font-bold">Szállítási címek</h1>
+        <p className="text-muted-foreground mt-1 text-sm sm:text-base">
           Kezeld a mentett szállítási címeidet
         </p>
       </div>

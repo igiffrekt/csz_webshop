@@ -20,23 +20,23 @@ export default async function BlogPage({ searchParams }: Props) {
   const { pagination } = meta;
 
   return (
-    <main className="site-container py-10">
+    <main className="site-container py-6 sm:py-10">
       {/* Page header */}
-      <div className="mb-10">
+      <div className="mb-6 sm:mb-10">
         <span className="inline-block bg-amber-100 text-amber-800 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider mb-3">
           Blog
         </span>
-        <h1 className="text-3xl lg:text-4xl font-bold text-gray-900">
+        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900">
           Legfrissebb cikkeink
         </h1>
-        <p className="text-gray-600 mt-2 max-w-2xl">
+        <p className="text-gray-600 mt-2 max-w-2xl text-sm sm:text-base">
           Tippek, hírek és útmutatók a tűzvédelmi termékek és megoldások világából.
         </p>
       </div>
 
       {/* Blog grid */}
       {posts.length > 0 ? (
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {posts.map((post: any) => (
             <BlogCard key={post._id} post={post} />
           ))}

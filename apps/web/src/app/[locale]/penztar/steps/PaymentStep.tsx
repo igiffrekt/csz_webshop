@@ -286,7 +286,7 @@ export function PaymentStep({ addresses, userId }: PaymentStepProps) {
           <Button
             onClick={handleBankTransfer}
             disabled={isSubmitting}
-            className="w-full"
+            className="w-full rounded-full bg-amber-500 text-gray-900 font-semibold hover:bg-amber-400 h-12"
             size="lg"
           >
             {isSubmitting ? (
@@ -302,7 +302,7 @@ export function PaymentStep({ addresses, userId }: PaymentStepProps) {
       )}
 
       <div className="flex justify-start pt-6 border-t">
-        <Button variant="outline" onClick={prevStep}>
+        <Button variant="outline" onClick={prevStep} className="h-11 sm:h-10">
           Vissza az összegzéshez
         </Button>
       </div>

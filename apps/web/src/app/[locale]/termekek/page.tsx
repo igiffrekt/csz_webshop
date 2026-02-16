@@ -60,13 +60,13 @@ export default async function ProductsPage({ searchParams }: Props) {
   return (
     <div className="bg-secondary-50 min-h-screen">
       <div className="bg-white border-b border-secondary-200">
-        <div className="container mx-auto px-4 py-8 lg:py-12">
+        <div className="container mx-auto px-4 py-6 sm:py-8 lg:py-12">
           <div className="flex items-center gap-3 mb-2">
-            <div className="w-12 h-12 bg-primary-100 rounded-xl flex items-center justify-center">
-              <Package className="h-6 w-6 text-primary-500" />
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-primary-100 rounded-xl flex items-center justify-center flex-shrink-0">
+              <Package className="h-5 w-5 sm:h-6 sm:w-6 text-primary-500" />
             </div>
             <div>
-              <h1 className="text-3xl lg:text-4xl font-bold text-secondary-900">{t('title')}</h1>
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-secondary-900">{t('title')}</h1>
               {pagination && (
                 <p className="text-secondary-600 mt-1">
                   {t('showing', { count: pagination.total })}
@@ -77,11 +77,11 @@ export default async function ProductsPage({ searchParams }: Props) {
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-8">
-        <div className="bg-white rounded-2xl shadow-sm p-6 mb-8">
-          <div className="flex flex-col lg:flex-row gap-6 items-start lg:items-end">
+      <div className="container mx-auto px-4 py-4 sm:py-8">
+        <div className="bg-white rounded-2xl shadow-sm p-4 sm:p-6 mb-6 sm:mb-8">
+          <div className="flex flex-col lg:flex-row gap-4 sm:gap-6 items-start lg:items-end">
             <div className="w-full lg:w-80">
-              <label className="block text-sm font-medium text-secondary-700 mb-2">
+              <label className="block text-sm font-medium text-secondary-700 mb-1.5 sm:mb-2">
                 Keresés
               </label>
               <SearchInput />

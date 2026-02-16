@@ -38,24 +38,24 @@ interface BlogSectionProps {
 
 export function BlogSection({ posts = placeholderPosts }: BlogSectionProps) {
   return (
-    <section className="py-16 lg:py-20 bg-white">
+    <section className="py-10 lg:py-20 bg-white">
       <div className="site-container">
         {/* Section header */}
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-10">
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-8 sm:mb-10">
           <div>
             <span className="inline-block bg-amber-100 text-amber-800 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider mb-3">
               Blog
             </span>
-            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900">
               Legfrissebb cikkeink
             </h2>
-            <p className="text-gray-600 mt-2">
+            <p className="text-gray-600 text-sm sm:text-base mt-2">
               Tippek, hírek és útmutatók a tűzvédelmi termékek világából
             </p>
           </div>
           <Link
             href="/blog"
-            className="inline-flex items-center gap-2 px-6 py-2.5 border border-gray-200 text-gray-900 font-medium rounded-full hover:bg-gray-900 hover:text-white transition-colors"
+            className="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-6 py-2.5 border border-gray-200 text-gray-900 font-medium rounded-full hover:bg-gray-900 hover:text-white transition-colors"
           >
             Összes cikk
             <ArrowRight className="h-4 w-4" />
@@ -63,7 +63,7 @@ export function BlogSection({ posts = placeholderPosts }: BlogSectionProps) {
         </div>
 
         {/* Blog grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {posts.map((post) => (
             <BlogCard key={post.slug} post={post} />
           ))}
@@ -126,7 +126,7 @@ function BlogCard({ post }: { post: BlogPost }) {
         {/* Read more link */}
         <Link
           href={`/blog/${post.slug}`}
-          className="inline-flex items-center gap-1.5 text-[#D4960A] font-medium text-sm mt-3 hover:gap-3 transition-all duration-200"
+          className="inline-flex items-center gap-1.5 text-[#D4960A] font-medium text-sm mt-3 py-1 hover:gap-3 transition-all duration-200"
         >
           Tovább olvasom
           <ArrowRight className="h-4 w-4" />

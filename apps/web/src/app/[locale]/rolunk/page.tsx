@@ -28,8 +28,8 @@ export default async function AboutPage() {
   const page = await getPageBySlug('rolunk');
 
   return (
-    <main className="site-container py-8 max-w-4xl">
-      <h1 className="text-3xl font-bold mb-8">{page?.title || 'Rólunk'}</h1>
+    <main className="site-container py-4 sm:py-8 max-w-4xl">
+      <h1 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8">{page?.title || 'Rólunk'}</h1>
       {page?.content ? (
         <div className="prose prose-lg max-w-none">
           <PortableText value={page.content} />

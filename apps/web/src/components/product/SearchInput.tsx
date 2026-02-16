@@ -28,7 +28,7 @@ export function SearchInput({ className }: SearchInputProps) {
         placeholder={t("search")}
         value={search ?? ""}
         onChange={(e) => setSearch(e.target.value || null)}
-        className="pl-10"
+        className="pl-10 h-11 sm:h-10 rounded-full"
       />
     </div>
   );

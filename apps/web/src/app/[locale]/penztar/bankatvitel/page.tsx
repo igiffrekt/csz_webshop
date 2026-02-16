@@ -38,63 +38,63 @@ export default async function BankTransferPage({ searchParams }: Props) {
   const paymentReference = `CSZ-${order.orderNumber}`;
 
   return (
-    <main className="site-container py-8 max-w-2xl">
-      <div className="text-center mb-8">
-        <div className="w-16 h-16 mx-auto mb-6 bg-blue-100 rounded-full flex items-center justify-center">
+    <main className="site-container py-4 sm:py-8 max-w-2xl">
+      <div className="text-center mb-6 sm:mb-8">
+        <div className="w-16 h-16 mx-auto mb-4 sm:mb-6 bg-blue-100 rounded-full flex items-center justify-center">
           <Banknote className="w-8 h-8 text-blue-600" />
         </div>
-        <h1 className="text-2xl font-bold mb-2">Banki átutalás</h1>
-        <p className="text-muted-foreground">
+        <h1 className="text-xl sm:text-2xl font-bold mb-2">Banki átutalás</h1>
+        <p className="text-muted-foreground text-sm sm:text-base">
           Kérem utalja át az alábbi összeget a megadott bankszámlára.
         </p>
       </div>
 
-      <div className="border rounded-lg p-6 space-y-6">
+      <div className="border rounded-lg p-4 sm:p-6 space-y-6">
         {/* Amount */}
         <div className="text-center py-4 bg-muted rounded-lg">
           <p className="text-sm text-muted-foreground mb-1">Fizetendő összeg</p>
-          <p className="text-3xl font-bold">{formatHUF(order.total)}</p>
+          <p className="text-2xl sm:text-3xl font-bold">{formatHUF(order.total)}</p>
         </div>
 
         {/* Bank details */}
         <div className="space-y-4">
           <h2 className="font-semibold">Bankszámla adatok</h2>
 
-          <div className="grid gap-4">
+          <div className="grid gap-3 sm:gap-4">
             <div className="flex justify-between items-center p-3 bg-muted/50 rounded">
-              <div>
+              <div className="min-w-0">
                 <p className="text-sm text-muted-foreground">Kedvezményezett neve</p>
                 <p className="font-medium">Dunamenti CSZ Kft.</p>
               </div>
             </div>
 
             <div className="flex justify-between items-center p-3 bg-muted/50 rounded">
-              <div>
+              <div className="min-w-0">
                 <p className="text-sm text-muted-foreground">Bank neve</p>
                 <p className="font-medium">OTP Bank</p>
               </div>
             </div>
 
-            <div className="flex justify-between items-center p-3 bg-muted/50 rounded">
-              <div>
+            <div className="flex justify-between items-center gap-2 p-3 bg-muted/50 rounded">
+              <div className="min-w-0">
                 <p className="text-sm text-muted-foreground">IBAN</p>
-                <p className="font-mono font-medium">HU12 1234 5678 9012 3456 7890 1234</p>
+                <p className="font-mono font-medium text-xs sm:text-base break-all sm:break-normal">HU12 1234 5678 9012 3456 7890 1234</p>
               </div>
               <CopyButton value="HU12123456789012345678901234" />
             </div>
 
-            <div className="flex justify-between items-center p-3 bg-muted/50 rounded">
-              <div>
+            <div className="flex justify-between items-center gap-2 p-3 bg-muted/50 rounded">
+              <div className="min-w-0">
                 <p className="text-sm text-muted-foreground">BIC/SWIFT</p>
                 <p className="font-mono font-medium">OTPVHUHB</p>
               </div>
               <CopyButton value="OTPVHUHB" />
             </div>
 
-            <div className="flex justify-between items-center p-3 bg-primary/10 rounded border border-primary/20">
-              <div>
+            <div className="flex justify-between items-center gap-2 p-3 bg-primary/10 rounded border border-primary/20">
+              <div className="min-w-0">
                 <p className="text-sm text-muted-foreground">Közlemény (FONTOS!)</p>
-                <p className="font-mono font-medium text-primary">{paymentReference}</p>
+                <p className="font-mono font-medium text-primary break-all sm:break-normal">{paymentReference}</p>
               </div>
               <CopyButton value={paymentReference} />
             </div>

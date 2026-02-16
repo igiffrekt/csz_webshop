@@ -114,26 +114,26 @@ export function ProductCollections({
   }
 
   return (
-    <section className="py-16 lg:py-20 bg-white">
+    <section className="py-10 lg:py-20 bg-white">
       <div className="site-container">
         {/* Section header */}
-        <div className="text-center mb-8">
+        <div className="text-center mb-6 sm:mb-8">
           <span className="inline-block bg-amber-500 text-white text-xs font-bold uppercase tracking-widest px-4 py-1.5 rounded-full mb-4">
             Termékeink
           </span>
-          <h2 className="text-3xl lg:text-5xl font-extrabold text-gray-900">
+          <h2 className="text-2xl sm:text-3xl lg:text-5xl font-extrabold text-gray-900">
             Termékkínálatunk
           </h2>
         </div>
 
         {/* Pill-shaped filter tabs */}
-        <div className="flex flex-wrap justify-center gap-3 mb-10">
+        <div className="flex flex-nowrap sm:flex-wrap sm:justify-center gap-2 sm:gap-3 mb-8 sm:mb-10 overflow-x-auto pb-2 sm:pb-0 scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0">
           {tabs.map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
               className={cn(
-                'px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-200 border',
+                'flex-shrink-0 px-4 sm:px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-200 border',
                 activeTab === tab.id
                   ? 'bg-[#FFBB36] border-[#FFBB36] text-black'
                   : 'bg-white border-gray-200 text-gray-600 hover:border-gray-300 hover:text-gray-900'
@@ -188,7 +188,7 @@ export function ProductCollections({
             <div
               key={product._id}
               className={cn(
-                'flex-shrink-0 w-[280px] md:w-[290px]',
+                'flex-shrink-0 w-[240px] sm:w-[280px] md:w-[290px]',
                 !isDragging && 'snap-start'
               )}
             >
@@ -199,10 +199,10 @@ export function ProductCollections({
       </div>
 
       {/* View all button */}
-      <div className="text-center mt-10">
+      <div className="text-center mt-8 sm:mt-10 px-4 sm:px-0">
         <Link
           href="/termekek"
-          className="inline-flex items-center gap-2 px-8 py-3 bg-black text-white font-medium rounded-full hover:bg-gray-800 transition-colors"
+          className="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-8 py-3 bg-black text-white font-medium rounded-full hover:bg-gray-800 transition-colors"
         >
           Összes termék megtekintése
         </Link>

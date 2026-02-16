@@ -18,15 +18,15 @@ export default async function AccountPage() {
   }
 
   return (
-    <div className="site-container py-8">
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold">Fiókom</h1>
-        <p className="text-muted-foreground mt-1">
+    <div className="site-container py-4 sm:py-8">
+      <div className="mb-6 sm:mb-8">
+        <h1 className="text-xl sm:text-2xl font-bold">Fiókom</h1>
+        <p className="text-muted-foreground mt-1 text-sm sm:text-base">
           Üdvözöllek, {session.user.username || session.user.name}!
         </p>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-3 sm:gap-6 md:grid-cols-2 lg:grid-cols-3">
         <Link
           href="/fiok/profil"
           className="group p-6 border rounded-lg hover:bg-muted/50 transition-colors"

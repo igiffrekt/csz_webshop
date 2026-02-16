@@ -68,7 +68,7 @@ export function AddressCard({
         {address.phone && <p>Tel: {address.phone}</p>}
       </div>
 
-      <div className="flex gap-2 mt-4 pt-4 border-t">
+      <div className="flex flex-wrap gap-1 sm:gap-2 mt-4 pt-4 border-t">
         <Button
           variant="ghost"
           size="sm"

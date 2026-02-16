@@ -51,13 +51,13 @@ export function ProductFilters({ categories, className }: ProductFiltersProps) {
   );
 
   return (
-    <div className={cn("flex flex-wrap gap-3 items-center", className)}>
+    <div className={cn("flex flex-col sm:flex-row flex-wrap gap-2 sm:gap-3 sm:items-center", className)}>
       {/* Category dropdown */}
       <Select
         value={category ?? "all"}
         onValueChange={(v) => setCategory(v === "all" ? null : v)}
       >
-        <SelectTrigger className="w-auto min-w-[180px] border-gray-200 rounded-full bg-white">
+        <SelectTrigger className="w-full sm:w-auto sm:min-w-[180px] h-11 sm:h-10 border-gray-200 rounded-full bg-white">
           <SelectValue placeholder={t("allCategories")} />
         </SelectTrigger>
         <SelectContent>
@@ -77,7 +77,7 @@ export function ProductFilters({ categories, className }: ProductFiltersProps) {
         value={sort ?? "createdAt:desc"}
         onValueChange={(v) => setSort(v === "createdAt:desc" ? null : v)}
       >
-        <SelectTrigger className="w-auto min-w-[160px] border-gray-200 rounded-full bg-white">
+        <SelectTrigger className="w-full sm:w-auto sm:min-w-[160px] h-11 sm:h-10 border-gray-200 rounded-full bg-white">
           <SelectValue placeholder="Rendezés" />
         </SelectTrigger>
         <SelectContent>

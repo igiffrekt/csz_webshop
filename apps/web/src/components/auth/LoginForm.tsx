@@ -81,7 +81,8 @@ export function LoginForm({ redirectTo }: LoginFormProps) {
         )}
       </div>
 
-      <Button type="submit" className="w-full" disabled={isPending}>
+      <Button type="submit" className="w-full h-11 sm:h-10 rounded-full bg-amber-500 text-gray-900 font-semibold hover:bg-amber-400" disabled={isPending}>
+        <span className="mr-2 text-[0.5rem] leading-none">&#9679;</span>
         {isPending ? "Bejelentkezés..." : "Bejelentkezés"}
       </Button>
 

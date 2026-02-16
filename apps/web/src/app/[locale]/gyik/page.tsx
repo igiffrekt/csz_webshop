@@ -107,31 +107,32 @@ export default async function FAQPage() {
   );
 
   return (
-    <main className="site-container py-8 max-w-4xl">
+    <main className="site-container py-4 sm:py-8 max-w-4xl">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(faqJsonLd),
         }}
       />
-      <h1 className="text-3xl font-bold mb-8">Gyakran Ismételt Kérdések</h1>
+      <h1 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-8">Gyakran Ismételt Kérdések</h1>
 
-      <p className="text-muted-foreground mb-8">
+      <p className="text-muted-foreground mb-6 sm:mb-8 text-sm sm:text-base">
         Itt találja a leggyakrabban feltett kérdésekre adott válaszainkat.
         Ha nem találja a keresett információt, kérjük vegye fel velünk a kapcsolatot.
       </p>
 
       <FAQAccordion faqs={displayFaqs} groupByCategory={hasCategories} />
 
-      <div className="mt-12 p-6 bg-muted rounded-lg">
-        <h2 className="text-lg font-semibold mb-2">Nem találta a választ?</h2>
-        <p className="text-muted-foreground mb-4">
+      <div className="mt-8 sm:mt-12 p-4 sm:p-6 bg-muted rounded-lg">
+        <h2 className="text-base sm:text-lg font-semibold mb-2">Nem találta a választ?</h2>
+        <p className="text-muted-foreground mb-4 text-sm sm:text-base">
           Írjon nekünk és kollégáink készséggel segítenek.
         </p>
         <a
           href="/kapcsolat"
-          className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
+          className="inline-flex items-center justify-center rounded-full bg-amber-500 text-gray-900 px-6 py-2.5 text-sm font-semibold hover:bg-amber-400 transition-colors"
         >
+          <span className="mr-2 text-[0.5rem] leading-none">&#9679;</span>
           Kapcsolatfelvétel
         </a>
       </div>

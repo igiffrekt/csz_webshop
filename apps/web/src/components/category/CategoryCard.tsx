@@ -43,15 +43,15 @@ export function CategoryCard({ category }: CategoryCardProps) {
       </div>
 
       {/* Content */}
-      <div className="p-4">
-        <h3 className="font-bold text-secondary-900 mb-1">{category.name}</h3>
+      <div className="p-3 sm:p-4">
+        <h3 className="font-bold text-secondary-900 mb-1 text-sm sm:text-base">{category.name}</h3>
         {category.description && (
-          <p className="text-secondary-600 text-sm line-clamp-2 mb-3">{category.description}</p>
+          <p className="text-secondary-600 text-xs sm:text-sm line-clamp-2 mb-2 sm:mb-3">{category.description}</p>
         )}
 
-        <span className="inline-flex items-center gap-1.5 text-primary-500 font-medium text-sm group-hover:gap-3 transition-all duration-200">
+        <span className="inline-flex items-center gap-1.5 text-primary-500 font-medium text-xs sm:text-sm group-hover:gap-3 transition-all duration-200">
           Böngészés
-          <ArrowRight className="h-4 w-4" />
+          <ArrowRight className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
         </span>
       </div>
     </Link>

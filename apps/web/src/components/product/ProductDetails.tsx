@@ -78,30 +78,30 @@ export function ProductDetails({ product, children }: ProductDetailsProps) {
   const selectedImage = displayImages[selectedImageIndex];
 
   return (
-    <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-12">
       {/* Left: Gallery */}
       <div className="flex flex-col gap-4">
         {/* Main image */}
-        <div className="relative aspect-square w-full overflow-hidden rounded-[30px] bg-white">
+        <div className="relative aspect-square w-full overflow-hidden rounded-2xl sm:rounded-[30px] bg-white">
           <Image
             src={getImageUrl(selectedImage.url)}
             alt={selectedImage.alt || product.name}
             fill
             sizes="(max-width: 768px) 100vw, 50vw"
-            className="object-contain p-8"
+            className="object-contain p-4 sm:p-8"
             priority
           />
         </div>
 
         {/* Thumbnail strip */}
         {displayImages.length > 1 && (
-          <div className="flex gap-3 overflow-x-auto pb-2">
+          <div className="flex gap-2 sm:gap-3 overflow-x-auto pb-2 -mx-1 px-1 snap-x snap-mandatory">
             {displayImages.map((image, index) => (
               <button
                 key={`${image._key || index}`}
                 onClick={() => setSelectedImageIndex(index)}
                 className={cn(
-                  'relative h-20 w-20 flex-shrink-0 rounded-xl overflow-hidden border-2 transition-all bg-white',
+                  'relative h-16 w-16 sm:h-20 sm:w-20 flex-shrink-0 rounded-lg sm:rounded-xl overflow-hidden border-2 transition-all bg-white snap-start',
                   index === selectedImageIndex ? 'border-[#FFBB36] ring-2 ring-[#FFBB36]/20' : 'border-transparent hover:border-gray-300'
                 )}
               >
@@ -109,8 +109,8 @@ export function ProductDetails({ product, children }: ProductDetailsProps) {
                   src={getImageUrl(image.url)}
                   alt={image.alt || `${product.name} ${index + 1}`}
                   fill
-                  sizes="80px"
-                  className="object-contain p-2"
+                  sizes="(max-width: 640px) 64px, 80px"
+                  className="object-contain p-1.5 sm:p-2"
                 />
               </button>
             ))}

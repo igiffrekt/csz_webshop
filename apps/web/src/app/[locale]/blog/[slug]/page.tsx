@@ -58,12 +58,12 @@ export default async function BlogPostPage({ params }: Props) {
   }
 
   return (
-    <main className="site-container py-10 max-w-4xl">
+    <main className="site-container py-6 sm:py-10 max-w-4xl">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }} />
       {/* Back link */}
       <Link
         href="/blog"
-        className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-gray-900 transition-colors mb-8"
+        className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-gray-900 transition-colors mb-6 sm:mb-8"
       >
         <ArrowLeft className="h-4 w-4" />
         Vissza a bloghoz
@@ -71,8 +71,8 @@ export default async function BlogPostPage({ params }: Props) {
 
       <article>
         {/* Header */}
-        <header className="mb-8">
-          <h1 className="text-3xl lg:text-4xl font-bold text-gray-900 leading-tight">
+        <header className="mb-6 sm:mb-8">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 leading-tight">
             {post.title}
           </h1>
 
@@ -94,7 +94,7 @@ export default async function BlogPostPage({ params }: Props) {
 
         {/* Cover image */}
         {post.coverImage?.url && (
-          <div className="relative aspect-[16/9] overflow-hidden rounded-2xl mb-10">
+          <div className="relative aspect-[16/9] overflow-hidden rounded-xl sm:rounded-2xl mb-6 sm:mb-10">
             <Image
               src={post.coverImage.url}
               alt={post.coverImage.alt || post.title}

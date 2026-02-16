@@ -64,9 +64,9 @@ export function TrustBadges({ trustBadges }: TrustBadgesProps) {
     : defaultBadges;
 
   return (
-    <section className="py-6 lg:py-10 bg-gradient-to-r from-gray-50 via-white to-gray-50">
+    <section className="py-4 lg:py-10 bg-gradient-to-r from-gray-50 via-white to-gray-50">
       <div className="site-container">
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 lg:gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 lg:gap-6">
           {badges.map((badge, i) => {
             const Icon = badge.icon;
             return (
@@ -78,14 +78,14 @@ export function TrustBadges({ trustBadges }: TrustBadgesProps) {
                 transition={{ duration: 0.5, delay: i * 0.1, ease: 'easeOut' }}
                 className="group"
               >
-                <div className={`relative flex items-center gap-4 p-5 lg:p-6 rounded-2xl bg-white border border-gray-100 hover:border-transparent transition-all duration-300 hover:shadow-xl ${badge.glow} cursor-default`}>
+                <div className={`relative flex items-center gap-3 sm:gap-4 p-4 sm:p-5 lg:p-6 rounded-2xl bg-white border border-gray-100 hover:border-transparent transition-all duration-300 hover:shadow-xl ${badge.glow} cursor-default`}>
                   {/* Icon with gradient bg */}
                   <motion.div
                     whileHover={{ scale: 1.1, rotate: 5 }}
                     transition={{ type: 'spring', stiffness: 300, damping: 15 }}
-                    className={`flex-shrink-0 w-14 h-14 rounded-2xl bg-gradient-to-br ${badge.color} flex items-center justify-center shadow-lg`}
+                    className={`flex-shrink-0 w-11 h-11 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl bg-gradient-to-br ${badge.color} flex items-center justify-center shadow-lg`}
                   >
-                    <Icon className="h-6 w-6 text-white" strokeWidth={2} />
+                    <Icon className="h-5 w-5 sm:h-6 sm:w-6 text-white" strokeWidth={2} />
                   </motion.div>
                   <div>
                     <h3 className="font-bold text-gray-900 text-sm lg:text-base">

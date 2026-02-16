@@ -44,49 +44,49 @@ export default async function OrderDetailPage({ params }: Props) {
   const billingAddress = typeof order.billingAddress === 'string' ? JSON.parse(order.billingAddress) : order.billingAddress;
 
   return (
-    <main className="site-container py-8 max-w-4xl">
-      <div className="flex items-center gap-4 mb-8">
+    <main className="site-container py-4 sm:py-8 max-w-4xl">
+      <div className="flex items-center gap-3 sm:gap-4 mb-4 sm:mb-8">
         <Button variant="ghost" size="icon" asChild>
           <Link href="/fiok/rendelesek">
             <ArrowLeft className="h-5 w-5" />
           </Link>
         </Button>
-        <div>
-          <h1 className="text-2xl font-bold font-mono">{order.orderNumber}</h1>
-          <p className="text-sm text-muted-foreground">{orderDate}</p>
+        <div className="min-w-0">
+          <h1 className="text-lg sm:text-2xl font-bold font-mono truncate">{order.orderNumber}</h1>
+          <p className="text-xs sm:text-sm text-muted-foreground">{orderDate}</p>
         </div>
-        <Badge variant={status.variant} className="ml-auto">
+        <Badge variant={status.variant} className="ml-auto flex-shrink-0">
           {status.label}
         </Badge>
       </div>
 
-      <div className="grid lg:grid-cols-3 gap-8">
-        <div className="lg:col-span-2 space-y-6">
-          <div className="border rounded-lg p-6">
+      <div className="grid lg:grid-cols-3 gap-4 sm:gap-8">
+        <div className="lg:col-span-2 space-y-4 sm:space-y-6">
+          <div className="border rounded-lg p-4 sm:p-6">
             <h2 className="font-semibold mb-4 flex items-center gap-2">
               <Package className="h-5 w-5" />
               Termékek
             </h2>
             <div className="space-y-4">
               {lineItems.map((item: any, index: number) => (
-                <div key={index} className="flex justify-between items-center">
-                  <div>
-                    <p className="font-medium">{item.name}</p>
+                <div key={index} className="flex justify-between items-center gap-2">
+                  <div className="min-w-0">
+                    <p className="font-medium text-sm sm:text-base truncate">{item.name}</p>
                     {item.variantName && (
-                      <p className="text-sm text-muted-foreground">{item.variantName}</p>
+                      <p className="text-xs sm:text-sm text-muted-foreground">{item.variantName}</p>
                     )}
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-xs sm:text-sm text-muted-foreground">
                       {item.quantity} x {formatPrice(item.price)}
                     </p>
                   </div>
-                  <span className="font-medium">{formatPrice(item.total)}</span>
+                  <span className="font-medium text-sm sm:text-base flex-shrink-0">{formatPrice(item.total)}</span>
                 </div>
               ))}
             </div>
           </div>
 
           <div className="grid sm:grid-cols-2 gap-4">
-            <div className="border rounded-lg p-6">
+            <div className="border rounded-lg p-4 sm:p-6">
               <h2 className="font-semibold mb-2">Szállítási cím</h2>
               <div className="text-sm text-muted-foreground">
                 <p>{shippingAddress.recipientName}</p>
@@ -96,7 +96,7 @@ export default async function OrderDetailPage({ params }: Props) {
             </div>
 
             {billingAddress && (
-              <div className="border rounded-lg p-6">
+              <div className="border rounded-lg p-4 sm:p-6">
                 <h2 className="font-semibold mb-2">Számlázási cím</h2>
                 <div className="text-sm text-muted-foreground">
                   {billingAddress.companyName && (
@@ -114,18 +114,18 @@ export default async function OrderDetailPage({ params }: Props) {
           </div>
 
           {order.poReference && (
-            <div className="border rounded-lg p-6">
+            <div className="border rounded-lg p-4 sm:p-6">
               <h2 className="font-semibold mb-2 flex items-center gap-2">
                 <FileText className="h-5 w-5" />
                 Megrendelési hivatkozás
               </h2>
-              <p className="font-mono">{order.poReference}</p>
+              <p className="font-mono text-sm sm:text-base break-all sm:break-normal">{order.poReference}</p>
             </div>
           )}
         </div>
 
         <div className="lg:col-span-1">
-          <div className="border rounded-lg p-6 sticky top-4">
+          <div className="border rounded-lg p-4 sm:p-6 sticky top-4">
             <h2 className="font-semibold mb-4">Összegzés</h2>
             <div className="space-y-2 text-sm">
               <div className="flex justify-between">

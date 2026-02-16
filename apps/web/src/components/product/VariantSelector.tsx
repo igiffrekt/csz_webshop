@@ -51,7 +51,7 @@ export function VariantSelector({
               onClick={() => !isOutOfStock && handleSelect(variant)}
               disabled={isOutOfStock}
               className={cn(
-                'px-4 py-2 text-sm font-medium rounded-md border transition-colors',
+                'px-4 py-2.5 sm:py-2 text-sm font-medium rounded-full border transition-colors min-h-[44px] sm:min-h-0',
                 isSelected
                   ? 'border-primary bg-primary text-primary-foreground'
                   : 'border-input bg-background hover:bg-accent hover:text-accent-foreground',

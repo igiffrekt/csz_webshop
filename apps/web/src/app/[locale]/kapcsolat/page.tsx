@@ -9,22 +9,22 @@ export const metadata: Metadata = {
 
 export default function ContactPage() {
   return (
-    <main className="site-container py-8">
-      <h1 className="text-3xl font-bold mb-8">Kapcsolat</h1>
+    <main className="site-container py-4 sm:py-8">
+      <h1 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8">Kapcsolat</h1>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
         {/* Contact Form */}
         <div className="lg:col-span-2">
-          <div className="bg-card rounded-lg border p-6">
-            <h2 className="text-xl font-semibold mb-6">Írjon nekünk</h2>
+          <div className="bg-card rounded-lg border p-4 sm:p-6">
+            <h2 className="text-lg sm:text-xl font-semibold mb-4 sm:mb-6">Írjon nekünk</h2>
             <ContactForm />
           </div>
         </div>
 
         {/* Contact Info */}
         <div className="space-y-6">
-          <div className="bg-card rounded-lg border p-6">
-            <h2 className="text-xl font-semibold mb-4">Elérhetőségeink</h2>
+          <div className="bg-card rounded-lg border p-4 sm:p-6">
+            <h2 className="text-lg sm:text-xl font-semibold mb-4">Elérhetőségeink</h2>
 
             <div className="space-y-4">
               <div className="flex items-start gap-3">

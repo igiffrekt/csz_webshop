@@ -81,19 +81,22 @@ export function CartSheet({ open, onOpenChange }: CartSheetProps) {
               <CartSummary />
             </div>
 
-            <SheetFooter className="p-6 pt-0 sm:flex-col sm:space-x-0 gap-2">
+            <SheetFooter className="p-4 sm:p-6 pt-0 sm:flex-col sm:space-x-0 gap-2">
               <Button
                 asChild
                 size="lg"
-                className="w-full"
+                className="w-full rounded-full bg-amber-500 text-gray-900 font-semibold hover:bg-amber-400 h-12"
                 onClick={() => onOpenChange(false)}
               >
-                <Link href="/penztar">Tovább a pénztárhoz</Link>
+                <Link href="/penztar">
+                  <span className="mr-2 text-[0.5rem] leading-none">&#9679;</span>
+                  Tovább a pénztárhoz
+                </Link>
               </Button>
               <Button
                 variant="outline"
                 size="lg"
-                className="w-full"
+                className="w-full h-12"
                 onClick={() => onOpenChange(false)}
                 asChild
               >

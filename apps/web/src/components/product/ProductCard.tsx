@@ -40,7 +40,7 @@ export function ProductCard({ product, className }: ProductCardProps) {
           src={imageUrl}
           alt={imageAlt}
           fill
-          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 25vw"
           className="object-cover transition-transform duration-300 group-hover:scale-105"
         />
 
@@ -60,14 +60,14 @@ export function ProductCard({ product, className }: ProductCardProps) {
       </div>
 
       {/* Content */}
-      <div className="p-4 space-y-2">
-        <h3 className="font-medium text-foreground line-clamp-2 group-hover:text-primary transition-colors">
+      <div className="p-3 sm:p-4 space-y-1.5 sm:space-y-2">
+        <h3 className="font-medium text-foreground line-clamp-2 group-hover:text-primary transition-colors text-sm sm:text-base">
           {product.name}
         </h3>
 
         {/* Price */}
-        <div className="flex items-baseline gap-2">
-          <span className="text-lg font-bold text-foreground">
+        <div className="flex items-baseline gap-1.5 sm:gap-2">
+          <span className="text-base sm:text-lg font-bold text-foreground">
             {formatPrice(product.basePrice)}
           </span>
           {product.compareAtPrice && product.compareAtPrice > product.basePrice && (

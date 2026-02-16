@@ -145,14 +145,14 @@ export function CategoryCards({ categories, products = [], sectionTitle, section
   if (displayCategories.length === 0) return null;
 
   return (
-    <section className="py-14 lg:py-24 bg-gradient-to-b from-gray-50/80 via-white to-gray-50/50">
+    <section className="py-10 lg:py-24 bg-gradient-to-b from-gray-50/80 via-white to-gray-50/50">
       <div className="site-container">
         {/* Section header */}
-        <div className="text-center mb-12 lg:mb-16">
+        <div className="text-center mb-8 lg:mb-16">
           <span className="inline-block bg-amber-500 text-white text-xs font-bold uppercase tracking-widest px-4 py-1.5 rounded-full mb-4">
             {sectionSubtitle || 'Kategóriák'}
           </span>
-          <h2 className="text-3xl lg:text-5xl font-extrabold text-gray-900">
+          <h2 className="text-2xl sm:text-3xl lg:text-5xl font-extrabold text-gray-900">
             {sectionTitle || 'Termékkategóriák'}
           </h2>
         </div>
@@ -408,7 +408,7 @@ function DockList({
         <Link
           key={idx}
           href={`/kategoriak/${child.slug}`}
-          className={`group/link flex items-center gap-1.5 text-sm text-gray-600 ${hoverColor} py-0.5 origin-left transition-all duration-200 ease-out`}
+          className={`group/link flex items-center gap-1.5 text-sm text-gray-600 ${hoverColor} py-1.5 sm:py-0.5 origin-left transition-all duration-200 ease-out`}
           style={{ transform: `scale(${getScale(idx)})` }}
           onMouseEnter={() => setActiveIdx(idx)}
         >

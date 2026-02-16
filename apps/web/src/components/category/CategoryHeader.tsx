@@ -12,7 +12,7 @@ export function CategoryHeader({ category }: CategoryHeaderProps) {
   return (
     <div className="mb-8">
       {/* Breadcrumb */}
-      <nav className="text-sm text-muted-foreground mb-4 flex items-center gap-1">
+      <nav className="text-sm text-muted-foreground mb-4 flex items-center gap-1 overflow-x-auto whitespace-nowrap pb-1 scrollbar-hide">
         <Link href="/kategoriak" className="hover:underline">
           Kategóriák
         </Link>
@@ -32,9 +32,9 @@ export function CategoryHeader({ category }: CategoryHeaderProps) {
       </nav>
 
       {/* Header with optional image */}
-      <div className="flex items-start gap-6">
+      <div className="flex items-start gap-4 sm:gap-6">
         {category.image && (
-          <div className="relative h-24 w-24 flex-shrink-0 overflow-hidden rounded-lg">
+          <div className="relative h-16 w-16 sm:h-24 sm:w-24 flex-shrink-0 overflow-hidden rounded-lg">
             <Image
               src={getImageUrl(category.image.url)}
               alt={category.name}
@@ -44,7 +44,7 @@ export function CategoryHeader({ category }: CategoryHeaderProps) {
           </div>
         )}
         <div>
-          <h1 className="text-3xl font-bold">{category.name}</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold">{category.name}</h1>
           {category.description && (
             <p className="mt-2 text-muted-foreground">{category.description}</p>
           )}

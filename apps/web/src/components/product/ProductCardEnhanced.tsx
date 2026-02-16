@@ -59,9 +59,9 @@ function MiniCountdown({ endDate }: { endDate: Date }) {
 
 function TimeBox({ value, label }: { value: number; label: string }) {
   return (
-    <div className="bg-gray-900 text-white text-center rounded px-1.5 py-1 min-w-[28px]">
-      <div className="text-xs font-bold leading-none">{value.toString().padStart(2, '0')}</div>
-      <div className="text-[8px] text-gray-400 leading-none mt-0.5">{label}</div>
+    <div className="bg-gray-900 text-white text-center rounded px-1 sm:px-1.5 py-0.5 sm:py-1 min-w-[24px] sm:min-w-[28px]">
+      <div className="text-[10px] sm:text-xs font-bold leading-none">{value.toString().padStart(2, '0')}</div>
+      <div className="text-[7px] sm:text-[8px] text-gray-400 leading-none mt-0.5">{label}</div>
     </div>
   );
 }
@@ -108,12 +108,12 @@ export function ProductCardEnhanced({
   return (
     <div className={cn(
       "group relative bg-transparent overflow-visible transition-all duration-300",
-      isCollection && "h-[500px] flex flex-col"
+      isCollection && "h-auto sm:h-[500px] flex flex-col"
     )}>
       {/* Image container */}
       <div className={cn(
-        "relative overflow-hidden bg-[#f6f6f6] rounded-[30px]",
-        isCollection ? "h-[385px] flex-shrink-0" : "aspect-square"
+        "relative overflow-hidden bg-[#f6f6f6] rounded-2xl sm:rounded-[30px]",
+        isCollection ? "h-[240px] sm:h-[385px] flex-shrink-0" : "aspect-square"
       )}>
         <Link href={productUrl} className="block w-full h-full">
           {imageUrl ? (
@@ -121,7 +121,7 @@ export function ProductCardEnhanced({
               src={imageUrl}
               alt={product.name}
               fill
-              className="object-contain p-4 transition-transform duration-500 group-hover:scale-110"
+              className="object-contain p-2 sm:p-4 transition-transform duration-500 group-hover:scale-110"
               sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
             />
           ) : (
@@ -133,8 +133,8 @@ export function ProductCardEnhanced({
 
         {/* Discount badge - yellow like reference */}
         {isOnSale && (
-          <div className="absolute top-3 left-3 pointer-events-none">
-            <span className="bg-[#FFBB36] text-gray-900 text-xs font-bold px-2.5 py-1 rounded">
+          <div className="absolute top-2 left-2 sm:top-3 sm:left-3 pointer-events-none">
+            <span className="bg-[#FFBB36] text-gray-900 text-[10px] sm:text-xs font-bold px-2 sm:px-2.5 py-0.5 sm:py-1 rounded">
               {discountPercent}% off
             </span>
           </div>
@@ -142,8 +142,8 @@ export function ProductCardEnhanced({
 
         {/* Featured badge */}
         {product.isFeatured && !isOnSale && (
-          <div className="absolute top-3 left-3 pointer-events-none">
-            <span className="bg-green-500 text-white text-xs font-bold px-2.5 py-1 rounded">
+          <div className="absolute top-2 left-2 sm:top-3 sm:left-3 pointer-events-none">
+            <span className="bg-green-500 text-white text-[10px] sm:text-xs font-bold px-2 sm:px-2.5 py-0.5 sm:py-1 rounded">
               Kiemelt
             </span>
           </div>
@@ -151,8 +151,8 @@ export function ProductCardEnhanced({
 
         {/* Out of stock badge */}
         {product.stock <= 0 && (
-          <div className="absolute top-3 left-3 pointer-events-none">
-            <span className="bg-gray-600 text-white text-xs font-medium px-2.5 py-1 rounded">
+          <div className="absolute top-2 left-2 sm:top-3 sm:left-3 pointer-events-none">
+            <span className="bg-gray-600 text-white text-[10px] sm:text-xs font-medium px-2 sm:px-2.5 py-0.5 sm:py-1 rounded">
               Elfogyott
             </span>
           </div>
@@ -160,9 +160,9 @@ export function ProductCardEnhanced({
 
         {/* Quick actions */}
         {showQuickActions && (
-          <div className="absolute top-3 right-3 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-x-2 group-hover:translate-x-0">
+          <div className="absolute top-2 right-2 sm:top-3 sm:right-3 flex flex-col gap-1.5 sm:gap-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-all duration-300 sm:translate-x-2 sm:group-hover:translate-x-0">
             <button
-              className="w-9 h-9 bg-white rounded-full shadow-md flex items-center justify-center hover:bg-[#FFBB36] hover:text-gray-900 transition-colors"
+              className="w-8 h-8 sm:w-9 sm:h-9 bg-white rounded-full shadow-md flex items-center justify-center hover:bg-[#FFBB36] hover:text-gray-900 transition-colors"
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
@@ -170,18 +170,18 @@ export function ProductCardEnhanced({
               }}
               title="Kedvencekhez"
             >
-              <Heart className="h-4 w-4" />
+              <Heart className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
             </button>
             <Link
               href={productUrl}
-              className="w-9 h-9 bg-white rounded-full shadow-md flex items-center justify-center hover:bg-[#FFBB36] hover:text-gray-900 transition-colors"
+              className="w-8 h-8 sm:w-9 sm:h-9 bg-white rounded-full shadow-md flex items-center justify-center hover:bg-[#FFBB36] hover:text-gray-900 transition-colors"
               title="Megtekintés"
             >
-              <Eye className="h-4 w-4" />
+              <Eye className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
             </Link>
             <button
               className={cn(
-                'w-9 h-9 bg-white rounded-full shadow-md flex items-center justify-center transition-colors',
+                'w-8 h-8 sm:w-9 sm:h-9 bg-white rounded-full shadow-md flex items-center justify-center transition-colors',
                 product.stock <= 0
                   ? 'text-gray-300 cursor-not-allowed'
                   : 'hover:bg-[#FFBB36] hover:text-gray-900'
@@ -190,14 +190,14 @@ export function ProductCardEnhanced({
               disabled={product.stock <= 0}
               title="Kosárba"
             >
-              <ShoppingCart className="h-4 w-4" />
+              <ShoppingCart className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
             </button>
           </div>
         )}
 
         {/* Countdown timer - shown for sale items */}
         {(showCountdown || isOnSale) && (
-          <div className="absolute bottom-3 left-3 right-3 pointer-events-none">
+          <div className="absolute bottom-2 left-2 right-2 sm:bottom-3 sm:left-3 sm:right-3 pointer-events-none">
             <MiniCountdown endDate={endDate} />
           </div>
         )}
@@ -216,7 +216,7 @@ export function ProductCardEnhanced({
           {category && (
             <Link
               href={`/kategoriak/${category.slug}`}
-              className="text-[14px] text-[#6f6f6f] hover:text-[#D4960A] transition-colors"
+              className="text-[12px] sm:text-[14px] text-[#6f6f6f] hover:text-[#D4960A] transition-colors"
             >
               {category.name}
             </Link>
@@ -231,14 +231,14 @@ export function ProductCardEnhanced({
 
         {/* Title */}
         <Link href={productUrl}>
-          <h3 className="font-medium text-gray-900 mt-2 line-clamp-2 group-hover:text-[#D4960A] transition-colors text-[16px]">
+          <h3 className="font-medium text-gray-900 mt-1 sm:mt-2 line-clamp-2 group-hover:text-[#D4960A] transition-colors text-[13px] sm:text-[16px]">
             {product.name}
           </h3>
         </Link>
 
         {/* Price */}
-        <div className="flex items-center gap-2 mt-2">
-          <span className="font-bold text-lg text-gray-900">
+        <div className="flex items-center gap-1.5 sm:gap-2 mt-1.5 sm:mt-2">
+          <span className="font-bold text-base sm:text-lg text-gray-900">
             {formatPrice(product.basePrice)}
           </span>
           {isOnSale && (

@@ -24,13 +24,13 @@ function StepIndicator({ currentStep }: { currentStep: string }) {
   const currentIndex = steps.findIndex(s => s.key === currentStep);
 
   return (
-    <nav className="mb-8">
-      <ol className="flex items-center gap-2">
+    <nav className="mb-4 sm:mb-8 overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
+      <ol className="flex items-center gap-1 sm:gap-2 min-w-max sm:min-w-0">
         {steps.map((step, index) => (
           <li key={step.key} className="flex items-center">
             <span
               className={`
-                flex items-center justify-center w-8 h-8 rounded-full text-sm font-medium
+                flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-full text-xs sm:text-sm font-medium
                 ${index <= currentIndex
                   ? 'bg-primary text-primary-foreground'
                   : 'bg-muted text-muted-foreground'
@@ -40,12 +40,12 @@ function StepIndicator({ currentStep }: { currentStep: string }) {
               {index + 1}
             </span>
             <span
-              className={`ml-2 text-sm ${index === currentIndex ? 'font-medium' : 'text-muted-foreground'}`}
+              className={`ml-1.5 sm:ml-2 text-xs sm:text-sm ${index === currentIndex ? 'font-medium' : 'text-muted-foreground'}`}
             >
               {step.label}
             </span>
             {index < steps.length - 1 && (
-              <span className="mx-4 h-px w-8 bg-border" />
+              <span className="mx-2 sm:mx-4 h-px w-4 sm:w-8 bg-border" />
             )}
           </li>
         ))}
@@ -97,7 +97,37 @@ export function CheckoutClient({ initialAddresses, userId }: CheckoutClientProps
     <div>
       <StepIndicator currentStep={step} />
 
-      <div className="grid lg:grid-cols-3 gap-8">
+      {/* Mobile order summary (collapsible) */}
+      <details className="lg:hidden border rounded-lg mb-4">
+        <summary className="flex items-center justify-between p-4 cursor-pointer">
+          <span className="font-semibold text-sm">Rendelés összegzése</span>
+          <span className="font-semibold text-sm">{cartStore.getTotal().toLocaleString('hu-HU')} Ft</span>
+        </summary>
+        <div className="px-4 pb-4 space-y-3">
+          {items.map((item) => (
+            <div key={item.id} className="flex justify-between text-sm">
+              <span className="text-muted-foreground">
+                {item.name} {item.variantName && `(${item.variantName})`} x {item.quantity}
+              </span>
+              <span>{(item.price * item.quantity).toLocaleString('hu-HU')} Ft</span>
+            </div>
+          ))}
+          <div className="border-t pt-3 space-y-2">
+            <div className="flex justify-between text-sm">
+              <span>Részösszeg</span>
+              <span>{cartStore.getSubtotal().toLocaleString('hu-HU')} Ft</span>
+            </div>
+            {cartStore.coupon && (
+              <div className="flex justify-between text-sm text-green-600">
+                <span>Kedvezmény ({cartStore.coupon.code})</span>
+                <span>-{cartStore.getDiscount().toLocaleString('hu-HU')} Ft</span>
+              </div>
+            )}
+          </div>
+        </div>
+      </details>
+
+      <div className="grid lg:grid-cols-3 gap-4 sm:gap-8">
         {/* Main checkout form */}
         <div className="lg:col-span-2">
           {step === 'shipping' && (
@@ -110,8 +140,8 @@ export function CheckoutClient({ initialAddresses, userId }: CheckoutClientProps
           )}
         </div>
 
-        {/* Order summary sidebar */}
-        <div className="lg:col-span-1">
+        {/* Desktop order summary sidebar */}
+        <div className="hidden lg:block lg:col-span-1">
           <div className="border rounded-lg p-6 sticky top-4">
             <h2 className="font-semibold mb-4">Rendelés összegzése</h2>
 

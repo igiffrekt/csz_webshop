@@ -29,20 +29,20 @@ export function OrderConfirmation({ order }: OrderConfirmationProps) {
   return (
     <div className="space-y-8">
       {/* Success header */}
-      <div className="text-center py-8">
-        <div className="w-16 h-16 mx-auto mb-6 bg-green-100 rounded-full flex items-center justify-center">
+      <div className="text-center py-6 sm:py-8">
+        <div className="w-16 h-16 mx-auto mb-4 sm:mb-6 bg-green-100 rounded-full flex items-center justify-center">
           <CheckCircle className="w-8 h-8 text-green-600" />
         </div>
-        <h1 className="text-2xl font-bold mb-2">Köszönjük a rendelését!</h1>
+        <h1 className="text-xl sm:text-2xl font-bold mb-2">Köszönjük a rendelését!</h1>
         <p className="text-muted-foreground">
           A rendelés száma: <span className="font-mono font-medium">{order.orderNumber}</span>
         </p>
       </div>
 
       {/* Order status */}
-      <div className="border rounded-lg p-6">
+      <div className="border rounded-lg p-4 sm:p-6">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="font-semibold">Rendelés állapota</h2>
+          <h2 className="font-semibold text-sm sm:text-base">Rendelés állapota</h2>
           <Badge variant={status.variant}>{status.label}</Badge>
         </div>
 
@@ -53,7 +53,7 @@ export function OrderConfirmation({ order }: OrderConfirmationProps) {
       </div>
 
       {/* Order details */}
-      <div className="border rounded-lg p-6 space-y-4">
+      <div className="border rounded-lg p-4 sm:p-6 space-y-4">
         <h2 className="font-semibold">Rendelés részletei</h2>
 
         {/* Line items */}
@@ -100,7 +100,7 @@ export function OrderConfirmation({ order }: OrderConfirmationProps) {
       </div>
 
       {/* Shipping address */}
-      <div className="border rounded-lg p-6">
+      <div className="border rounded-lg p-4 sm:p-6">
         <div className="flex items-center gap-2 mb-4">
           <Package className="h-5 w-5" />
           <h2 className="font-semibold">Szállítási cím</h2>
@@ -116,7 +116,7 @@ export function OrderConfirmation({ order }: OrderConfirmationProps) {
 
       {/* PO Reference */}
       {order.poReference && (
-        <div className="border rounded-lg p-6">
+        <div className="border rounded-lg p-4 sm:p-6">
           <h2 className="font-semibold mb-2">Megrendelési hivatkozás</h2>
           <p className="text-sm text-muted-foreground font-mono">{order.poReference}</p>
         </div>

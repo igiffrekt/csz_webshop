@@ -189,75 +189,75 @@ export default async function ProductPage({ params }: Props) {
       <div className="bg-white min-h-screen">
         <div className="border-b border-gray-100">
           <div className="site-container py-4">
-            <nav className="flex items-center gap-2 text-sm">
-              <Link href="/" className="text-gray-500 hover:text-[#FFBB36] transition-colors">
+            <nav className="flex items-center gap-2 text-sm overflow-x-auto whitespace-nowrap pb-1 scrollbar-hide">
+              <Link href="/" className="text-gray-500 hover:text-[#FFBB36] transition-colors flex-shrink-0">
                 <Home className="h-4 w-4" />
               </Link>
-              <ChevronRight className="h-4 w-4 text-gray-300" />
-              <Link href="/termekek" className="text-gray-500 hover:text-[#FFBB36] transition-colors">
+              <ChevronRight className="h-4 w-4 text-gray-300 flex-shrink-0" />
+              <Link href="/termekek" className="text-gray-500 hover:text-[#FFBB36] transition-colors flex-shrink-0">
                 Termékek
               </Link>
               {category && (
                 <>
-                  <ChevronRight className="h-4 w-4 text-gray-300" />
+                  <ChevronRight className="h-4 w-4 text-gray-300 flex-shrink-0" />
                   <Link
                     href={`/kategoriak/${category.slug}`}
-                    className="text-gray-500 hover:text-[#FFBB36] transition-colors"
+                    className="text-gray-500 hover:text-[#FFBB36] transition-colors flex-shrink-0"
                   >
                     {category.name}
                   </Link>
                 </>
               )}
-              <ChevronRight className="h-4 w-4 text-gray-300" />
-              <span className="text-gray-900 font-medium truncate max-w-[200px]">
+              <ChevronRight className="h-4 w-4 text-gray-300 flex-shrink-0" />
+              <span className="text-gray-900 font-medium truncate max-w-[150px] sm:max-w-[200px]">
                 {product.name}
               </span>
             </nav>
           </div>
         </div>
 
-        <main className="site-container py-8 lg:py-12">
-          <div className="bg-[#f6f6f6] rounded-[30px] p-6 lg:p-10">
+        <main className="site-container py-4 sm:py-8 lg:py-12">
+          <div className="bg-[#f6f6f6] rounded-2xl sm:rounded-[30px] p-4 sm:p-6 lg:p-10">
             <ProductDetails product={product}>
               <ProductInfo product={product} />
             </ProductDetails>
 
-            <div className="mt-10 pt-8 border-t border-gray-200">
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div className="flex items-center gap-3 p-4 bg-white rounded-2xl">
-                  <div className="w-10 h-10 bg-[#FFBB36] rounded-full flex items-center justify-center flex-shrink-0">
-                    <Truck className="h-5 w-5 text-white" />
+            <div className="mt-6 sm:mt-10 pt-6 sm:pt-8 border-t border-gray-200">
+              <div className="flex overflow-x-auto gap-3 sm:gap-4 pb-2 sm:pb-0 snap-x snap-mandatory -mx-1 px-1 md:grid md:grid-cols-4 md:overflow-visible">
+                <div className="flex items-center gap-2.5 sm:gap-3 p-3 sm:p-4 bg-white rounded-2xl flex-shrink-0 min-w-[200px] md:min-w-0 snap-start">
+                  <div className="w-9 h-9 sm:w-10 sm:h-10 bg-[#FFBB36] rounded-full flex items-center justify-center flex-shrink-0">
+                    <Truck className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
                   </div>
                   <div>
-                    <p className="font-medium text-gray-900 text-sm">Gyors szállítás</p>
-                    <p className="text-xs text-gray-500">1-3 munkanap</p>
+                    <p className="font-medium text-gray-900 text-xs sm:text-sm">Gyors szállítás</p>
+                    <p className="text-[10px] sm:text-xs text-gray-500">1-3 munkanap</p>
                   </div>
                 </div>
-                <div className="flex items-center gap-3 p-4 bg-white rounded-2xl">
-                  <div className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
-                    <Shield className="h-5 w-5 text-white" />
+                <div className="flex items-center gap-2.5 sm:gap-3 p-3 sm:p-4 bg-white rounded-2xl flex-shrink-0 min-w-[200px] md:min-w-0 snap-start">
+                  <div className="w-9 h-9 sm:w-10 sm:h-10 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
+                    <Shield className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
                   </div>
                   <div>
-                    <p className="font-medium text-gray-900 text-sm">Biztonságos fizetés</p>
-                    <p className="text-xs text-gray-500">SSL titkosítás</p>
+                    <p className="font-medium text-gray-900 text-xs sm:text-sm">Biztonságos fizetés</p>
+                    <p className="text-[10px] sm:text-xs text-gray-500">SSL titkosítás</p>
                   </div>
                 </div>
-                <div className="flex items-center gap-3 p-4 bg-white rounded-2xl">
-                  <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0">
-                    <Headphones className="h-5 w-5 text-white" />
+                <div className="flex items-center gap-2.5 sm:gap-3 p-3 sm:p-4 bg-white rounded-2xl flex-shrink-0 min-w-[200px] md:min-w-0 snap-start">
+                  <div className="w-9 h-9 sm:w-10 sm:h-10 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0">
+                    <Headphones className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
                   </div>
                   <div>
-                    <p className="font-medium text-gray-900 text-sm">Szakértői támogatás</p>
-                    <p className="text-xs text-gray-500">Hétfő-Péntek</p>
+                    <p className="font-medium text-gray-900 text-xs sm:text-sm">Szakértői támogatás</p>
+                    <p className="text-[10px] sm:text-xs text-gray-500">Hétfő-Péntek</p>
                   </div>
                 </div>
-                <div className="flex items-center gap-3 p-4 bg-white rounded-2xl">
-                  <div className="w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center flex-shrink-0">
-                    <Award className="h-5 w-5 text-white" />
+                <div className="flex items-center gap-2.5 sm:gap-3 p-3 sm:p-4 bg-white rounded-2xl flex-shrink-0 min-w-[200px] md:min-w-0 snap-start">
+                  <div className="w-9 h-9 sm:w-10 sm:h-10 bg-purple-500 rounded-full flex items-center justify-center flex-shrink-0">
+                    <Award className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
                   </div>
                   <div>
-                    <p className="font-medium text-gray-900 text-sm">Minőségi garancia</p>
-                    <p className="text-xs text-gray-500">CE tanúsítvány</p>
+                    <p className="font-medium text-gray-900 text-xs sm:text-sm">Minőségi garancia</p>
+                    <p className="text-[10px] sm:text-xs text-gray-500">CE tanúsítvány</p>
                   </div>
                 </div>
               </div>
@@ -272,12 +272,12 @@ export default async function ProductPage({ params }: Props) {
           />
 
           {relatedProducts.length > 0 && (
-            <section className="mt-16">
-              <div className="text-center mb-8">
-                <span className="text-gray-500 text-sm uppercase tracking-wider">Ajánljuk még</span>
-                <h2 className="text-2xl lg:text-3xl font-bold text-gray-900 mt-2">Kapcsolódó termékek</h2>
+            <section className="mt-10 sm:mt-16">
+              <div className="text-center mb-6 sm:mb-8">
+                <span className="text-gray-500 text-xs sm:text-sm uppercase tracking-wider">Ajánljuk még</span>
+                <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 mt-1 sm:mt-2">Kapcsolódó termékek</h2>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
                 {relatedProducts.map((relatedProduct: any) => (
                   <ProductCardEnhanced key={relatedProduct._id} product={relatedProduct} />
                 ))}

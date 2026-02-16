@@ -107,7 +107,7 @@ export function CategoryFilters({
   const currentCategoryName = categoryName || currentCategory?.name || "Kategória";
 
   return (
-    <div className={cn("flex flex-wrap gap-3 items-center", className)}>
+    <div className={cn("flex flex-col sm:flex-row flex-wrap gap-2 sm:gap-3 sm:items-center w-full sm:w-auto", className)}>
       {/* Filter icon label */}
       <div className="flex items-center gap-2 text-gray-600 mr-2">
         <SlidersHorizontal className="h-4 w-4" />
@@ -118,7 +118,7 @@ export function CategoryFilters({
       {hasCategories && (
         <Popover open={categoryOpen} onOpenChange={setCategoryOpen}>
           <PopoverTrigger asChild>
-            <button className="flex items-center gap-2 px-4 py-2 border border-gray-200 rounded-full bg-white hover:bg-gray-50 transition-colors min-w-[200px]">
+            <button className="flex items-center gap-2 px-4 py-2.5 sm:py-2 border border-gray-200 rounded-full bg-white hover:bg-gray-50 transition-colors w-full sm:w-auto sm:min-w-[200px] h-11 sm:h-10">
               <Folder className="h-4 w-4 text-gray-500" />
               <span className="flex-1 text-left text-sm truncate">{currentCategoryName}</span>
               <ChevronDown className={cn(
@@ -234,7 +234,7 @@ export function CategoryFilters({
           value={subcategory ?? "all"}
           onValueChange={(v) => setSubcategory(v === "all" ? null : v)}
         >
-          <SelectTrigger className="w-auto min-w-[180px] border-gray-200 rounded-full bg-white">
+          <SelectTrigger className="w-full sm:w-auto sm:min-w-[180px] h-11 sm:h-10 border-gray-200 rounded-full bg-white">
             <Tags className="h-4 w-4 mr-2 text-gray-500" />
             <SelectValue placeholder="Alkategória" />
           </SelectTrigger>
@@ -261,7 +261,7 @@ export function CategoryFilters({
         value={sort ?? "createdAt:desc"}
         onValueChange={(v) => setSort(v === "createdAt:desc" ? null : v)}
       >
-        <SelectTrigger className="w-auto min-w-[200px] border-gray-200 rounded-full bg-white">
+        <SelectTrigger className="w-full sm:w-auto sm:min-w-[200px] h-11 sm:h-10 border-gray-200 rounded-full bg-white">
           <ArrowUpDown className="h-4 w-4 mr-2 text-gray-500" />
           <SelectValue placeholder="Rendezés" />
         </SelectTrigger>

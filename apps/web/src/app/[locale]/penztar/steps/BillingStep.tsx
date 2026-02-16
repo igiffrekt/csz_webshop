@@ -132,6 +132,7 @@ export function BillingStep() {
               <Label htmlFor="billingPostalCode">Irányítószám *</Label>
               <Input
                 id="billingPostalCode"
+                inputMode="numeric"
                 value={billingForm.postalCode}
                 onChange={(e) => handleBillingChange('postalCode', e.target.value)}
                 placeholder="1234"
@@ -179,11 +180,12 @@ export function BillingStep() {
       </div>
 
       {/* Navigation */}
-      <div className="flex justify-between pt-6 border-t">
-        <Button variant="outline" onClick={prevStep}>
+      <div className="flex flex-col-reverse sm:flex-row justify-between gap-3 pt-6 border-t">
+        <Button variant="outline" onClick={prevStep} className="h-11 sm:h-10">
           Vissza
         </Button>
-        <Button onClick={handleContinue} disabled={!canContinue()}>
+        <Button onClick={handleContinue} disabled={!canContinue()} className="h-11 sm:h-10 rounded-full bg-amber-500 text-gray-900 font-semibold hover:bg-amber-400">
+          <span className="mr-2 text-[0.5rem] leading-none">&#9679;</span>
           Tovább az összegzéshez
         </Button>
       </div>

@@ -105,39 +105,39 @@ export default async function CategoryPage({ params, searchParams }: Props) {
     <div className="bg-secondary-50 min-h-screen">
       <div className="bg-white border-b border-secondary-200">
         <div className="site-container py-4">
-          <nav className="flex items-center gap-2 text-sm">
-            <Link href="/" className="text-secondary-500 hover:text-primary-500 transition-colors">
+          <nav className="flex items-center gap-2 text-sm overflow-x-auto whitespace-nowrap pb-1 scrollbar-hide">
+            <Link href="/" className="text-secondary-500 hover:text-primary-500 transition-colors flex-shrink-0">
               <Home className="h-4 w-4" />
             </Link>
-            <ChevronRight className="h-4 w-4 text-secondary-400" />
-            <Link href="/kategoriak" className="text-secondary-500 hover:text-primary-500 transition-colors">
+            <ChevronRight className="h-4 w-4 text-secondary-400 flex-shrink-0" />
+            <Link href="/kategoriak" className="text-secondary-500 hover:text-primary-500 transition-colors flex-shrink-0">
               Kategóriák
             </Link>
             {category.parent && (
               <>
-                <ChevronRight className="h-4 w-4 text-secondary-400" />
+                <ChevronRight className="h-4 w-4 text-secondary-400 flex-shrink-0" />
                 <Link
                   href={`/kategoriak/${getSlugString(category.parent.slug)}`}
-                  className="text-secondary-500 hover:text-primary-500 transition-colors"
+                  className="text-secondary-500 hover:text-primary-500 transition-colors flex-shrink-0"
                 >
                   {category.parent.name}
                 </Link>
               </>
             )}
-            <ChevronRight className="h-4 w-4 text-secondary-400" />
-            <span className="text-secondary-900 font-medium">{category.name}</span>
+            <ChevronRight className="h-4 w-4 text-secondary-400 flex-shrink-0" />
+            <span className="text-secondary-900 font-medium truncate">{category.name}</span>
           </nav>
         </div>
       </div>
 
       <div className="bg-white border-b border-secondary-200">
-        <div className="site-container py-8 lg:py-12">
-          <div className="flex items-center gap-4">
-            <div className="w-14 h-14 bg-primary-100 rounded-xl flex items-center justify-center">
-              <Folder className="h-7 w-7 text-primary-500" />
+        <div className="site-container py-6 sm:py-8 lg:py-12">
+          <div className="flex items-center gap-3 sm:gap-4">
+            <div className="w-11 h-11 sm:w-14 sm:h-14 bg-primary-100 rounded-xl flex items-center justify-center flex-shrink-0">
+              <Folder className="h-5 w-5 sm:h-7 sm:w-7 text-primary-500" />
             </div>
             <div>
-              <h1 className="text-3xl lg:text-4xl font-bold text-secondary-900">{category.name}</h1>
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-secondary-900">{category.name}</h1>
               {category.description && (
                 <p className="text-secondary-600 mt-1 max-w-2xl">{category.description}</p>
               )}
@@ -147,11 +147,11 @@ export default async function CategoryPage({ params, searchParams }: Props) {
         </div>
       </div>
 
-      <div className="site-container py-8">
+      <div className="site-container py-4 sm:py-8">
         {hasSubcategories && (
-          <section className="mb-10">
-            <h2 className="text-xl font-bold text-secondary-900 mb-4">Alkategóriák</h2>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+          <section className="mb-8 sm:mb-10">
+            <h2 className="text-lg sm:text-xl font-bold text-secondary-900 mb-3 sm:mb-4">Alkategóriák</h2>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
               {transformedChildren.map((child: any) => (
                 <CategoryCard key={child._id} category={child} />
               ))}
@@ -160,8 +160,8 @@ export default async function CategoryPage({ params, searchParams }: Props) {
         )}
 
         <section>
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
-            <h2 className="text-xl font-bold text-secondary-900">Termékek</h2>
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 mb-4 sm:mb-6">
+            <h2 className="text-lg sm:text-xl font-bold text-secondary-900">Termékek</h2>
             <CategoryFilters
               categories={filterCategories}
               subcategories={filterSubcategories}

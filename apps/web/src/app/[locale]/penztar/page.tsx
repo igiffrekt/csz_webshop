@@ -22,8 +22,8 @@ export default async function CheckoutPage() {
   }
 
   return (
-    <main className="site-container py-8 max-w-4xl">
-      <h1 className="text-2xl font-bold mb-8">Pénztár</h1>
+    <main className="site-container py-4 sm:py-8 max-w-4xl">
+      <h1 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-8">Pénztár</h1>
       <CheckoutClient
         initialAddresses={addresses || []}
         userId={session.user.id}

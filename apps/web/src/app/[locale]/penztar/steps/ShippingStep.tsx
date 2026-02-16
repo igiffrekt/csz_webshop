@@ -181,6 +181,7 @@ export function ShippingStep({ addresses }: ShippingStepProps) {
               <Label htmlFor="postalCode">Irányítószám *</Label>
               <Input
                 id="postalCode"
+                inputMode="numeric"
                 value={newAddress.postalCode}
                 onChange={(e) => handleNewAddressChange('postalCode', e.target.value)}
                 placeholder="1234"
@@ -214,6 +215,8 @@ export function ShippingStep({ addresses }: ShippingStepProps) {
               <Label htmlFor="phone">Telefonszám</Label>
               <Input
                 id="phone"
+                type="tel"
+                inputMode="tel"
                 value={newAddress.phone}
                 onChange={(e) => handleNewAddressChange('phone', e.target.value)}
                 placeholder="+36 30 123 4567"
@@ -224,11 +227,12 @@ export function ShippingStep({ addresses }: ShippingStepProps) {
       )}
 
       {/* Navigation */}
-      <div className="flex justify-between pt-6 border-t">
-        <Button variant="outline" asChild>
+      <div className="flex flex-col-reverse sm:flex-row justify-between gap-3 pt-6 border-t">
+        <Button variant="outline" asChild className="h-11 sm:h-10">
           <Link href="/">Vissza a boltba</Link>
         </Button>
-        <Button onClick={handleContinue} disabled={!canContinue()}>
+        <Button onClick={handleContinue} disabled={!canContinue()} className="h-11 sm:h-10 rounded-full bg-amber-500 text-gray-900 font-semibold hover:bg-amber-400">
+          <span className="mr-2 text-[0.5rem] leading-none">&#9679;</span>
           Tovább a számlázáshoz
         </Button>
       </div>

@@ -47,15 +47,15 @@ export function FAQSection({ sanityFaqs, sectionTitle, sectionSubtitle }: FAQSec
   const [openIndex, setOpenIndex] = useState<number | null>(1); // Second item open by default
 
   return (
-    <section className="py-16 lg:py-20 bg-white">
+    <section className="py-10 lg:py-20 bg-white">
       <div className="site-container">
         <div className="max-w-3xl mx-auto">
           {/* Section header */}
-          <div className="text-center mb-10">
+          <div className="text-center mb-8 sm:mb-10">
             <span className="inline-block bg-amber-500 text-white text-xs font-bold uppercase tracking-widest px-4 py-1.5 rounded-full mb-4">
               {sectionSubtitle || 'GYIK'}
             </span>
-            <h2 className="text-3xl lg:text-5xl font-extrabold text-gray-900">
+            <h2 className="text-2xl sm:text-3xl lg:text-5xl font-extrabold text-gray-900">
               {sectionTitle || 'Kérdése van? Itt a válasz.'}
             </h2>
           </div>
@@ -92,18 +92,18 @@ function FAQItem({ question, answer, isOpen, onToggle }: FAQItemProps) {
       isOpen ? 'border-amber-400 bg-amber-50' : 'border-gray-200 bg-white'
     )}>
       <button
-        className="w-full px-6 py-4 flex items-center justify-between text-left"
+        className="w-full px-4 sm:px-6 py-4 flex items-center justify-between text-left min-h-[48px]"
         onClick={onToggle}
         aria-expanded={isOpen}
       >
         <span className={cn(
-          'font-medium',
+          'font-medium text-sm sm:text-base',
           isOpen ? 'text-gray-900' : 'text-gray-700'
         )}>
           {question}
         </span>
         <span className={cn(
-          'flex-shrink-0 ml-4 w-6 h-6 rounded-full flex items-center justify-center transition-colors',
+          'flex-shrink-0 ml-3 sm:ml-4 w-8 h-8 sm:w-6 sm:h-6 rounded-full flex items-center justify-center transition-colors',
           isOpen ? 'bg-amber-400 text-gray-900' : 'bg-gray-100 text-gray-600'
         )}>
           {isOpen ? (
@@ -118,7 +118,7 @@ function FAQItem({ question, answer, isOpen, onToggle }: FAQItemProps) {
         'overflow-hidden transition-all duration-300',
         isOpen ? 'max-h-96' : 'max-h-0'
       )}>
-        <div className="px-6 pb-4 text-gray-600 text-sm leading-relaxed">
+        <div className="px-4 sm:px-6 pb-4 text-gray-600 text-sm leading-relaxed">
           {answer}
         </div>
       </div>

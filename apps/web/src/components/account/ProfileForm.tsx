@@ -131,7 +131,8 @@ export function ProfileForm({ user }: ProfileFormProps) {
       </div>
 
       <div className="pt-4">
-        <Button type="submit" disabled={isPending}>
+        <Button type="submit" disabled={isPending} className="w-full sm:w-auto h-11 sm:h-10 rounded-full bg-amber-500 text-gray-900 font-semibold hover:bg-amber-400">
+          <span className="mr-2 text-[0.5rem] leading-none">&#9679;</span>
           {isPending ? "Mentés..." : "Változások mentése"}
         </Button>
       </div>

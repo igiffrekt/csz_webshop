@@ -98,20 +98,20 @@ export function DealsSection({ products, sectionTitle, sectionSubtitle }: DealsS
   }
 
   return (
-    <section className="py-16 lg:py-20 bg-white">
+    <section className="py-10 lg:py-20 bg-white">
       <div className="site-container">
         {/* Section header */}
-        <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6 mb-10">
+        <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4 sm:gap-6 mb-8 sm:mb-10">
           <div>
             <span className="inline-block bg-amber-500 text-white text-xs font-bold uppercase tracking-widest px-4 py-1.5 rounded-full mb-4">
               {sectionSubtitle || 'Napi ajánlatok'}
             </span>
-            <h2 className="text-3xl lg:text-5xl font-extrabold text-gray-900">
+            <h2 className="text-2xl sm:text-3xl lg:text-5xl font-extrabold text-gray-900">
               {sectionTitle || <><span className="text-amber-500">Mai</span> Akciók</>}
             </h2>
           </div>
 
-          <p className="text-gray-600 max-w-md lg:text-right">
+          <p className="text-gray-600 text-sm sm:text-base max-w-md lg:text-right">
             Fedezze fel különleges napi ajánlatainkat! Korlátozott ideig elérhető kedvezmények a legjobb tűzvédelmi termékekre.
           </p>
         </div>
@@ -160,7 +160,7 @@ export function DealsSection({ products, sectionTitle, sectionSubtitle }: DealsS
             <div
               key={product._id}
               className={cn(
-                'flex-shrink-0 w-[85%] sm:w-[calc(50%-15px)] lg:w-[600px] h-[450px]',
+                'flex-shrink-0 w-[85%] sm:w-[calc(50%-15px)] lg:w-[600px] h-auto sm:h-[450px]',
                 !isDragging && 'snap-start'
               )}
             >
@@ -201,7 +201,7 @@ function DealCard({ product }: DealCardProps) {
   };
 
   return (
-    <div className="relative bg-white border border-gray-200 rounded-2xl p-[5px] flex flex-col sm:flex-row group overflow-hidden h-full min-h-[450px]">
+    <div className="relative bg-white border border-gray-200 rounded-2xl p-[5px] flex flex-col sm:flex-row group overflow-hidden h-full min-h-[320px] sm:min-h-[450px]">
       {/* Discount badge */}
       {isOnSale && (
         <div className="absolute top-3 left-3 z-10">
@@ -212,7 +212,7 @@ function DealCard({ product }: DealCardProps) {
       )}
 
       {/* Image - takes up left portion */}
-      <div className="relative w-full sm:w-[45%] h-[200px] sm:h-full flex-shrink-0">
+      <div className="relative w-full sm:w-[45%] h-[180px] sm:h-full flex-shrink-0">
         <Link href={productUrl} className="block h-full">
           <div className="w-full h-full rounded-xl bg-[#f6f6f6] flex items-center justify-center overflow-hidden">
             {imageUrl ? (
@@ -220,7 +220,7 @@ function DealCard({ product }: DealCardProps) {
                 src={imageUrl}
                 alt={product.name}
                 fill
-                className="object-contain p-6 transition-transform duration-300 group-hover:scale-110"
+                className="object-contain p-4 sm:p-6 transition-transform duration-300 group-hover:scale-110"
                 sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
               />
             ) : (
@@ -231,7 +231,7 @@ function DealCard({ product }: DealCardProps) {
       </div>
 
       {/* Content */}
-      <div className="flex-1 flex flex-col p-5 sm:p-6 justify-between">
+      <div className="flex-1 flex flex-col p-4 sm:p-6 justify-between">
         <div>
           {/* Category */}
           {category && (
@@ -240,18 +240,18 @@ function DealCard({ product }: DealCardProps) {
 
           {/* Title */}
           <Link href={productUrl}>
-            <h3 className="text-[18px] font-bold text-gray-900 mt-1 group-hover:text-[#D4960A] transition-colors line-clamp-2">
+            <h3 className="text-base sm:text-[18px] font-bold text-gray-900 mt-1 group-hover:text-[#D4960A] transition-colors line-clamp-2">
               {product.name}
             </h3>
           </Link>
 
           {/* Price */}
-          <div className="flex items-center gap-3 mt-3">
-            <span className="text-2xl font-bold text-gray-900">
+          <div className="flex items-center gap-3 mt-2 sm:mt-3">
+            <span className="text-xl sm:text-2xl font-bold text-gray-900">
               {formatPrice(product.basePrice)}
             </span>
             {isOnSale && (
-              <span className="text-base text-gray-400 line-through">
+              <span className="text-sm sm:text-base text-gray-400 line-through">
                 {formatPrice(product.compareAtPrice!)}
               </span>
             )}
@@ -264,7 +264,7 @@ function DealCard({ product }: DealCardProps) {
           </div>
 
           {/* Description */}
-          <p className="text-gray-600 text-sm mt-3 line-clamp-3">
+          <p className="text-gray-600 text-sm mt-2 sm:mt-3 line-clamp-2 sm:line-clamp-3">
             {stripHtml(product.shortDescription) || 'Professzionális minőségű termék, CE tanúsítvánnyal. Megbízható tűzvédelem minden környezetben.'}
           </p>
         </div>
@@ -274,7 +274,7 @@ function DealCard({ product }: DealCardProps) {
           onClick={handleAddToCart}
           disabled={product.stock <= 0}
           className={cn(
-            'mt-4 px-6 py-2.5 rounded-full font-medium text-sm inline-flex items-center gap-2 w-fit transition-colors',
+            'mt-3 sm:mt-4 px-6 py-2.5 rounded-full font-medium text-sm inline-flex items-center justify-center gap-2 w-full sm:w-fit transition-colors',
             product.stock <= 0
               ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
               : 'bg-[#FFBB36] text-gray-900 hover:bg-[#e88a00]'

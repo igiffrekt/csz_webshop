@@ -56,16 +56,16 @@ export function ProductDetailTabs({
   if (tabs.length === 0) return null
 
   return (
-    <section className="mt-10">
-      {/* Tab navigation — underline style, left-aligned */}
+    <section className="mt-8 sm:mt-10">
+      {/* Tab navigation — underline style, left-aligned, scrollable on mobile */}
       <div className="border-b border-gray-200">
-        <nav className="flex gap-8" aria-label="Termék részletek">
+        <nav className="flex gap-4 sm:gap-8 overflow-x-auto -mx-1 px-1 scrollbar-hide" aria-label="Termék részletek">
           {tabs.map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
               className={cn(
-                'relative pb-4 text-sm font-semibold tracking-wide uppercase transition-colors whitespace-nowrap',
+                'relative pb-3 sm:pb-4 text-xs sm:text-sm font-semibold tracking-wide uppercase transition-colors whitespace-nowrap flex-shrink-0',
                 activeTab === tab.id
                   ? 'text-gray-900'
                   : 'text-gray-400 hover:text-gray-600'
@@ -96,11 +96,11 @@ export function ProductDetailTabs({
                 <div
                   key={spec._key || spec.name}
                   className={cn(
-                    'flex items-center justify-between px-5 py-3.5',
+                    'flex flex-col sm:flex-row sm:items-center sm:justify-between px-4 sm:px-5 py-3 sm:py-3.5 gap-0.5 sm:gap-4',
                     i % 2 === 0 ? 'bg-white' : 'bg-gray-50/70'
                   )}
                 >
-                  <span className="text-sm text-gray-500">{spec.name}</span>
+                  <span className="text-xs sm:text-sm text-gray-500">{spec.name}</span>
                   <span className="text-sm font-medium text-gray-900">
                     {spec.value}
                     {spec.unit && <span className="text-gray-400 ml-1">{spec.unit}</span>}

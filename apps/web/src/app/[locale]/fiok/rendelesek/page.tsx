@@ -22,14 +22,14 @@ export default async function OrderHistoryPage() {
   const { data: orders, error } = await getOrders();
 
   return (
-    <main className="site-container py-8 max-w-4xl">
-      <div className="flex items-center gap-4 mb-8">
+    <main className="site-container py-4 sm:py-8 max-w-4xl">
+      <div className="flex items-center gap-3 sm:gap-4 mb-4 sm:mb-8">
         <Button variant="ghost" size="icon" asChild>
           <Link href="/fiok">
             <ArrowLeft className="h-5 w-5" />
           </Link>
         </Button>
-        <h1 className="text-2xl font-bold">Rendeléseim</h1>
+        <h1 className="text-xl sm:text-2xl font-bold">Rendeléseim</h1>
       </div>
 
       {error && (
@@ -65,22 +65,22 @@ export default async function OrderHistoryPage() {
               <Link
                 key={order.id}
                 href={`/fiok/rendelesek/${order.id}`}
-                className="block border rounded-lg p-6 hover:border-primary/50 transition-colors"
+                className="block border rounded-lg p-4 sm:p-6 hover:border-primary/50 transition-colors"
               >
-                <div className="flex items-start justify-between">
-                  <div className="space-y-1">
-                    <div className="flex items-center gap-3">
-                      <span className="font-mono font-medium">{order.orderNumber}</span>
+                <div className="flex items-start justify-between gap-2">
+                  <div className="space-y-1 min-w-0">
+                    <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+                      <span className="font-mono font-medium text-sm sm:text-base">{order.orderNumber}</span>
                       <Badge variant={status.variant}>{status.label}</Badge>
                     </div>
-                    <p className="text-sm text-muted-foreground">{orderDate}</p>
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-xs sm:text-sm text-muted-foreground">{orderDate}</p>
+                    <p className="text-xs sm:text-sm text-muted-foreground">
                       {itemCount} termék
                     </p>
                   </div>
-                  <div className="flex items-center gap-4">
-                    <span className="font-semibold">{formatPrice(order.total)}</span>
-                    <ChevronRight className="h-5 w-5 text-muted-foreground" />
+                  <div className="flex items-center gap-2 sm:gap-4 flex-shrink-0">
+                    <span className="font-semibold text-sm sm:text-base">{formatPrice(order.total)}</span>
+                    <ChevronRight className="h-5 w-5 text-muted-foreground hidden sm:block" />
                   </div>
                 </div>
               </Link>

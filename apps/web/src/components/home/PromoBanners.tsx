@@ -68,28 +68,28 @@ export function PromoBanners({ banners, sanityBanners }: PromoBannersProps) {
       }))
     : banners || defaultBanners;
   return (
-    <section className="py-10 lg:py-12 bg-white">
+    <section className="py-8 lg:py-12 bg-white">
       <div className="site-container">
-        <div className="grid md:grid-cols-2 gap-6">
+        <div className="grid md:grid-cols-2 gap-4 sm:gap-6">
           {displayBanners.map((banner, index) => (
             <Link
               key={index}
               href={banner.ctaLink}
               className={`
-                relative overflow-hidden rounded-2xl p-8 lg:p-10 min-h-[240px]
+                relative overflow-hidden rounded-2xl p-6 sm:p-8 lg:p-10 min-h-[200px] sm:min-h-[240px]
                 flex items-center group
                 ${banner.bgColor} ${banner.textColor}
               `}
             >
               {/* Content */}
-              <div className="relative z-10 max-w-[65%]">
-                <span className={`inline-block px-3 py-1 ${index === 0 ? 'bg-white/20' : 'bg-amber-400/50'} rounded-full text-xs font-semibold mb-4`}>
+              <div className="relative z-10 max-w-[75%] sm:max-w-[65%]">
+                <span className={`inline-block px-3 py-1 ${index === 0 ? 'bg-white/20' : 'bg-amber-400/50'} rounded-full text-xs font-semibold mb-3 sm:mb-4`}>
                   {banner.discount}
                 </span>
-                <h3 className="text-xl lg:text-2xl font-bold mb-2 leading-tight">
+                <h3 className="text-lg sm:text-xl lg:text-2xl font-bold mb-2 leading-tight">
                   {banner.title}
                 </h3>
-                <p className={`${index === 0 ? 'text-white/80' : 'text-gray-600'} mb-5 text-sm`}>
+                <p className={`${index === 0 ? 'text-white/80' : 'text-gray-600'} mb-4 sm:mb-5 text-sm`}>
                   {banner.subtitle}
                 </p>
                 <span className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-md font-semibold text-sm ${banner.buttonBg} transition-all duration-300`}>
@@ -99,8 +99,8 @@ export function PromoBanners({ banners, sanityBanners }: PromoBannersProps) {
               </div>
 
               {/* Decorative image placeholder */}
-              <div className="absolute right-4 bottom-4 w-32 h-32 lg:w-40 lg:h-40 flex items-center justify-center opacity-80">
-                <span className="text-7xl lg:text-8xl" aria-hidden="true">
+              <div className="absolute right-2 bottom-2 w-24 h-24 sm:right-4 sm:bottom-4 sm:w-32 sm:h-32 lg:w-40 lg:h-40 flex items-center justify-center opacity-80">
+                <span className="text-5xl sm:text-7xl lg:text-8xl" aria-hidden="true">
                   {index === 0 ? '🧯' : '🔔'}
                 </span>
               </div>

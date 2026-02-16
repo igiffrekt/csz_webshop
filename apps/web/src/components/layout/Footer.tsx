@@ -94,10 +94,10 @@ export function Footer({ data }: { data?: FooterData | null }) {
   return (
     <footer className="bg-gray-900 text-white">
       {/* Main footer */}
-      <div className="site-container py-12 lg:py-16">
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 lg:gap-12">
+      <div className="site-container py-8 sm:py-12 lg:py-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6 sm:gap-8 lg:gap-12">
           {/* Brand column */}
-          <div className="col-span-2 md:col-span-4 lg:col-span-2 lg:pr-8">
+          <div className="col-span-1 sm:col-span-2 md:col-span-4 lg:col-span-2 lg:pr-8">
             <Link href="/" className="inline-block">
               <span className="text-2xl font-bold">
                 Dunamenti <span className="text-amber-400">CSZ</span> Kft.
@@ -128,24 +128,48 @@ export function Footer({ data }: { data?: FooterData | null }) {
             </div>
           </div>
 
-          {/* Dynamic link columns */}
+          {/* Dynamic link columns - collapsible on mobile */}
           {linkColumns.map((column) => (
             <div key={column._key}>
-              <h4 className="font-semibold text-white mb-4">
-                {column.title}
-              </h4>
-              <ul className="space-y-3">
-                {(column.links || []).map((link) => (
-                  <li key={link._key}>
-                    <Link
-                      href={link.href}
-                      className="text-gray-400 text-sm hover:text-amber-400 transition-colors"
-                    >
-                      {link.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+              {/* Mobile: collapsible */}
+              <details className="sm:hidden group">
+                <summary className="font-semibold text-white py-2 cursor-pointer list-none flex items-center justify-between">
+                  {column.title}
+                  <svg className="h-4 w-4 text-gray-400 transition-transform group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </summary>
+                <ul className="space-y-3 pb-2">
+                  {(column.links || []).map((link) => (
+                    <li key={link._key}>
+                      <Link
+                        href={link.href}
+                        className="text-gray-400 text-sm hover:text-amber-400 transition-colors"
+                      >
+                        {link.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </details>
+              {/* Desktop: always visible */}
+              <div className="hidden sm:block">
+                <h4 className="font-semibold text-white mb-4">
+                  {column.title}
+                </h4>
+                <ul className="space-y-3">
+                  {(column.links || []).map((link) => (
+                    <li key={link._key}>
+                      <Link
+                        href={link.href}
+                        className="text-gray-400 text-sm hover:text-amber-400 transition-colors"
+                      >
+                        {link.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
           ))}
         </div>

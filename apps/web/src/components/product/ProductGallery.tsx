@@ -29,9 +29,9 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
   const selectedImage = displayImages[selectedIndex];
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-3 sm:gap-4">
       {/* Main image */}
-      <div className="relative aspect-square w-full overflow-hidden rounded-lg bg-gray-100">
+      <div className="relative aspect-square w-full overflow-hidden rounded-xl sm:rounded-lg bg-gray-100">
         <Image
           src={getImageUrl(selectedImage.url)}
           alt={selectedImage.alt || productName}
@@ -44,13 +44,13 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
 
       {/* Thumbnail strip */}
       {displayImages.length > 1 && (
-        <div className="flex gap-2 overflow-x-auto pb-2">
+        <div className="flex gap-2 overflow-x-auto pb-2 snap-x snap-mandatory scrollbar-hide">
           {displayImages.map((image, index) => (
             <button
               key={image._key || index}
               onClick={() => setSelectedIndex(index)}
               className={cn(
-                'relative h-20 w-20 flex-shrink-0 rounded-md overflow-hidden border-2 transition-colors',
+                'relative h-16 w-16 sm:h-20 sm:w-20 flex-shrink-0 rounded-md overflow-hidden border-2 transition-colors snap-start min-w-[64px] sm:min-w-[80px]',
                 index === selectedIndex ? 'border-primary' : 'border-transparent hover:border-gray-300'
               )}
             >
@@ -58,7 +58,7 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
                 src={getImageUrl(image.url)}
                 alt={image.alt || `${productName} ${index + 1}`}
                 fill
-                sizes="80px"
+                sizes="(max-width: 640px) 64px, 80px"
                 className="object-cover"
               />
             </button>

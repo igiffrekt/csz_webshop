@@ -161,26 +161,26 @@ export function SummaryStep({ addresses }: SummaryStepProps) {
         <h3 className="font-medium mb-4">Termékek</h3>
         <div className="space-y-3">
           {items.map((item) => (
-            <div key={item.id} className="flex justify-between items-center">
-              <div className="flex items-center gap-3">
+            <div key={item.id} className="flex justify-between items-center gap-2">
+              <div className="flex items-center gap-3 min-w-0">
                 {item.image && (
                   <img
                     src={item.image}
                     alt={item.name}
-                    className="w-12 h-12 object-cover rounded"
+                    className="w-10 h-10 sm:w-12 sm:h-12 object-cover rounded flex-shrink-0"
                   />
                 )}
-                <div>
-                  <p className="font-medium">{item.name}</p>
+                <div className="min-w-0">
+                  <p className="font-medium text-sm sm:text-base truncate">{item.name}</p>
                   {item.variantName && (
-                    <p className="text-sm text-muted-foreground">{item.variantName}</p>
+                    <p className="text-xs sm:text-sm text-muted-foreground">{item.variantName}</p>
                   )}
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-xs sm:text-sm text-muted-foreground">
                     {item.quantity} x {formatHUF(item.price)}
                   </p>
                 </div>
               </div>
-              <span className="font-medium">
+              <span className="font-medium text-sm sm:text-base flex-shrink-0">
                 {formatHUF(item.price * item.quantity)}
               </span>
             </div>
@@ -241,11 +241,12 @@ export function SummaryStep({ addresses }: SummaryStepProps) {
       )}
 
       {/* Navigation */}
-      <div className="flex justify-between pt-6 border-t">
-        <Button variant="outline" onClick={prevStep}>
+      <div className="flex flex-col-reverse sm:flex-row justify-between gap-3 pt-6 border-t">
+        <Button variant="outline" onClick={prevStep} className="h-11 sm:h-10">
           Vissza
         </Button>
-        <Button onClick={nextStep}>
+        <Button onClick={nextStep} className="h-11 sm:h-10 rounded-full bg-amber-500 text-gray-900 font-semibold hover:bg-amber-400">
+          <span className="mr-2 text-[0.5rem] leading-none">&#9679;</span>
           Tovább a fizetéshez
         </Button>
       </div>
