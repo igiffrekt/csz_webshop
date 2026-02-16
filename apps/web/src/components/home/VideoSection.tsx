@@ -1,6 +1,12 @@
 'use client'
 
 import { Link } from '@/i18n/navigation'
+import {
+  ContainerAnimated,
+  ContainerInset,
+  ContainerScroll,
+  ContainerStagger,
+} from '@/components/hero-video'
 
 interface VideoSectionProps {
   videoData?: {
@@ -31,25 +37,50 @@ export function VideoSection({ videoData }: VideoSectionProps) {
   const youtubeId = getYouTubeId(videoData.videoUrl)
 
   return (
-    <section className="site-container py-8 sm:py-12">
-      {(videoData.title || videoData.subtitle) && (
-        <div className="text-center mb-6 sm:mb-8">
-          {videoData.title && (
+    <ContainerScroll className="text-center">
+      <ContainerStagger>
+        {videoData.title && (
+          <ContainerAnimated animation="top">
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold leading-tight tracking-tight text-gray-900">
               {videoData.title}
             </h2>
-          )}
-          {videoData.subtitle && (
-            <p className="text-base sm:text-lg text-gray-600 mt-2">
+          </ContainerAnimated>
+        )}
+        {videoData.subtitle && (
+          <ContainerAnimated animation="top">
+            <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold leading-tight tracking-tight text-amber-500">
               {videoData.subtitle}
-            </p>
-          )}
-        </div>
-      )}
+            </h3>
+          </ContainerAnimated>
+        )}
 
-      <div className="rounded-2xl sm:rounded-3xl overflow-hidden">
+        {videoData.description && (
+          <ContainerAnimated animation="blur" className="my-4">
+            <p className="text-base sm:text-lg leading-relaxed text-gray-600 max-w-2xl mx-auto px-4">
+              {videoData.description}
+            </p>
+          </ContainerAnimated>
+        )}
+
+        {videoData.ctaText && videoData.ctaLink && (
+          <ContainerAnimated
+            animation="bottom"
+            className="flex justify-center gap-3 mb-2"
+          >
+            <Link
+              href={videoData.ctaLink as any}
+              className="inline-flex items-center gap-2.5 px-6 py-3 rounded-full bg-amber-500 text-gray-900 font-semibold text-sm hover:bg-amber-400 active:scale-[0.98] transition-all shadow-sm"
+            >
+              <span className="w-2 h-2 rounded-full bg-gray-900" />
+              {videoData.ctaText}
+            </Link>
+          </ContainerAnimated>
+        )}
+      </ContainerStagger>
+
+      <ContainerInset className="mx-4 sm:mx-8">
         {youtubeId ? (
-          <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
+          <div className="relative z-10 w-full" style={{ paddingBottom: '56.25%' }}>
             <iframe
               src={`https://www.youtube.com/embed/${youtubeId}?autoplay=1&mute=1&loop=1&playlist=${youtubeId}&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1`}
               title={videoData.title || 'Video'}
@@ -66,30 +97,12 @@ export function VideoSection({ videoData }: VideoSectionProps) {
             playsInline
             autoPlay
             muted
-            className="block w-full h-auto"
+            className="relative z-10 block h-auto max-h-full max-w-full object-contain align-middle"
           >
             <source src={videoData.videoUrl} type="video/mp4" />
           </video>
         )}
-      </div>
-
-      {videoData.description && (
-        <p className="text-center text-sm sm:text-base text-gray-600 mt-4 max-w-2xl mx-auto">
-          {videoData.description}
-        </p>
-      )}
-
-      {videoData.ctaText && videoData.ctaLink && (
-        <div className="flex justify-center mt-5">
-          <Link
-            href={videoData.ctaLink as any}
-            className="inline-flex items-center gap-2.5 px-6 py-3 rounded-full bg-amber-500 text-gray-900 font-semibold text-sm hover:bg-amber-400 active:scale-[0.98] transition-all shadow-sm"
-          >
-            <span className="w-2 h-2 rounded-full bg-gray-900" />
-            {videoData.ctaText}
-          </Link>
-        </div>
-      )}
-    </section>
+      </ContainerInset>
+    </ContainerScroll>
   )
 }
