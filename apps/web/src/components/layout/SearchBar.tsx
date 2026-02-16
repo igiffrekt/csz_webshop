@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useRef, useEffect, useCallback } from 'react'
-import { Search, X, Loader2, ArrowRight, FolderOpen } from 'lucide-react'
+import { Search, X, Loader2, ArrowRight } from 'lucide-react'
 import { useRouter } from '@/i18n/navigation'
 import { cn } from '@/lib/utils'
 import { formatPrice } from '@/lib/formatters'
@@ -48,7 +48,7 @@ export function SearchBar({ className, variant = 'default' }: SearchBarProps) {
   const router = useRouter()
 
   const totalResults = results
-    ? results.products.length + results.categories.length
+    ? results.products.length
     : 0
 
   const fetchResults = useCallback(async (searchQuery: string) => {
@@ -122,10 +122,6 @@ export function SearchBar({ className, variant = 'default' }: SearchBarProps) {
     router.push(`/${categorySlug}/${productSlug}` as any)
   }
 
-  const navigateToCategory = (slug: string) => {
-    close()
-    router.push(`/kategoriak/${slug}` as any)
-  }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -139,7 +135,6 @@ export function SearchBar({ className, variant = 'default' }: SearchBarProps) {
     if (!showResults || !results) return
 
     const items = [
-      ...results.categories.map((c) => ({ type: 'category' as const, data: c })),
       ...results.products.map((p) => ({ type: 'product' as const, data: p })),
     ]
 
@@ -152,13 +147,9 @@ export function SearchBar({ className, variant = 'default' }: SearchBarProps) {
     } else if (e.key === 'Enter' && highlightIndex >= 0) {
       e.preventDefault()
       const item = items[highlightIndex]
-      if (item.type === 'category') {
-        navigateToCategory((item.data as any).slug)
-      } else {
-        const p = item.data as any
-        const catSlug = p.categories?.[0]?.slug || 'termekek'
-        navigateToProduct(catSlug, p.slug)
-      }
+      const p = item.data as any
+      const catSlug = p.categories?.[0]?.slug || 'termekek'
+      navigateToProduct(catSlug, p.slug)
     } else if (e.key === 'Escape') {
       setShowResults(false)
     }
@@ -234,43 +225,6 @@ export function SearchBar({ className, variant = 'default' }: SearchBarProps) {
         </div>
       )}
 
-      {/* Category results */}
-      {results.categories.length > 0 && (
-        <div className="px-4 pt-4 pb-2">
-          <p className="text-[11px] font-semibold uppercase tracking-wider text-gray-400 px-2 mb-2">
-            Kategóriák
-          </p>
-          <div className="space-y-0.5">
-            {results.categories.map((cat, i) => (
-              <button
-                key={cat._id}
-                onClick={() => navigateToCategory(cat.slug)}
-                className={cn(
-                  'w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left transition-colors',
-                  highlightIndex === i
-                    ? 'bg-[#FFBB36]/10'
-                    : 'hover:bg-gray-50'
-                )}
-              >
-                <div className="w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center flex-shrink-0">
-                  <FolderOpen className="h-4 w-4 text-gray-400" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-gray-900 truncate">{cat.name}</p>
-                  <p className="text-xs text-gray-400">{cat.productCount} termék</p>
-                </div>
-                <ArrowRight className="h-4 w-4 text-gray-300 flex-shrink-0" />
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* Divider */}
-      {results.categories.length > 0 && results.products.length > 0 && (
-        <div className="mx-4"><div className="border-t border-gray-100" /></div>
-      )}
-
       {/* Product results */}
       {results.products.length > 0 && (
         <div className="px-4 pt-3 pb-4">
@@ -279,7 +233,7 @@ export function SearchBar({ className, variant = 'default' }: SearchBarProps) {
           </p>
           <div className="space-y-0.5">
             {results.products.map((product, i) => {
-              const itemIndex = results.categories.length + i
+              const itemIndex = i
               const catSlug = product.categories?.[0]?.slug || 'termekek'
               return (
                 <button

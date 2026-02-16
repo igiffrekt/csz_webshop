@@ -5,14 +5,14 @@ export async function GET(request: NextRequest) {
   const query = request.nextUrl.searchParams.get('q') || ''
 
   if (!query.trim() || query.trim().length < 2) {
-    return NextResponse.json({ products: [], categories: [] })
+    return NextResponse.json({ products: [] })
   }
 
   try {
     const results = await instantSearch(query.trim())
-    return NextResponse.json(results)
+    return NextResponse.json({ products: results.products })
   } catch (error) {
     console.error('Instant search failed:', error)
-    return NextResponse.json({ products: [], categories: [] })
+    return NextResponse.json({ products: [] })
   }
 }
