@@ -71,7 +71,7 @@ export const homepage = defineType({
           name: 'videoUrl',
           title: 'Videó URL',
           type: 'url',
-          description: 'Direkt videó link (mp4). Pl.: https://example.com/video.mp4',
+          description: 'YouTube link vagy direkt mp4 URL. Pl.: https://www.youtube.com/watch?v=... vagy https://example.com/video.mp4',
           validation: (Rule) => Rule.required(),
         }),
         defineField({

@@ -19,8 +19,22 @@ interface VideoSectionProps {
   } | null
 }
 
+function getYouTubeId(url: string): string | null {
+  const patterns = [
+    /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/,
+    /youtube\.com\/shorts\/([a-zA-Z0-9_-]{11})/,
+  ]
+  for (const pattern of patterns) {
+    const match = url.match(pattern)
+    if (match) return match[1]
+  }
+  return null
+}
+
 export function VideoSection({ videoData }: VideoSectionProps) {
   if (!videoData?.videoUrl) return null
+
+  const youtubeId = getYouTubeId(videoData.videoUrl)
 
   return (
     <ContainerScroll className="bg-gray-950 text-center text-white">
@@ -65,17 +79,29 @@ export function VideoSection({ videoData }: VideoSectionProps) {
       </ContainerStagger>
 
       <ContainerInset className="mx-4 sm:mx-8">
-        <video
-          width="100%"
-          height="100%"
-          loop
-          playsInline
-          autoPlay
-          muted
-          className="relative z-10 block h-auto max-h-full max-w-full object-contain align-middle"
-        >
-          <source src={videoData.videoUrl} type="video/mp4" />
-        </video>
+        {youtubeId ? (
+          <div className="relative z-10 w-full" style={{ paddingBottom: '56.25%' }}>
+            <iframe
+              src={`https://www.youtube.com/embed/${youtubeId}?autoplay=1&mute=1&loop=1&playlist=${youtubeId}&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1`}
+              title={videoData.title || 'Video'}
+              allow="autoplay; encrypted-media"
+              allowFullScreen
+              className="absolute inset-0 w-full h-full border-0"
+            />
+          </div>
+        ) : (
+          <video
+            width="100%"
+            height="100%"
+            loop
+            playsInline
+            autoPlay
+            muted
+            className="relative z-10 block h-auto max-h-full max-w-full object-contain align-middle"
+          >
+            <source src={videoData.videoUrl} type="video/mp4" />
+          </video>
+        )}
       </ContainerInset>
     </ContainerScroll>
   )
