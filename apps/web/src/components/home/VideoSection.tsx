@@ -37,7 +37,7 @@ export function VideoSection({ videoData }: VideoSectionProps) {
   const youtubeId = getYouTubeId(videoData.videoUrl)
 
   return (
-    <ContainerScroll className="text-center !min-h-[80vh] !pb-[10%]" scrollOffset={["start end", "end 60%"]}>
+    <ContainerScroll className="text-center !min-h-[30vh] !pb-[5%] !pt-0" scrollOffset={["start end", "end 60%"]}>
       <ContainerStagger>
         {videoData.title && (
           <ContainerAnimated animation="top">
