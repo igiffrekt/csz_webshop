@@ -65,10 +65,10 @@ export const structure: StructureResolver = (S, context) => {
                   .items([
                     ...children.map((child) =>
                       S.listItem()
-                        .title(child.name)
+                        .title(child.name || 'Névtelen')
                         .icon(child.childCount > 0 ? FolderIcon : TagIcon)
                         .id(`prod-${child._id}`)
-                        .child(() => buildProductCategoryChild(child._id, child.name)),
+                        .child(() => buildProductCategoryChild(child._id, child.name || 'Névtelen')),
                     ),
 
                     S.divider(),
@@ -114,10 +114,10 @@ export const structure: StructureResolver = (S, context) => {
 
                   ...parentCategories.map((cat) =>
                     S.listItem()
-                      .title(cat.name)
+                      .title(cat.name || 'Névtelen kategória')
                       .icon(cat.childCount > 0 ? FolderIcon : TagIcon)
                       .id(cat._id)
-                      .child(() => buildProductCategoryChild(cat._id, cat.name)),
+                      .child(() => buildProductCategoryChild(cat._id, cat.name || 'Névtelen kategória')),
                   ),
 
                   S.divider(),
@@ -176,10 +176,10 @@ export const structure: StructureResolver = (S, context) => {
 
                         ...children.map((child) =>
                           S.listItem()
-                            .title(child.name)
+                            .title(child.name || 'Névtelen')
                             .icon(child.childCount > 0 ? FolderIcon : TagIcon)
                             .id(`cat-nav-${child._id}`)
-                            .child(() => buildCategoryChild(child._id, child.name)),
+                            .child(() => buildCategoryChild(child._id, child.name || 'Névtelen')),
                         ),
                       ]),
               )
@@ -211,10 +211,10 @@ export const structure: StructureResolver = (S, context) => {
 
                   ...parentCategories.map((cat) =>
                     S.listItem()
-                      .title(cat.name)
+                      .title(cat.name || 'Névtelen kategória')
                       .icon(cat.childCount > 0 ? FolderIcon : TagIcon)
                       .id(`cat-nav-${cat._id}`)
-                      .child(() => buildCategoryChild(cat._id, cat.name)),
+                      .child(() => buildCategoryChild(cat._id, cat.name || 'Névtelen kategória')),
                   ),
                 ]),
             )
