@@ -42,10 +42,10 @@ export function VideoSection({ videoData }: VideoSectionProps) {
     offset: ['start end', 'start 20%'],
   })
 
-  // Pill → larger pill: starts smaller, stays rounded
-  const insetX = useTransform(scrollYProgress, [0, 1], [42, 5])
-  const insetY = useTransform(scrollYProgress, [0, 1], [35, 8])
-  const roundedness = useTransform(scrollYProgress, [0, 1], [1000, 80])
+  // Pill → larger pill: starts tiny, stays very rounded
+  const insetX = useTransform(scrollYProgress, [0, 1], [48, 8])
+  const insetY = useTransform(scrollYProgress, [0, 1], [42, 12])
+  const roundedness = useTransform(scrollYProgress, [0, 1], [1000, 120])
   const clipPath = useMotionTemplate`inset(${insetY}% ${insetX}% ${insetY}% ${insetX}% round ${roundedness}px)`
 
   return (
@@ -96,7 +96,7 @@ export function VideoSection({ videoData }: VideoSectionProps) {
               style={{ clipPath }}
             >
               {youtubeId ? (
-                <div className="relative w-full" style={{ paddingBottom: '39.375%' }}>
+                <div className="relative w-full" style={{ paddingBottom: '33.75%' }}>
                   <iframe
                     src={`https://www.youtube.com/embed/${youtubeId}?autoplay=1&mute=1&loop=1&playlist=${youtubeId}&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1&disablekb=1&fs=0&iv_load_policy=3`}
                     title={videoData.title || 'Video'}
