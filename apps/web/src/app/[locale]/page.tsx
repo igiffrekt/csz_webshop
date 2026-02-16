@@ -9,6 +9,7 @@ import {
 import {
   HeroSection,
   TrustBadges,
+  VideoSection,
   CategoryCards,
   ProductCollections,
   DealsSection,
@@ -129,8 +130,9 @@ export default async function HomePage() {
   return (
     <>
       <HeroSection products={featuredProducts} categories={categories} heroData={homepage?.heroSection} />
-      <TrustBadges trustBadges={homepage?.trustBadges} />
+      <VideoSection videoData={homepage?.videoSection} />
       <CategoryCards categories={categories} products={allProducts} sectionTitle={homepage?.categoriesSection?.title} sectionSubtitle={homepage?.categoriesSection?.subtitle} />
+      <TrustBadges trustBadges={homepage?.trustBadges} />
       <ProductCollections products={allProducts} featuredProducts={featuredProducts} />
       <DealsSection products={allProducts} sectionTitle={homepage?.dealsSection?.title} sectionSubtitle={homepage?.dealsSection?.subtitle} />
       <PromoBanners sanityBanners={homepage?.promoBanners} />

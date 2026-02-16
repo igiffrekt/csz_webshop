@@ -225,6 +225,7 @@ const CATEGORY_BY_SLUG_QUERY = defineQuery(`
 const HOMEPAGE_QUERY = defineQuery(`
   *[_type == "homepage"][0] {
     heroSection,
+    videoSection,
     categoriesSection,
     "featuredProducts": featuredProducts[]->{
       _id,

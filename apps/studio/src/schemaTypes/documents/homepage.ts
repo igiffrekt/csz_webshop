@@ -1,5 +1,5 @@
 import {defineType, defineField, defineArrayMember} from 'sanity'
-import {HomeIcon} from '@sanity/icons'
+import {HomeIcon, PlayIcon} from '@sanity/icons'
 
 export const homepage = defineType({
   name: 'homepage',
@@ -39,6 +39,52 @@ export const homepage = defineType({
           options: {
             hotspot: true,
           },
+        }),
+      ],
+    }),
+    defineField({
+      name: 'videoSection',
+      title: 'Videó szekció',
+      type: 'object',
+      icon: PlayIcon,
+      fields: [
+        defineField({
+          name: 'title',
+          title: 'Cím',
+          type: 'string',
+          description: 'Fő cím a videó felett',
+        }),
+        defineField({
+          name: 'subtitle',
+          title: 'Alcím',
+          type: 'string',
+          description: 'Második sor szöveg',
+        }),
+        defineField({
+          name: 'description',
+          title: 'Leírás',
+          type: 'text',
+          rows: 3,
+          description: 'Rövid leírás a videó alatt',
+        }),
+        defineField({
+          name: 'videoUrl',
+          title: 'Videó URL',
+          type: 'url',
+          description: 'Direkt videó link (mp4). Pl.: https://example.com/video.mp4',
+          validation: (Rule) => Rule.required(),
+        }),
+        defineField({
+          name: 'ctaText',
+          title: 'CTA gomb szöveg',
+          type: 'string',
+          description: 'Gomb felirata (opcionális)',
+        }),
+        defineField({
+          name: 'ctaLink',
+          title: 'CTA gomb link',
+          type: 'string',
+          description: 'Gomb hivatkozása (opcionális)',
         }),
       ],
     }),
