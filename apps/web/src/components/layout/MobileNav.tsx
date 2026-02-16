@@ -219,7 +219,7 @@ export function MobileNav() {
 
                   <button
                     onClick={() => navigate('/kategoriak')}
-                    className="inline-flex items-center gap-1 mt-3 px-2 text-sm font-medium text-[#D4960A] hover:text-amber-600 transition-colors"
+                    className="w-full flex items-center justify-center gap-2 mt-6 px-4 py-2.5 rounded-lg bg-amber-50 text-amber-700 font-medium text-sm hover:bg-amber-100 transition-colors border border-amber-200/60"
                   >
                     Összes kategória
                     <ChevronRight className="h-4 w-4" />
@@ -229,17 +229,17 @@ export function MobileNav() {
             </div>
 
             {/* Bottom promo bar */}
-            <div className="px-5 py-3 border-t border-gray-100 bg-gray-50/80">
-              <div className="flex items-center justify-between text-xs text-gray-500">
-                <span className="flex items-center gap-1.5 font-medium text-[#D4960A]">
-                  <Truck className="h-3.5 w-3.5" />
+            <div className="px-5 py-4 border-t border-gray-100 bg-gray-50/80">
+              <div className="flex items-center justify-between text-sm text-gray-500">
+                <span className="flex items-center gap-2 font-semibold text-[#D4960A]">
+                  <Truck className="h-4 w-4" />
                   Ingyenes szállítás 50.000 Ft+
                 </span>
                 <a
                   href="tel:+3633506690"
-                  className="flex items-center gap-1.5 font-medium text-gray-700 hover:text-gray-900 transition-colors"
+                  className="flex items-center gap-2 font-semibold text-gray-700 hover:text-gray-900 transition-colors"
                 >
-                  <Phone className="h-3.5 w-3.5" />
+                  <Phone className="h-4 w-4" />
                   +36 33 506 690
                 </a>
               </div>
@@ -353,7 +353,7 @@ function CategoryButton({
       onClick={() => onNavigate(`/kategoriak/${category.slug}`)}
       className={cn(
         'flex items-center w-full px-3 rounded-lg hover:bg-gray-50 transition-colors text-left',
-        depth === 0 && 'py-2.5 text-[13px] text-gray-700 font-medium',
+        depth === 0 && 'py-2.5 text-[15px] text-gray-700 font-medium',
         depth >= 1 && 'py-3.5 text-[15px] text-gray-600',
       )}
     >
