@@ -21,7 +21,7 @@ interface HeroSectionProps {
 
 export function HeroSection({ heroData }: HeroSectionProps) {
   return (
-    <section className="w-full py-6 lg:py-12">
+    <section className="w-full pt-6 pb-2 lg:pt-12 lg:pb-4">
       <div className="site-container">
         <div className="flex flex-col lg:flex-row gap-6 items-stretch">
           {/* Left sidebar — 1/3 width on desktop */}
