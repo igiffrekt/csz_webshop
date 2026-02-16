@@ -83,16 +83,20 @@ function useContainerScrollContext() {
   }
   return context
 }
-interface ContainerScrollProps extends React.HTMLAttributes<HTMLDivElement> {}
+interface ContainerScrollProps extends React.HTMLAttributes<HTMLDivElement> {
+  scrollOffset?: any
+}
 
 const ContainerScroll = ({
   children,
   className,
+  scrollOffset,
   ...props
 }: ContainerScrollProps) => {
   const scrollRef = React.useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll({
     target: scrollRef,
+    ...(scrollOffset ? { offset: scrollOffset } : {}),
   })
 
   return (

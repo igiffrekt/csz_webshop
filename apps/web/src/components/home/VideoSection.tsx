@@ -37,7 +37,7 @@ export function VideoSection({ videoData }: VideoSectionProps) {
   const youtubeId = getYouTubeId(videoData.videoUrl)
 
   return (
-    <ContainerScroll className="text-center">
+    <ContainerScroll className="text-center !min-h-[80vh] !pb-[10%]" scrollOffset={["start end", "end 60%"]}>
       <ContainerStagger>
         {videoData.title && (
           <ContainerAnimated animation="top">
@@ -78,7 +78,13 @@ export function VideoSection({ videoData }: VideoSectionProps) {
         )}
       </ContainerStagger>
 
-      <ContainerInset className="mx-4 sm:mx-8">
+      <ContainerInset
+        className="mx-4 sm:mx-8"
+        translateYRange={["-10%", "20%"]}
+        insetXRange={[42, 4]}
+        insetYRange={[35, 2]}
+        roundednessRange={[1000, 28]}
+      >
         {youtubeId ? (
           <div className="relative z-10 w-full" style={{ paddingBottom: '56.25%' }}>
             <iframe
