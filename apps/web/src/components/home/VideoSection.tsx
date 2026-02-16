@@ -3,8 +3,6 @@
 import { Link } from '@/i18n/navigation'
 import {
   ContainerAnimated,
-  ContainerInset,
-  ContainerScroll,
   ContainerStagger,
 } from '@/components/hero-video'
 
@@ -37,7 +35,7 @@ export function VideoSection({ videoData }: VideoSectionProps) {
   const youtubeId = getYouTubeId(videoData.videoUrl)
 
   return (
-    <ContainerScroll className="text-center !min-h-0 !pb-[2%] !pt-0" scrollOffset={["start end", "end 50%"]}>
+    <section className="w-full py-4 text-center">
       <ContainerStagger>
         {videoData.title && (
           <ContainerAnimated animation="top">
@@ -55,7 +53,7 @@ export function VideoSection({ videoData }: VideoSectionProps) {
         )}
 
         {videoData.description && (
-          <ContainerAnimated animation="blur" className="my-4">
+          <ContainerAnimated animation="blur" className="my-3">
             <p className="text-base sm:text-lg leading-relaxed text-gray-600 max-w-2xl mx-auto px-4">
               {videoData.description}
             </p>
@@ -65,7 +63,7 @@ export function VideoSection({ videoData }: VideoSectionProps) {
         {videoData.ctaText && videoData.ctaLink && (
           <ContainerAnimated
             animation="bottom"
-            className="flex justify-center gap-3 mb-2"
+            className="flex justify-center gap-3 mb-3"
           >
             <Link
               href={videoData.ctaLink as any}
@@ -76,39 +74,35 @@ export function VideoSection({ videoData }: VideoSectionProps) {
             </Link>
           </ContainerAnimated>
         )}
-      </ContainerStagger>
 
-      <ContainerInset
-        className="mx-4 sm:mx-8"
-        translateYRange={["0%", "5%"]}
-        insetXRange={[20, 2]}
-        insetYRange={[15, 1]}
-        roundednessRange={[400, 24]}
-      >
-        {youtubeId ? (
-          <div className="relative z-10 w-full" style={{ paddingBottom: '56.25%' }}>
-            <iframe
-              src={`https://www.youtube.com/embed/${youtubeId}?autoplay=1&mute=1&loop=1&playlist=${youtubeId}&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1`}
-              title={videoData.title || 'Video'}
-              allow="autoplay; encrypted-media"
-              allowFullScreen
-              className="absolute inset-0 w-full h-full border-0"
-            />
+        <ContainerAnimated animation="z" className="mx-4 sm:mx-8 lg:mx-16">
+          <div className="overflow-hidden rounded-3xl">
+            {youtubeId ? (
+              <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
+                <iframe
+                  src={`https://www.youtube.com/embed/${youtubeId}?autoplay=1&mute=1&loop=1&playlist=${youtubeId}&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1`}
+                  title={videoData.title || 'Video'}
+                  allow="autoplay; encrypted-media"
+                  allowFullScreen
+                  className="absolute inset-0 w-full h-full border-0"
+                />
+              </div>
+            ) : (
+              <video
+                width="100%"
+                height="100%"
+                loop
+                playsInline
+                autoPlay
+                muted
+                className="block w-full h-auto object-contain"
+              >
+                <source src={videoData.videoUrl} type="video/mp4" />
+              </video>
+            )}
           </div>
-        ) : (
-          <video
-            width="100%"
-            height="100%"
-            loop
-            playsInline
-            autoPlay
-            muted
-            className="relative z-10 block h-auto max-h-full max-w-full object-contain align-middle"
-          >
-            <source src={videoData.videoUrl} type="video/mp4" />
-          </video>
-        )}
-      </ContainerInset>
-    </ContainerScroll>
+        </ContainerAnimated>
+      </ContainerStagger>
+    </section>
   )
 }
