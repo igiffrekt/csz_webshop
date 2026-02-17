@@ -366,6 +366,16 @@ export const structure: StructureResolver = (S, context) => {
         .schemaType('menuItem')
         .child(S.documentTypeList('menuItem').title('Menüpontok')),
 
+      S.listItem()
+        .title('Kategória menü')
+        .icon(SortIcon)
+        .child(
+          S.document()
+            .schemaType('categoryMenu')
+            .documentId('categoryMenu')
+            .title('Kategória menü sorrend'),
+        ),
+
       S.divider(),
 
       S.listItem()

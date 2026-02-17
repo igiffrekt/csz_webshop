@@ -133,6 +133,46 @@ const PRODUCT_PRICES_QUERY = defineQuery(`
   }
 `)
 
+// ============ Category Menu Query ============
+
+const CATEGORY_MENU_TREE_QUERY = defineQuery(`
+  *[_type == "categoryMenu" && _id == "categoryMenu"][0] {
+    "data": categories[]->{
+      _id,
+      name,
+      "slug": slug.current,
+      description,
+      productCount,
+      "image": image{
+        "url": asset->url,
+        "alt": asset->altText
+      },
+      "children": *[_type == "category" && parent._ref == ^._id] | order(orderRank asc, name asc) {
+        _id,
+        name,
+        "slug": slug.current,
+        description,
+        productCount,
+        "image": image{
+          "url": asset->url,
+          "alt": asset->altText
+        },
+        "children": *[_type == "category" && parent._ref == ^._id] | order(orderRank asc, name asc) {
+          _id,
+          name,
+          "slug": slug.current,
+          description,
+          productCount,
+          "image": image{
+            "url": asset->url,
+            "alt": asset->altText
+          }
+        }
+      }
+    }
+  }
+`)
+
 // ============ Category Queries ============
 
 const CATEGORIES_QUERY = defineQuery(`
@@ -521,6 +561,16 @@ export async function getCategories() {
 }
 
 export async function getCategoryTree() {
+  // Try the manually ordered category menu first
+  const menuResult = await client.fetch(
+    CATEGORY_MENU_TREE_QUERY,
+    {},
+    { next: { revalidate: 60 } }
+  )
+  if (menuResult?.data && menuResult.data.length > 0) {
+    return menuResult.data
+  }
+  // Fallback to automatic ordering
   return client.fetch(
     CATEGORY_TREE_QUERY,
     {},

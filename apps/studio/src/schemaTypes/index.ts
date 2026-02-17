@@ -16,6 +16,7 @@ import {menuItem} from './documents/menuItem'
 import {order} from './documents/order'
 import {blogPost} from './documents/blogPost'
 import {footer} from './documents/footer'
+import {categoryMenu} from './documents/categoryMenu'
 
 export const schemaTypes = [
   // Objects
@@ -28,6 +29,7 @@ export const schemaTypes = [
   product,
   productVariant,
   category,
+  categoryMenu,
   page,
   faq,
   blogPost,
