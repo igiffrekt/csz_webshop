@@ -1,5 +1,6 @@
 import {defineType, defineField} from 'sanity'
 import {TagIcon} from '@sanity/icons'
+import {orderRankField, orderRankOrdering} from '@sanity/orderable-document-list'
 import {hunSlugify} from '../utils'
 
 export const category = defineType({
@@ -7,7 +8,9 @@ export const category = defineType({
   title: 'Kategória',
   type: 'document',
   icon: TagIcon,
+  orderings: [orderRankOrdering],
   fields: [
+    orderRankField({type: 'category'}),
     defineField({
       name: 'name',
       title: 'Név',

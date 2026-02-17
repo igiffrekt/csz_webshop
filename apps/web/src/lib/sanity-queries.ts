@@ -136,7 +136,7 @@ const PRODUCT_PRICES_QUERY = defineQuery(`
 // ============ Category Queries ============
 
 const CATEGORIES_QUERY = defineQuery(`
-  *[_type == "category"] | order(name asc) {
+  *[_type == "category"] | order(orderRank asc, name asc) {
     _id,
     name,
     "slug": slug.current,
@@ -155,7 +155,7 @@ const CATEGORIES_QUERY = defineQuery(`
 `)
 
 const CATEGORY_TREE_QUERY = defineQuery(`
-  *[_type == "category" && !defined(parent)] | order(name asc) {
+  *[_type == "category" && !defined(parent)] | order(orderRank asc, name asc) {
     _id,
     name,
     "slug": slug.current,
@@ -165,7 +165,7 @@ const CATEGORY_TREE_QUERY = defineQuery(`
       "url": asset->url,
       "alt": asset->altText
     },
-    "children": *[_type == "category" && parent._ref == ^._id] | order(name asc) {
+    "children": *[_type == "category" && parent._ref == ^._id] | order(orderRank asc, name asc) {
       _id,
       name,
       "slug": slug.current,
@@ -175,7 +175,7 @@ const CATEGORY_TREE_QUERY = defineQuery(`
         "url": asset->url,
         "alt": asset->altText
       },
-      "children": *[_type == "category" && parent._ref == ^._id] | order(name asc) {
+      "children": *[_type == "category" && parent._ref == ^._id] | order(orderRank asc, name asc) {
         _id,
         name,
         "slug": slug.current,
@@ -206,7 +206,7 @@ const CATEGORY_BY_SLUG_QUERY = defineQuery(`
       name,
       "slug": slug.current
     },
-    "children": *[_type == "category" && parent._ref == ^._id] | order(name asc) {
+    "children": *[_type == "category" && parent._ref == ^._id] | order(orderRank asc, name asc) {
       _id,
       name,
       "slug": slug.current,
@@ -439,7 +439,7 @@ const INSTANT_SEARCH_PRODUCTS_QUERY = defineQuery(`
 `)
 
 const INSTANT_SEARCH_CATEGORIES_QUERY = defineQuery(`
-  *[_type == "category" && (name match $search + "*" || count(string::split(lower(name), lower($search))) > 1)] | order(name asc) [0...8] {
+  *[_type == "category" && (name match $search + "*" || count(string::split(lower(name), lower($search))) > 1)] | order(orderRank asc, name asc) [0...8] {
     _id,
     name,
     "slug": slug.current,

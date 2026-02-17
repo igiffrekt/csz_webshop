@@ -1,4 +1,5 @@
 import type {StructureResolver} from 'sanity/structure'
+import {orderableDocumentListDeskItem} from '@sanity/orderable-document-list'
 import {
   PackageIcon,
   ComponentIcon,
@@ -11,6 +12,7 @@ import {
   SearchIcon,
   BasketIcon,
   ComposeIcon,
+  SortIcon,
 } from '@sanity/icons'
 
 export const structure: StructureResolver = (S, context) => {
@@ -39,7 +41,7 @@ export const structure: StructureResolver = (S, context) => {
           const buildProductCategoryChild = (catId: string, catName: string): Promise<any> =>
             client
               .fetch<{_id: string; name: string; childCount: number}[]>(
-                `*[_type == "category" && parent._ref == $catId] | order(name asc) {
+                `*[_type == "category" && parent._ref == $catId] | order(orderRank asc, name asc) {
                   _id,
                   name,
                   "childCount": count(*[_type == "category" && parent._ref == ^._id])
@@ -89,7 +91,7 @@ export const structure: StructureResolver = (S, context) => {
 
           return client
             .fetch<{_id: string; name: string; childCount: number}[]>(
-              `*[_type == "category" && !defined(parent)] | order(name asc) {
+              `*[_type == "category" && !defined(parent)] | order(orderRank asc, name asc) {
                 _id,
                 name,
                 "childCount": count(*[_type == "category" && parent._ref == ^._id])
@@ -136,7 +138,7 @@ export const structure: StructureResolver = (S, context) => {
             )
         }),
 
-      // ── Categories (hierarchical) ─────────────────────────────────
+      // ── Categories (hierarchical + orderable) ──────────────────────
       S.listItem()
         .title('Kategóriák')
         .icon(TagIcon)
@@ -145,7 +147,7 @@ export const structure: StructureResolver = (S, context) => {
           const buildCategoryChild = (catId: string, catName: string): Promise<any> =>
             client
               .fetch<{_id: string; name: string; childCount: number}[]>(
-                `*[_type == "category" && parent._ref == $catId] | order(name asc) {
+                `*[_type == "category" && parent._ref == $catId] | order(orderRank asc, name asc) {
                   _id,
                   name,
                   "childCount": count(*[_type == "category" && parent._ref == ^._id])
@@ -172,6 +174,18 @@ export const structure: StructureResolver = (S, context) => {
                               .title(catName),
                           ),
 
+                        // Orderable drag-and-drop list for this category's children
+                        orderableDocumentListDeskItem({
+                          type: 'category',
+                          title: `Alkategóriák sorrendje`,
+                          icon: SortIcon,
+                          id: `cat-order-${catId}`,
+                          filter: `_type == "category" && parent._ref == $parentId`,
+                          params: {parentId: catId},
+                          S,
+                          context,
+                        }),
+
                         S.divider(),
 
                         ...children.map((child) =>
@@ -186,7 +200,7 @@ export const structure: StructureResolver = (S, context) => {
 
           return client
             .fetch<{_id: string; name: string; childCount: number}[]>(
-              `*[_type == "category" && !defined(parent)] | order(name asc) {
+              `*[_type == "category" && !defined(parent)] | order(orderRank asc, name asc) {
                 _id,
                 name,
                 "childCount": count(*[_type == "category" && parent._ref == ^._id])
@@ -196,6 +210,17 @@ export const structure: StructureResolver = (S, context) => {
               S.list()
                 .title('Kategóriák')
                 .items([
+                  // Drag-and-drop orderable list for root categories
+                  orderableDocumentListDeskItem({
+                    type: 'category',
+                    title: 'Fő kategóriák sorrendje',
+                    icon: SortIcon,
+                    id: 'orderable-root-categories',
+                    filter: `_type == "category" && !defined(parent)`,
+                    S,
+                    context,
+                  }),
+
                   S.listItem()
                     .title('Minden kategória')
                     .icon(SearchIcon)
@@ -204,7 +229,7 @@ export const structure: StructureResolver = (S, context) => {
                       S.documentList()
                         .title('Minden kategória')
                         .filter('_type == "category"')
-                        .defaultOrdering([{field: 'name', direction: 'asc'}]),
+                        .defaultOrdering([{field: 'orderRank', direction: 'asc'}]),
                     ),
 
                   S.divider(),
