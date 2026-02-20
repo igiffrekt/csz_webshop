@@ -71,6 +71,7 @@ export interface Product {
 export interface ProductVariant {
   _id: string
   name: string
+  slug?: string
   sku: string
   price: number
   compareAtPrice?: number

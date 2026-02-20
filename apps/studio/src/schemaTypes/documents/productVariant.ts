@@ -1,5 +1,6 @@
 import {defineType, defineField} from 'sanity'
 import {ComponentIcon} from '@sanity/icons'
+import {hunSlugify} from '../utils'
 
 export const productVariant = defineType({
   name: 'productVariant',
@@ -12,6 +13,17 @@ export const productVariant = defineType({
       title: 'Név',
       type: 'string',
       validation: (rule) => rule.required().error('A variáns neve kötelező.'),
+    }),
+    defineField({
+      name: 'slug',
+      title: 'URL slug',
+      type: 'slug',
+      options: {
+        source: 'name',
+        maxLength: 200,
+        slugify: hunSlugify,
+      },
+      validation: (rule) => rule.required().error('Az URL slug kötelező.'),
     }),
     defineField({
       name: 'sku',

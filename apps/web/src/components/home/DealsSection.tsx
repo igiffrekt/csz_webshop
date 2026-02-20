@@ -233,18 +233,22 @@ function DealCard({ product }: DealCardProps) {
       {product.variants && product.variants.length > 0 && (
         <div className="flex items-center gap-1.5 px-4 pt-2 sm:hidden">
           {product.variants.slice(0, 2).map((v: any) => (
-            <span
+            <Link
               key={v._id}
-              className="inline-block text-[10px] font-medium text-gray-600 bg-gray-100 rounded-full px-2.5 py-0.5 truncate max-w-[120px]"
+              href={v.slug ? `${productUrl}?variant=${v.slug}` : productUrl}
+              className="inline-block text-[10px] font-medium text-gray-600 bg-gray-100 hover:bg-[#FFBB36]/20 hover:text-gray-900 rounded-full px-2.5 py-0.5 truncate max-w-[120px] transition-colors"
               title={v.name || v.attributeValue || ''}
             >
               {v.attributeValue || v.name}
-            </span>
+            </Link>
           ))}
           {product.variants.length > 2 && (
-            <span className="text-[10px] font-medium text-gray-400 flex-shrink-0">
+            <Link
+              href={productUrl}
+              className="text-[10px] font-medium text-gray-400 hover:text-gray-600 flex-shrink-0 transition-colors"
+            >
               +{product.variants.length - 2}
-            </span>
+            </Link>
           )}
         </div>
       )}
@@ -286,18 +290,22 @@ function DealCard({ product }: DealCardProps) {
           {product.variants && product.variants.length > 0 && (
             <div className="hidden sm:flex items-center gap-1.5 mt-2">
               {product.variants.slice(0, 2).map((v: any) => (
-                <span
+                <Link
                   key={v._id}
-                  className="inline-block text-[11px] font-medium text-gray-600 bg-gray-100 rounded-full px-2.5 py-0.5 truncate max-w-[140px]"
+                  href={v.slug ? `${productUrl}?variant=${v.slug}` : productUrl}
+                  className="inline-block text-[11px] font-medium text-gray-600 bg-gray-100 hover:bg-[#FFBB36]/20 hover:text-gray-900 rounded-full px-2.5 py-0.5 truncate max-w-[140px] transition-colors"
                   title={v.name || v.attributeValue || ''}
                 >
                   {v.attributeValue || v.name}
-                </span>
+                </Link>
               ))}
               {product.variants.length > 2 && (
-                <span className="text-[11px] font-medium text-gray-400 flex-shrink-0">
+                <Link
+                  href={productUrl}
+                  className="text-[11px] font-medium text-gray-400 hover:text-gray-600 flex-shrink-0 transition-colors"
+                >
                   +{product.variants.length - 2}
-                </span>
+                </Link>
               )}
             </div>
           )}

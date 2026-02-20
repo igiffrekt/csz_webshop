@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useCallback } from 'react';
+import { useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import Lightbox from 'yet-another-react-lightbox';
 import Zoom from 'yet-another-react-lightbox/plugins/zoom';
@@ -31,13 +32,41 @@ interface ProductDetailsProps {
 /**
  * Client component that manages both gallery and variant selection state.
  * When a variant with an image is selected, the gallery shows that variant's image.
+ * Reads ?variant=slug from URL and updates it when user selects a variant.
  */
 export function ProductDetails({ product, children }: ProductDetailsProps) {
-  const [selectedVariant, setSelectedVariant] = useState<ProductVariant | null>(null);
+  const searchParams = useSearchParams();
+  const variantSlugParam = searchParams.get('variant');
+
+  // Find variant matching URL param
+  const initialVariant = useMemo(() => {
+    if (!variantSlugParam || !product.variants) return null;
+    return product.variants.find((v) => v.slug === variantSlugParam) || null;
+  }, [variantSlugParam, product.variants]);
+
+  const [selectedVariant, setSelectedVariant] = useState<ProductVariant | null>(initialVariant);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
 
+  // Sync when URL param changes (e.g. navigating from card pill)
+  useEffect(() => {
+    setSelectedVariant(initialVariant);
+  }, [initialVariant]);
+
   const hasVariants = product.variants && product.variants.length > 0;
+
+  // Update URL when variant selection changes
+  const handleVariantSelect = useCallback((variant: ProductVariant) => {
+    setSelectedVariant(variant);
+    // Update URL without navigation
+    const url = new URL(window.location.href);
+    if (variant.slug) {
+      url.searchParams.set('variant', variant.slug);
+    } else {
+      url.searchParams.delete('variant');
+    }
+    window.history.replaceState({}, '', url.toString());
+  }, []);
 
   // Build the full list of images: product images + variant images
   const allImages = useMemo(() => {
@@ -177,7 +206,7 @@ export function ProductDetails({ product, children }: ProductDetailsProps) {
           <VariantSelector
             variants={product.variants!}
             selectedVariant={selectedVariant}
-            onSelect={setSelectedVariant}
+            onSelect={handleVariantSelect}
           />
         )}
 

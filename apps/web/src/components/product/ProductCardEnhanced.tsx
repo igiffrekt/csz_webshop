@@ -190,7 +190,7 @@ export function ProductCardEnhanced({
       {/* Variant pills */}
       {product.variants && product.variants.length > 0 && (
         <div className="mt-2">
-          <VariantPills variants={product.variants} />
+          <VariantPills variants={product.variants} productUrl={productUrl} />
         </div>
       )}
 
@@ -247,25 +247,29 @@ export function ProductCardEnhanced({
 
 const MAX_VISIBLE_VARIANTS = 2;
 
-function VariantPills({ variants }: { variants: Pick<ProductVariant, '_id' | 'name' | 'attributeValue' | 'price'>[] }) {
+function VariantPills({ variants, productUrl }: { variants: Pick<ProductVariant, '_id' | 'name' | 'slug' | 'attributeValue' | 'price'>[]; productUrl: string }) {
   const visible = variants.slice(0, MAX_VISIBLE_VARIANTS);
   const remaining = variants.length - MAX_VISIBLE_VARIANTS;
 
   return (
     <div className="flex items-center gap-1.5 mt-2 overflow-hidden">
       {visible.map((v) => (
-        <span
+        <Link
           key={v._id}
-          className="inline-block text-[10px] sm:text-[11px] font-medium text-gray-600 bg-gray-100 rounded-full px-2.5 py-0.5 truncate max-w-[120px] sm:max-w-[140px]"
+          href={v.slug ? `${productUrl}?variant=${v.slug}` : productUrl}
+          className="inline-block text-[10px] sm:text-[11px] font-medium text-gray-600 bg-gray-100 hover:bg-[#FFBB36]/20 hover:text-gray-900 rounded-full px-2.5 py-0.5 truncate max-w-[120px] sm:max-w-[140px] transition-colors"
           title={v.name || v.attributeValue || ''}
         >
           {v.attributeValue || v.name}
-        </span>
+        </Link>
       ))}
       {remaining > 0 && (
-        <span className="text-[10px] sm:text-[11px] font-medium text-gray-400 flex-shrink-0">
+        <Link
+          href={productUrl}
+          className="text-[10px] sm:text-[11px] font-medium text-gray-400 hover:text-gray-600 flex-shrink-0 transition-colors"
+        >
           +{remaining}
-        </span>
+        </Link>
       )}
     </div>
   );

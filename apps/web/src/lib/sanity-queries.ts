@@ -48,6 +48,7 @@ const PRODUCTS_QUERY = defineQuery(`
     "variants": variants[]->{
       _id,
       name,
+      "slug": slug.current,
       attributeValue,
       price
     }
@@ -98,6 +99,7 @@ const PRODUCT_BY_SLUG_QUERY = defineQuery(`
     "variants": variants[]->{
       _id,
       name,
+      "slug": slug.current,
       sku,
       price,
       compareAtPrice,
@@ -149,6 +151,7 @@ const PRODUCT_BY_SLUG_QUERY = defineQuery(`
       "variants": variants[]->{
         _id,
         name,
+        "slug": slug.current,
         attributeValue,
         price
       }
@@ -318,6 +321,7 @@ const HOMEPAGE_QUERY = defineQuery(`
       "variants": variants[]->{
         _id,
         name,
+        "slug": slug.current,
         attributeValue,
         price
       }
@@ -340,6 +344,7 @@ const HOMEPAGE_QUERY = defineQuery(`
         "variants": variants[]->{
           _id,
           name,
+          "slug": slug.current,
           attributeValue,
           price
         }
