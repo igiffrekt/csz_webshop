@@ -174,8 +174,7 @@ export default async function ProductPage({ params }: Props) {
       '@type': 'Offer',
       price: product.basePrice,
       priceCurrency: 'HUF',
-      availability:
-        product.stock > 0 ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
+      availability: 'https://schema.org/InStock',
     },
   };
 

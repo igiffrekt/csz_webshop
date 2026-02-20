@@ -44,6 +44,12 @@ const PRODUCTS_QUERY = defineQuery(`
       _key,
       name,
       standard
+    },
+    "variants": variants[]->{
+      _id,
+      name,
+      attributeValue,
+      price
     }
   }
 `)
@@ -279,6 +285,12 @@ const HOMEPAGE_QUERY = defineQuery(`
       "images": images[0]{
         "url": asset->url,
         "alt": asset->altText
+      },
+      "variants": variants[]->{
+        _id,
+        name,
+        attributeValue,
+        price
       }
     },
     dealsSection{
@@ -295,6 +307,12 @@ const HOMEPAGE_QUERY = defineQuery(`
         "images": images[0]{
           "url": asset->url,
           "alt": asset->altText
+        },
+        "variants": variants[]->{
+          _id,
+          name,
+          attributeValue,
+          price
         }
       }
     },

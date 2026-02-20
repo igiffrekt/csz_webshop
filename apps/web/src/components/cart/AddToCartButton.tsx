@@ -44,13 +44,6 @@ export function AddToCartButton({
       return;
     }
 
-    // Check stock
-    const stock = variant?.stock ?? product.stock;
-    if (stock === 0) {
-      toast.error('A termék nincs készleten');
-      return;
-    }
-
     setStatus('adding');
 
     // Small delay for visual feedback, then add to cart
@@ -77,8 +70,6 @@ export function AddToCartButton({
     }, 300);
   };
 
-  const stock = variant?.stock ?? product.stock;
-  const isOutOfStock = stock === 0;
   const needsVariant = requiresVariant && !variant;
 
   const getButtonContent = () => {
@@ -96,7 +87,7 @@ export function AddToCartButton({
     return (
       <span className="flex items-center gap-2">
         <ShoppingCart className="h-4 w-4" />
-        {isOutOfStock ? 'Elfogyott' : needsVariant ? 'Válasszon méretet' : 'Kosárba'}
+        {needsVariant ? 'Válasszon méretet' : 'Kosárba'}
       </span>
     );
   };
@@ -104,13 +95,13 @@ export function AddToCartButton({
   return (
     <button
       onClick={handleAddToCart}
-      disabled={disabled || isOutOfStock || status !== 'idle'}
+      disabled={disabled || status !== 'idle'}
       className={`
         w-full sm:w-auto min-w-[180px] h-[52px] sm:h-[48px] px-8 rounded-full font-semibold text-sm
         transition-all duration-200 flex items-center justify-center gap-2
         ${status === 'added'
           ? 'bg-green-500 text-white'
-          : isOutOfStock || needsVariant
+          : needsVariant
             ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
             : 'bg-amber-500 text-gray-900 hover:bg-amber-400 shadow-lg sm:shadow-none'
         }

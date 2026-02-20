@@ -42,20 +42,17 @@ export function VariantSelector({
       <div className="flex flex-wrap gap-2">
         {variants.map((variant) => {
           const isSelected = selectedVariant?._id === variant._id;
-          const isOutOfStock = variant.stock === 0;
 
           return (
             <button
               key={variant._id}
               type="button"
-              onClick={() => !isOutOfStock && handleSelect(variant)}
-              disabled={isOutOfStock}
+              onClick={() => handleSelect(variant)}
               className={cn(
                 'px-4 py-2.5 sm:py-2 text-sm font-medium rounded-full border transition-colors min-h-[44px] sm:min-h-0',
                 isSelected
                   ? 'border-primary bg-primary text-primary-foreground'
                   : 'border-input bg-background hover:bg-accent hover:text-accent-foreground',
-                isOutOfStock && 'opacity-50 cursor-not-allowed line-through'
               )}
             >
               {variant.name || variant.attributeValue}
@@ -70,7 +67,7 @@ export function VariantSelector({
       </div>
       {selectedVariant && (
         <p className="text-sm text-muted-foreground">
-          Keszlet: {selectedVariant.stock > 0 ? `${selectedVariant.stock} db` : 'Elfogyott'}
+          Készleten: {selectedVariant.stock} db
         </p>
       )}
     </div>

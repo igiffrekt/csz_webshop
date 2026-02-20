@@ -21,9 +21,7 @@ export function generateProductJsonLd(product: Product) {
       url: `${SITE_URL}/termekek/${product.slug}`,
       priceCurrency: 'HUF',
       price: product.basePrice,
-      availability: product.stock && product.stock > 0
-        ? 'https://schema.org/InStock'
-        : 'https://schema.org/OutOfStock',
+      availability: 'https://schema.org/InStock',
       seller: {
         '@type': 'Organization',
         name: 'Dunamenti CSZ Kft.',

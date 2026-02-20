@@ -6,6 +6,7 @@ import { Link } from '@/i18n/navigation';
 import { Star, Heart, ShoppingCart, Eye } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { formatPrice, getImageUrl } from '@/lib/formatters';
+import type { ProductVariant } from '@csz/types';
 import { useCartStore } from '@/stores/cart';
 import type { Product } from '@csz/types';
 import { toast } from 'sonner';
@@ -99,8 +100,6 @@ export function ProductCardEnhanced({
     e.preventDefault();
     e.stopPropagation();
 
-    if (product.stock <= 0) return;
-
     addItem(product, undefined, 1);
     toast.success('Termék hozzáadva a kosárhoz');
   };
@@ -149,15 +148,6 @@ export function ProductCardEnhanced({
           </div>
         )}
 
-        {/* Out of stock badge */}
-        {product.stock <= 0 && (
-          <div className="absolute top-2 left-2 sm:top-3 sm:left-3 pointer-events-none">
-            <span className="bg-gray-600 text-white text-[10px] sm:text-xs font-medium px-2 sm:px-2.5 py-0.5 sm:py-1 rounded">
-              Elfogyott
-            </span>
-          </div>
-        )}
-
         {/* Quick actions */}
         {showQuickActions && (
           <div className="absolute top-2 right-2 sm:top-3 sm:right-3 flex flex-col gap-1.5 sm:gap-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-all duration-300 sm:translate-x-2 sm:group-hover:translate-x-0">
@@ -180,14 +170,8 @@ export function ProductCardEnhanced({
               <Eye className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
             </Link>
             <button
-              className={cn(
-                'w-8 h-8 sm:w-9 sm:h-9 bg-white rounded-full shadow-md flex items-center justify-center transition-colors',
-                product.stock <= 0
-                  ? 'text-gray-300 cursor-not-allowed'
-                  : 'hover:bg-[#FFBB36] hover:text-gray-900'
-              )}
+              className="w-8 h-8 sm:w-9 sm:h-9 bg-white rounded-full shadow-md flex items-center justify-center transition-colors hover:bg-[#FFBB36] hover:text-gray-900"
               onClick={handleAddToCart}
-              disabled={product.stock <= 0}
               title="Kosárba"
             >
               <ShoppingCart className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
@@ -247,7 +231,38 @@ export function ProductCardEnhanced({
             </span>
           )}
         </div>
+
+        {/* Variant pills */}
+        {product.variants && product.variants.length > 0 && (
+          <VariantPills variants={product.variants} />
+        )}
       </div>
+    </div>
+  );
+}
+
+const MAX_VISIBLE_VARIANTS = 2;
+
+function VariantPills({ variants }: { variants: Pick<ProductVariant, '_id' | 'name' | 'attributeValue' | 'price'>[] }) {
+  const visible = variants.slice(0, MAX_VISIBLE_VARIANTS);
+  const remaining = variants.length - MAX_VISIBLE_VARIANTS;
+
+  return (
+    <div className="flex items-center gap-1.5 mt-2 overflow-hidden">
+      {visible.map((v) => (
+        <span
+          key={v._id}
+          className="inline-block text-[10px] sm:text-[11px] font-medium text-gray-600 bg-gray-100 rounded-full px-2.5 py-0.5 truncate max-w-[120px] sm:max-w-[140px]"
+          title={v.name || v.attributeValue || ''}
+        >
+          {v.attributeValue || v.name}
+        </span>
+      ))}
+      {remaining > 0 && (
+        <span className="text-[10px] sm:text-[11px] font-medium text-gray-400 flex-shrink-0">
+          +{remaining}
+        </span>
+      )}
     </div>
   );
 }

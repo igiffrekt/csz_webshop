@@ -195,7 +195,6 @@ function DealCard({ product }: DealCardProps) {
     : `/termekek/${product.slug}`;
 
   const handleAddToCart = () => {
-    if (product.stock <= 0) return;
     addItem(product, undefined, 1);
     toast.success('Termék hozzáadva a kosárhoz');
   };
@@ -263,6 +262,26 @@ function DealCard({ product }: DealCardProps) {
             <span className="text-sm font-medium text-gray-900">4.{(product._id.charCodeAt(0) % 5) + 5}</span>
           </div>
 
+          {/* Variant pills */}
+          {product.variants && product.variants.length > 0 && (
+            <div className="flex items-center gap-1.5 mt-2">
+              {product.variants.slice(0, 2).map((v: any) => (
+                <span
+                  key={v._id}
+                  className="inline-block text-[10px] sm:text-[11px] font-medium text-gray-600 bg-gray-100 rounded-full px-2.5 py-0.5 truncate max-w-[120px] sm:max-w-[140px]"
+                  title={v.name || v.attributeValue || ''}
+                >
+                  {v.attributeValue || v.name}
+                </span>
+              ))}
+              {product.variants.length > 2 && (
+                <span className="text-[10px] sm:text-[11px] font-medium text-gray-400 flex-shrink-0">
+                  +{product.variants.length - 2}
+                </span>
+              )}
+            </div>
+          )}
+
           {/* Description */}
           <p className="text-gray-600 text-sm mt-2 sm:mt-3 line-clamp-2 sm:line-clamp-3">
             {stripHtml(product.shortDescription) || 'Professzionális minőségű termék, CE tanúsítvánnyal. Megbízható tűzvédelem minden környezetben.'}
@@ -272,16 +291,10 @@ function DealCard({ product }: DealCardProps) {
         {/* Kosárba button - at bottom */}
         <button
           onClick={handleAddToCart}
-          disabled={product.stock <= 0}
-          className={cn(
-            'mt-3 sm:mt-4 px-6 py-2.5 rounded-full font-medium text-sm inline-flex items-center justify-center gap-2 w-full sm:w-fit transition-colors',
-            product.stock <= 0
-              ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-              : 'bg-[#FFBB36] text-gray-900 hover:bg-[#e88a00]'
-          )}
+          className="mt-3 sm:mt-4 px-6 py-2.5 rounded-full font-medium text-sm inline-flex items-center justify-center gap-2 w-full sm:w-fit transition-colors bg-[#FFBB36] text-gray-900 hover:bg-[#e88a00]"
         >
           <ShoppingCart className="h-4 w-4" />
-          {product.stock <= 0 ? 'Elfogyott' : 'Kosárba'}
+          Kosárba
         </button>
       </div>
     </div>

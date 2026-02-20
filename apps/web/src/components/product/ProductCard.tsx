@@ -77,10 +77,26 @@ export function ProductCard({ product, className }: ProductCardProps) {
           )}
         </div>
 
-        {/* Stock status */}
-        {product.stock <= 0 && (
-          <p className="text-sm text-destructive">{t("outOfStock")}</p>
+        {/* Variant pills */}
+        {product.variants && product.variants.length > 0 && (
+          <div className="flex items-center gap-1.5 overflow-hidden">
+            {product.variants.slice(0, 2).map((v) => (
+              <span
+                key={v._id}
+                className="inline-block text-[10px] sm:text-[11px] font-medium text-muted-foreground bg-muted rounded-full px-2.5 py-0.5 truncate max-w-[110px] sm:max-w-[130px]"
+                title={v.name || v.attributeValue || ''}
+              >
+                {v.attributeValue || v.name}
+              </span>
+            ))}
+            {product.variants.length > 2 && (
+              <span className="text-[10px] sm:text-[11px] font-medium text-muted-foreground flex-shrink-0">
+                +{product.variants.length - 2}
+              </span>
+            )}
+          </div>
         )}
+
       </div>
     </Link>
   );

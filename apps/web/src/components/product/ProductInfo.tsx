@@ -9,7 +9,6 @@ interface ProductInfoProps {
 export async function ProductInfo({ product }: ProductInfoProps) {
   const t = await getTranslations('product');
 
-  const inStock = product.stock > 0;
   const hasDiscount = product.compareAtPrice && product.compareAtPrice > product.basePrice;
 
   return (
@@ -50,17 +49,8 @@ export async function ProductInfo({ product }: ProductInfoProps) {
 
       {/* Stock status */}
       <div className="flex items-center gap-2">
-        {inStock ? (
-          <>
-            <div className="w-2 h-2 bg-green-500 rounded-full" />
-            <span className="text-green-600 font-medium">{t('inStock')}</span>
-          </>
-        ) : (
-          <>
-            <div className="w-2 h-2 bg-red-500 rounded-full" />
-            <span className="text-red-600 font-medium">{t('outOfStock')}</span>
-          </>
-        )}
+        <div className="w-2 h-2 bg-green-500 rounded-full" />
+        <span className="text-green-600 font-medium">{t('inStock')}</span>
       </div>
 
       {/* Short description */}
