@@ -1,8 +1,14 @@
 'use client';
 
-import { useState, useMemo, useEffect, useCallback } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import Image from 'next/image';
-import { X, ChevronLeft, ChevronRight } from 'lucide-react';
+import Lightbox from 'yet-another-react-lightbox';
+import Zoom from 'yet-another-react-lightbox/plugins/zoom';
+import Thumbnails from 'yet-another-react-lightbox/plugins/thumbnails';
+import Counter from 'yet-another-react-lightbox/plugins/counter';
+import 'yet-another-react-lightbox/styles.css';
+import 'yet-another-react-lightbox/plugins/thumbnails.css';
+import 'yet-another-react-lightbox/plugins/counter.css';
 import type { Product, ProductVariant } from '@csz/types';
 
 interface ImageItem {
@@ -64,10 +70,20 @@ export function ProductDetails({ product, children }: ProductDetailsProps) {
     { _key: 'placeholder', url: '/placeholder.svg', alt: product.name } as ImageItem
   ];
 
+  // Lightbox slides
+  const lightboxSlides = useMemo(() =>
+    displayImages.map((img) => ({
+      src: getImageUrl(img.url),
+      alt: img.alt || product.name,
+      width: img.width || 1200,
+      height: img.height || 1200,
+    })),
+    [displayImages, product.name]
+  );
+
   // When variant selection changes, switch to that variant's image
   useEffect(() => {
     if (selectedVariant?.image) {
-      // Find the index of the variant's image in allImages
       const variantImageIndex = allImages.findIndex(
         img => img.url === selectedVariant.image!.url
       );
@@ -79,83 +95,35 @@ export function ProductDetails({ product, children }: ProductDetailsProps) {
 
   const selectedImage = displayImages[selectedImageIndex];
 
-  const lightboxPrev = useCallback(() => {
-    setSelectedImageIndex((i) => (i > 0 ? i - 1 : displayImages.length - 1));
-  }, [displayImages.length]);
-
-  const lightboxNext = useCallback(() => {
-    setSelectedImageIndex((i) => (i < displayImages.length - 1 ? i + 1 : 0));
-  }, [displayImages.length]);
-
-  // Keyboard navigation for lightbox
-  useEffect(() => {
-    if (!lightboxOpen) return;
-    const handleKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setLightboxOpen(false);
-      if (e.key === 'ArrowLeft') lightboxPrev();
-      if (e.key === 'ArrowRight') lightboxNext();
-    };
-    document.body.style.overflow = 'hidden';
-    window.addEventListener('keydown', handleKey);
-    return () => {
-      document.body.style.overflow = '';
-      window.removeEventListener('keydown', handleKey);
-    };
-  }, [lightboxOpen, lightboxPrev, lightboxNext]);
-
   return (
     <>
     {/* Lightbox */}
-    {lightboxOpen && (
-      <div
-        className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center"
-        onClick={() => setLightboxOpen(false)}
-      >
-        <button
-          className="absolute top-4 right-4 z-10 w-10 h-10 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors"
-          onClick={() => setLightboxOpen(false)}
-        >
-          <X className="h-6 w-6 text-white" />
-        </button>
-
-        {displayImages.length > 1 && (
-          <>
-            <button
-              className="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors"
-              onClick={(e) => { e.stopPropagation(); lightboxPrev(); }}
-            >
-              <ChevronLeft className="h-6 w-6 text-white" />
-            </button>
-            <button
-              className="absolute right-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors"
-              onClick={(e) => { e.stopPropagation(); lightboxNext(); }}
-            >
-              <ChevronRight className="h-6 w-6 text-white" />
-            </button>
-          </>
-        )}
-
-        <div
-          className="relative w-[90vw] h-[90vh] max-w-[1200px]"
-          onClick={(e) => e.stopPropagation()}
-        >
-          <Image
-            src={getImageUrl(selectedImage.url)}
-            alt={selectedImage.alt || product.name}
-            fill
-            sizes="90vw"
-            className="object-contain"
-            priority
-          />
-        </div>
-
-        {displayImages.length > 1 && (
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-white/60 text-sm">
-            {selectedImageIndex + 1} / {displayImages.length}
-          </div>
-        )}
-      </div>
-    )}
+    <Lightbox
+      open={lightboxOpen}
+      close={() => setLightboxOpen(false)}
+      index={selectedImageIndex}
+      slides={lightboxSlides}
+      on={{ view: ({ index }) => setSelectedImageIndex(index) }}
+      plugins={[Zoom, Thumbnails, Counter]}
+      zoom={{
+        maxZoomPixelRatio: 3,
+        scrollToZoom: true,
+      }}
+      thumbnails={{
+        position: 'bottom',
+        width: 80,
+        height: 80,
+        padding: 4,
+        gap: 8,
+        borderRadius: 8,
+      }}
+      counter={{ container: { style: { top: 16, bottom: 'unset' } } }}
+      carousel={{ finite: displayImages.length <= 5 }}
+      animation={{ fade: 300, swipe: 300 }}
+      styles={{
+        container: { backgroundColor: 'rgba(0, 0, 0, 0.92)' },
+      }}
+    />
 
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-12">
       {/* Left: Gallery */}

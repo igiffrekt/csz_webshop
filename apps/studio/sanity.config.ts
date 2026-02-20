@@ -20,7 +20,7 @@ export default defineConfig({
   document: {
     actions: (prev, context) => {
       if (['product', 'productVariant'].includes(context.schemaType)) {
-        return [...prev, duplicateAction]
+        return prev.filter((a) => a.action !== 'duplicate').concat(duplicateAction)
       }
       return prev
     },
