@@ -52,12 +52,16 @@ export const useCartStore = create<CartState>()(
             ? getImageUrl(imageSource)
             : undefined;
 
+          const variantName = variant?.attributes?.length
+            ? variant.attributes.map((a) => a.value).join(' / ')
+            : variant?.name;
+
           const newItem: CartItem = {
             id: itemId,
             productId: productKey,
             variantId: variantKey,
             name: product.name,
-            variantName: variant?.name,
+            variantName,
             sku: variant?.sku ?? product.sku,
             price: variant?.price ?? product.basePrice,
             quantity,

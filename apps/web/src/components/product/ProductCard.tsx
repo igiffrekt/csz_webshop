@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
-import type { Product } from "@csz/types";
+import type { Product, ProductVariant } from "@csz/types";
 import { formatPrice, getImageUrl } from "@/lib/formatters";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
@@ -60,26 +60,7 @@ export function ProductCard({ product, className }: ProductCardProps) {
 
       {/* Variant pills */}
       {product.variants && product.variants.length > 0 && (
-        <div className="flex items-center gap-1.5 overflow-hidden px-3 sm:px-4 pt-2">
-          {product.variants.slice(0, 2).map((v) => (
-            <Link
-              key={v._id}
-              href={v.slug ? `${productUrl}?variant=${v.slug}` : productUrl}
-              className="inline-block text-[10px] sm:text-[11px] font-medium text-muted-foreground bg-muted hover:bg-primary/20 hover:text-foreground rounded-full px-2.5 py-0.5 truncate max-w-[110px] sm:max-w-[130px] transition-colors"
-              title={v.name || v.attributeValue || ''}
-            >
-              {v.attributeValue || v.name}
-            </Link>
-          ))}
-          {product.variants.length > 2 && (
-            <Link
-              href={productUrl}
-              className="text-[10px] sm:text-[11px] font-medium text-muted-foreground hover:text-foreground flex-shrink-0 transition-colors"
-            >
-              +{product.variants.length - 2}
-            </Link>
-          )}
-        </div>
+        <CardVariantPills variants={product.variants} productUrl={productUrl} />
       )}
 
       {/* Content */}
@@ -105,6 +86,66 @@ export function ProductCard({ product, className }: ProductCardProps) {
           </div>
         </div>
       </Link>
+    </div>
+  );
+}
+
+function CardVariantPills({ variants, productUrl }: { variants: ProductVariant[]; productUrl: string }) {
+  const isMultiDim = variants.some((v) => v.attributes && v.attributes.length > 0);
+
+  if (isMultiDim) {
+    const firstLabel = variants.find((v) => v.attributes?.length)?.attributes![0]?.label;
+    if (!firstLabel) return null;
+    const uniqueValues: string[] = [];
+    for (const v of variants) {
+      const val = v.attributes?.find((a) => a.label === firstLabel)?.value;
+      if (val && !uniqueValues.includes(val)) uniqueValues.push(val);
+    }
+    const visible = uniqueValues.slice(0, 2);
+    const remaining = uniqueValues.length - 2;
+
+    return (
+      <div className="flex items-center gap-1.5 overflow-hidden px-3 sm:px-4 pt-2">
+        {visible.map((val) => (
+          <span
+            key={val}
+            className="inline-block text-[10px] sm:text-[11px] font-medium text-muted-foreground bg-muted rounded-full px-2.5 py-0.5 truncate max-w-[110px] sm:max-w-[130px]"
+          >
+            {val}
+          </span>
+        ))}
+        {remaining > 0 && (
+          <Link
+            href={productUrl}
+            className="text-[10px] sm:text-[11px] font-medium text-muted-foreground hover:text-foreground flex-shrink-0 transition-colors"
+          >
+            +{remaining}
+          </Link>
+        )}
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex items-center gap-1.5 overflow-hidden px-3 sm:px-4 pt-2">
+      {variants.slice(0, 2).map((v) => (
+        <Link
+          key={v._id}
+          href={v.slug ? `${productUrl}?variant=${v.slug}` : productUrl}
+          className="inline-block text-[10px] sm:text-[11px] font-medium text-muted-foreground bg-muted hover:bg-primary/20 hover:text-foreground rounded-full px-2.5 py-0.5 truncate max-w-[110px] sm:max-w-[130px] transition-colors"
+          title={v.name || v.attributeValue || ''}
+        >
+          {v.attributeValue || v.name}
+        </Link>
+      ))}
+      {variants.length > 2 && (
+        <Link
+          href={productUrl}
+          className="text-[10px] sm:text-[11px] font-medium text-muted-foreground hover:text-foreground flex-shrink-0 transition-colors"
+        >
+          +{variants.length - 2}
+        </Link>
+      )}
     </div>
   );
 }

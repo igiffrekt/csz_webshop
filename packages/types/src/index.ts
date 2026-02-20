@@ -67,6 +67,13 @@ export interface Product {
   variants?: ProductVariant[]
 }
 
+// Variant attribute (multi-dimension support)
+export interface VariantAttribute {
+  _key?: string
+  label: string
+  value: string
+}
+
 // Product Variant from Sanity
 export interface ProductVariant {
   _id: string
@@ -79,6 +86,7 @@ export interface ProductVariant {
   weight?: number
   attributeLabel?: string
   attributeValue?: string
+  attributes?: VariantAttribute[]
   image?: SanityImageAsset | null
 }
 

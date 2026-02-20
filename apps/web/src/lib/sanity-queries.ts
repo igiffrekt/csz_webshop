@@ -50,6 +50,7 @@ const PRODUCTS_QUERY = defineQuery(`
       name,
       "slug": slug.current,
       attributeValue,
+      attributes[]{ _key, label, value },
       price
     }
   }
@@ -107,6 +108,7 @@ const PRODUCT_BY_SLUG_QUERY = defineQuery(`
       weight,
       attributeLabel,
       attributeValue,
+      attributes[]{ _key, label, value },
       "image": image{
         "url": asset->url,
         "alt": asset->altText
@@ -153,6 +155,7 @@ const PRODUCT_BY_SLUG_QUERY = defineQuery(`
         name,
         "slug": slug.current,
         attributeValue,
+        attributes[]{ _key, label, value },
         price
       }
     }
@@ -323,6 +326,7 @@ const HOMEPAGE_QUERY = defineQuery(`
         name,
         "slug": slug.current,
         attributeValue,
+        attributes[]{ _key, label, value },
         price
       }
     },
@@ -346,6 +350,7 @@ const HOMEPAGE_QUERY = defineQuery(`
           name,
           "slug": slug.current,
           attributeValue,
+          attributes[]{ _key, label, value },
           price
         }
       }

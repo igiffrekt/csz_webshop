@@ -245,11 +245,48 @@ export function ProductCardEnhanced({
   );
 }
 
-const MAX_VISIBLE_VARIANTS = 2;
+const MAX_VISIBLE_PILLS = 2;
 
-function VariantPills({ variants, productUrl }: { variants: Pick<ProductVariant, '_id' | 'name' | 'slug' | 'attributeValue' | 'price'>[]; productUrl: string }) {
-  const visible = variants.slice(0, MAX_VISIBLE_VARIANTS);
-  const remaining = variants.length - MAX_VISIBLE_VARIANTS;
+function VariantPills({ variants, productUrl }: { variants: Pick<ProductVariant, '_id' | 'name' | 'slug' | 'attributeValue' | 'price' | 'attributes'>[]; productUrl: string }) {
+  // Multi-dimension: show first dimension's unique values
+  const isMultiDim = variants.some((v) => v.attributes && v.attributes.length > 0);
+
+  if (isMultiDim) {
+    const firstLabel = variants.find((v) => v.attributes?.length)?.attributes![0]?.label;
+    if (!firstLabel) return null;
+    const uniqueValues: string[] = [];
+    for (const v of variants) {
+      const val = v.attributes?.find((a) => a.label === firstLabel)?.value;
+      if (val && !uniqueValues.includes(val)) uniqueValues.push(val);
+    }
+    const visible = uniqueValues.slice(0, MAX_VISIBLE_PILLS);
+    const remaining = uniqueValues.length - MAX_VISIBLE_PILLS;
+
+    return (
+      <div className="flex items-center gap-1.5 mt-2 overflow-hidden">
+        {visible.map((val) => (
+          <span
+            key={val}
+            className="inline-block text-[10px] sm:text-[11px] font-medium text-gray-600 bg-gray-100 rounded-full px-2.5 py-0.5 truncate max-w-[120px] sm:max-w-[140px]"
+          >
+            {val}
+          </span>
+        ))}
+        {remaining > 0 && (
+          <Link
+            href={productUrl}
+            className="text-[10px] sm:text-[11px] font-medium text-gray-400 hover:text-gray-600 flex-shrink-0 transition-colors"
+          >
+            +{remaining}
+          </Link>
+        )}
+      </div>
+    );
+  }
+
+  // Legacy: show variant attributeValue or name
+  const visible = variants.slice(0, MAX_VISIBLE_PILLS);
+  const remaining = variants.length - MAX_VISIBLE_PILLS;
 
   return (
     <div className="flex items-center gap-1.5 mt-2 overflow-hidden">

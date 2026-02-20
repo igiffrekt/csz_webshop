@@ -58,16 +58,54 @@ export const productVariant = defineType({
       type: 'number',
     }),
     defineField({
+      name: 'attributes',
+      title: 'Tulajdonságok',
+      type: 'array',
+      description: 'Többdimenziós variáns tulajdonságok (pl. Méret + Szín)',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            defineField({
+              name: 'label',
+              title: 'Tulajdonság neve',
+              type: 'string',
+              description: 'Pl.: Méret, Szín, Kiszerelés',
+              validation: (rule) => rule.required(),
+            }),
+            defineField({
+              name: 'value',
+              title: 'Tulajdonság értéke',
+              type: 'string',
+              description: 'Pl.: 6 kg, Piros, 12 db',
+              validation: (rule) => rule.required(),
+            }),
+          ],
+          preview: {
+            select: {
+              label: 'label',
+              value: 'value',
+            },
+            prepare({label, value}) {
+              return {
+                title: `${label}: ${value}`,
+              }
+            },
+          },
+        },
+      ],
+    }),
+    defineField({
       name: 'attributeLabel',
-      title: 'Tulajdonság neve',
+      title: 'Tulajdonság neve (régi)',
       type: 'string',
-      description: 'Pl.: Méret, Szín, Kiszerelés',
+      hidden: true,
     }),
     defineField({
       name: 'attributeValue',
-      title: 'Tulajdonság értéke',
+      title: 'Tulajdonság értéke (régi)',
       type: 'string',
-      description: 'Pl.: 6 kg, Piros, 12 db',
+      hidden: true,
     }),
     defineField({
       name: 'image',
@@ -90,11 +128,16 @@ export const productVariant = defineType({
       title: 'name',
       sku: 'sku',
       media: 'image',
+      attributes: 'attributes',
     },
-    prepare({title, sku, media}) {
+    prepare({title, sku, media, attributes}) {
+      const attrText = attributes?.length
+        ? attributes.map((a: {label: string; value: string}) => `${a.label}: ${a.value}`).join(', ')
+        : ''
+      const subtitle = [attrText, sku ? `SKU: ${sku}` : ''].filter(Boolean).join(' | ')
       return {
         title,
-        subtitle: sku ? `SKU: ${sku}` : '',
+        subtitle,
         media,
       }
     },

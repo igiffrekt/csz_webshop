@@ -8,7 +8,7 @@ import { formatPrice, getImageUrl, stripHtml } from '@/lib/formatters';
 import { cn } from '@/lib/utils';
 import { useCartStore } from '@/stores/cart';
 import { toast } from 'sonner';
-import type { Product } from '@csz/types';
+import type { Product, ProductVariant } from '@csz/types';
 
 interface DealsSectionProps {
   products: Product[];
@@ -231,26 +231,7 @@ function DealCard({ product }: DealCardProps) {
 
       {/* Variant pills - between image and content */}
       {product.variants && product.variants.length > 0 && (
-        <div className="flex items-center gap-1.5 px-4 pt-2 sm:hidden">
-          {product.variants.slice(0, 2).map((v: any) => (
-            <Link
-              key={v._id}
-              href={v.slug ? `${productUrl}?variant=${v.slug}` : productUrl}
-              className="inline-block text-[10px] font-medium text-gray-600 bg-gray-100 hover:bg-[#FFBB36]/20 hover:text-gray-900 rounded-full px-2.5 py-0.5 truncate max-w-[120px] transition-colors"
-              title={v.name || v.attributeValue || ''}
-            >
-              {v.attributeValue || v.name}
-            </Link>
-          ))}
-          {product.variants.length > 2 && (
-            <Link
-              href={productUrl}
-              className="text-[10px] font-medium text-gray-400 hover:text-gray-600 flex-shrink-0 transition-colors"
-            >
-              +{product.variants.length - 2}
-            </Link>
-          )}
-        </div>
+        <DealVariantPills variants={product.variants} productUrl={productUrl} className="sm:hidden px-4 pt-2" size="small" />
       )}
 
       {/* Content */}
@@ -288,26 +269,7 @@ function DealCard({ product }: DealCardProps) {
 
           {/* Variant pills - desktop (inside content area) */}
           {product.variants && product.variants.length > 0 && (
-            <div className="hidden sm:flex items-center gap-1.5 mt-2">
-              {product.variants.slice(0, 2).map((v: any) => (
-                <Link
-                  key={v._id}
-                  href={v.slug ? `${productUrl}?variant=${v.slug}` : productUrl}
-                  className="inline-block text-[11px] font-medium text-gray-600 bg-gray-100 hover:bg-[#FFBB36]/20 hover:text-gray-900 rounded-full px-2.5 py-0.5 truncate max-w-[140px] transition-colors"
-                  title={v.name || v.attributeValue || ''}
-                >
-                  {v.attributeValue || v.name}
-                </Link>
-              ))}
-              {product.variants.length > 2 && (
-                <Link
-                  href={productUrl}
-                  className="text-[11px] font-medium text-gray-400 hover:text-gray-600 flex-shrink-0 transition-colors"
-                >
-                  +{product.variants.length - 2}
-                </Link>
-              )}
-            </div>
+            <DealVariantPills variants={product.variants} productUrl={productUrl} className="hidden sm:flex mt-2" size="normal" />
           )}
 
           {/* Description */}
@@ -325,6 +287,68 @@ function DealCard({ product }: DealCardProps) {
           Kosárba
         </button>
       </div>
+    </div>
+  );
+}
+
+function DealVariantPills({ variants, productUrl, className, size }: { variants: ProductVariant[]; productUrl: string; className?: string; size: 'small' | 'normal' }) {
+  const textSize = size === 'small' ? 'text-[10px]' : 'text-[11px]';
+  const maxW = size === 'small' ? 'max-w-[120px]' : 'max-w-[140px]';
+  const isMultiDim = variants.some((v) => v.attributes && v.attributes.length > 0);
+
+  if (isMultiDim) {
+    const firstLabel = variants.find((v) => v.attributes?.length)?.attributes![0]?.label;
+    if (!firstLabel) return null;
+    const uniqueValues: string[] = [];
+    for (const v of variants) {
+      const val = v.attributes?.find((a) => a.label === firstLabel)?.value;
+      if (val && !uniqueValues.includes(val)) uniqueValues.push(val);
+    }
+    const visible = uniqueValues.slice(0, 2);
+    const remaining = uniqueValues.length - 2;
+
+    return (
+      <div className={`flex items-center gap-1.5 ${className || ''}`}>
+        {visible.map((val) => (
+          <span
+            key={val}
+            className={`inline-block ${textSize} font-medium text-gray-600 bg-gray-100 rounded-full px-2.5 py-0.5 truncate ${maxW}`}
+          >
+            {val}
+          </span>
+        ))}
+        {remaining > 0 && (
+          <Link
+            href={productUrl}
+            className={`${textSize} font-medium text-gray-400 hover:text-gray-600 flex-shrink-0 transition-colors`}
+          >
+            +{remaining}
+          </Link>
+        )}
+      </div>
+    );
+  }
+
+  return (
+    <div className={`flex items-center gap-1.5 ${className || ''}`}>
+      {variants.slice(0, 2).map((v) => (
+        <Link
+          key={v._id}
+          href={v.slug ? `${productUrl}?variant=${v.slug}` : productUrl}
+          className={`inline-block ${textSize} font-medium text-gray-600 bg-gray-100 hover:bg-[#FFBB36]/20 hover:text-gray-900 rounded-full px-2.5 py-0.5 truncate ${maxW} transition-colors`}
+          title={v.name || v.attributeValue || ''}
+        >
+          {v.attributeValue || v.name}
+        </Link>
+      ))}
+      {variants.length > 2 && (
+        <Link
+          href={productUrl}
+          className={`${textSize} font-medium text-gray-400 hover:text-gray-600 flex-shrink-0 transition-colors`}
+        >
+          +{variants.length - 2}
+        </Link>
+      )}
     </div>
   );
 }

@@ -40,7 +40,7 @@ export function AddToCartButton({
 
     // Check if variant is required but not selected
     if (requiresVariant && !variant) {
-      toast.error('Kérem válasszon méretet');
+      toast.error('Kérem válasszon variánst');
       return;
     }
 
@@ -52,9 +52,13 @@ export function AddToCartButton({
         addItem(product, variant ?? undefined, quantity);
         setStatus('added');
 
+        const variantLabel = variant?.attributes?.length
+          ? variant.attributes.map((a) => a.value).join(' / ')
+          : variant?.name || variant?.attributeValue;
+
         toast.success('Hozzáadva a kosárhoz', {
           description: variant
-            ? `${product.name} - ${variant.name || variant.attributeValue}`
+            ? `${product.name} - ${variantLabel}`
             : product.name,
         });
 
@@ -87,7 +91,7 @@ export function AddToCartButton({
     return (
       <span className="flex items-center gap-2">
         <ShoppingCart className="h-4 w-4" />
-        {needsVariant ? 'Válasszon méretet' : 'Kosárba'}
+        {needsVariant ? 'Válasszon variánst' : 'Kosárba'}
       </span>
     );
   };

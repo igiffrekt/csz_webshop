@@ -55,6 +55,16 @@ export function ProductDetails({ product, children }: ProductDetailsProps) {
 
   const hasVariants = product.variants && product.variants.length > 0;
 
+  // Derive initial dimension selection from URL-matched variant
+  const initialDimensionSelection = useMemo(() => {
+    if (!initialVariant?.attributes?.length) return undefined;
+    const sel: Record<string, string> = {};
+    for (const attr of initialVariant.attributes) {
+      sel[attr.label] = attr.value;
+    }
+    return sel;
+  }, [initialVariant]);
+
   // Update URL when variant selection changes
   const handleVariantSelect = useCallback((variant: ProductVariant) => {
     setSelectedVariant(variant);
@@ -207,6 +217,7 @@ export function ProductDetails({ product, children }: ProductDetailsProps) {
             variants={product.variants!}
             selectedVariant={selectedVariant}
             onSelect={handleVariantSelect}
+            initialSelection={initialDimensionSelection}
           />
         )}
 
