@@ -229,6 +229,26 @@ function DealCard({ product }: DealCardProps) {
         </Link>
       </div>
 
+      {/* Variant pills - between image and content */}
+      {product.variants && product.variants.length > 0 && (
+        <div className="flex items-center gap-1.5 px-4 pt-2 sm:hidden">
+          {product.variants.slice(0, 2).map((v: any) => (
+            <span
+              key={v._id}
+              className="inline-block text-[10px] font-medium text-gray-600 bg-gray-100 rounded-full px-2.5 py-0.5 truncate max-w-[120px]"
+              title={v.name || v.attributeValue || ''}
+            >
+              {v.attributeValue || v.name}
+            </span>
+          ))}
+          {product.variants.length > 2 && (
+            <span className="text-[10px] font-medium text-gray-400 flex-shrink-0">
+              +{product.variants.length - 2}
+            </span>
+          )}
+        </div>
+      )}
+
       {/* Content */}
       <div className="flex-1 flex flex-col p-4 sm:p-6 justify-between">
         <div>
@@ -262,20 +282,20 @@ function DealCard({ product }: DealCardProps) {
             <span className="text-sm font-medium text-gray-900">4.{(product._id.charCodeAt(0) % 5) + 5}</span>
           </div>
 
-          {/* Variant pills */}
+          {/* Variant pills - desktop (inside content area) */}
           {product.variants && product.variants.length > 0 && (
-            <div className="flex items-center gap-1.5 mt-2">
+            <div className="hidden sm:flex items-center gap-1.5 mt-2">
               {product.variants.slice(0, 2).map((v: any) => (
                 <span
                   key={v._id}
-                  className="inline-block text-[10px] sm:text-[11px] font-medium text-gray-600 bg-gray-100 rounded-full px-2.5 py-0.5 truncate max-w-[120px] sm:max-w-[140px]"
+                  className="inline-block text-[11px] font-medium text-gray-600 bg-gray-100 rounded-full px-2.5 py-0.5 truncate max-w-[140px]"
                   title={v.name || v.attributeValue || ''}
                 >
                   {v.attributeValue || v.name}
                 </span>
               ))}
               {product.variants.length > 2 && (
-                <span className="text-[10px] sm:text-[11px] font-medium text-gray-400 flex-shrink-0">
+                <span className="text-[11px] font-medium text-gray-400 flex-shrink-0">
                   +{product.variants.length - 2}
                 </span>
               )}

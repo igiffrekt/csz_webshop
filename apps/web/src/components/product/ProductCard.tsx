@@ -59,8 +59,31 @@ export function ProductCard({ product, className }: ProductCardProps) {
         </div>
       </div>
 
+      {/* Variant pills */}
+      {product.variants && product.variants.length > 0 && (
+        <div className="flex items-center gap-1.5 overflow-hidden px-3 sm:px-4 pt-2">
+          {product.variants.slice(0, 2).map((v) => (
+            <span
+              key={v._id}
+              className="inline-block text-[10px] sm:text-[11px] font-medium text-muted-foreground bg-muted rounded-full px-2.5 py-0.5 truncate max-w-[110px] sm:max-w-[130px]"
+              title={v.name || v.attributeValue || ''}
+            >
+              {v.attributeValue || v.name}
+            </span>
+          ))}
+          {product.variants.length > 2 && (
+            <span className="text-[10px] sm:text-[11px] font-medium text-muted-foreground flex-shrink-0">
+              +{product.variants.length - 2}
+            </span>
+          )}
+        </div>
+      )}
+
       {/* Content */}
-      <div className="p-3 sm:p-4 space-y-1.5 sm:space-y-2">
+      <div className={cn(
+        "p-3 sm:p-4 space-y-1.5 sm:space-y-2",
+        product.variants && product.variants.length > 0 && "pt-1.5 sm:pt-2"
+      )}>
         <h3 className="font-medium text-foreground line-clamp-2 group-hover:text-primary transition-colors text-sm sm:text-base">
           {product.name}
         </h3>
@@ -76,26 +99,6 @@ export function ProductCard({ product, className }: ProductCardProps) {
             </span>
           )}
         </div>
-
-        {/* Variant pills */}
-        {product.variants && product.variants.length > 0 && (
-          <div className="flex items-center gap-1.5 overflow-hidden">
-            {product.variants.slice(0, 2).map((v) => (
-              <span
-                key={v._id}
-                className="inline-block text-[10px] sm:text-[11px] font-medium text-muted-foreground bg-muted rounded-full px-2.5 py-0.5 truncate max-w-[110px] sm:max-w-[130px]"
-                title={v.name || v.attributeValue || ''}
-              >
-                {v.attributeValue || v.name}
-              </span>
-            ))}
-            {product.variants.length > 2 && (
-              <span className="text-[10px] sm:text-[11px] font-medium text-muted-foreground flex-shrink-0">
-                +{product.variants.length - 2}
-              </span>
-            )}
-          </div>
-        )}
 
       </div>
     </Link>

@@ -187,10 +187,18 @@ export function ProductCardEnhanced({
         )}
       </div>
 
+      {/* Variant pills */}
+      {product.variants && product.variants.length > 0 && (
+        <div className="mt-2">
+          <VariantPills variants={product.variants} />
+        </div>
+      )}
+
       {/* Content */}
       <div className={cn(
         "bg-transparent",
-        isCollection && "pt-3"
+        isCollection && "pt-3",
+        product.variants && product.variants.length > 0 && "!pt-1"
       )}>
         {/* Category and Rating in one line */}
         <div className={cn(
@@ -232,10 +240,6 @@ export function ProductCardEnhanced({
           )}
         </div>
 
-        {/* Variant pills */}
-        {product.variants && product.variants.length > 0 && (
-          <VariantPills variants={product.variants} />
-        )}
       </div>
     </div>
   );
