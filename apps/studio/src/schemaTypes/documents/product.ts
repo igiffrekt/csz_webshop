@@ -62,7 +62,7 @@ export const product = defineType({
       name: 'stock',
       title: 'Készlet',
       type: 'number',
-      initialValue: 0,
+      initialValue: 99,
       validation: (rule) =>
         rule.required().min(0).error('A készlet kötelező és nem lehet negatív.'),
     }),
@@ -138,6 +138,18 @@ export const product = defineType({
         defineArrayMember({
           type: 'reference',
           to: [{type: 'productVariant'}],
+        }),
+      ],
+    }),
+    defineField({
+      name: 'relatedProducts',
+      title: 'Kapcsolódó termékek',
+      type: 'array',
+      description: 'Kézzel kiválasztott kapcsolódó termékek. Ha üres, a kategória alapján töltődik fel automatikusan.',
+      of: [
+        defineArrayMember({
+          type: 'reference',
+          to: [{type: 'product'}],
         }),
       ],
     }),

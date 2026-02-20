@@ -138,20 +138,29 @@ export default async function ProductPage({ params }: Props) {
   let relatedProducts: any[] = []
 
   try {
-    const [sanityProduct, sanityRelated] = await Promise.all([
-      getProduct(slug),
-      getProducts({ pageSize: 5 }),
-    ])
+    const sanityProduct = await getProduct(slug)
 
     if (!sanityProduct) {
       notFound()
     }
 
     product = adaptProduct(sanityProduct)
-    relatedProducts = sanityRelated.data
-      .filter((p: any) => getSlugString(p.slug) !== slug)
-      .slice(0, 4)
-      .map(adaptProduct)
+
+    // Use manually set related products, fallback to same category
+    if (sanityProduct.relatedProducts && sanityProduct.relatedProducts.length > 0) {
+      relatedProducts = sanityProduct.relatedProducts
+        .filter((p: any) => getSlugString(p.slug) !== slug)
+        .slice(0, 4)
+        .map(adaptProduct)
+    } else {
+      const primaryCategory = sanityProduct.categories?.[0]
+      const categorySlug = primaryCategory ? getSlugString(primaryCategory.slug) : ''
+      const sanityRelated = await getProducts({ category: categorySlug, pageSize: 5 })
+      relatedProducts = sanityRelated.data
+        .filter((p: any) => getSlugString(p.slug) !== slug)
+        .slice(0, 4)
+        .map(adaptProduct)
+    }
   } catch (error) {
     console.error('Failed to fetch product:', error)
     notFound()

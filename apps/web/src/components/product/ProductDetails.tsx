@@ -1,7 +1,8 @@
 'use client';
 
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useCallback } from 'react';
 import Image from 'next/image';
+import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 import type { Product, ProductVariant } from '@csz/types';
 
 interface ImageItem {
@@ -28,6 +29,7 @@ interface ProductDetailsProps {
 export function ProductDetails({ product, children }: ProductDetailsProps) {
   const [selectedVariant, setSelectedVariant] = useState<ProductVariant | null>(null);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
 
   const hasVariants = product.variants && product.variants.length > 0;
 
@@ -77,12 +79,92 @@ export function ProductDetails({ product, children }: ProductDetailsProps) {
 
   const selectedImage = displayImages[selectedImageIndex];
 
+  const lightboxPrev = useCallback(() => {
+    setSelectedImageIndex((i) => (i > 0 ? i - 1 : displayImages.length - 1));
+  }, [displayImages.length]);
+
+  const lightboxNext = useCallback(() => {
+    setSelectedImageIndex((i) => (i < displayImages.length - 1 ? i + 1 : 0));
+  }, [displayImages.length]);
+
+  // Keyboard navigation for lightbox
+  useEffect(() => {
+    if (!lightboxOpen) return;
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setLightboxOpen(false);
+      if (e.key === 'ArrowLeft') lightboxPrev();
+      if (e.key === 'ArrowRight') lightboxNext();
+    };
+    document.body.style.overflow = 'hidden';
+    window.addEventListener('keydown', handleKey);
+    return () => {
+      document.body.style.overflow = '';
+      window.removeEventListener('keydown', handleKey);
+    };
+  }, [lightboxOpen, lightboxPrev, lightboxNext]);
+
   return (
+    <>
+    {/* Lightbox */}
+    {lightboxOpen && (
+      <div
+        className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center"
+        onClick={() => setLightboxOpen(false)}
+      >
+        <button
+          className="absolute top-4 right-4 z-10 w-10 h-10 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors"
+          onClick={() => setLightboxOpen(false)}
+        >
+          <X className="h-6 w-6 text-white" />
+        </button>
+
+        {displayImages.length > 1 && (
+          <>
+            <button
+              className="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors"
+              onClick={(e) => { e.stopPropagation(); lightboxPrev(); }}
+            >
+              <ChevronLeft className="h-6 w-6 text-white" />
+            </button>
+            <button
+              className="absolute right-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors"
+              onClick={(e) => { e.stopPropagation(); lightboxNext(); }}
+            >
+              <ChevronRight className="h-6 w-6 text-white" />
+            </button>
+          </>
+        )}
+
+        <div
+          className="relative w-[90vw] h-[90vh] max-w-[1200px]"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <Image
+            src={getImageUrl(selectedImage.url)}
+            alt={selectedImage.alt || product.name}
+            fill
+            sizes="90vw"
+            className="object-contain"
+            priority
+          />
+        </div>
+
+        {displayImages.length > 1 && (
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-white/60 text-sm">
+            {selectedImageIndex + 1} / {displayImages.length}
+          </div>
+        )}
+      </div>
+    )}
+
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-12">
       {/* Left: Gallery */}
       <div className="flex flex-col gap-4">
         {/* Main image */}
-        <div className="relative aspect-square w-full overflow-hidden rounded-2xl sm:rounded-[30px] bg-white">
+        <div
+          className="relative aspect-square w-full overflow-hidden rounded-2xl sm:rounded-[30px] bg-white cursor-zoom-in"
+          onClick={() => setLightboxOpen(true)}
+        >
           <Image
             src={getImageUrl(selectedImage.url)}
             alt={selectedImage.alt || product.name}
@@ -138,5 +220,6 @@ export function ProductDetails({ product, children }: ProductDetailsProps) {
         />
       </div>
     </div>
+    </>
   );
 }

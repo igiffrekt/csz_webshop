@@ -123,6 +123,35 @@ const PRODUCT_BY_SLUG_QUERY = defineQuery(`
       issuedDate,
       expiryDate,
       "certificate": certificate.asset->url
+    },
+    "relatedProducts": relatedProducts[]->{
+      _id,
+      name,
+      "slug": slug.current,
+      sku,
+      basePrice,
+      compareAtPrice,
+      stock,
+      isFeatured,
+      isOnSale,
+      "images": images[]{
+        _key,
+        "url": asset->url,
+        "alt": asset->altText,
+        "width": asset->metadata.dimensions.width,
+        "height": asset->metadata.dimensions.height
+      },
+      "categories": categories[]->{
+        _id,
+        name,
+        "slug": slug.current
+      },
+      "variants": variants[]->{
+        _id,
+        name,
+        attributeValue,
+        price
+      }
     }
   }
 `)

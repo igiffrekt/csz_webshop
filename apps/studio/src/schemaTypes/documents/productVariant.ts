@@ -36,7 +36,7 @@ export const productVariant = defineType({
       name: 'stock',
       title: 'Készlet',
       type: 'number',
-      initialValue: 0,
+      initialValue: 99,
       validation: (rule) =>
         rule.required().min(0).error('A készlet kötelező és nem lehet negatív.'),
     }),

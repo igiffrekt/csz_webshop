@@ -134,10 +134,9 @@ export default async function ProductPage({ params }: Props) {
   let category: any = null;
 
   try {
-    const [sanityProduct, sanityCategory, sanityRelated] = await Promise.all([
+    const [sanityProduct, sanityCategory] = await Promise.all([
       getProduct(productSlug),
       getCategory(categorySlug),
-      getProducts({ category: categorySlug, pageSize: 5 }),
     ]);
 
     if (!sanityProduct) {
@@ -149,10 +148,24 @@ export default async function ProductPage({ params }: Props) {
       name: sanityCategory.name,
       slug: getSlugString(sanityCategory.slug),
     } : null;
-    relatedProducts = sanityRelated.data
-      .filter((p: any) => getSlugString(p.slug) !== productSlug)
-      .slice(0, 4)
-      .map(adaptProduct);
+
+    // Use manually set related products, fallback to same category
+    if (sanityProduct.relatedProducts && sanityProduct.relatedProducts.length > 0) {
+      relatedProducts = sanityProduct.relatedProducts
+        .filter((p: any) => getSlugString(p.slug) !== productSlug)
+        .slice(0, 4)
+        .map(adaptProduct);
+    } else {
+      // Fallback: fetch from parent category
+      const parentSlug = sanityCategory?.parent?.slug
+        ? getSlugString(sanityCategory.parent.slug)
+        : categorySlug;
+      const sanityRelated = await getProducts({ category: parentSlug, pageSize: 5 });
+      relatedProducts = sanityRelated.data
+        .filter((p: any) => getSlugString(p.slug) !== productSlug)
+        .slice(0, 4)
+        .map(adaptProduct);
+    }
   } catch (error) {
     console.error('Failed to fetch product:', error);
     notFound();

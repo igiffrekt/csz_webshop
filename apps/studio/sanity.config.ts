@@ -3,6 +3,7 @@ import {structureTool} from 'sanity/structure'
 import {visionTool} from '@sanity/vision'
 import {schemaTypes} from './src/schemaTypes'
 import {structure} from './src/structure'
+import {duplicateAction} from './src/actions/duplicateAction'
 
 export default defineConfig({
   name: 'csz-webshop',
@@ -15,5 +16,13 @@ export default defineConfig({
   ],
   schema: {
     types: schemaTypes,
+  },
+  document: {
+    actions: (prev, context) => {
+      if (['product', 'productVariant'].includes(context.schemaType)) {
+        return [...prev, duplicateAction]
+      }
+      return prev
+    },
   },
 })
